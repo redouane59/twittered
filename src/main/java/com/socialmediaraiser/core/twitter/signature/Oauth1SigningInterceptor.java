@@ -113,55 +113,60 @@ public final class Oauth1SigningInterceptor implements Interceptor {
                     parameters.put(key, value);
                 }
             }
-        }catch (IOException e){
+        }catch (Exception e){
             LOGGER.severe(e.getMessage());
         } finally {
             body.close();
         }
 
         Buffer base = new Buffer();
-        String method = request.method();
-        base.writeUtf8(method);
-        base.writeByte('&');
-        base.writeUtf8(ESCAPER_FORM.escape(request.url().newBuilder().query(null).build().toString()));
-        base.writeByte('&');
-
-        boolean first = true;
-        for (Map.Entry<String, String> entry : parameters.entrySet()) {
-            if (!first) base.writeUtf8(ESCAPER_FORM.escape("&"));
-            first = false;
-            base.writeUtf8(ESCAPER_FORM.escape(entry.getKey()));
-            base.writeUtf8(ESCAPER_FORM.escape("="));
-            base.writeUtf8(ESCAPER_FORM.escape(entry.getValue().replace("+","%20")));
-        }
-
-        String signingKey =
-                ESCAPER_FORM.escape(consumerSecret) + "&" + ESCAPER_FORM.escape(accessSecret);
-
-        SecretKeySpec keySpec = new SecretKeySpec(signingKey.getBytes(), "HmacSHA1");
-        Mac mac;
         try {
-            mac = Mac.getInstance("HmacSHA1");
-            mac.init(keySpec);
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            throw new IllegalStateException(e);
+            String method = request.method();
+            base.writeUtf8(method);
+            base.writeByte('&');
+            base.writeUtf8(ESCAPER_FORM.escape(request.url().newBuilder().query(null).build().toString()));
+            base.writeByte('&');
+
+            boolean first = true;
+            for (Map.Entry<String, String> entry : parameters.entrySet()) {
+                if (!first) base.writeUtf8(ESCAPER_FORM.escape("&"));
+                first = false;
+                base.writeUtf8(ESCAPER_FORM.escape(entry.getKey()));
+                base.writeUtf8(ESCAPER_FORM.escape("="));
+                base.writeUtf8(ESCAPER_FORM.escape(entry.getValue().replace("+", "%20")));
+            }
+
+            String signingKey =
+                    ESCAPER_FORM.escape(consumerSecret) + "&" + ESCAPER_FORM.escape(accessSecret);
+
+            SecretKeySpec keySpec = new SecretKeySpec(signingKey.getBytes(), "HmacSHA1");
+            Mac mac;
+            try {
+                mac = Mac.getInstance("HmacSHA1");
+                mac.init(keySpec);
+            } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+                throw new IllegalStateException(e);
+            }
+            byte[] result = mac.doFinal(base.readByteArray());
+            String signature = ByteString.of(result).base64();
+
+            String authorization = "OAuth "
+                    + OAUTH_CONSUMER_KEY + "=\"" + consumerKeyValue + "\", "
+                    + OAUTH_NONCE + "=\"" + oauthNonce + "\", "
+                    + OAUTH_SIGNATURE + "=\"" + ESCAPER_FORM.escape(signature) + "\", "
+                    + OAUTH_SIGNATURE_METHOD + "=\"" + OAUTH_SIGNATURE_METHOD_VALUE + "\", "
+                    + OAUTH_TIMESTAMP + "=\"" + oauthTimestamp + "\", "
+                    + OAUTH_ACCESS_TOKEN + "=\"" + accessTokenValue + "\", "
+                    + OAUTH_VERSION + "=\"" + OAUTH_VERSION_VALUE + "\"";
+            return request.newBuilder()
+                    .addHeader("Authorization", authorization)
+                    .build();
+        } catch(Exception e){
+            LOGGER.severe(e.getMessage());
+        } finally {
+            base.close();
         }
-        byte[] result = mac.doFinal(base.readByteArray());
-        String signature = ByteString.of(result).base64();
-
-        String authorization = "OAuth "
-                + OAUTH_CONSUMER_KEY + "=\"" + consumerKeyValue + "\", "
-                + OAUTH_NONCE + "=\"" + oauthNonce + "\", "
-                + OAUTH_SIGNATURE + "=\"" + ESCAPER_FORM.escape(signature) + "\", "
-                + OAUTH_SIGNATURE_METHOD + "=\"" + OAUTH_SIGNATURE_METHOD_VALUE + "\", "
-                + OAUTH_TIMESTAMP + "=\"" + oauthTimestamp + "\", "
-                + OAUTH_ACCESS_TOKEN + "=\"" + accessTokenValue + "\", "
-                + OAUTH_VERSION + "=\"" + OAUTH_VERSION_VALUE + "\"";
-
-        base.close();
-        return request.newBuilder()
-                .addHeader("Authorization", authorization)
-                .build();
+        return null;
     }
 
     public static final class Builder {

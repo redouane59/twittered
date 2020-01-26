@@ -93,9 +93,6 @@ public class URLHelper {
 
     public String getFriendshipUrl(String sourceId, String targetId) {
         this.friendshipCount++;
-        if(friendshipCount%50==0){
-       //     LOGGER.info(()->"friendship : " + friendshipCount + " / " + FRIENDSHIP_MAX_CALLS);
-        }
         return new StringBuilder(ROOT_URL)
                 .append(FRIENDSHIPS)
                 .append(SHOW_JSON)
@@ -108,7 +105,6 @@ public class URLHelper {
 
     public String getRetweetersUrl(String tweetId){
         this.retweeterCount++;
-        LOGGER.info(()->"Retweeters : " + retweeterCount + " / " + RETWEETER_MAX_CALLS);
         return new StringBuilder(ROOT_URL)
                 .append(STATUSES)
                 .append(RETWEETERS)
@@ -122,9 +118,6 @@ public class URLHelper {
 
     public String getFollowerIdsUrl(String userId){
         this.followersCount++;
-        if(followersCount%5==0) {
-       //     LOGGER.info(()->"Followers : " + followersCount + " / " + FOLLOWER_MAX_CALLS);
-        }
         return new StringBuilder(ROOT_URL)
                 .append(FOLLOWERS)
                 .append(IDS_JSON)
@@ -136,9 +129,6 @@ public class URLHelper {
 
     public String getFollowerUsersUrl(String userId){
         this.followersCount++;
-        if(followersCount%5==0) {
-          //  LOGGER.info(()->"Followers : " + followersCount + " / " + FOLLOWER_MAX_CALLS);
-        }
         return new StringBuilder(ROOT_URL)
                 .append(FOLLOWERS)
                 .append(LIST_JSON)
@@ -151,7 +141,6 @@ public class URLHelper {
 
     public String getFollowingIdsUrl(String userId){
         this.followingCount++;
-        LOGGER.info(()->"Followings : " + followingCount + " / " + FOLLOWING_MAX_CALLS);
         return new StringBuilder(ROOT_URL)
                 .append(FRIENDS)
                 .append(IDS_JSON)
@@ -161,7 +150,6 @@ public class URLHelper {
 
     public String getFollowingUsersUrl(String userId){
         this.followingCount++;
-        LOGGER.info(()->"Followings : " + followingCount + " / " + FOLLOWING_MAX_CALLS);
         return new StringBuilder(ROOT_URL)
                 .append(FRIENDS)
                 .append(LIST_JSON)
@@ -180,9 +168,6 @@ public class URLHelper {
 
     public String getUserUrl(String userId) {
         this.userCount++;
-        if(userCount%50==0) {
-          //  LOGGER.info(()->"Users : " + userCount + " / " + USER_MAX_CALLS);
-        }
         return new StringBuilder(ROOT_URL_V2)
                 .append(USERS)
                 .append("?ids=")
@@ -195,9 +180,6 @@ public class URLHelper {
 
     public String getUserUrlFromName(String username) {
         this.userCount++;
-        if(userCount%50==0) {
-           // LOGGER.info(()->"Users : " + userCount + " / " + USER_MAX_CALLS);
-        }
         return new StringBuilder(ROOT_URL_V2)
                 .append(USERS)
                 .append("?usernames=")
@@ -211,9 +193,6 @@ public class URLHelper {
 
     public String getUsersUrlbyNames(List<String> names) {
         this.userCount++;
-        if(userCount%50==0) {
-          //  LOGGER.info(()->"Users : " + userCount + " / " + USER_MAX_CALLS);
-        }
         StringBuilder result = new StringBuilder(ROOT_URL)
                 .append(USERS)
                 .append(LOOKUP_JSON)
@@ -231,9 +210,6 @@ public class URLHelper {
 
     public String getUsersUrlbyIds(List<String> ids) {
         this.userCount++;
-        if(userCount%50==0) {
-          //  LOGGER.info(()->"Users : " + userCount + " / " + USER_MAX_CALLS);
-        }
         StringBuilder result = new StringBuilder(ROOT_URL)
                 .append(USERS)
                 .append(LOOKUP_JSON)
@@ -250,7 +226,6 @@ public class URLHelper {
     }
 
     public String getRateLimitUrl(){
-        // https://api.twitter.com/1.1/application/rate_limit_status.json
         return new StringBuilder(ROOT_URL)
                 .append("/application")
                 .append("/rate_limit_status.json")
@@ -282,7 +257,6 @@ public class URLHelper {
                 .toString();
     }
 
-    // https://api.twitter.com/labs/1/tweets?ids=1067094924124872705
     public String getUserTweetsUrlV2(String userId, int count){
         this.tweetInfoCount++;
         LOGGER.info(() -> userId + "," + count);
@@ -355,8 +329,6 @@ public class URLHelper {
 
 
     public String getLikeUrl(String tweetId) {
-        // curl --request POST
-        //--url 'https://api.twitter.com/1.1/favorites/create.json?id=TWEET_ID_TO_FAVORITE'
         return new StringBuilder(ROOT_URL)
                 .append(FAVORITES)
                 .append(CREATE_JSON)

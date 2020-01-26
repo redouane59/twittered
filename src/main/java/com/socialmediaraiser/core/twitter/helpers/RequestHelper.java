@@ -218,12 +218,7 @@ public class RequestHelper {
              //   .oauthTimeStamp(timestamp)
                 .build();
 
-        try {
             return oauth.signRequest(request);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     private Request getRequest(String url){

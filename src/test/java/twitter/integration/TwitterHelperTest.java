@@ -185,7 +185,7 @@ class TwitterHelperTest {
     @Test
     public void testRelationBetweenUsersIdFollower() {
         String userId1 = "92073489";
-        String userId2 = "1128737441945464832";
+        String userId2 = "1218125226095054848";
         RelationType result = twitterHelper.getRelationType(userId1, userId2);
         assertEquals(RelationType.FOLLOWER, result);
     }
@@ -232,6 +232,7 @@ class TwitterHelperTest {
     }
 
     @Test
+    @Disabled
     public void testSearchForTweetsFull() {
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMddHHmm");
         String strdate1 = "201901010000";

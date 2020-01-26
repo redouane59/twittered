@@ -12,7 +12,7 @@ import java.io.IOException;
 public class TweetDeserializer extends JsonDeserializer<Tweet>
 {
 
-    private static final String createdAt = "created_at";
+    private static final String CREATED_AT = "created_at";
 
     @Deprecated
     @Override
@@ -30,8 +30,8 @@ public class TweetDeserializer extends JsonDeserializer<Tweet>
                 .favouritesCount(userNode.get("favourites_count").asInt())
                 .location(userNode.get("location").asText())
                 .description(userNode.get("description").asText())
-                .dateOfCreation(JsonHelper.getDateFromTwitterString(userNode.get(createdAt).asText()))
-                .lastUpdate(JsonHelper.getDateFromTwitterString(tweetNode.get(createdAt).asText()))
+                .dateOfCreation(JsonHelper.getDateFromTwitterString(userNode.get(CREATED_AT).asText()))
+                .lastUpdate(JsonHelper.getDateFromTwitterString(tweetNode.get(CREATED_AT).asText()))
                 .lang(tweetNode.get("lang").asText())
                 .build();
 
@@ -44,7 +44,7 @@ public class TweetDeserializer extends JsonDeserializer<Tweet>
                 .replyCount(tweetNode.get("reply_count").asInt())
                 .inReplyToStatusId(tweetNode.get("in_reply_to_status_id_str").asText())
                 .user(user)
-                .createdAt(JsonHelper.getDateFromTwitterString(tweetNode.get(createdAt).asText()))
+                .createdAt(JsonHelper.getDateFromTwitterString(tweetNode.get(CREATED_AT).asText()))
                 .build();
     }
 }

@@ -300,7 +300,7 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
 
     @Override
     public void retweetTweet(String tweetId) {
-
+        throw new UnsupportedOperationException();
     }
 
     public List<Tweet> searchForTweetAnswers(String tweetId, String userName, String fromDate, String toDate){
