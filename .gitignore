@@ -1,0 +1,15 @@
+/.idea
+/.target
+*.iml
+*.class
+src/main/resources/*
+core/src/main/resources/*
+social-graph/src/main/resources/*
+social-graph/okhttpCache/*
+bot/src/main/resources/*
+target/
+*/target/**
+*/target/*
+/out
+/okhttpCache
+/okhttpCache/*
