@@ -2,7 +2,6 @@ package com.socialmediaraiser.core.twitter;
 
 import com.socialmediaraiser.core.twitter.helpers.dto.getuser.AbstractUser;
 import com.socialmediaraiser.core.twitter.helpers.dto.getuser.TweetDTO;
-import com.socialmediaraiser.core.twitter.scoring.UserScoringEngine;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,10 +29,10 @@ public class User extends AbstractUser {
     User(String id, String userName, int followersCout, int followingCount, String lang, int statusesCount, Date dateOfCreation,
          int commonFollowers, Date dateOfFollow, Date dateOfFollowBack, String description, int favouritesCount,
          Date lastUpdate, String location, List<TweetDTO> mostRecentTweet, boolean protectedAccount){
-        super(id, userName, mostRecentTweet, description, dateOfFollow, protectedAccount, commonFollowers, dateOfFollowBack, null, 0);
-        if(FollowProperties.getTargetProperties()!=null) {
+        super(id, userName, mostRecentTweet, description, dateOfFollow, protectedAccount, commonFollowers, dateOfFollowBack, 0);
+      /*  if(FollowProperties.getTargetProperties()!=null) {
             this.setScoringEngine(new UserScoringEngine(FollowProperties.getTargetProperties().getMinimumPercentMatch()));
-        }
+        } */
         this.followersCount = followersCout;
         this.followingCount = followingCount;
         this.lang = lang;
@@ -44,13 +43,14 @@ public class User extends AbstractUser {
         this.location = location;
     }
 
-    public String getLang(){
+    /* public String getLang(){
         if(lang==null){
             this.addLanguageFromLastTweet(TwitterHelper.getUserLastTweetsStatic(this.getId(), 3));
         }
         return this.lang;
-    }
-    public void addLanguageFromLastTweet(List<Tweet> userLastTweets){
+    } */
+
+    /* public void addLanguageFromLastTweet(List<Tweet> userLastTweets){
         if(userLastTweets!=null){
             for(Tweet tweet : userLastTweets){
                 if(!tweet.getLang().equals("und")){
@@ -61,5 +61,5 @@ public class User extends AbstractUser {
                 }
             }
         }
-    }
+    } */
 }

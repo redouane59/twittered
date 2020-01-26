@@ -1,17 +1,11 @@
 package com.socialmediaraiser.core.twitter.helpers.dto.getuser;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.socialmediaraiser.core.twitter.FollowProperties;
-import com.socialmediaraiser.core.twitter.RandomForestAlgoritm;
-import com.socialmediaraiser.core.twitter.scoring.Criterion;
-import com.socialmediaraiser.core.twitter.scoring.UserScoringEngine;
 import com.socialmediaraiser.core.twitter.helpers.dto.IUser;
-import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -32,7 +26,7 @@ public abstract class AbstractUser implements IUser {
     private boolean protectedAccount;
     private int commonFollowers; // nb of occurrences in followers search
     private Date dateOfFollowBack;
-    private UserScoringEngine scoringEngine;
+   // private UserScoringEngine scoringEngine;
     private int nbInteractions;
 
     @Override
@@ -67,12 +61,12 @@ public abstract class AbstractUser implements IUser {
         return (dateOfFollow.getTime()-this.getDateOfCreation().getTime()) / (365 * 24 * 60 * 60 * 1000);
     }
 
-    public boolean getRandomForestPrediction(){
+   /* public boolean getRandomForestPrediction(){
         this.setDateOfFollowNow();
         return RandomForestAlgoritm.getPrediction(this);
-    }
+    } */
 
-    public boolean isLanguageOK(){
+   /* public boolean isLanguageOK(){
         return Option.of(this.getLang())
                 .map(b -> this.getLang().equals(FollowProperties.getTargetProperties().getLanguage())).getOrElse(false);
     }
@@ -137,6 +131,5 @@ public abstract class AbstractUser implements IUser {
                 LOGGER.severe("Criterion " + criterion.name() + " not found");
                 return false;
         }
-    }
-
+    } */
 }

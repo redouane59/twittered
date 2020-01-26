@@ -192,7 +192,6 @@ public class JsonHelperTest {
                 tweetDate = JsonHelper.getDateFromTwitterString(tweetDataDTO.getTweet().getCreatedAt());
                 if(tweetDate!=null && tweetDate.compareTo(limitDate)>0) {
                         result.put(userId, 1+result.getOrDefault(userId, 0));
-                      //  System.out.println(tweetDate + " -> " + userId);
                 }
             }
         }
