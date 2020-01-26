@@ -26,9 +26,11 @@ import java.util.Map;
 import java.util.Random;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.socialmediaraiser.core.twitter.helpers.dto.getuser.AbstractUser;
 import okhttp3.*;
 import okio.Buffer;
 import okio.ByteString;
@@ -45,6 +47,7 @@ public final class Oauth1SigningInterceptor implements Interceptor {
     private static final String OAUTH_ACCESS_TOKEN = "oauth_token";
     private static final String OAUTH_VERSION = "oauth_version";
     private static final String OAUTH_VERSION_VALUE = "1.0";
+    private static final Logger LOGGER = Logger.getLogger(Oauth1SigningInterceptor.class.getName());
 
     private final String consumerKey;
     private final String consumerSecret;
@@ -67,7 +70,7 @@ public final class Oauth1SigningInterceptor implements Interceptor {
         return chain.proceed(signRequest(chain.request()));
     }
 
-    public Request signRequest(Request request) throws IOException {
+    public Request signRequest(Request request) {
         byte[] nonce = new byte[32];
         random.nextBytes(nonce);
         String oauthNonce = ByteString.of(nonce).base64().replaceAll("\\W", "");
@@ -92,22 +95,28 @@ public final class Oauth1SigningInterceptor implements Interceptor {
 
         RequestBody requestBody = request.body();
         Buffer body = new Buffer();
-        if(requestBody!=null)
-            requestBody.writeTo(body);
+        try {
+            if (requestBody != null)
+                requestBody.writeTo(body);
 
-        if(requestBody!=null && requestBody.contentLength()>2) {
-            while (!body.exhausted()) {
-                long keyEnd = body.indexOf((byte) '=');
-                if (keyEnd == -1) throw new IllegalStateException("Key with no value: " + body.readUtf8());
-                String key = body.readUtf8(keyEnd);
-                body.skip(1); // Equals.
+            if (requestBody != null && requestBody.contentLength() > 2) {
+                while (!body.exhausted()) {
+                    long keyEnd = body.indexOf((byte) '=');
+                    if (keyEnd == -1) throw new IllegalStateException("Key with no value: " + body.readUtf8());
+                    String key = body.readUtf8(keyEnd);
+                    body.skip(1); // Equals.
 
-                long valueEnd = body.indexOf((byte) '&');
-                String value = valueEnd == -1 ? body.readUtf8() : body.readUtf8(valueEnd);
-                if (valueEnd != -1) body.skip(1); // Ampersand.
+                    long valueEnd = body.indexOf((byte) '&');
+                    String value = valueEnd == -1 ? body.readUtf8() : body.readUtf8(valueEnd);
+                    if (valueEnd != -1) body.skip(1); // Ampersand.
 
-                parameters.put(key, value);
+                    parameters.put(key, value);
+                }
             }
+        }catch (IOException e){
+            LOGGER.severe(e.getMessage());
+        } finally {
+            body.close();
         }
 
         Buffer base = new Buffer();
@@ -149,6 +158,7 @@ public final class Oauth1SigningInterceptor implements Interceptor {
                 + OAUTH_ACCESS_TOKEN + "=\"" + accessTokenValue + "\", "
                 + OAUTH_VERSION + "=\"" + OAUTH_VERSION_VALUE + "\"";
 
+        base.close();
         return request.newBuilder()
                 .addHeader("Authorization", authorization)
                 .build();

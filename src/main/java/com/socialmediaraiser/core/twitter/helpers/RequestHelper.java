@@ -238,7 +238,7 @@ public class RequestHelper {
     }
 
     private OkHttpClient getHttpClient(String url){
-        long cacheSize = 1024 * 1024 * 1024; // 1go
+        long cacheSize = 1024L * 1024 * 1024; // 1go
         String path = "../okhttpCache";
         File file = new File(path);
         return new OkHttpClient.Builder()
