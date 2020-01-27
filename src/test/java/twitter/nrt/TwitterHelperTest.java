@@ -1,10 +1,9 @@
-package twitter.integration;
+package twitter.nrt;
 
 import com.socialmediaraiser.core.RelationType;
 import com.socialmediaraiser.core.twitter.*;
 import com.socialmediaraiser.core.twitter.helpers.dto.ConverterHelper;
 import com.socialmediaraiser.core.twitter.helpers.dto.getuser.AbstractUser;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -15,13 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TwitterHelperTest {
 
-    private static String ownerName = "RedTheOne";
-    private TwitterHelper twitterHelper = new TwitterHelper(ownerName);
-
-    @BeforeAll
-    public static void init() {
-        FollowProperties.load(ownerName);
-    }
+    private TwitterHelper twitterHelper = new TwitterHelper();
 
     @Test
     public void testGetFollowingIdsById() {
@@ -30,37 +23,15 @@ class TwitterHelperTest {
     }
 
     @Test
-    @Disabled
-    public void testGetFollowingsUserByName() {
-        List<AbstractUser> followings = twitterHelper.getFollowingsUsers("LaGhostquitweet");
-        assertTrue(followings.size() > 200);
-    }
-
-    @Test
-    @Disabled
-    public void testGetFollersUserByName() {
-        List<AbstractUser> followings = twitterHelper.getFollowerUsers("LaGhostquitweet");
-        assertTrue(followings.size() > 360);
-    }
-
-    @Test
-    @Disabled
     public void testGetFollowersIdsById() {
         List<String> followers = twitterHelper.getFollowerIds("882266619115864066");
-        assertTrue(followers.size() > 420);
+        assertTrue(followers.size() > 200);
     }
 
     @Test
-    public void testGetFollowersUsersByName() {
-        List<AbstractUser> followers = twitterHelper.getFollowerUsers("LaGhostquitweet");
-        assertTrue(followers.size() > 420);
-    }
-
-    @Test
-    @Disabled
     public void testGetFollowersUsersById() {
         List<AbstractUser> followers = twitterHelper.getFollowerUsers("882266619115864066");
-        assertTrue(followers.size() > 420);
+        assertTrue(followers.size() > 200);
     }
 
     @Test
@@ -191,10 +162,9 @@ class TwitterHelperTest {
     }
 
     @Test
-    @Disabled // API KO
     public void testGetRetweetersId() {
         String tweetId = "1078358350000205824";
-        assertTrue(twitterHelper.getRetweetersId(tweetId).size() > 400);
+        assertTrue(twitterHelper.getRetweetersId(tweetId).size() > 10);
     }
 
     @Test

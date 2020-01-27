@@ -1,6 +1,5 @@
 package twitter.unit;
 
-import com.socialmediaraiser.core.twitter.FollowProperties;
 import com.socialmediaraiser.core.twitter.helpers.URLHelper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -13,11 +12,6 @@ public class UrlHelperTest {
 
     private static String ownerName = "RedTheOne";
     private URLHelper urlHelper = new URLHelper();
-
-    @BeforeAll
-    public static void init(){
-        FollowProperties.load(ownerName);
-    }
 
     @Test
     public void testUrlRetweetrs(){

@@ -36,9 +36,6 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
     private static final String FOLLOWED_BY = "followed_by";
     private static final String SOURCE = "source";
 
-    public TwitterHelper(String userName){
-        FollowProperties.load(userName);
-    }
     // can manage up to 5000 results / call . Max 15 calls / 15min ==> 75.000 results max. / 15min
     private List<String> getUserIdsByRelation(String url){
         Long cursor = -1L;
@@ -396,14 +393,6 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
         }
         while (next!= null && result.size()<count);
         return result;
-    }
-
-    protected Authentication getAuthentication(){
-        return new OAuth1(
-                FollowProperties.getTwitterCredentials().getConsumerKey(),
-                FollowProperties.getTwitterCredentials().getConsumerSecret(),
-                FollowProperties.getTwitterCredentials().getAccessToken(),
-                FollowProperties.getTwitterCredentials().getSecretToken());
     }
 
     private void logError(Exception e, String response){

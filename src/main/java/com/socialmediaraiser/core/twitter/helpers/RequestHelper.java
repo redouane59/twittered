@@ -2,8 +2,9 @@ package com.socialmediaraiser.core.twitter.helpers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.socialmediaraiser.core.twitter.FollowProperties;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.socialmediaraiser.core.twitter.helpers.dto.getuser.RequestTokenDTO;
+import com.socialmediaraiser.core.twitter.properties.TwitterCredentials;
 import com.socialmediaraiser.core.twitter.signature.Oauth1SigningInterceptor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,9 +17,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -30,11 +28,11 @@ public class RequestHelper {
 
     private int sleepTime = 5;
     private static final Logger LOGGER = Logger.getLogger(RequestHelper.class.getName());
-
+    private static TwitterCredentials TWITTER_CREDENTIALS = getAuthentication();
     public JsonNode executeGetRequest(String url) {
         try {
             Response response = this.getHttpClient(url)
-                    .newCall(this.getSignedRequest(this.getRequest(url), this.getNonce(), this.getTimestamp()))
+                    .newCall(this.getSignedRequest(this.getRequest(url)))
                     .execute();
             String stringResponse = response.body().string();
             JsonNode node = new ObjectMapper().readTree(stringResponse);
@@ -61,7 +59,7 @@ public class RequestHelper {
                 }
             }
             String newUrl = httpBuilder.build().url().toString();
-            Request requesthttp = this.getSignedRequest(this.getRequest(httpBuilder), this.getNonce(), this.getTimestamp());
+            Request requesthttp = this.getSignedRequest(this.getRequest(httpBuilder));
 
             Response response = this.getHttpClient(newUrl)
                     .newCall(requesthttp)
@@ -85,7 +83,7 @@ public class RequestHelper {
     public String executeGetRequestV2(String url) {
         try {
             Response response = this.getHttpClient(url)
-                    .newCall(this.getSignedRequest(this.getRequest(url), this.getNonce(), this.getTimestamp())).execute();
+                    .newCall(this.getSignedRequest(this.getRequest(url))).execute();
             if(response.code()==200){
                 String result = response.body().string();
                 response.close();
@@ -116,7 +114,7 @@ public class RequestHelper {
                     .post(requestBody)
                     .build();
 
-            Request signedRequest = this.getSignedRequest(request, this.getNonce(), this.getTimestamp());
+            Request signedRequest = this.getSignedRequest(request);
 
             Response response = this.getHttpClient(url)
                     .newCall(signedRequest).execute();
@@ -125,8 +123,9 @@ public class RequestHelper {
                 LOGGER.severe(()->"(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
                 if(response.code()==429){
                     RequestTokenDTO result = this.executeTokenRequest();
-                    FollowProperties.getTwitterCredentials().setAccessToken(result.getOauthToken());
-                    FollowProperties.getTwitterCredentials().setSecretToken(result.getOauthTokenSecret());
+                    // @todo to test
+                    TWITTER_CREDENTIALS.setAccessToken(result.getOauthToken());
+                    TWITTER_CREDENTIALS.setSecretToken(result.getOauthTokenSecret());
                     LOGGER.info(()->"token reset, now sleeping 30sec");
                     TimeUnit.SECONDS.sleep(30);
                 }
@@ -146,7 +145,7 @@ public class RequestHelper {
                     .post(RequestBody.create(null, "{}"))
                     .build();
 
-            Request signedRequest = this.getSignedRequest(request, this.getNonce(), this.getTimestamp());
+            Request signedRequest = this.getSignedRequest(request);
 
             Response response = this.getHttpClient("https://api.twitter.com/oauth/request_token").newCall(signedRequest).execute();
 
@@ -174,7 +173,7 @@ public class RequestHelper {
     public JsonNode executeGetRequestReturningArray(String url) {
         try {
             Response response = this.getHttpClient(url)
-                    .newCall(this.getSignedRequest(this.getRequest(url), this.getNonce(), this.getTimestamp())).execute();
+                    .newCall(this.getSignedRequest(this.getRequest(url))).execute();
             if(response.code()==200){
                 String stringResult = response.body().string();
                 return JsonHelper.OBJECT_MAPPER.readTree(stringResult);
@@ -194,31 +193,14 @@ public class RequestHelper {
         return null;
     }
 
-    private String getNonce(){
-        SecureRandom secureRandom = new SecureRandom();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < 8; i++) {
-            stringBuilder.append(secureRandom.nextInt(10));
-        }
-        return stringBuilder.toString();
-    }
-
-    private String getTimestamp(){
-        return String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(0,10);
-    }
-
-    private Request getSignedRequest(Request request, String nonce, String timestamp){
-
+    private Request getSignedRequest(Request request){
         Oauth1SigningInterceptor oauth = new Oauth1SigningInterceptor.Builder()
-                .consumerKey(FollowProperties.getTwitterCredentials().getConsumerKey())
-                .consumerSecret(FollowProperties.getTwitterCredentials().getConsumerSecret())
-                .accessToken(FollowProperties.getTwitterCredentials().getAccessToken())
-                .accessSecret(FollowProperties.getTwitterCredentials().getSecretToken())
-             //   .oauthNonce(nonce)
-             //   .oauthTimeStamp(timestamp)
+                .consumerKey(TWITTER_CREDENTIALS.getConsumerKey())
+                .consumerSecret(TWITTER_CREDENTIALS.getConsumerSecret())
+                .accessToken(TWITTER_CREDENTIALS.getAccessToken())
+                .accessSecret(TWITTER_CREDENTIALS.getSecretToken())
                 .build();
-
-            return oauth.signRequest(request);
+        return oauth.signRequest(request);
     }
 
     private Request getRequest(String url){
@@ -271,5 +253,14 @@ public class RequestHelper {
             defaultCache = 672;
         }
         return defaultCache;
+    }
+
+    private static TwitterCredentials getAuthentication(){
+        try {
+            return JsonHelper.OBJECT_MAPPER.readValue(TwitterCredentials.class.getClassLoader().getResource("twitter-credentials.json"), TwitterCredentials.class);
+        } catch (IOException e) {
+            LOGGER.severe(e.getMessage());
+            return null;
+        }
     }
 }

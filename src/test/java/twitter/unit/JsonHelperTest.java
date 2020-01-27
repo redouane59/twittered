@@ -3,12 +3,10 @@ package twitter.unit;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.socialmediaraiser.core.twitter.FollowProperties;
 import com.socialmediaraiser.core.twitter.Tweet;
 import com.socialmediaraiser.core.twitter.TwitterHelper;
 import com.socialmediaraiser.core.twitter.helpers.JsonHelper;
 import com.socialmediaraiser.core.twitter.helpers.dto.IUser;
-import com.socialmediaraiser.core.twitter.helpers.dto.getuser.AbstractUser;
 import com.socialmediaraiser.core.twitter.helpers.dto.getuser.TweetDataDTO;
 import com.socialmediaraiser.core.twitter.helpers.dto.getuser.UserObjectResponseDTO;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,8 +14,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,13 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonHelperTest {
 
-    private static String ownerName = "RedTheOne";
     private JsonHelper jsonHelper = new JsonHelper();
-
-    @BeforeAll
-    public static void init(){
-        FollowProperties.load(ownerName);
-    }
 
     @Test
     public void testCastTweetFromString() throws IOException {
@@ -180,8 +170,6 @@ public class JsonHelperTest {
         assertNotNull(tweets);
 
         SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
-
-        TwitterHelper helper = new TwitterHelper("RedTheOne");
 
         Map<String, Integer> result = new HashMap<>();
         Date tweetDate;

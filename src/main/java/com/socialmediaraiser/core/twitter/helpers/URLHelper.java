@@ -228,8 +228,7 @@ public class URLHelper {
     }
 
     public String getUserTweetsUrlV2(String userId, int count){
-        LOGGER.info(() -> userId + "," + count);
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     public String getSearchTweets30daysUrl() {
