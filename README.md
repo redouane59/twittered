@@ -1,4 +1,4 @@
-Example file to put in `src/main/resources/twitter-credentials.json`
+The file `src/main/resources/twitter-credentials.json` should contain your twitter credentials like this :
 ```
 {
   "consumerKey": "xxx",
