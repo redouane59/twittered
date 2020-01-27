@@ -1,4 +1,4 @@
-Example file to put in `src/main/resources/`
+Example file to put in `src/main/resources/twitter-credentials.json`
 ```
 {
   "consumerKey": "xxx",
@@ -7,5 +7,4 @@ Example file to put in `src/main/resources/`
   "secretToken": "xxx"
 }
 ```
-`twitter-credentials.json`
 
