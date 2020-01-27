@@ -3,13 +3,9 @@
 *.iml
 *.class
 src/main/resources/*
-core/src/main/resources/*
-social-graph/src/main/resources/*
-social-graph/okhttpCache/*
-bot/src/main/resources/*
-target/
 src/main/java/com/socialmediaraiser/okhttpCache/
 src/main/java/com/socialmediaraiser/okhttpCache/*
+target/
 */target/**
 */target/*
 /out

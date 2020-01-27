@@ -35,6 +35,7 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
     private static final String FOLLOWING = "following";
     private static final String FOLLOWED_BY = "followed_by";
     private static final String SOURCE = "source";
+    private final String nullOrIdNotFoundError = "response null or ids not found !";
 
     // can manage up to 5000 results / call . Max 15 calls / 15min ==> 75.000 results max. / 15min
     private List<String> getUserIdsByRelation(String url){
@@ -49,7 +50,7 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
                     result.addAll(ids);
                 }
             } else{
-                LOGGER.severe(()->"response null or ids not found !");
+                LOGGER.severe(()->nullOrIdNotFoundError);
                 return result;
             }
 
@@ -71,7 +72,7 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
                     result.addAll(ids);
                 }
             } else{
-                LOGGER.severe(()->"response null or ids not found !");
+                LOGGER.severe(()->nullOrIdNotFoundError);
                 return result;
             }
 
@@ -335,7 +336,7 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
             if(response!=null && response.size()>0){
                 result.addAll(this.getJsonHelper().jsonResponseToTweetListV2(responseArray));
             } else{
-                LOGGER.severe(()->"response null or ids not found !");
+                LOGGER.severe(()->nullOrIdNotFoundError);
             }
 
             if(!response.has(NEXT)){
@@ -382,7 +383,7 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
             if(response!=null && response.size()>0){
                 result.addAll(this.getJsonHelper().jsonResponseToTweetListV2(responseArray));
             } else{
-                LOGGER.severe(()->"response null or ids not found !");
+                LOGGER.severe(()->nullOrIdNotFoundError);
             }
 
             if(!response.has(NEXT)){

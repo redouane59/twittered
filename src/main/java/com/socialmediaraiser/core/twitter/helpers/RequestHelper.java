@@ -2,7 +2,6 @@ package com.socialmediaraiser.core.twitter.helpers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.socialmediaraiser.core.twitter.helpers.dto.getuser.RequestTokenDTO;
 import com.socialmediaraiser.core.twitter.properties.TwitterCredentials;
 import com.socialmediaraiser.core.twitter.signature.Oauth1SigningInterceptor;
@@ -22,13 +21,13 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-@Data
 @NoArgsConstructor
 public class RequestHelper {
 
-    private int sleepTime = 5;
     private static final Logger LOGGER = Logger.getLogger(RequestHelper.class.getName());
     private static TwitterCredentials TWITTER_CREDENTIALS = getAuthentication();
+    private int sleepTime = 5;
+
     public JsonNode executeGetRequest(String url) {
         try {
             Response response = this.getHttpClient(url)
@@ -42,7 +41,7 @@ public class RequestHelper {
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequest(url);
             } else{
-                LOGGER.severe(()->"(GET) not calling " + url + " 200 return null " + response.message() + " - " + response.code());
+                logGetError(url, response);
             }
         } catch(Exception e){
             LOGGER.severe("exception in executeGetRequest " + e.getMessage());
@@ -72,7 +71,7 @@ public class RequestHelper {
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequest(url);
             } else{
-                LOGGER.severe(()->"(GET) not calling " + url + " 200 return null " + stringResponse + " - " + response.code());
+                logGetError(url, response);
             }
         } catch(Exception e){
             LOGGER.severe("exception in executeGetRequest " + e.getMessage());
@@ -93,15 +92,13 @@ public class RequestHelper {
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequestV2(url);
             } else{
-                LOGGER.severe(()->"(GET) not calling " + url + " 200 return null " + response.message() + " - " + response.code());
+                logGetError(url, response);
             }
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
         }
         return null;
     }
-
-
 
     public JsonNode executePostRequest(String url, Map<String, String> parameters) {
         try {
@@ -253,6 +250,10 @@ public class RequestHelper {
             defaultCache = 672;
         }
         return defaultCache;
+    }
+
+    private void logGetError(String url, Response response){
+        LOGGER.severe(()->"(GET) not calling " + url + " 200 return null " + response.message() + " - " + response.code());
     }
 
     private static TwitterCredentials getAuthentication(){

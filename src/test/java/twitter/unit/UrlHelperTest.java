@@ -31,6 +31,12 @@ public class UrlHelperTest {
     }
 
     @Test
+    public void testUrlFollowingsUsersById(){
+        assertEquals("https://api.twitter.com/1.1/friends/list.json?user_id=952253106&count=200",
+                urlHelper.getFollowingUsersUrl("952253106"));
+    }
+
+    @Test
     public void testUrlLastTweet(){
         assertEquals("https://api.twitter.com/1.1/statuses/user_timeline.json?",
                 urlHelper.getLastTweetListUrl());
@@ -118,6 +124,12 @@ public class UrlHelperTest {
         //https://api.twitter.com/1.1/friendships/destroy.json?user_id=2244994945
         assertEquals("https://api.twitter.com/1.1/friendships/destroy.json?screen_name=Red",
                 urlHelper.getUnfollowByUsernameUrl("Red"));
+    }
+
+    @Test
+    public void testUnfollowByUserId(){
+        assertEquals("https://api.twitter.com/1.1/friendships/destroy.json?user_id=12345",
+                urlHelper.getUnfollowUrl("12345"));
     }
 
 

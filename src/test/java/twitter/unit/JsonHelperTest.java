@@ -4,12 +4,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socialmediaraiser.core.twitter.Tweet;
-import com.socialmediaraiser.core.twitter.TwitterHelper;
 import com.socialmediaraiser.core.twitter.helpers.JsonHelper;
 import com.socialmediaraiser.core.twitter.helpers.dto.IUser;
 import com.socialmediaraiser.core.twitter.helpers.dto.getuser.TweetDataDTO;
 import com.socialmediaraiser.core.twitter.helpers.dto.getuser.UserObjectResponseDTO;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -184,5 +182,10 @@ public class JsonHelperTest {
             }
         }
         assertNotNull(result);
+    }
+
+    @Test
+    public void testGetLongFromCursorObjectNull(){
+        assertNull(this.jsonHelper.getLongFromCursorObject(null));
     }
 }

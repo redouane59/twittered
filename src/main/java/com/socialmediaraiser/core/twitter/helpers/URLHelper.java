@@ -37,6 +37,7 @@ public class URLHelper {
     private static final String USER_ID = "user_id";
     private static final String LOOKUP_JSON = "/lookup.json?";
     private static final String USER_TIMELINE = "/user_timeline.json?";
+    private static final String JSON = ".json";
     private static final String TRIM_USER = "trim_user=true";
     private static final String EXCLUDE_RTS = "include_rts=false";
     private static final String USER_FORMAT_DETAILED= "user.format=detailed";
@@ -64,12 +65,12 @@ public class URLHelper {
                 .toString();
     }
 
-    public String getUnfollowByUsernameUrl(String userId) {
+    public String getUnfollowByUsernameUrl(String userName) {
         return new StringBuilder(ROOT_URL)
                 .append(FRIENDSHIPS)
                 .append(DESTROY_JSON)
                 .append(SCREEN_NAME+"=")
-                .append(userId)
+                .append(userName)
                 .toString();
     }
 
@@ -237,7 +238,7 @@ public class URLHelper {
                 .append(SEARCH)
                 .append(THIRTY_DAYS)
                 .append(DEV_ENV_NAME)
-                .append(".json")
+                .append(JSON)
                 .toString();
     }
 
@@ -247,7 +248,7 @@ public class URLHelper {
                 .append(SEARCH)
                 .append(FULL_ARCHIVE)
                 .append(DEV_ENV_NAME)
-                .append(".json")
+                .append(JSON)
                 .toString();
     }
 
@@ -255,7 +256,7 @@ public class URLHelper {
         return new StringBuilder(ROOT_URL)
                 .append(SEARCH)
                 .append(TWEETS)
-                .append(".json")
+                .append(JSON)
                 .toString();
     }
 
@@ -265,7 +266,7 @@ public class URLHelper {
                 .append(ACCOUNT_ACTIVITY)
                 .append(DEV_ENV_NAME)
                 .append(WEBHOOKS)
-                .append(".json")
+                .append(JSON)
                 .toString();
     }
 
