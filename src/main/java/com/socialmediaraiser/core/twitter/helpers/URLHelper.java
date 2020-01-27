@@ -43,26 +43,10 @@ public class URLHelper {
     private static final String TWEET_FORMAT_DETAILED= "tweet.format=detailed";
     private static final String EXPANSIONS_RECENT_TWEET= "expansions=most_recent_tweet_id";
     private static final int MAX_COUNT = 200;
-    private int retweeterCount = 0;
-    private int followersCount = 0;
-    private int followingCount = 0;
-    private int friendshipCount = 0;
-    private int followCount = 0;
-    private int unfollowCount = 0;
-    private int userCount = 0;
-    private int tweetInfoCount = 0;
-    private static final int RETWEETER_MAX_CALLS = 15;
-    private static final int FOLLOWER_MAX_CALLS = 15;
-    private static final int FOLLOWING_MAX_CALLS = 15;
-    private static final int FRIENDSHIP_MAX_CALLS = 180;
-    private static final int FOLLOW_MAX_CALLS = 350;
-    private static final int UNFOLLOW_MAX_CALLS = 350;
     private static final int RETWEET_MAX_COUNT = 100;
-    private static final int TWEET_INFO_MAX_CALLS = 900;
     private static final int MAX_LOOKUP = 100;
 
     public String getFollowUrl(String userId) {
-        this.followCount++;
         return new StringBuilder(ROOT_URL)
                 .append(FRIENDSHIPS)
                 .append(CREATE_JSON)
@@ -72,7 +56,6 @@ public class URLHelper {
     }
 
     public String getUnfollowUrl(String userId) {
-        this.unfollowCount++;
         return new StringBuilder(ROOT_URL)
                 .append(FRIENDSHIPS)
                 .append(DESTROY_JSON)
@@ -82,7 +65,6 @@ public class URLHelper {
     }
 
     public String getUnfollowByUsernameUrl(String userId) {
-        this.unfollowCount++;
         return new StringBuilder(ROOT_URL)
                 .append(FRIENDSHIPS)
                 .append(DESTROY_JSON)
@@ -92,7 +74,6 @@ public class URLHelper {
     }
 
     public String getFriendshipUrl(String sourceId, String targetId) {
-        this.friendshipCount++;
         return new StringBuilder(ROOT_URL)
                 .append(FRIENDSHIPS)
                 .append(SHOW_JSON)
@@ -104,7 +85,6 @@ public class URLHelper {
     }
 
     public String getRetweetersUrl(String tweetId){
-        this.retweeterCount++;
         return new StringBuilder(ROOT_URL)
                 .append(STATUSES)
                 .append(RETWEETERS)
@@ -117,7 +97,6 @@ public class URLHelper {
     }
 
     public String getFollowerIdsUrl(String userId){
-        this.followersCount++;
         return new StringBuilder(ROOT_URL)
                 .append(FOLLOWERS)
                 .append(IDS_JSON)
@@ -128,7 +107,6 @@ public class URLHelper {
 
 
     public String getFollowerUsersUrl(String userId){
-        this.followersCount++;
         return new StringBuilder(ROOT_URL)
                 .append(FOLLOWERS)
                 .append(LIST_JSON)
@@ -140,7 +118,6 @@ public class URLHelper {
     }
 
     public String getFollowingIdsUrl(String userId){
-        this.followingCount++;
         return new StringBuilder(ROOT_URL)
                 .append(FRIENDS)
                 .append(IDS_JSON)
@@ -149,7 +126,6 @@ public class URLHelper {
     }
 
     public String getFollowingUsersUrl(String userId){
-        this.followingCount++;
         return new StringBuilder(ROOT_URL)
                 .append(FRIENDS)
                 .append(LIST_JSON)
@@ -167,7 +143,6 @@ public class URLHelper {
     }
 
     public String getUserUrl(String userId) {
-        this.userCount++;
         return new StringBuilder(ROOT_URL_V2)
                 .append(USERS)
                 .append("?ids=")
@@ -179,7 +154,6 @@ public class URLHelper {
     }
 
     public String getUserUrlFromName(String username) {
-        this.userCount++;
         return new StringBuilder(ROOT_URL_V2)
                 .append(USERS)
                 .append("?usernames=")
@@ -192,7 +166,6 @@ public class URLHelper {
 
 
     public String getUsersUrlbyNames(List<String> names) {
-        this.userCount++;
         StringBuilder result = new StringBuilder(ROOT_URL)
                 .append(USERS)
                 .append(LOOKUP_JSON)
@@ -209,7 +182,6 @@ public class URLHelper {
     }
 
     public String getUsersUrlbyIds(List<String> ids) {
-        this.userCount++;
         StringBuilder result = new StringBuilder(ROOT_URL)
                 .append(USERS)
                 .append(LOOKUP_JSON)
@@ -234,7 +206,6 @@ public class URLHelper {
 
     @Deprecated
     public String getTweetInfoUrl(String tweetId) {
-        this.tweetInfoCount++;
         return new StringBuilder(ROOT_URL)
                 .append(STATUSES)
                 .append(SHOW_JSON)
@@ -244,7 +215,6 @@ public class URLHelper {
     }
 
     public String getUserTweetsUrl(String userId, int count){
-        this.tweetInfoCount++;
         return new StringBuilder(ROOT_URL)
                 .append(STATUSES)
                 .append(USER_TIMELINE)
@@ -258,7 +228,6 @@ public class URLHelper {
     }
 
     public String getUserTweetsUrlV2(String userId, int count){
-        this.tweetInfoCount++;
         LOGGER.info(() -> userId + "," + count);
         return null;
     }
@@ -300,33 +269,6 @@ public class URLHelper {
                 .append(".json")
                 .toString();
     }
-
-    public boolean canCallGetFollowers(){
-        return this.followersCount < FOLLOWER_MAX_CALLS;
-    }
-
-    public void displayRateLimits(){
-        StringBuilder s = new StringBuilder();
-        s.append("retweeters : ")
-                .append(retweeterCount)
-                .append(" | ")
-                .append("followers : ")
-                .append(followersCount)
-                .append(" | ")
-                .append("following : ")
-                .append(followingCount)
-                .append(" | ")
-                .append("friendship : ")
-                .append(friendshipCount)
-                .append(" | ")
-                .append("follow : ")
-                .append(followCount)
-                .append(" | ")
-                .append("user : ")
-                .append(userCount);
-        LOGGER.info(()->"current rates : " + s);
-    }
-
 
     public String getLikeUrl(String tweetId) {
         return new StringBuilder(ROOT_URL)

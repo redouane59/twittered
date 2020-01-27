@@ -90,6 +90,10 @@ public class JsonHelper {
     // @todo use custom serializer ?
     public AbstractUser jsonResponseToUserV2(String response) throws IOException {
         UserObjectResponseDTO obj = JsonHelper.OBJECT_MAPPER.readValue(response, UserObjectResponseDTO.class);
+        if(obj.getData()==null){
+            LOGGER.severe(response);
+            return null;
+        }
         UserDTO data = obj.getData().get(0);
         IncludesDTO includes = obj.getIncludes();
         List<TweetDTO> mostRecentTweet = null;
