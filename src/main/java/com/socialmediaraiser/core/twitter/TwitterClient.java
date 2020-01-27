@@ -1,8 +1,6 @@
 package com.socialmediaraiser.core.twitter;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.socialmediaraiser.core.ActionPerformer;
-import com.socialmediaraiser.core.InfoGetter;
 import com.socialmediaraiser.core.RelationType;
 import com.socialmediaraiser.core.twitter.helpers.JsonHelper;
 import com.socialmediaraiser.core.twitter.helpers.RequestHelper;
@@ -11,8 +9,6 @@ import com.socialmediaraiser.core.twitter.helpers.dto.ConverterHelper;
 import com.socialmediaraiser.core.twitter.helpers.dto.getrelationship.RelationshipDTO;
 import com.socialmediaraiser.core.twitter.helpers.dto.getrelationship.RelationshipObjectResponseDTO;
 import com.socialmediaraiser.core.twitter.helpers.dto.getuser.AbstractUser;
-import com.twitter.hbc.httpclient.auth.Authentication;
-import com.twitter.hbc.httpclient.auth.OAuth1;
 import lombok.Data;
 
 import java.io.IOException;
@@ -20,9 +16,9 @@ import java.util.*;
 import java.util.logging.Logger;
 
 @Data
-public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
+public class TwitterClient implements ITwitterClient {
 
-    private static final Logger LOGGER = Logger.getLogger(TwitterHelper.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TwitterClient.class.getName());
     private URLHelper urlHelper = new URLHelper();
     private RequestHelper requestHelper = new RequestHelper();
     private JsonHelper jsonHelper = new JsonHelper();
@@ -114,11 +110,6 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
         return this.getUserIdsByRelation(url);
     }
 
-    public Set<String> getUserFollowersIds(String userId){
-        return this.getUserIdsByRelationSet(this.urlHelper.getFollowerIdsUrl(userId));
-    }
-
-
     private List<AbstractUser> getUsersInfoByRelation(String userId, RelationType relationType) {
         String url = null;
         if(relationType == RelationType.FOLLOWER){
@@ -129,6 +120,12 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
         return this.getUsersInfoByRelation(url);
     }
 
+    @Override
+    public Set<String> getUserFollowersIds(String userId){
+        return this.getUserIdsByRelationSet(this.urlHelper.getFollowerIdsUrl(userId));
+    }
+
+    @Override
     public List<String> getFollowerIds(String userId)  {
         return this.getUserIdsByRelation(userId, RelationType.FOLLOWER);
     }
@@ -138,6 +135,7 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
         return this.getUsersInfoByRelation(userId, RelationType.FOLLOWER);
     }
 
+    @Override
     public List<String> getFollowingIds(String userId) {
         return this.getUserIdsByRelation(userId, RelationType.FOLLOWING);
     }
@@ -147,6 +145,7 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
         return this.getUsersInfoByRelation(userId, RelationType.FOLLOWING);
     }
 
+    @Override
     public RelationType getRelationType(String userId1, String userId2){
         String url = this.urlHelper.getFriendshipUrl(userId1, userId2);
         String response = this.getRequestHelper().executeGetRequestV2(url);
@@ -173,13 +172,13 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
         return null;
     }
 
-    // API KO
     @Override
     public List<String> getRetweetersId(String tweetId) {
         String url = this.urlHelper.getRetweetersUrl(tweetId);
         return this.getUserIdsByRelation(url);
     }
 
+    @Override
     public boolean follow(String userId) {
         String url = this.urlHelper.getFollowUrl(userId);
         JsonNode jsonResponse = this.requestHelper.executePostRequest(url, new HashMap<>());
@@ -194,6 +193,7 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
         return false;
     }
 
+    @Override
     public boolean unfollow(String userId) {
         String url = this.urlHelper.getUnfollowUrl(userId);
         JsonNode jsonResponse = this.requestHelper.executePostRequest(url, new HashMap<>());
@@ -205,6 +205,7 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
         return false;
     }
 
+    @Override
     public boolean unfollowByName(String userName) {
         String url = this.urlHelper.getUnfollowByUsernameUrl(userName);
         JsonNode jsonResponse = this.requestHelper.executePostRequest(url, new HashMap<>());
@@ -216,6 +217,7 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
         return false;
     }
 
+    @Override
     public AbstractUser getUserFromUserId(String userId)  {
         String url = this.getUrlHelper().getUserUrl(userId);
         String response = this.getRequestHelper().executeGetRequestV2(url);
@@ -230,6 +232,7 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
         return null;
     }
 
+    @Override
     public AbstractUser getUserFromUserName(String userName) {
         String url = this.getUrlHelper().getUserUrlFromName(userName);
         String response = this.getRequestHelper().executeGetRequestV2(url);
@@ -263,29 +266,18 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
         }
     }
 
-    // @TODO to implement
+    @Override
     public String getRateLimitStatus(){
         String url = this.getUrlHelper().getRateLimitUrl();
         return this.getRequestHelper().executeGetRequestV2(url);
     }
 
+    @Override
     public List<Tweet> getUserLastTweets(String userId, int count){
         String url = this.getUrlHelper().getUserTweetsUrl(userId, count);
         JsonNode response = this.getRequestHelper().executeGetRequestReturningArray(url);
         if(response!=null && response.size()>0){
             return this.getJsonHelper().jsonResponseToTweetList(response);
-        }
-        return new ArrayList<>();
-    }
-
-    public static List<Tweet> getUserLastTweetsStatic(String userId, int count){
-        URLHelper urlHelper = new URLHelper();
-        RequestHelper requestHelper = new RequestHelper();
-        JsonHelper jsonHelper = new JsonHelper();
-        String url = urlHelper.getUserTweetsUrl(userId, count);
-        JsonNode response = requestHelper.executeGetRequestReturningArray(url); // @todo understand why sometime not X responses received as count requested
-        if(response!=null && response.size()>0){
-            return jsonHelper.jsonResponseToTweetList(response);
         }
         return new ArrayList<>();
     }
@@ -302,7 +294,6 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
     }
 
     public List<Tweet> searchForTweetAnswers(String tweetId, String userName, String fromDate, String toDate){
-
         List<Tweet> all = this.searchForTweets("@"+userName, 10000, fromDate, toDate, this.getUrlHelper().getSearchTweets30daysUrl());
         List<Tweet> result = new ArrayList<>();
         for(Tweet tweet : all){
@@ -312,6 +303,7 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
         }
         return result;
     }
+
     // @todo remove count + add default function fort last 30 days
     // date with yyyyMMddHHmm format
     public List<Tweet> searchForLast100Tweets30days(String query, String toDate){
@@ -348,6 +340,7 @@ public class TwitterHelper implements ITwitterBot, InfoGetter, ActionPerformer {
         while (next!= null && result.size()<count);
         return result;
     }
+
     @Override
     public List<Tweet> searchForTweets(String query, int count, String fromDate, String toDate, String url){
         if(count<10){

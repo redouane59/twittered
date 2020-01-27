@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 public class RequestHelper {
 
     private static final Logger LOGGER = Logger.getLogger(RequestHelper.class.getName());
-    private static TwitterCredentials TWITTER_CREDENTIALS = getAuthentication();
+    public static TwitterCredentials TWITTER_CREDENTIALS = getAuthentication();
     private int sleepTime = 5;
 
     public JsonNode executeGetRequest(String url) {
@@ -256,7 +256,7 @@ public class RequestHelper {
         LOGGER.severe(()->"(GET) not calling " + url + " 200 return null " + response.message() + " - " + response.code());
     }
 
-    private static TwitterCredentials getAuthentication(){
+    public static TwitterCredentials getAuthentication(){
         try {
             return JsonHelper.OBJECT_MAPPER.readValue(TwitterCredentials.class.getClassLoader().getResource("twitter-credentials.json"), TwitterCredentials.class);
         } catch (IOException e) {
