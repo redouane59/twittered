@@ -27,7 +27,6 @@ public class TweetDeserializer extends JsonDeserializer<Tweet>
                 .followingCount(userNode.get("friends_count").asInt())
                 .followersCout(userNode.get("followers_count").asInt())
                 .statusesCount(userNode.get("statuses_count").asInt())
-                .favouritesCount(userNode.get("favourites_count").asInt())
                 .location(userNode.get("location").asText())
                 .description(userNode.get("description").asText())
                 .dateOfCreation(JsonHelper.getDateFromTwitterString(userNode.get(CREATED_AT).asText()))

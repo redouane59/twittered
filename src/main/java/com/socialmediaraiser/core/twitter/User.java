@@ -20,14 +20,12 @@ public class User extends AbstractUser {
     private String lang;
     private int tweetCount;
     private Date dateOfCreation;
-    @Deprecated
-    private int favouritesCount;
     private Date lastUpdate;
     private String location;
 
     @Builder
     User(String id, String userName, int followersCout, int followingCount, String lang, int statusesCount, Date dateOfCreation,
-         int commonFollowers, Date dateOfFollow, Date dateOfFollowBack, String description, int favouritesCount,
+         int commonFollowers, Date dateOfFollow, Date dateOfFollowBack, String description,
          Date lastUpdate, String location, List<TweetDTO> mostRecentTweet, boolean protectedAccount){
         super(id, userName, mostRecentTweet, description, dateOfFollow, protectedAccount, commonFollowers, dateOfFollowBack, 0);
       /*  if(FollowProperties.getTargetProperties()!=null) {
@@ -38,7 +36,6 @@ public class User extends AbstractUser {
         this.lang = lang;
         this.tweetCount = statusesCount;
         this.dateOfCreation = dateOfCreation;
-        this.favouritesCount = favouritesCount;
         this.lastUpdate = lastUpdate;
         this.location = location;
     }
