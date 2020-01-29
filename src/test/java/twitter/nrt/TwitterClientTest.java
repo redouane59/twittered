@@ -14,7 +14,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TwitterClientTest {
+public class TwitterClientTest {
 
     private TwitterClient twitterClient = new TwitterClient();
 
@@ -203,9 +203,9 @@ class TwitterClientTest {
                 || response.get(1).getLang().equals("fr"));
     }
 
-    @Test
+  /*   @Test
     @Disabled
-    public void testSearchForTweetsFull() {
+   public void testSearchForTweetsFull() {
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMddHHmm");
         String strdate1 = "201901010000";
         String strdate2 = "202001010000";
@@ -214,7 +214,7 @@ class TwitterClientTest {
                 this.twitterClient.getUrlHelper().getSearchTweetsUrlFull());
         assertNotNull(results);
         assertTrue(results.size() > 0);
-    }
+    } */
 
     @Test
     public void testSearchForTweets() {

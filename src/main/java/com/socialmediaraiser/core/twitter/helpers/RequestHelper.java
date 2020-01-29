@@ -41,7 +41,7 @@ public class RequestHelper {
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequest(url);
             } else{
-                logGetError(url, response);
+                logGetError(url, stringResponse);
             }
         } catch(Exception e){
             LOGGER.severe("exception in executeGetRequest " + e.getMessage());
@@ -71,7 +71,7 @@ public class RequestHelper {
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequest(url);
             } else{
-                logGetError(url, response);
+                logGetError(url, stringResponse);
             }
         } catch(Exception e){
             LOGGER.severe("exception in executeGetRequest " + e.getMessage());
@@ -83,16 +83,16 @@ public class RequestHelper {
         try {
             Response response = this.getHttpClient(url)
                     .newCall(this.getSignedRequest(this.getRequest(url))).execute();
+            String stringResponse = response.body().string();
             if(response.code()==200){
-                String result = response.body().string();
                 response.close();
-                return result;
+                return stringResponse;
             } else if (response.code()==429){
                 response.close();
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequestV2(url);
             } else{
-                logGetError(url, response);
+                logGetError(url, stringResponse);
             }
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
@@ -237,23 +237,23 @@ public class RequestHelper {
     private int getCacheTimeoutFromUrl(String url){
         int defaultCache = 48;
         if(url.contains("/friends")){
-            defaultCache = 24; // to put back
+            defaultCache = 24;
         } else if (url.contains("/friendships")){
-            defaultCache = 24; // to put back
+            defaultCache = 24;
         } else if (url.contains("/followers")){
-            defaultCache = 672; // to put back
+            defaultCache = 24;
         } else if (url.contains("/users")){
             defaultCache = 168;
         } else if (url.contains("/user_timeline")){
             defaultCache = 168;
         } else if (url.contains("30days")){
-            defaultCache = 672;
+            defaultCache = 24;
         }
         return defaultCache;
     }
 
-    private void logGetError(String url, Response response){
-        LOGGER.severe(()->"(GET) not calling " + url + " 200 return null " + response.message() + " - " + response.code());
+    private void logGetError(String url, String response){
+        LOGGER.severe(()->" Error calling " + url + " : " + response);
     }
 
     public static TwitterCredentials getAuthentication(){
