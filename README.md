@@ -10,7 +10,7 @@ The file `src/main/resources/twitter-credentials.json` should contain your twitt
   "secretToken": "xxx"
 }
 ```
-Your credentials can be found in [your app page](https://developer.twitter.com/en/apps) in the _Key and tokens_
+It can be found in [your app page](https://developer.twitter.com/en/apps) in the _Key and tokens_
 tab.
 
 ### Available methods
@@ -28,14 +28,12 @@ boolean follow(String userId);
 boolean unfollow(String userId);
 boolean unfollowByName(String userName);
 List<Tweet> getUserLastTweets(String userId, int count);
-
 ``` 
 #### Tweet related
 ```
 void likeTweet(String tweetId);
 void retweetTweet(String tweetId);
 List<String> getRetweetersId(String tweetId);
-
 ```
 ### Resources : 
 [Twitter Developers docs](https://developer.twitter.com/en/docs)
