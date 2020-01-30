@@ -1,15 +1,18 @@
 package twitter.nrt;
 
 import com.socialmediaraiser.core.RelationType;
-import com.socialmediaraiser.core.twitter.Tweet;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.Tweet;
 import com.socialmediaraiser.core.twitter.TwitterClient;
 import com.socialmediaraiser.core.twitter.User;
 import com.socialmediaraiser.core.twitter.helpers.RequestHelper;
 import com.socialmediaraiser.core.twitter.helpers.dto.ConverterHelper;
-import com.socialmediaraiser.core.twitter.helpers.dto.getuser.AbstractUser;
-import com.socialmediaraiser.core.twitter.helpers.dto.getuser.RequestTokenDTO;
+import com.socialmediaraiser.core.twitter.helpers.dto.user.AbstractUser;
+import com.socialmediaraiser.core.twitter.helpers.dto.others.RequestTokenDTO;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDataDTO;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -233,5 +236,16 @@ public class TwitterClientTest {
         RequestTokenDTO result = twitterClient.getRequestHelper().executeTokenRequest();
         assertTrue(result.getOauthToken().length()>1);
         assertTrue(result.getOauthTokenSecret().length()>1);
+    }
+
+    @Test
+    public void testGetTweetDataFile() throws IOException {
+        File file = new File(this.getClass().getClassLoader().getResource("tweet.json").getFile());
+        List<TweetDataDTO> result = twitterClient.readTwitterDataFile(file);
+        assertTrue(result.size()>10);
+        assertNotNull(result.get(0).getTweet().getCreatedAt());
+        assertNotNull(result.get(0).getTweet().getId());
+        assertNotNull(result.get(0).getTweet().getFullText());
+        assertNotNull(result.get(0).getTweet().getInReplyToUserId());
     }
 }

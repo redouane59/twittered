@@ -1,7 +1,7 @@
 package com.socialmediaraiser.core.twitter;
 
-import com.socialmediaraiser.core.twitter.helpers.dto.getuser.AbstractUser;
-import com.socialmediaraiser.core.twitter.helpers.dto.getuser.TweetDTO;
+import com.socialmediaraiser.core.twitter.helpers.dto.user.AbstractUser;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

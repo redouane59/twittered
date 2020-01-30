@@ -4,9 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.socialmediaraiser.core.twitter.Tweet;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.Tweet;
 import com.socialmediaraiser.core.twitter.User;
-import com.socialmediaraiser.core.twitter.helpers.dto.getuser.*;
+import com.socialmediaraiser.core.twitter.helpers.dto.user.*;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTO;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 
@@ -61,6 +62,7 @@ public class JsonHelper {
         return users;
     }
 
+    @Deprecated
     public User jsonResponseToUser(JsonNode jsonObject){
         if(jsonObject==null) return null;
 
@@ -88,6 +90,7 @@ public class JsonHelper {
     }
 
     // @todo use custom serializer ?
+    @Deprecated
     public AbstractUser jsonResponseToUserV2(String response) throws IOException {
         UserObjectResponseDTO obj = JsonHelper.OBJECT_MAPPER.readValue(response, UserObjectResponseDTO.class);
         if(obj.getData()==null){
@@ -130,6 +133,7 @@ public class JsonHelper {
         return response.get(NEXT_CURSOR).asLong();
     }
 
+    // @todo in converterHelper ?
     public static Date getDateFromTwitterString(String date)
     {
         if(date==null) return null;
@@ -144,6 +148,7 @@ public class JsonHelper {
         return Option.of(date).map(d -> Date.from(Instant.parse(date))).getOrNull();
     }
 
+    @Deprecated
     public List<Tweet> jsonResponseToTweetListV2(JsonNode jsonArray){
         List<Tweet> tweets = new ArrayList<>();
         if(jsonArray!=null){

@@ -1,9 +1,9 @@
-package com.socialmediaraiser.core.twitter;
+package com.socialmediaraiser.core.twitter.helpers.dto.tweet;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.socialmediaraiser.core.twitter.helpers.TweetDeserializer;
-import com.socialmediaraiser.core.twitter.helpers.dto.getuser.AbstractUser;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDeserializer;
+import com.socialmediaraiser.core.twitter.helpers.dto.user.AbstractUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,12 +12,15 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @version current
+ */
+
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonDeserialize(using = TweetDeserializer.class) // @todo to clean
-
 public class Tweet {
     private String id;
     private String lang;

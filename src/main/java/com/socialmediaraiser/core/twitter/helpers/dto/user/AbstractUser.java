@@ -1,7 +1,8 @@
-package com.socialmediaraiser.core.twitter.helpers.dto.getuser;
+package com.socialmediaraiser.core.twitter.helpers.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.socialmediaraiser.core.twitter.helpers.dto.IUser;
+import com.socialmediaraiser.core.twitter.IUser;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,10 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+
+/**
+ * @version current
+ */
 
 @Data
 @AllArgsConstructor

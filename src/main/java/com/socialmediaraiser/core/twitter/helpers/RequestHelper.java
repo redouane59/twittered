@@ -2,10 +2,9 @@ package com.socialmediaraiser.core.twitter.helpers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.socialmediaraiser.core.twitter.helpers.dto.getuser.RequestTokenDTO;
+import com.socialmediaraiser.core.twitter.helpers.dto.others.RequestTokenDTO;
 import com.socialmediaraiser.core.twitter.properties.TwitterCredentials;
 import com.socialmediaraiser.core.twitter.signature.Oauth1SigningInterceptor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import okhttp3.*;
 import org.apache.http.NameValuePair;

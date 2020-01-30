@@ -1,8 +1,12 @@
 package com.socialmediaraiser.core.twitter;
 
 import com.socialmediaraiser.core.RelationType;
-import com.socialmediaraiser.core.twitter.helpers.dto.getuser.AbstractUser;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.Tweet;
+import com.socialmediaraiser.core.twitter.helpers.dto.user.AbstractUser;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDataDTO;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -115,6 +119,7 @@ public interface ITwitterClient {
      */
     String getRateLimitStatus();
 
+    List<TweetDataDTO> readTwitterDataFile(File file) throws IOException;
     /**
      * Get the last tweets of a user
      * @param userId the id of the user

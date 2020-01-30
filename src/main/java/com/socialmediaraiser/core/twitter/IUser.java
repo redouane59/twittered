@@ -1,4 +1,4 @@
-package com.socialmediaraiser.core.twitter.helpers.dto;
+package com.socialmediaraiser.core.twitter;
 
 import java.util.Date;
 

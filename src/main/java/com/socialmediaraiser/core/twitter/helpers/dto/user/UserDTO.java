@@ -1,14 +1,25 @@
-package com.socialmediaraiser.core.twitter.helpers.dto.getuser;
+package com.socialmediaraiser.core.twitter.helpers.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.socialmediaraiser.core.twitter.helpers.JsonHelper;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.logging.Logger;
 
+// V2
+
+/**
+ * @version labs
+ */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO extends AbstractUser {
     private static final Logger LOGGER = Logger.getLogger(UserDTO.class.getName());
 
@@ -35,7 +46,7 @@ public class UserDTO extends AbstractUser {
 
     @Override
     public Date getLastUpdate() {
-        if(this.getMostRecentTweet()==null && !this.getMostRecentTweet().isEmpty()){
+        if(this.getMostRecentTweet()==null || !this.getMostRecentTweet().isEmpty()){
             LOGGER.severe(()->"mostRecentTweet null");
             return null;
         }

@@ -1,4 +1,4 @@
-package com.socialmediaraiser.core.twitter.helpers.dto.getuser;
+package com.socialmediaraiser.core.twitter.helpers.dto.tweet;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * @version labs
+ */
 @Data
 public class TweetDTO {
     private String id;

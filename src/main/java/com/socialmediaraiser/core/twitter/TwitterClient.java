@@ -8,9 +8,13 @@ import com.socialmediaraiser.core.twitter.helpers.URLHelper;
 import com.socialmediaraiser.core.twitter.helpers.dto.ConverterHelper;
 import com.socialmediaraiser.core.twitter.helpers.dto.getrelationship.RelationshipDTO;
 import com.socialmediaraiser.core.twitter.helpers.dto.getrelationship.RelationshipObjectResponseDTO;
-import com.socialmediaraiser.core.twitter.helpers.dto.getuser.AbstractUser;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.Tweet;
+import com.socialmediaraiser.core.twitter.helpers.dto.user.AbstractUser;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDataDTO;
+import com.socialmediaraiser.core.twitter.helpers.dto.user.UserObjectResponseDTO;
 import lombok.Data;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
@@ -238,7 +242,8 @@ public class TwitterClient implements ITwitterClient {
         String response = this.getRequestHelper().executeGetRequestV2(url);
         if (response != null) {
             try {
-                return this.getJsonHelper().jsonResponseToUserV2(response);
+                UserObjectResponseDTO map = JsonHelper.OBJECT_MAPPER.readValue(response, UserObjectResponseDTO.class);
+                return map.getData().get(0);
             } catch (IOException e) {
                 this.logError(e, response);
             }
@@ -391,5 +396,15 @@ public class TwitterClient implements ITwitterClient {
 
     private void logError(Exception e, String response){
         LOGGER.severe(() -> e.getMessage() + " response = " + response);
+    }
+
+    // @TODO TweetDTO instead of TweetData ?
+    @Override
+    public List<TweetDataDTO> readTwitterDataFile(File file) throws IOException {
+        if(!file.exists()) {
+            LOGGER.severe("file not found at : " + file.toURI().toString());
+            return null;
+        }
+        return  Arrays.asList(JsonHelper.OBJECT_MAPPER.readValue(file, TweetDataDTO[].class));
     }
 }

@@ -1,11 +1,11 @@
-package com.socialmediaraiser.core.twitter.helpers;
+package com.socialmediaraiser.core.twitter.helpers.dto.tweet;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.socialmediaraiser.core.twitter.Tweet;
 import com.socialmediaraiser.core.twitter.User;
+import com.socialmediaraiser.core.twitter.helpers.JsonHelper;
 
 import java.io.IOException;
 

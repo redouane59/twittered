@@ -1,4 +1,4 @@
-package com.socialmediaraiser.core.twitter.helpers.dto.getuser;
+package com.socialmediaraiser.core.twitter.helpers.dto.others;
 
 import lombok.Data;
 

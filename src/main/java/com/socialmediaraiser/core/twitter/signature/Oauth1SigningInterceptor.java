@@ -30,7 +30,6 @@ import java.util.logging.Logger;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.socialmediaraiser.core.twitter.helpers.dto.getuser.AbstractUser;
 import okhttp3.*;
 import okio.Buffer;
 import okio.ByteString;
