@@ -35,6 +35,9 @@ void likeTweet(String tweetId);
 void retweetTweet(String tweetId);
 List<String> getRetweetersId(String tweetId);
 ```
-### Resources : 
+### External Resources
 [Twitter Developers docs](https://developer.twitter.com/en/docs)
+
+### Special thanks
+@hypr2771
 
