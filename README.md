@@ -1,6 +1,6 @@
 This project is a JAVA library which allows you to consume the Twitter API.
 
-###Configuration
+### Configuration
 The file `src/main/resources/twitter-credentials.json` should contain your twitter credentials like this :
 ```
 {
@@ -13,8 +13,8 @@ The file `src/main/resources/twitter-credentials.json` should contain your twitt
 Your credentials can be found in [your app page](https://developer.twitter.com/en/apps) in the _Key and tokens_
 tab.
 
-###Available methods
-####User related
+### Available methods
+#### User related
 ```
 List<AbstractUser> getFollowerUsers(String userId);
 List<String> getFollowerIds(String userId);
@@ -30,13 +30,13 @@ boolean unfollowByName(String userName);
 List<Tweet> getUserLastTweets(String userId, int count);
 
 ``` 
-####Tweet related
+#### Tweet related
 ```
 void likeTweet(String tweetId);
 void retweetTweet(String tweetId);
 List<String> getRetweetersId(String tweetId);
 
 ```
-###Resources : 
+### Resources : 
 [Twitter Developers docs](https://developer.twitter.com/en/docs)
 
