@@ -39,5 +39,5 @@ List<String> getRetweetersId(String tweetId);
 [Twitter Developers docs](https://developer.twitter.com/en/docs)
 
 ### Special thanks
-@hypr2771
+[@hypr2771](https://github.com/hypr2771)
 
