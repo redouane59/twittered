@@ -46,10 +46,8 @@ public class TweetDTOv2 implements ITweet {
 
     @Data
     private static class Includes{
-        private List<UserDTOv2> users;
+        private UserDTOv2.UserData[] users;
     }
-
-
 
     @Override
     public String getInReplyToStatusId(){
@@ -96,7 +94,8 @@ public class TweetDTOv2 implements ITweet {
 
     @Override
     public IUser getUser() {
-        return this.includes.getUsers().get(0);
+        //return this.includes.getUsers()[0];
+        return null;
     }
 
     @Data

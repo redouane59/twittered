@@ -18,7 +18,6 @@ public class UserDeserializerTestV2 {
     public UserDeserializerTestV2() throws IOException {
     }
 
-
     @Test
     public void testGetUserIdV2() {
         assertEquals("2244994945", userV2.getId());

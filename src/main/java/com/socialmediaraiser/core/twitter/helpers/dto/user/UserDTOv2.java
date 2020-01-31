@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.logging.Logger;
 
-// V2
-
 /**
  * @version labs
  */
@@ -28,7 +26,7 @@ public class UserDTOv2 implements IUser {
     private UserData[] data;
 
     @Data
-    private static class UserData{
+    public class UserData{
         private String id;
         @JsonProperty("created_at")
         private String createdAt;

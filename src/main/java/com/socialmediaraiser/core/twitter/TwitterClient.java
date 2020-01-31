@@ -229,7 +229,7 @@ public class TwitterClient implements ITwitterClient {
         String response = this.getRequestHelper().executeGetRequestV2(url);
         if(response!=null){
             try{
-                return this.getJsonHelper().jsonResponseToUserV2(response);
+                return JsonHelper.OBJECT_MAPPER.readValue(response, UserDTOv2.class);
             } catch(Exception e){
                 this.logError(e, response);
             }
@@ -244,8 +244,7 @@ public class TwitterClient implements ITwitterClient {
         String response = this.getRequestHelper().executeGetRequestV2(url);
         if (response != null) {
             try {
-                UserObjectResponseDTO map = JsonHelper.OBJECT_MAPPER.readValue(response, UserObjectResponseDTO.class);
-                return map.getData().get(0);
+                return JsonHelper.OBJECT_MAPPER.readValue(response, UserDTOv2.class);
             } catch (IOException e) {
                 this.logError(e, response);
             }
