@@ -42,4 +42,6 @@ List<String> getRetweetersId(String tweetId);
 
 ### Special thanks
 [@hypr2771](https://github.com/hypr2771)
+[@andypiper](https://github.com/andypiper)
+[@igorbrigadir](https://github.com/igorbrigadir)
 
