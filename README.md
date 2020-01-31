@@ -1,5 +1,7 @@
 This project is a JAVA library which allows you to consume the Twitter API.
 
+## /!\ Development in progress... /!\ 
+
 ### Configuration
 The file `src/main/resources/twitter-credentials.json` should contain your twitter credentials like this :
 ```
