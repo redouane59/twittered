@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserDeserializerTestV2 {
 
-    private  File userFile2 = new File(getClass().getClassLoader().getResource("tests/user_example_v2_copy.json").getFile());
+    private  File userFile2 = new File(getClass().getClassLoader().getResource("tests/user_example_v2.json").getFile());
     private IUser userV2 = JsonHelper.OBJECT_MAPPER.readValue(userFile2, UserDTOv2.class);
 
     public UserDeserializerTestV2() throws IOException {

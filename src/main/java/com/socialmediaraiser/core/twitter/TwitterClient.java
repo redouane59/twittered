@@ -1,6 +1,7 @@
 package com.socialmediaraiser.core.twitter;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.api.client.json.Json;
 import com.socialmediaraiser.core.RelationType;
 import com.socialmediaraiser.core.twitter.helpers.JsonHelper;
 import com.socialmediaraiser.core.twitter.helpers.RequestHelper;
