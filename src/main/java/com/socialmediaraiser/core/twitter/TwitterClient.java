@@ -1,7 +1,6 @@
 package com.socialmediaraiser.core.twitter;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.api.client.json.Json;
 import com.socialmediaraiser.core.RelationType;
 import com.socialmediaraiser.core.twitter.helpers.JsonHelper;
 import com.socialmediaraiser.core.twitter.helpers.RequestHelper;
@@ -12,7 +11,6 @@ import com.socialmediaraiser.core.twitter.helpers.dto.getrelationship.Relationsh
 import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTOv1;
 import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDataDTO;
 import com.socialmediaraiser.core.twitter.helpers.dto.user.UserDTOv2;
-import com.socialmediaraiser.core.twitter.helpers.dto.user.UserObjectResponseDTO;
 import lombok.Data;
 
 import java.io.File;

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -173,7 +174,7 @@ public class TwitterClientTest {
     }
 
     // @todo to add then
-    /*
+
     @Test
     public void getLastUpdate() {
         String userId = "92073489";
@@ -182,7 +183,7 @@ public class TwitterClientTest {
         Date lastUpdate = user.getLastUpdate();
         long diffDays = (now.getTime() - lastUpdate.getTime()) / (24 * 60 * 60 * 1000);
         assertTrue(diffDays < 15);
-    } */
+    }
 
     /* //@todo to add
     @Test

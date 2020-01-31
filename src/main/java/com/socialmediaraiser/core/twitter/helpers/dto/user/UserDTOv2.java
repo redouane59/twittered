@@ -24,9 +24,10 @@ public class UserDTOv2 implements IUser {
     private static final Logger LOGGER = Logger.getLogger(UserDTOv2.class.getName());
 
     private UserData[] data;
+    private UserData.Includes includes;
 
     @Data
-    private static class UserData{
+    public static class UserData implements IUser{
         private String id;
         @JsonProperty("created_at")
         private String createdAt;
@@ -47,9 +48,38 @@ public class UserDTOv2 implements IUser {
         private String description;
         private String lang;
         private boolean isProtectedAccount;
-        private String lastUpdate;
-    }
 
+        @Data
+        public static class Includes{
+            private TweetDTOv2.TweetData[] tweets; // @TODO problem here
+        }
+
+        @Override
+        public Date getDateOfCreation() {
+            return JsonHelper.getDateFromTwitterString(this.createdAt);
+        }
+
+        @Override
+        public int getFollowersCount() {
+            return this.stats.getFollowersCount();
+        }
+
+        @Override
+        public int getFollowingCount() {
+            return this.stats.getFollowingCount();
+        }
+
+        @Override
+        public int getTweetCount() {
+            return this.stats.getTweetCount();
+        }
+
+        @Override
+        public Date getLastUpdate() {
+            throw new UnsupportedOperationException();
+        }
+
+    }
 
     @Override
     public String getId() {
@@ -77,7 +107,14 @@ public class UserDTOv2 implements IUser {
     }
 
     @Override
-    public Date getLastUpdate() { return JsonHelper.getDateFromTwitterString(this.data[0].getLastUpdate());}
+    public Date getLastUpdate() {
+        if(this.includes.getTweets().length>0){
+            return this.includes.getTweets()[0].getCreatedAt();
+        } else{
+            return null;
+        }
+    }
+
  /*   @Override
     public Date getLastUpdate() {
         if(this.getMostRecentTweet()==null || !this.getMostRecentTweet().isEmpty()){

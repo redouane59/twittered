@@ -21,7 +21,7 @@ public class TweetDTOv2 implements ITweet {
     private Includes includes;
 
     @Data
-    private static class TweetData{
+    public static class TweetData implements ITweet {
         private String id;
         @JsonProperty("created_at")
         private String createdAt;
@@ -42,11 +42,42 @@ public class TweetDTOv2 implements ITweet {
         private String format;
         private JsonNode attachments;
         private JsonNode geo;
+
+        @Override
+        public int getRetweetCount() {
+            return this.stats.getRetweetCount();
+        }
+
+        @Override
+        public int getLikeCount() {
+            return this.stats.getLikeCount();
+        }
+
+        @Override
+        public int getReplyCount() {
+            return this.stats.getReplyCount();
+        }
+
+        @Override
+        public String getInReplyToStatusId() {
+            return this.referencedTweets.get(0).getId();
+        }
+
+        @Override
+        public IUser getUser() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Date getCreatedAt(){
+            return JsonHelper.getDateFromTwitterDateV2(this.createdAt);
+        }
+
     }
 
     @Data
     private static class Includes{
-        private UserDTOv2[] users; // @TODO problem here
+        private UserDTOv2.UserData[] users; // @TODO problem here
     }
 
     @Override
@@ -94,8 +125,7 @@ public class TweetDTOv2 implements ITweet {
 
     @Override
     public IUser getUser() {
-        //return this.includes.getUsers()[0];
-        throw new UnsupportedOperationException();
+        return this.includes.getUsers()[0];
     }
 
     @Data
@@ -117,6 +147,6 @@ public class TweetDTOv2 implements ITweet {
     }
 
     public Date getCreatedAt(){
-        return JsonHelper.getDateFromTwitterString(this.data[0].getCreatedAt());
+        return this.data[0].getCreatedAt();
     }
 }
