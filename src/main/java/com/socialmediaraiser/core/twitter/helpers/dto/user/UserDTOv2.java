@@ -26,7 +26,7 @@ public class UserDTOv2 implements IUser {
     private UserData[] data;
 
     @Data
-    public class UserData{
+    private static class UserData{
         private String id;
         @JsonProperty("created_at")
         private String createdAt;

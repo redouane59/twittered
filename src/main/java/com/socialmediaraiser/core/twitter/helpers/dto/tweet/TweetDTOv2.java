@@ -46,7 +46,7 @@ public class TweetDTOv2 implements ITweet {
 
     @Data
     private static class Includes{
-        private UserDTOv2.UserData[] users;
+        private UserDTOv2[] users; // @TODO problem here
     }
 
     @Override
@@ -95,7 +95,7 @@ public class TweetDTOv2 implements ITweet {
     @Override
     public IUser getUser() {
         //return this.includes.getUsers()[0];
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Data
