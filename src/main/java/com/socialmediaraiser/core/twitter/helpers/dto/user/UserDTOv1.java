@@ -1,9 +1,12 @@
 package com.socialmediaraiser.core.twitter.helpers.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.socialmediaraiser.core.twitter.IUser;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTO;
+import com.socialmediaraiser.core.twitter.helpers.JsonHelper;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTOv2;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,27 +21,43 @@ import java.util.logging.Logger;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class AbstractUser implements IUser {
+@Builder
+public class UserDTOv1 implements IUser {
 
-    private static final Logger LOGGER = Logger.getLogger(AbstractUser.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserDTOv1.class.getName());
 
     private String id;
-    private String username;
-    private List<TweetDTO> mostRecentTweet;
+    @JsonProperty("screen_name")
+    @JsonAlias({"screen_name","username"})
+    private String name;
+    private List<TweetDTOv2> mostRecentTweet;
     private String description;
     private Date dateOfFollow;
     @JsonAlias("protected")
     private boolean protectedAccount;
-    private int commonFollowers; // nb of occurrences in followers search
     private Date dateOfFollowBack;
    // private UserScoringEngine scoringEngine;
-    private int nbInteractions;
+  // private int commonFollowers; // nb of occurrences in followers search
+  //  private int nbInteractions;
+    @JsonProperty("followers_count")
+    private int followersCount;
+    @JsonProperty("friends_count")
+    @JsonAlias({"friends_count","followings_count"})
+    private int followingCount;
+    private String lang;
+    @JsonProperty("tweetCount")
+    @JsonAlias({"statuses_count","tweets_count"})
+    private int tweetCount;
+    @JsonAlias("created_at")
+    private String dateOfCreation;
+    private String lastUpdate;
+    private String location;
 
     @Override
     public boolean equals(Object o) {
         if (o==null || this.getClass() != o.getClass()) return false;
 
-        AbstractUser otherUser = (AbstractUser) o;
+        UserDTOv1 otherUser = (UserDTOv1) o;
         return (otherUser).getId().equals(this.getId());
     }
 
@@ -51,9 +70,9 @@ public abstract class AbstractUser implements IUser {
         return (double) this.getFollowersCount() / (double) this.getFollowingCount();
     }
 
-    public void setDateOfFollowNow(){
+/*    public void setDateOfFollowNow(){
         this.setDateOfFollow(new Date());
-    }
+    } */
 
     public long getDaysBetweenFollowAndLastUpdate(){
         if(dateOfFollow==null || this.getLastUpdate()==null){
@@ -65,4 +84,13 @@ public abstract class AbstractUser implements IUser {
     public long getYearsBetweenFollowAndCreation(){
         return (dateOfFollow.getTime()-this.getDateOfCreation().getTime()) / (365 * 24 * 60 * 60 * 1000);
     }
+
+    public Date getDateOfCreation(){
+        return JsonHelper.getDateFromTwitterString(this.dateOfCreation);
+    }
+
+    public Date getLastUpdate(){
+        return JsonHelper.getDateFromTwitterString(this.lastUpdate);
+    }
+
 }

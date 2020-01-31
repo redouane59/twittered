@@ -5,7 +5,7 @@ import java.util.Date;
 public interface IUser {
 
     String getId();
-    String getUsername();
+    String getName();
     String getLocation();
     String getDescription();
     Date getDateOfCreation();

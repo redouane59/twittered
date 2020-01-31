@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class UserObjectResponseDTO {
-    private List<UserDTO> data;
+    private List<UserDTOv2> data;
     private IncludesDTO includes;
     private JsonNode errors;
 }

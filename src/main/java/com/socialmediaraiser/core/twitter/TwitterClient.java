@@ -8,9 +8,9 @@ import com.socialmediaraiser.core.twitter.helpers.URLHelper;
 import com.socialmediaraiser.core.twitter.helpers.dto.ConverterHelper;
 import com.socialmediaraiser.core.twitter.helpers.dto.getrelationship.RelationshipDTO;
 import com.socialmediaraiser.core.twitter.helpers.dto.getrelationship.RelationshipObjectResponseDTO;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.Tweet;
-import com.socialmediaraiser.core.twitter.helpers.dto.user.AbstractUser;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTOv1;
 import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDataDTO;
+import com.socialmediaraiser.core.twitter.helpers.dto.user.UserDTOv2;
 import com.socialmediaraiser.core.twitter.helpers.dto.user.UserObjectResponseDTO;
 import lombok.Data;
 
@@ -83,9 +83,9 @@ public class TwitterClient implements ITwitterClient {
     }
 
     // can manage up to 200 results/call . Max 15 calls/15min ==> 3.000 results max./15min
-    private List<AbstractUser> getUsersInfoByRelation(String url) {
+    private List<IUser> getUsersInfoByRelation(String url) {
         Long cursor = -1L;
-        List<AbstractUser> result = new ArrayList<>();
+        List<IUser> result = new ArrayList<>();
         int nbCalls = 1;
         LOGGER.fine(() -> "users : ");
         do {
@@ -94,7 +94,7 @@ public class TwitterClient implements ITwitterClient {
             if(response==null){
                 break;
             }
-            List<AbstractUser> users = this.getJsonHelper().jsonUserArrayToList(response.get(USERS));
+            List<IUser> users = this.getJsonHelper().jsonUserArrayToList(response.get(USERS));
             result.addAll(users);
             cursor = this.getJsonHelper().getLongFromCursorObject(response);
             nbCalls++;
@@ -114,7 +114,7 @@ public class TwitterClient implements ITwitterClient {
         return this.getUserIdsByRelation(url);
     }
 
-    private List<AbstractUser> getUsersInfoByRelation(String userId, RelationType relationType) {
+    private List<IUser> getUsersInfoByRelation(String userId, RelationType relationType) {
         String url = null;
         if(relationType == RelationType.FOLLOWER){
             url = this.urlHelper.getFollowerUsersUrl(userId);
@@ -135,7 +135,7 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public List<AbstractUser> getFollowerUsers(String userId) {
+    public List<IUser> getFollowerUsers(String userId) {
         return this.getUsersInfoByRelation(userId, RelationType.FOLLOWER);
     }
 
@@ -145,7 +145,7 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public List<AbstractUser> getFollowingsUsers(String userId) {
+    public List<IUser> getFollowingsUsers(String userId) {
         return this.getUsersInfoByRelation(userId, RelationType.FOLLOWING);
     }
 
@@ -221,8 +221,9 @@ public class TwitterClient implements ITwitterClient {
         return false;
     }
 
+    // UserV2
     @Override
-    public AbstractUser getUserFromUserId(String userId)  {
+    public IUser getUserFromUserId(String userId)  {
         String url = this.getUrlHelper().getUserUrl(userId);
         String response = this.getRequestHelper().executeGetRequestV2(url);
         if(response!=null){
@@ -237,7 +238,7 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public AbstractUser getUserFromUserName(String userName) {
+    public UserDTOv2 getUserFromUserName(String userName) {
         String url = this.getUrlHelper().getUserUrlFromName(userName);
         String response = this.getRequestHelper().executeGetRequestV2(url);
         if (response != null) {
@@ -251,7 +252,7 @@ public class TwitterClient implements ITwitterClient {
         return null;
     }
 
-    public List<AbstractUser> getUsersFromUserNames(List<String> userNames)  {
+    public List<IUser> getUsersFromUserNames(List<String> userNames)  {
         String url = this.getUrlHelper().getUsersUrlbyNames(userNames);
         JsonNode response = this.getRequestHelper().executeGetRequestReturningArray(url);
         if(response!=null){
@@ -261,7 +262,7 @@ public class TwitterClient implements ITwitterClient {
         }
     }
 
-    public List<AbstractUser> getUsersFromUserIds(List<String> userIds)  {
+    public List<IUser> getUsersFromUserIds(List<String> userIds)  {
         String url = this.getUrlHelper().getUsersUrlbyIds(userIds);
         JsonNode response = this.getRequestHelper().executeGetRequestReturningArray(url);
         if(response!=null){
@@ -278,7 +279,7 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public List<Tweet> getUserLastTweets(String userId, int count){
+    public List<TweetDTOv1> getUserLastTweets(String userId, int count){
         String url = this.getUrlHelper().getUserTweetsUrl(userId, count);
         JsonNode response = this.getRequestHelper().executeGetRequestReturningArray(url);
         if(response!=null && response.size()>0){
@@ -298,10 +299,10 @@ public class TwitterClient implements ITwitterClient {
         throw new UnsupportedOperationException();
     }
 
-    public List<Tweet> searchForTweetAnswers(String tweetId, String userName, String fromDate, String toDate){
-        List<Tweet> all = this.searchForTweets("@"+userName, 10000, fromDate, toDate, this.getUrlHelper().getSearchTweets30daysUrl());
-        List<Tweet> result = new ArrayList<>();
-        for(Tweet tweet : all){
+    public List<TweetDTOv1> searchForTweetAnswers(String tweetId, String userName, String fromDate, String toDate){
+        List<TweetDTOv1> all = this.searchForTweets("@"+userName, 10000, fromDate, toDate, this.getUrlHelper().getSearchTweets30daysUrl());
+        List<TweetDTOv1> result = new ArrayList<>();
+        for(TweetDTOv1 tweet : all){
             if(tweet.getId().equals(tweetId)){
                 result.add(tweet);
             }
@@ -311,7 +312,7 @@ public class TwitterClient implements ITwitterClient {
 
     // @todo remove count + add default function fort last 30 days
     // date with yyyyMMddHHmm format
-    public List<Tweet> searchForLast100Tweets30days(String query, String toDate){
+    public List<TweetDTOv1> searchForLast100Tweets30days(String query, String toDate){
         int count = 100;
         Map<String, String> parameters = new HashMap<>();
         parameters.put("query",query);
@@ -320,7 +321,7 @@ public class TwitterClient implements ITwitterClient {
         parameters.put("toDate", toDate);
 
         String next;
-        List<Tweet> result = new ArrayList<>();
+        List<TweetDTOv1> result = new ArrayList<>();
         do {
             JsonNode response = this.getRequestHelper().executeGetRequestWithParameters(this.getUrlHelper().getSearchTweets30daysUrl(),parameters);
             JsonNode responseArray = null;
@@ -347,7 +348,7 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public List<Tweet> searchForTweets(String query, int count, String fromDate, String toDate, String url){
+    public List<TweetDTOv1> searchForTweets(String query, int count, String fromDate, String toDate, String url){
         if(count<10){
             count = 10;
             LOGGER.severe(()->"count minimum = 10");
@@ -363,7 +364,7 @@ public class TwitterClient implements ITwitterClient {
         parameters.put("toDate",toDate);
 
         String next;
-        List<Tweet> result = new ArrayList<>();
+        List<TweetDTOv1> result = new ArrayList<>();
         do {
             JsonNode response;
             if(url.equals(this.getUrlHelper().getSearchTweetUrlStandard())){

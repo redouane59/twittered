@@ -1,8 +1,7 @@
 package com.socialmediaraiser.core.twitter;
 
 import com.socialmediaraiser.core.RelationType;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.Tweet;
-import com.socialmediaraiser.core.twitter.helpers.dto.user.AbstractUser;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTOv1;
 import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDataDTO;
 
 import java.io.File;
@@ -18,7 +17,7 @@ public interface ITwitterClient {
      * @param userId the id of the targeted user
      * @return a list of AbstractUser who are following the targeted user
      */
-    List<AbstractUser> getFollowerUsers(String userId);
+    List<IUser> getFollowerUsers(String userId);
 
     /**
      * Get a list of the user followers ids
@@ -32,7 +31,7 @@ public interface ITwitterClient {
      * @param userId the id of the targeted user
      * @return a list of AbstractUser that the targeted user is following
      */
-    List<AbstractUser> getFollowingsUsers(String userId);
+    List<IUser> getFollowingsUsers(String userId);
 
     /**
      * Get a list of the user followings ids
@@ -84,13 +83,13 @@ public interface ITwitterClient {
      * @param userName the name of the targeted user
      * @return an AbstractUser object related to the targeted user
      */
-    AbstractUser getUserFromUserName(String userName);
+    IUser getUserFromUserName(String userName);
     /**
      * Retreive a user from his id
      * @param userId the id of the user
      * @return an AbstractUser object related to the targeted user
      */
-    AbstractUser getUserFromUserId(String userId);
+    IUser getUserFromUserId(String userId);
 
     /**
      * Follow a user
@@ -126,7 +125,7 @@ public interface ITwitterClient {
      * @param count the number of tweets
      * @return a list of the user last tweets
      */
-    List<Tweet> getUserLastTweets(String userId, int count);
+    List<TweetDTOv1> getUserLastTweets(String userId, int count);
 
     /**
      * Search historic tweets
@@ -138,6 +137,6 @@ public interface ITwitterClient {
      * @return a list of tweets
      */
     @Deprecated
-    List<Tweet> searchForTweets(String query, int count, String fromDate, String toDate, String url);
+    List<TweetDTOv1> searchForTweets(String query, int count, String fromDate, String toDate, String url);
 }
 

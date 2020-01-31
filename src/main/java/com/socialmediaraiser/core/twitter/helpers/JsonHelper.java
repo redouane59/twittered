@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.Tweet;
-import com.socialmediaraiser.core.twitter.User;
+import com.socialmediaraiser.core.twitter.IUser;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTOv1;
+
 import com.socialmediaraiser.core.twitter.helpers.dto.user.*;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTO;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 
@@ -53,17 +53,17 @@ public class JsonHelper {
         return listdata;
     }
 
-    public List<AbstractUser> jsonUserArrayToList(JsonNode jsonObject){
-        ArrayList<AbstractUser> users = new ArrayList<>();
+    public List<IUser> jsonUserArrayToList(JsonNode jsonObject){
+        ArrayList<IUser> users = new ArrayList<>();
         for(JsonNode node : jsonObject){
-            AbstractUser user = this.jsonResponseToUser(node);
+            IUser user = this.jsonResponseToUser(node);
             if(user!=null) users.add(user);
         }
         return users;
     }
 
     @Deprecated
-    public User jsonResponseToUser(JsonNode jsonObject){
+    public UserDTOv1 jsonResponseToUser(JsonNode jsonObject){
         if(jsonObject==null) return null;
 
         String id = jsonObject.get(ID).asText();
@@ -75,45 +75,48 @@ public class JsonHelper {
         String description = Option.of(jsonObject.get(DESCRIPTION)).map(s -> jsonObject.get(DESCRIPTION).asText()).getOrNull();
         String location = Option.of(jsonObject.get(LOCATION)).map(s -> jsonObject.get(LOCATION).asText()).getOrElse("");
         String lastUpdate = Option.of(jsonObject.get(STATUS)).map(s -> (jsonObject.get(STATUS)).get(CREATED_AT).asText()).getOrNull();
-        return User.builder()
+        return UserDTOv1.builder()
                 .id(id)
-                .userName(screenName)
-                .followersCout(followersCount)
+                .name(screenName)
+                .followersCount(followersCount)
                 .followingCount(friendsCount)
-                .statusesCount(statusesCount)
-                .dateOfCreation(getDateFromTwitterString(createdAt))
+                .tweetCount(statusesCount)
+                .dateOfCreation(createdAt)
                 .description(description)
                 .dateOfFollow(null)
-                .lastUpdate(getDateFromTwitterString(lastUpdate))
+                .lastUpdate(lastUpdate)
                 .location(location)
                 .build();
     }
 
     // @todo use custom serializer ?
     @Deprecated
-    public AbstractUser jsonResponseToUserV2(String response) throws IOException {
+    public UserDTOv2 jsonResponseToUserV2(String response) throws IOException {
         UserObjectResponseDTO obj = JsonHelper.OBJECT_MAPPER.readValue(response, UserObjectResponseDTO.class);
         if(obj.getData()==null){
             LOGGER.severe(response);
             return null;
         }
-        UserDTO data = obj.getData().get(0);
+        return obj.getData().get(0);
+         /*
+        UserDTOv2 data = obj.getData().get(0);
         IncludesDTO includes = obj.getIncludes();
         List<TweetDTO> mostRecentTweet = null;
         String lang = null;
-        Date lastUpdate = null;
+        String lastUpdate = null;
         if(!data.isProtectedAccount() && includes!=null){
             mostRecentTweet = includes.getTweets();
             lang = includes.getTweets().get(0).getLang();
-            lastUpdate = getDateFromTwitterDateV2(includes.getTweets().get(0).getCreatedAt());
+            lastUpdate = includes.getTweets().get(0).getCreatedAt();
         }
-        return User.builder()
+
+       return UserDTOv2.builder()
                 .id(data.getId())
-                .userName(data.getUsername())
-                .followersCout(data.getStats().getFollowersCount())
+                .name(data.getName())
+                .followersCount(data.getStats().getFollowersCount())
                 .followingCount(data.getStats().getFollowingCount())
-                .statusesCount(data.getStats().getTweetCount())
-                .dateOfCreation(getDateFromTwitterDateV2(data.getCreatedAt()))
+                .tweetCount(data.getStats().getTweetCount())
+                .dateOfCreation(data.getCreatedAt())
                 .description(data.getDescription())
                 .dateOfFollow(null)
                 .location(data.getLocation())
@@ -121,7 +124,7 @@ public class JsonHelper {
                 .lang(lang)
                 .lastUpdate(lastUpdate) // @todo manage null value in scoring ?
                 .protectedAccount(data.isProtectedAccount())
-                .build();
+                .build(); */
     }
 
     @Deprecated
@@ -149,14 +152,14 @@ public class JsonHelper {
     }
 
     @Deprecated
-    public List<Tweet> jsonResponseToTweetListV2(JsonNode jsonArray){
-        List<Tweet> tweets = new ArrayList<>();
+    public List<TweetDTOv1> jsonResponseToTweetListV2(JsonNode jsonArray){
+        List<TweetDTOv1> tweets = new ArrayList<>();
         if(jsonArray!=null){
             for(JsonNode node : jsonArray){
                 try {
-                    Tweet tweet = new ObjectMapper().treeToValue(node, Tweet.class);
-                    User user = jsonResponseToUser(node.get(USER));
-                    user.setLastUpdate(tweet.getCreatedAt());
+                    TweetDTOv1 tweet = new ObjectMapper().treeToValue(node, TweetDTOv1.class);
+                    UserDTOv1 user = jsonResponseToUser(node.get(USER));
+                    user.setLastUpdate(tweet.getCreatedAt().toString());
                     tweet.setUser(user);
                     tweets.add(tweet);
                 } catch (JsonProcessingException e) {
@@ -168,8 +171,8 @@ public class JsonHelper {
     }
 
     @Deprecated
-    public List<Tweet> jsonResponseToTweetList(JsonNode jsonArray) {
-        List<Tweet> tweets = new ArrayList<>();
+    public List<TweetDTOv1> jsonResponseToTweetList(JsonNode jsonArray) {
+        List<TweetDTOv1> tweets = new ArrayList<>();
         if(jsonArray!=null){
             for(JsonNode node : jsonArray){
                 String id = node.get(ID).asText();
@@ -177,21 +180,21 @@ public class JsonHelper {
                 int favourites_count = node.get(FAVORITE_COUNT).asInt();
                 String text = node.get(TEXT).asText();
                 String lang = node.get(LANG).asText();
-                Date createdAtDate = getDateFromTwitterString(node.get(CREATED_AT).asText());
-                User user = null;
+                String createdAtDate = node.get(CREATED_AT).asText();
+                UserDTOv1 user = null;
                 try{ // @todo to test
                     user = jsonResponseToUser(node.get(USER));
                     user.setLastUpdate(createdAtDate);
                 } catch (Exception e){
                     LOGGER.severe(e.getMessage());
                 }
-                Tweet tweet = Tweet.builder()
+                TweetDTOv1 tweet = TweetDTOv1.builder()
                         .id(id)
                         .retweetCount(retweetsCount)
-                        .favoriteCount(favourites_count)
+                        .likeCount(favourites_count)
                         .text(text)
                         .lang(lang)
-                        .createdAt(createdAtDate)
+                        .createdAt(node.get(CREATED_AT).asText())
                         .user(user)
                         .build();
                 tweets.add(tweet);
