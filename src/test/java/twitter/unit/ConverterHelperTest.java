@@ -1,6 +1,6 @@
 package twitter.unit;
 
-import com.socialmediaraiser.core.twitter.helpers.dto.ConverterHelper;
+import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;

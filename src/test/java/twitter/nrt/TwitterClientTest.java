@@ -1,12 +1,12 @@
 package twitter.nrt;
 
-import com.socialmediaraiser.core.RelationType;
-import com.socialmediaraiser.core.twitter.IUser;
-import com.socialmediaraiser.core.twitter.TwitterClient;
-import com.socialmediaraiser.core.twitter.helpers.RequestHelper;
-import com.socialmediaraiser.core.twitter.helpers.dto.others.RequestTokenDTO;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.ITweet;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDataDTO;
+import com.socialmediaraiser.RelationType;
+import com.socialmediaraiser.twitter.IUser;
+import com.socialmediaraiser.twitter.TwitterClient;
+import com.socialmediaraiser.twitter.helpers.RequestHelper;
+import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
+import com.socialmediaraiser.twitter.dto.tweet.ITweet;
+import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

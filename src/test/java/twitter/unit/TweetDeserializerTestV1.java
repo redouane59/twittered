@@ -1,8 +1,8 @@
 package twitter.unit;
 
-import com.socialmediaraiser.core.twitter.helpers.JsonHelper;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.ITweet;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTOv1;
+import com.socialmediaraiser.twitter.helpers.JsonHelper;
+import com.socialmediaraiser.twitter.dto.tweet.ITweet;
+import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv1;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -21,12 +21,12 @@ public class TweetDeserializerTestV1 {
 
     @Test
     public void testTweetId(){
-        assertEquals("1222532496224550912",tweetV1.getId());
+        assertEquals("1223664533451026434",tweetV1.getId());
     }
 
     @Test
     public void testTweetText(){
-        assertEquals("@Lalou_be Oui...", tweetV1.getText());
+        assertEquals("@RedTheOne Tu t'es es sorti", tweetV1.getText());
     }
 
     @Test
@@ -46,17 +46,17 @@ public class TweetDeserializerTestV1 {
 
     @Test
     public void testCreateAt(){
-        assertEquals(JsonHelper.getDateFromTwitterString("Wed Jan 29 14:50:35 +0000 2020"), tweetV1.getCreatedAt());
+        assertEquals(JsonHelper.getDateFromTwitterString("Sat Feb 01 17:48:54 +0000 2020"), tweetV1.getCreatedAt());
     }
 
     @Test
     public void testinReplyToUserId(){
-        assertEquals("246303396", tweetV1.getInReplyToUserId());
+        assertEquals("92073489", tweetV1.getInReplyToUserId());
     }
 
     @Test
     public void testinReplyToStatusId(){
-        assertEquals("1222478976922406912", tweetV1.getInReplyToStatusId());
+        assertEquals("1223576831170879489", tweetV1.getInReplyToStatusId());
     }
 
     @Test

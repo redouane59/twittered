@@ -1,9 +1,9 @@
 package twitter.unit;
 
-import com.socialmediaraiser.core.twitter.IUser;
-import com.socialmediaraiser.core.twitter.helpers.JsonHelper;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.ITweet;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTOv2;
+import com.socialmediaraiser.twitter.IUser;
+import com.socialmediaraiser.twitter.helpers.JsonHelper;
+import com.socialmediaraiser.twitter.dto.tweet.ITweet;
+import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv2;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

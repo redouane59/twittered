@@ -1,7 +1,6 @@
 package twitter.unit;
 
-import com.socialmediaraiser.core.twitter.helpers.URLHelper;
-import org.junit.jupiter.api.BeforeAll;
+import com.socialmediaraiser.twitter.helpers.URLHelper;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;

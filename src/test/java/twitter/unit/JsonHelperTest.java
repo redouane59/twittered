@@ -3,10 +3,10 @@ package twitter.unit;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.socialmediaraiser.core.twitter.helpers.JsonHelper;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.ITweet;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTOv1;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDataDTO;
+import com.socialmediaraiser.twitter.helpers.JsonHelper;
+import com.socialmediaraiser.twitter.dto.tweet.ITweet;
+import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv1;
+import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

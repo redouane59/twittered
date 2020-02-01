@@ -1,10 +1,7 @@
 package twitter.unit;
 
-import com.socialmediaraiser.core.twitter.helpers.dto.user.UserDTOv1;
+import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
 import org.junit.jupiter.api.Test;
-
-import java.util.Calendar;
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
