@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socialmediaraiser.core.twitter.IUser;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.ITweet;
 import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTOv1;
 
 import com.socialmediaraiser.core.twitter.helpers.dto.user.*;
@@ -78,15 +79,13 @@ public class JsonHelper {
     }
 
     @Deprecated
-    public List<TweetDTOv1> jsonResponseToTweetListV2(JsonNode jsonArray){
-        List<TweetDTOv1> tweets = new ArrayList<>();
+    public List<ITweet> jsonResponseToTweetListV2(JsonNode jsonArray){
+        List<ITweet> tweets = new ArrayList<>();
         if(jsonArray!=null){
             for(JsonNode node : jsonArray){
                 try {
                     TweetDTOv1 tweet = OBJECT_MAPPER.treeToValue(node, TweetDTOv1.class);
-                    UserDTOv1 user = OBJECT_MAPPER.treeToValue(node, UserDTOv1.class);
-                    user.setLastUpdate(tweet.getCreatedAt().toString());
-                    tweet.setUser(user);
+                    tweet.getUser().setLastUpdate(tweet.getCreatedAt().toString());
                     tweets.add(tweet);
                 } catch (JsonProcessingException e) {
                     LOGGER.severe(e.getMessage());
@@ -97,8 +96,8 @@ public class JsonHelper {
     }
 
     @Deprecated
-    public List<TweetDTOv1> jsonResponseToTweetList(JsonNode jsonArray) {
-        List<TweetDTOv1> tweets = new ArrayList<>();
+    public List<ITweet> jsonResponseToTweetList(JsonNode jsonArray) {
+        List<ITweet> tweets = new ArrayList<>();
         if(jsonArray!=null){
             for(JsonNode node : jsonArray){
                 try{

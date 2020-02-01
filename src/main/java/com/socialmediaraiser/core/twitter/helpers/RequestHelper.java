@@ -37,6 +37,7 @@ public class RequestHelper {
             if(response.code()==200){
                 return node;
             } else if (response.code()==429){
+                LOGGER.info(stringResponse);
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequest(url);
             } else{
@@ -67,6 +68,7 @@ public class RequestHelper {
             if(response.code()==200){
                 return node;
             } else if (response.code()==429){
+                LOGGER.info(stringResponse);
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequest(url);
             } else{
@@ -87,7 +89,7 @@ public class RequestHelper {
                 response.close();
                 return stringResponse;
             } else if (response.code()==429){
-                response.close();
+                LOGGER.info(stringResponse);
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequestV2(url);
             } else{
@@ -170,13 +172,14 @@ public class RequestHelper {
         try {
             Response response = this.getHttpClient(url)
                     .newCall(this.getSignedRequest(this.getRequest(url))).execute();
+            String stringResponse = response.body().string();
             if(response.code()==200){
-                String stringResult = response.body().string();
-                return JsonHelper.OBJECT_MAPPER.readTree(stringResult);
+                return JsonHelper.OBJECT_MAPPER.readTree(stringResponse);
             } else if (response.code() == 401){
                 response.close();
                 LOGGER.info(()->"user private, not authorized");
             } else if (response.code()==429){
+                LOGGER.info(stringResponse);
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequestReturningArray(url);
             } else{

@@ -66,10 +66,6 @@ public class UserDTOv1 implements IUser {
         return this.id.hashCode();
     }
 
-    public double getFollowersRatio() {
-        return (double) this.getFollowersCount() / (double) this.getFollowingCount();
-    }
-
 /*    public void setDateOfFollowNow(){
         this.setDateOfFollow(new Date());
     } */

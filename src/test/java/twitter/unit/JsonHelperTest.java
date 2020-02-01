@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socialmediaraiser.core.twitter.helpers.JsonHelper;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.ITweet;
 import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTOv1;
 import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDataDTO;
 import org.junit.jupiter.api.Test;
@@ -186,5 +187,21 @@ public class JsonHelperTest {
     @Test
     public void testGetLongFromCursorObjectNull(){
         assertNull(this.jsonHelper.getLongFromCursorObject(null));
+    }
+
+    @Test
+    public void testGetListArray() throws IOException {
+        File tweetFile1 = new File(getClass().getClassLoader().getResource("tests/tweet_list_example.json").getFile());
+        JsonNode tweetList = JsonHelper.OBJECT_MAPPER.readValue(tweetFile1, JsonNode.class);
+        List<ITweet> tweets = this.jsonHelper.jsonResponseToTweetListV2(tweetList);
+        assertNotNull(tweets);
+        assertEquals(100, tweets.size());
+        ITweet firstTweet = tweets.get(0);
+        assertEquals("1223664533451026434", firstTweet.getId());
+        assertEquals("@RedTheOne Tu t'es es sorti", firstTweet.getText());
+        assertEquals("92073489", firstTweet.getInReplyToUserId());
+        assertEquals("1223576831170879489", firstTweet.getInReplyToStatusId());
+        assertEquals("723996356", firstTweet.getUser().getId());
+        assertEquals("naiim75012", firstTweet.getUser().getName());
     }
 }

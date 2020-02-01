@@ -1,5 +1,7 @@
 package com.socialmediaraiser.core.twitter.helpers.dto;
 
+import org.apache.commons.lang.time.DateUtils;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,13 +31,13 @@ public class ConverterHelper {
         return df.format(d);
     }
 
-    public static Date dayBefore(int nbDays) {
+    public static Date dayBeforeNow(int nbDays) {
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -nbDays);
         return cal.getTime();
     }
 
-    public static Date minutesBefore(int minutes) {
+    public static Date minutesBeforeNow(int minutes) {
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MINUTE, -minutes);
         return cal.getTime();

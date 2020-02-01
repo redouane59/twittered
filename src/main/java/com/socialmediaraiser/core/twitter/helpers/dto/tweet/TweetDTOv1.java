@@ -45,12 +45,4 @@ public class TweetDTOv1 implements ITweet {
         return JsonHelper.getDateFromTwitterString(this.createdAt);
     }
 
-    public boolean matchWords(List<String> words){
-        for(String word : words){
-            if(this.text.contains(word)){
-                return true;
-            }
-        }
-        return false;
-    }
 }

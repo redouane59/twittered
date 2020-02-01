@@ -5,7 +5,7 @@ import com.socialmediaraiser.core.twitter.IUser;
 import com.socialmediaraiser.core.twitter.TwitterClient;
 import com.socialmediaraiser.core.twitter.helpers.RequestHelper;
 import com.socialmediaraiser.core.twitter.helpers.dto.others.RequestTokenDTO;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTOv1;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.ITweet;
 import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDataDTO;
 import org.junit.jupiter.api.Test;
 
@@ -197,7 +197,7 @@ public class TwitterClientTest {
     @Test
     public void testGetLastTweetByUserName() {
         String userName = "RedTheOne";
-        List<TweetDTOv1> response = twitterClient.getUserLastTweets(userName, 2);
+        List<ITweet> response = twitterClient.getUserLastTweets(userName, 2);
         assertTrue(response.get(0).getLang().equals("fr")
                 || response.get(1).getLang().equals("fr"));
     }
@@ -205,7 +205,7 @@ public class TwitterClientTest {
     @Test
     public void testGetLastTweetByUserId() {
         String userId = "92073489";
-        List<TweetDTOv1> response = twitterClient.getUserLastTweets(userId, 3);
+        List<ITweet> response = twitterClient.getUserLastTweets(userId, 3);
         assertTrue(response.get(0).getLang().equals("fr")
                 || response.get(1).getLang().equals("fr"));
     }

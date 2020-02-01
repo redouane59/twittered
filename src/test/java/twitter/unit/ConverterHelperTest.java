@@ -24,11 +24,11 @@ public class ConverterHelperTest {
 
     @Test
     public void testDayBefore(){
-        assertNotNull(ConverterHelper.dayBefore(1));
+        assertNotNull(ConverterHelper.dayBeforeNow(1));
     }
 
     @Test
     public void testMinutesBefore(){
-        assertNotNull(ConverterHelper.minutesBefore(1));
+        assertNotNull(ConverterHelper.minutesBeforeNow(1));
     }
 }

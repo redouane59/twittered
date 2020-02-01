@@ -67,5 +67,12 @@ public class TweetDeserializerTestV1 {
     @Test
     public void testUser(){
         assertNotNull(tweetV1.getUser());
+        assertEquals("723996356", tweetV1.getUser().getId());
+        assertEquals("naiim75012", tweetV1.getUser().getName());
+        assertEquals("France", tweetV1.getUser().getLocation());
+        assertEquals(6339, tweetV1.getUser().getFollowersCount());
+        assertEquals(392, tweetV1.getUser().getFollowingCount());
+        assertEquals(83425, tweetV1.getUser().getTweetCount());
+        assertEquals(JsonHelper.getDateFromTwitterString("Sun Jul 29 13:24:02 +0000 2012"), tweetV1.getUser().getDateOfCreation());
     }
 }

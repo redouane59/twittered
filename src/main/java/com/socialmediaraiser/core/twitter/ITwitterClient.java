@@ -1,11 +1,13 @@
 package com.socialmediaraiser.core.twitter;
 
 import com.socialmediaraiser.core.RelationType;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.ITweet;
 import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTOv1;
 import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDataDTO;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -125,18 +127,15 @@ public interface ITwitterClient {
      * @param count the number of tweets
      * @return a list of the user last tweets
      */
-    List<TweetDTOv1> getUserLastTweets(String userId, int count);
+    List<ITweet> getUserLastTweets(String userId, int count);
 
     /**
      * Search historic tweets
      * @param query the search query
-     * @param count the number of needed tweets
      * @param fromDate the start date
      * @param toDate the end date
-     * @param url the url
      * @return a list of tweets
      */
-    @Deprecated
-    List<TweetDTOv1> searchForTweets(String query, int count, String fromDate, String toDate, String url);
+    List<ITweet> searchForTweets(String query, Date fromDate, Date toDate);
 }
 

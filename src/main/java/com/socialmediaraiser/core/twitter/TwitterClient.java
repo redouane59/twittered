@@ -8,10 +8,11 @@ import com.socialmediaraiser.core.twitter.helpers.URLHelper;
 import com.socialmediaraiser.core.twitter.helpers.dto.ConverterHelper;
 import com.socialmediaraiser.core.twitter.helpers.dto.getrelationship.RelationshipDTO;
 import com.socialmediaraiser.core.twitter.helpers.dto.getrelationship.RelationshipObjectResponseDTO;
-import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDTOv1;
+import com.socialmediaraiser.core.twitter.helpers.dto.tweet.ITweet;
 import com.socialmediaraiser.core.twitter.helpers.dto.tweet.TweetDataDTO;
 import com.socialmediaraiser.core.twitter.helpers.dto.user.UserDTOv2;
 import lombok.Data;
+import org.apache.commons.lang.time.DateUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -277,7 +278,7 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public List<TweetDTOv1> getUserLastTweets(String userId, int count){
+    public List<ITweet> getUserLastTweets(String userId, int count){
         String url = this.getUrlHelper().getUserTweetsUrl(userId, count);
         JsonNode response = this.getRequestHelper().executeGetRequestReturningArray(url);
         if(response!=null && response.size()>0){
@@ -297,79 +298,18 @@ public class TwitterClient implements ITwitterClient {
         throw new UnsupportedOperationException();
     }
 
-    public List<TweetDTOv1> searchForTweetAnswers(String tweetId, String userName, String fromDate, String toDate){
-        List<TweetDTOv1> all = this.searchForTweets("@"+userName, 10000, fromDate, toDate, this.getUrlHelper().getSearchTweets30daysUrl());
-        List<TweetDTOv1> result = new ArrayList<>();
-        for(TweetDTOv1 tweet : all){
-            if(tweet.getId().equals(tweetId)){
-                result.add(tweet);
-            }
-        }
-        return result;
-    }
-
-    // @todo remove count + add default function fort last 30 days
-    // date with yyyyMMddHHmm format
-    public List<TweetDTOv1> searchForLast100Tweets30days(String query, String toDate){
+    @Override
+    public List<ITweet> searchForTweets(String query, Date fromDate, Date toDate){
         int count = 100;
         Map<String, String> parameters = new HashMap<>();
         parameters.put("query",query);
         parameters.put("maxResults",String.valueOf(count));
-        parameters.put("fromDate",ConverterHelper.getStringFromDate(ConverterHelper.dayBefore(30)));
-        parameters.put("toDate", toDate);
-
+        parameters.put("fromDate",ConverterHelper.getStringFromDate(fromDate));
+        parameters.put("toDate", ConverterHelper.getStringFromDate(toDate));
         String next;
-        List<TweetDTOv1> result = new ArrayList<>();
+        List<ITweet> result = new ArrayList<>();
         do {
             JsonNode response = this.getRequestHelper().executeGetRequestWithParameters(this.getUrlHelper().getSearchTweets30daysUrl(),parameters);
-            JsonNode responseArray = null;
-            try {
-                responseArray = JsonHelper.OBJECT_MAPPER.readTree(response.get("results").toString());
-            } catch (IOException e) {
-                LOGGER.severe(e.getMessage());
-            }
-
-            if(response!=null && response.size()>0){
-                result.addAll(this.getJsonHelper().jsonResponseToTweetListV2(responseArray));
-            } else{
-                LOGGER.severe(()->nullOrIdNotFoundError);
-            }
-
-            if(!response.has(NEXT)){
-                break;
-            }
-            next = response.get(NEXT).toString();
-            parameters.put(NEXT, next);
-        }
-        while (next!= null && result.size()<count);
-        return result;
-    }
-
-    @Override
-    public List<TweetDTOv1> searchForTweets(String query, int count, String fromDate, String toDate, String url){
-        if(count<10){
-            count = 10;
-            LOGGER.severe(()->"count minimum = 10");
-        }
-        if(count>100){
-            count = 100;
-            LOGGER.severe(()->"count maximum = 100");
-        }
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("query",query);
-        parameters.put("maxResults",String.valueOf(count));
-        parameters.put("fromDate",fromDate);
-        parameters.put("toDate",toDate);
-
-        String next;
-        List<TweetDTOv1> result = new ArrayList<>();
-        do {
-            JsonNode response;
-            if(url.equals(this.getUrlHelper().getSearchTweetUrlStandard())){
-                response = this.getRequestHelper().executeGetRequestWithParameters(url,parameters);
-            } else{
-                response = this.getRequestHelper().executePostRequest(url,parameters);
-            }
             JsonNode responseArray = null;
             try {
                 responseArray = JsonHelper.OBJECT_MAPPER.readTree(response.get("results").toString());
