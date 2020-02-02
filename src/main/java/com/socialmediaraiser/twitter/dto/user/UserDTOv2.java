@@ -47,6 +47,8 @@ public class UserDTOv2 implements IUser {
         private String description;
         private String lang;
         private boolean isProtectedAccount;
+        private boolean following;
+
 
         @Data
         public static class Includes{
@@ -148,6 +150,11 @@ public class UserDTOv2 implements IUser {
     @Override
     public boolean isProtectedAccount() {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isFollowing() {
+        return this.data[0].isFollowing();
     }
 
 }

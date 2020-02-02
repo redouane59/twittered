@@ -250,4 +250,16 @@ public class TwitterClientTest {
         assertNotNull(result.get(0).getTweet().getText());
         assertNotNull(result.get(0).getTweet().getInReplyToUserId());
     }
+
+    @Test
+    public void testFollowAndUnfollow(){
+        IUser user = twitterClient.getUserFromUserName("red1");
+        twitterClient.follow(user.getId());
+        twitterClient.unfollow(user.getId());
+    }
+
+    @Test
+    public void likeTweet(){
+        twitterClient.likeTweet("1107533");
+    }
 }

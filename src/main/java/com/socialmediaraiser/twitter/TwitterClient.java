@@ -202,40 +202,22 @@ public class TwitterClient implements ITwitterClient {
     @Override
     public boolean follow(String userId) {
         String url = this.urlHelper.getFollowUrl(userId);
-        JsonNode jsonResponse = this.requestHelper.executePostRequest(url, new HashMap<>());
-        if(jsonResponse!=null) {
-            if (jsonResponse.has(FOLLOWING)) {
-                return true;
-            } else{
-                LOGGER.severe(()->"following property not found :(  " + userId + " not followed !");
-            }
-        }
-        LOGGER.severe(()->"jsonResponse was null for user  " + userId);
-        return false;
+        UserDTOv1 userResponse = this.requestHelper.executePostRequest(url, new HashMap<>(), UserDTOv1.class);
+        return !userResponse.isFollowing();
     }
 
     @Override
     public boolean unfollow(String userId) {
         String url = this.urlHelper.getUnfollowUrl(userId);
-        JsonNode jsonResponse = this.requestHelper.executePostRequest(url, new HashMap<>());
-        if(jsonResponse!=null){
-            LOGGER.info(()->userId + " unfollowed");
-            return true;
-        }
-        LOGGER.severe(()->userId + " not unfollowed");
-        return false;
+        UserDTOv1 userResponse = this.requestHelper.executePostRequest(url, new HashMap<>(), UserDTOv1.class);
+        return userResponse.isFollowing();
     }
 
     @Override
     public boolean unfollowByName(String userName) {
         String url = this.urlHelper.getUnfollowByUsernameUrl(userName);
-        JsonNode jsonResponse = this.requestHelper.executePostRequest(url, new HashMap<>());
-        if(jsonResponse!=null){
-            LOGGER.info(()->userName + " unfollowed");
-            return true;
-        }
-        LOGGER.severe(()->userName + " not unfollowed");
-        return false;
+        UserDTOv1 userResponse = this.requestHelper.executePostRequest(url, new HashMap<>(), UserDTOv1.class);
+        return userResponse.isFollowing();
     }
 
     // UserV2
@@ -317,7 +299,7 @@ public class TwitterClient implements ITwitterClient {
     @Override
     public void likeTweet(String tweetId) {
         String url = this.getUrlHelper().getLikeUrl(tweetId);
-        this.getRequestHelper().executePostRequest(url, null);
+        this.getRequestHelper().executePostRequest(url, null, TweetDTOv1.class);
     }
 
     @Override

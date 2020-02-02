@@ -18,5 +18,6 @@ public interface IUser {
     String getLang();
     List<ITweet> getMostRecentTweet();
     boolean isProtectedAccount();
+    boolean isFollowing();
 
 }

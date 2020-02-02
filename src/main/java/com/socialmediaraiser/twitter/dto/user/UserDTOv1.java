@@ -47,6 +47,7 @@ public class UserDTOv1 implements IUser {
     private String dateOfCreation;
     private String lastUpdate;
     private String location;
+    private boolean following;
 
     @Override
     public boolean equals(Object o) {

@@ -6,6 +6,7 @@ import com.socialmediaraiser.twitter.TwitterClient;
 import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
 import com.socialmediaraiser.twitter.signature.TwitterCredentials;
 import com.socialmediaraiser.twitter.signature.Oauth1SigningInterceptor;
+import io.vavr.control.Try;
 import lombok.NoArgsConstructor;
 import okhttp3.*;
 import org.apache.http.NameValuePair;
@@ -28,6 +29,7 @@ public class RequestHelper {
     public static TwitterCredentials TWITTER_CREDENTIALS = getAuthentication();
     private int sleepTime = 5;
 
+    // @todo Optional<TwitterResponse> as return type instead of JsonNode
     public JsonNode executeGetRequest(String url) {
         try {
             Response response = this.getHttpClient(url)
@@ -38,7 +40,6 @@ public class RequestHelper {
             if(response.code()==200){
                 return node;
             } else if (response.code()==429){
-                LOGGER.info(stringResponse);
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequest(url);
             } else{
@@ -69,7 +70,6 @@ public class RequestHelper {
             if(response.code()==200){
                 return node;
             } else if (response.code()==429){
-                LOGGER.info(stringResponse);
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequest(url);
             } else{
@@ -90,7 +90,6 @@ public class RequestHelper {
                 response.close();
                 return stringResponse;
             } else if (response.code()==429){
-                LOGGER.info(stringResponse);
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequestV2(url);
             } else{
@@ -102,27 +101,21 @@ public class RequestHelper {
         return null;
     }
 
-    public JsonNode executePostRequest(String url, Map<String, String> parameters) {
+    public <T> T executePostRequest(String url, Map<String, String> parameters, Class<T> classType) {
         try {
             String json = TwitterClient.OBJECT_MAPPER.writeValueAsString(parameters);
-
             RequestBody requestBody = RequestBody.create(null, json);
-
             Request request = new Request.Builder()
                     .url(url)
                     .post(requestBody)
                     .build();
-
             Request signedRequest = this.getSignedRequest(request);
-
             Response response = this.getHttpClient(url)
                     .newCall(signedRequest).execute();
-
             if(response.code()!=200){
                 LOGGER.severe(()->"(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
                 if(response.code()==429){
                     RequestTokenDTO result = this.executeTokenRequest();
-                    // @todo to test
                     TWITTER_CREDENTIALS.setAccessToken(result.getOauthToken());
                     TWITTER_CREDENTIALS.setAccessTokenSecret(result.getOauthTokenSecret());
                     LOGGER.info(()->"token reset, now sleeping 30sec");
@@ -130,7 +123,7 @@ public class RequestHelper {
                 }
             }
             String stringResponse = response.body().string();
-            return TwitterClient.OBJECT_MAPPER.readTree(stringResponse);
+            return TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
             return null;
@@ -180,7 +173,6 @@ public class RequestHelper {
                 response.close();
                 LOGGER.info(()->"user private, not authorized");
             } else if (response.code()==429){
-                LOGGER.info(stringResponse);
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequestReturningArray(url);
             } else{
@@ -227,7 +219,7 @@ public class RequestHelper {
     }
 
     public static void wait(int sleepTime, Response response, String url){
-        LOGGER.info(()->"\n" + response.message() +" Waiting ... " + url); // do a wait and return this function recursively
+        LOGGER.info(()->"\n" + response +"\nWaiting ... " + url); // do a wait and return this function recursively
         try {
             TimeUnit.MINUTES.sleep(sleepTime);
         } catch (InterruptedException e) {
