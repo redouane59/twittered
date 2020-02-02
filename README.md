@@ -12,14 +12,13 @@ The file `src/main/resources/twitter-credentials.json` should contain your twitt
   "secretToken": "xxx"
 }
 ```
-It can be found in [your app page](https://developer.twitter.com/en/apps) in the _Key and tokens_
+They can be found in [your twitter app page](https://developer.twitter.com/en/apps) in the _Key and tokens_
 tab.
 
 ### How to use it
-1) Clone this repository
-2) Run `mvn clean install`
-3) Add a dependency on your project with the generated `.jar` file from `target` folder
-4) Start using `TwitterClient` class
+1) Run `mvn clean install`
+2) Add a dependency on your project with the generated `.jar` file from `target` folder
+3) Start using `TwitterClient` class
 
 ### Available methods
 See : [ITwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/ITwitterClient.java)

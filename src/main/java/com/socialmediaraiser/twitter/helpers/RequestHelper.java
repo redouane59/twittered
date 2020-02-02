@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -259,8 +260,18 @@ public class RequestHelper {
     }
 
     public static TwitterCredentials getAuthentication(){
+        URL twitterCredentialsFile = TwitterCredentials.class.getClassLoader().getResource("twitter-credentials.json");
+        if(twitterCredentialsFile==null){
+            LOGGER.severe("twitter-credentials.json file not found in src/main/resources");
+            return null;
+        }
         try {
-            return JsonHelper.OBJECT_MAPPER.readValue(TwitterCredentials.class.getClassLoader().getResource("twitter-credentials.json"), TwitterCredentials.class);
+            TwitterCredentials twitterCredentials = JsonHelper.OBJECT_MAPPER.readValue(twitterCredentialsFile, TwitterCredentials.class);
+            if(twitterCredentials.getAccessToken()==null) LOGGER.severe("Access token is null in twitter-credentials.json");
+            if(twitterCredentials.getSecretToken()==null) LOGGER.severe("Secret token is null in twitter-credentials.json");
+            if(twitterCredentials.getConsumerKey()==null) LOGGER.severe("Consumer key is null in twitter-credentials.json");
+            if(twitterCredentials.getConsumerSecret()==null) LOGGER.severe("Consumer secret is null in twitter-credentials.json");
+            return twitterCredentials;
         } catch (IOException e) {
             LOGGER.severe(e.getMessage());
             return null;
