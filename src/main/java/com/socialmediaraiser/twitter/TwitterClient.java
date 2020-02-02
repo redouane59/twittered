@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socialmediaraiser.RelationType;
+import com.socialmediaraiser.twitter.dto.getrelationship.IdListDTO;
+import com.socialmediaraiser.twitter.dto.getrelationship.UserListDTO;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv1;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
 import com.socialmediaraiser.twitter.helpers.RequestHelper;
@@ -42,82 +44,43 @@ public class TwitterClient implements ITwitterClient {
 
     // can manage up to 5000 results / call . Max 15 calls / 15min ==> 75.000 results max. / 15min
     private List<String> getUserIdsByRelation(String url){
-        Long cursor = -1L;
+        String cursor = "-1";
         List<String> result = new ArrayList<>();
         do {
             String urlWithCursor = url + "&"+CURSOR+"=" + cursor;
-            JsonNode response = this.getRequestHelper().executeGetRequest(urlWithCursor);
-            if(response!=null && response.has(IDS)){
-                List<String> ids = null;
-                try {
-                    ids = Arrays.asList(OBJECT_MAPPER.treeToValue(response.get("ids"), String[].class));
-                } catch (JsonProcessingException e) {
-                    LOGGER.severe(e.getMessage());
-                }
-                if(ids!=null){
-                    result.addAll(ids);
-                }
-            } else{
-                LOGGER.severe(()->nullOrIdNotFoundError);
-                return result;
-            }
-
-            cursor = Optional.ofNullable(response.get(NEXT_CURSOR)).map(o -> o.asLong()).orElse(0L);
+            IdListDTO idListResponse = this.getRequestHelper().executeGetRequest(urlWithCursor, IdListDTO.class);
+                result.addAll(idListResponse.getIds());
+            cursor = idListResponse.getNextCursor();
         }
-        while (cursor != 0);
+        while (!cursor.equals("0"));
         return result;
     }
 
     private Set<String> getUserIdsByRelationSet(String url){
-        Long cursor = -1L;
+        String cursor = "-1";
         Set<String> result = new HashSet<>();
         do {
             String urlWithCursor = url + "&"+CURSOR+"=" + cursor;
-            JsonNode response = this.getRequestHelper().executeGetRequest(urlWithCursor);
-            if(response!=null && response.has(IDS)){
-                List<String> ids = null;
-                try {
-                    ids = Arrays.asList(OBJECT_MAPPER.treeToValue(response.get("ids"), String[].class));
-                } catch (JsonProcessingException e) {
-                    LOGGER.severe(e.getMessage());
-                }
-                if(ids!=null){
-                    result.addAll(ids);
-                }
-            } else{
-                LOGGER.severe(()->nullOrIdNotFoundError);
-                return result;
-            }
-
-            cursor = Optional.ofNullable(response.get(NEXT_CURSOR)).map(o -> o.asLong()).orElse(0L);
+            IdListDTO idListResponse = this.getRequestHelper().executeGetRequest(urlWithCursor, IdListDTO.class);
+            result.addAll(idListResponse.getIds());
+            cursor = idListResponse.getNextCursor();
         }
-        while (cursor != 0);
+        while (!cursor.equals("0"));
         return result;
     }
 
     // can manage up to 200 results/call . Max 15 calls/15min ==> 3.000 results max./15min
     private List<IUser> getUsersInfoByRelation(String url) {
-        Long cursor = -1L;
+        String cursor = "-1";
         List<IUser> result = new ArrayList<>();
-        int nbCalls = 1;
         LOGGER.fine(() -> "users : ");
         do {
             String urlWithCursor = url + "&"+CURSOR+"=" + cursor;
-            JsonNode response = this.getRequestHelper().executeGetRequest(urlWithCursor);
-            if(response==null){
-                break;
-            }
-            List<IUser> users = null;
-            try {
-                users = Arrays.asList(OBJECT_MAPPER.treeToValue(response.get(USERS), UserDTOv1[].class));
-            } catch (JsonProcessingException e) {
-                LOGGER.severe(e.getMessage());
-            }
-            result.addAll(users);
-            cursor = Optional.ofNullable(response.get(NEXT_CURSOR)).map(o -> o.asLong()).orElse(0L);
-            nbCalls++;
-            LOGGER.info(result.size() + " | ");
-        } while (cursor != 0);
+            UserListDTO userListDTO = this.getRequestHelper().executeGetRequest(urlWithCursor, UserListDTO.class);
+            result.addAll(userListDTO.getUsers());
+            cursor = userListDTO.getNextCursor();
+        }
+        while (!cursor.equals("0"));
         LOGGER.info("\n");
         return result;
     }

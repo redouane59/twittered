@@ -30,7 +30,7 @@ public class RequestHelper {
     private int sleepTime = 5;
 
     // @todo Optional<TwitterResponse> as return type instead of JsonNode
-    public JsonNode executeGetRequest(String url) {
+    public <T> T executeGetRequest(String url, Class<T> classType) {
         try {
             Response response = this.getHttpClient(url)
                     .newCall(this.getSignedRequest(this.getRequest(url)))
@@ -38,10 +38,10 @@ public class RequestHelper {
             String stringResponse = response.body().string();
             JsonNode node = new ObjectMapper().readTree(stringResponse);
             if(response.code()==200){
-                return node;
+                return TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
             } else if (response.code()==429){
                 this.wait(sleepTime, response, url);
-                return this.executeGetRequest(url);
+                return this.executeGetRequest(url, classType);
             } else{
                 logGetError(url, stringResponse);
             }
@@ -71,7 +71,7 @@ public class RequestHelper {
                 return node;
             } else if (response.code()==429){
                 this.wait(sleepTime, response, url);
-                return this.executeGetRequest(url);
+                return this.executeGetRequest(url, JsonNode.class); // @todo to edit
             } else{
                 logGetError(url, stringResponse);
             }
