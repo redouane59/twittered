@@ -236,7 +236,7 @@ public class TwitterClientTest {
     @Test
     public void testGetTokens(){
         RequestHelper.TWITTER_CREDENTIALS.setAccessToken("");
-        RequestHelper.TWITTER_CREDENTIALS.setSecretToken("");
+        RequestHelper.TWITTER_CREDENTIALS.setAccessTokenSecret("");
         RequestTokenDTO result = twitterClient.getRequestHelper().executeTokenRequest();
         assertTrue(result.getOauthToken().length()>1);
         assertTrue(result.getOauthTokenSecret().length()>1);

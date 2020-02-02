@@ -6,10 +6,10 @@ This project is a JAVA library which allows you to consume the Twitter API.
 The file `src/main/resources/twitter-credentials.json` should contain your twitter credentials like this :
 ```
 {
-  "consumerKey": "xxx",
-  "consumerSecret": "xxx",
+  "apiKey": "xxx",
+  "apiSecretKey": "xxx",
   "accessToken": "xxx",
-  "secretToken": "xxx"
+  "accessTokenSecret": "xxx"
 }
 ```
 They can be found in [your twitter app page](https://developer.twitter.com/en/apps) in the _Key and tokens_

@@ -124,7 +124,7 @@ public class RequestHelper {
                     RequestTokenDTO result = this.executeTokenRequest();
                     // @todo to test
                     TWITTER_CREDENTIALS.setAccessToken(result.getOauthToken());
-                    TWITTER_CREDENTIALS.setSecretToken(result.getOauthTokenSecret());
+                    TWITTER_CREDENTIALS.setAccessTokenSecret(result.getOauthTokenSecret());
                     LOGGER.info(()->"token reset, now sleeping 30sec");
                     TimeUnit.SECONDS.sleep(30);
                 }
@@ -195,10 +195,10 @@ public class RequestHelper {
 
     private Request getSignedRequest(Request request){
         Oauth1SigningInterceptor oauth = new Oauth1SigningInterceptor.Builder()
-                .consumerKey(TWITTER_CREDENTIALS.getConsumerKey())
-                .consumerSecret(TWITTER_CREDENTIALS.getConsumerSecret())
+                .consumerKey(TWITTER_CREDENTIALS.getApiKey())
+                .consumerSecret(TWITTER_CREDENTIALS.getApiSecretKey())
                 .accessToken(TWITTER_CREDENTIALS.getAccessToken())
-                .accessSecret(TWITTER_CREDENTIALS.getSecretToken())
+                .accessSecret(TWITTER_CREDENTIALS.getAccessTokenSecret())
                 .build();
         return oauth.signRequest(request);
     }
@@ -268,9 +268,9 @@ public class RequestHelper {
         try {
             TwitterCredentials twitterCredentials = JsonHelper.OBJECT_MAPPER.readValue(twitterCredentialsFile, TwitterCredentials.class);
             if(twitterCredentials.getAccessToken()==null) LOGGER.severe("Access token is null in twitter-credentials.json");
-            if(twitterCredentials.getSecretToken()==null) LOGGER.severe("Secret token is null in twitter-credentials.json");
-            if(twitterCredentials.getConsumerKey()==null) LOGGER.severe("Consumer key is null in twitter-credentials.json");
-            if(twitterCredentials.getConsumerSecret()==null) LOGGER.severe("Consumer secret is null in twitter-credentials.json");
+            if(twitterCredentials.getAccessTokenSecret()==null) LOGGER.severe("Secret token is null in twitter-credentials.json");
+            if(twitterCredentials.getApiKey()==null) LOGGER.severe("Consumer key is null in twitter-credentials.json");
+            if(twitterCredentials.getApiSecretKey()==null) LOGGER.severe("Consumer secret is null in twitter-credentials.json");
             return twitterCredentials;
         } catch (IOException e) {
             LOGGER.severe(e.getMessage());
