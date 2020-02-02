@@ -1,7 +1,10 @@
 package com.socialmediaraiser.twitter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.socialmediaraiser.RelationType;
+import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv1;
+import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
 import com.socialmediaraiser.twitter.helpers.JsonHelper;
 import com.socialmediaraiser.twitter.helpers.RequestHelper;
 import com.socialmediaraiser.twitter.helpers.URLHelper;
@@ -44,7 +47,12 @@ public class TwitterClient implements ITwitterClient {
             String urlWithCursor = url + "&"+CURSOR+"=" + cursor;
             JsonNode response = this.getRequestHelper().executeGetRequest(urlWithCursor);
             if(response!=null && response.has(IDS)){
-                List<String> ids = this.getJsonHelper().jsonLongArrayToList(response);
+                List<String> ids = null;
+                try {
+                    ids = Arrays.asList(JsonHelper.OBJECT_MAPPER.treeToValue(response.get("ids"), String[].class));
+                } catch (JsonProcessingException e) {
+                    LOGGER.severe(e.getMessage());
+                }
                 if(ids!=null){
                     result.addAll(ids);
                 }
@@ -66,7 +74,12 @@ public class TwitterClient implements ITwitterClient {
             String urlWithCursor = url + "&"+CURSOR+"=" + cursor;
             JsonNode response = this.getRequestHelper().executeGetRequest(urlWithCursor);
             if(response!=null && response.has(IDS)){
-                List<String> ids = this.getJsonHelper().jsonLongArrayToList(response);
+                List<String> ids = null;
+                try {
+                    ids = Arrays.asList(JsonHelper.OBJECT_MAPPER.treeToValue(response.get("ids"), String[].class));
+                } catch (JsonProcessingException e) {
+                    LOGGER.severe(e.getMessage());
+                }
                 if(ids!=null){
                     result.addAll(ids);
                 }
@@ -93,7 +106,12 @@ public class TwitterClient implements ITwitterClient {
             if(response==null){
                 break;
             }
-            List<IUser> users = this.getJsonHelper().jsonUserArrayToList(response.get(USERS));
+            List<IUser> users = null;
+            try {
+                users = Arrays.asList(JsonHelper.OBJECT_MAPPER.treeToValue(response.get(USERS), UserDTOv1[].class));
+            } catch (JsonProcessingException e) {
+                LOGGER.severe(e.getMessage());
+            }
             result.addAll(users);
             cursor = this.getJsonHelper().getLongFromCursorObject(response);
             nbCalls++;
@@ -253,20 +271,26 @@ public class TwitterClient implements ITwitterClient {
         String url = this.getUrlHelper().getUsersUrlbyNames(userNames);
         JsonNode response = this.getRequestHelper().executeGetRequestReturningArray(url);
         if(response!=null){
-            return this.getJsonHelper().jsonUserArrayToList(response);
-        } else{
-            return new ArrayList<>();
+            try {
+                return Arrays.asList(JsonHelper.OBJECT_MAPPER.treeToValue(response.get(USERS), UserDTOv1[].class));
+            } catch (JsonProcessingException e) {
+                LOGGER.severe(e.getMessage());
+            }
         }
+        return new ArrayList<>();
     }
 
     public List<IUser> getUsersFromUserIds(List<String> userIds)  {
         String url = this.getUrlHelper().getUsersUrlbyIds(userIds);
         JsonNode response = this.getRequestHelper().executeGetRequestReturningArray(url);
-        if(response!=null){
-            return this.getJsonHelper().jsonUserArrayToList(response);
-        } else{
-            return new ArrayList<>();
+        if(response!=null) {
+            try {
+                return Arrays.asList(JsonHelper.OBJECT_MAPPER.treeToValue(response, UserDTOv1[].class));
+            } catch (JsonProcessingException e) {
+                LOGGER.severe(e.getMessage());
+            }
         }
+        return new ArrayList<>();
     }
 
     @Override
@@ -280,7 +304,11 @@ public class TwitterClient implements ITwitterClient {
         String url = this.getUrlHelper().getUserTweetsUrl(userId, count);
         JsonNode response = this.getRequestHelper().executeGetRequestReturningArray(url);
         if(response!=null && response.size()>0){
-            return this.getJsonHelper().jsonResponseToTweetList(response);
+            try {
+                return Arrays.asList(JsonHelper.OBJECT_MAPPER.treeToValue(response, TweetDTOv1[].class));
+            } catch (JsonProcessingException e) {
+                LOGGER.severe(e.getMessage());
+            }
         }
         return new ArrayList<>();
     }
@@ -315,8 +343,12 @@ public class TwitterClient implements ITwitterClient {
                 LOGGER.severe(e.getMessage());
             }
 
-            if(response!=null && response.size()>0){
-                result.addAll(this.getJsonHelper().jsonResponseToTweetListV2(responseArray));
+            if(response.size() > 0){
+                try {
+                    result.addAll(Arrays.asList(JsonHelper.OBJECT_MAPPER.treeToValue(responseArray, TweetDTOv1[].class)));
+                } catch (JsonProcessingException e) {
+                    LOGGER.severe(e.getMessage());
+                }
             } else{
                 LOGGER.severe(()->nullOrIdNotFoundError);
             }

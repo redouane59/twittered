@@ -1,4 +1,4 @@
-package twitter.unit;
+package com.socialmediaraiser.twitter.unit;
 
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
 import org.junit.jupiter.api.Test;

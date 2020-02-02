@@ -1,4 +1,4 @@
-package twitter.nrt;
+package com.socialmediaraiser.twitter.nrt;
 
 import com.socialmediaraiser.RelationType;
 import com.socialmediaraiser.twitter.IUser;

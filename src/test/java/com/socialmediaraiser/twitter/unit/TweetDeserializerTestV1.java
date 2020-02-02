@@ -1,4 +1,4 @@
-package twitter.unit;
+package com.socialmediaraiser.twitter.unit;
 
 import com.socialmediaraiser.twitter.helpers.JsonHelper;
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;

@@ -1,4 +1,4 @@
-package twitter.unit;
+package com.socialmediaraiser.twitter.unit;
 
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import org.junit.jupiter.api.Test;
