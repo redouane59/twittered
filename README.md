@@ -15,28 +15,14 @@ The file `src/main/resources/twitter-credentials.json` should contain your twitt
 It can be found in [your app page](https://developer.twitter.com/en/apps) in the _Key and tokens_
 tab.
 
+### How to use it
+1) Clone this repository
+2) Run `mvn clean install`
+3) Add a dependency on your project with the generated `.jar` file from `target` folder
+4) Start using `TwitterClient` class
+
 ### Available methods
-#### User related
-```
-List<AbstractUser> getFollowerUsers(String userId);
-List<String> getFollowerIds(String userId);
-List<AbstractUser> getFollowingsUsers(String userId);
-List<String> getFollowingIds(String userId);
-Set<String> getUserFollowersIds(String userId);
-RelationType getRelationType(String userId1, String userId2);
-AbstractUser getUserFromUserName(String userName);
-AbstractUser getUserFromUserId(String userId);
-boolean follow(String userId);
-boolean unfollow(String userId);
-boolean unfollowByName(String userName);
-List<Tweet> getUserLastTweets(String userId, int count);
-``` 
-#### Tweet related
-```
-void likeTweet(String tweetId);
-void retweetTweet(String tweetId);
-List<String> getRetweetersId(String tweetId);
-```
+See : [ITwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/ITwitterClient.java)
 ### External Resources
 [Twitter Developers docs](https://developer.twitter.com/en/docs)
 
