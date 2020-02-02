@@ -1,6 +1,9 @@
 package com.socialmediaraiser.twitter;
 
+import com.socialmediaraiser.twitter.dto.tweet.ITweet;
+
 import java.util.Date;
+import java.util.List;
 
 public interface IUser {
 
@@ -14,6 +17,7 @@ public interface IUser {
     int getFollowingCount();
     int getTweetCount();
     String getLang();
+    List<ITweet> getMostRecentTweet();
     boolean isProtectedAccount();
 
 }

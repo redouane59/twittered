@@ -2,6 +2,7 @@ package com.socialmediaraiser.twitter.helpers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.socialmediaraiser.twitter.TwitterClient;
 import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
 import com.socialmediaraiser.twitter.signature.TwitterCredentials;
 import com.socialmediaraiser.twitter.signature.Oauth1SigningInterceptor;
@@ -104,7 +105,7 @@ public class RequestHelper {
 
     public JsonNode executePostRequest(String url, Map<String, String> parameters) {
         try {
-            String json = JsonHelper.OBJECT_MAPPER.writeValueAsString(parameters);
+            String json = TwitterClient.OBJECT_MAPPER.writeValueAsString(parameters);
 
             RequestBody requestBody = RequestBody.create(null, json);
 
@@ -130,7 +131,7 @@ public class RequestHelper {
                 }
             }
             String stringResponse = response.body().string();
-            return JsonHelper.OBJECT_MAPPER.readTree(stringResponse);
+            return TwitterClient.OBJECT_MAPPER.readTree(stringResponse);
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
             return null;
@@ -175,7 +176,7 @@ public class RequestHelper {
                     .newCall(this.getSignedRequest(this.getRequest(url))).execute();
             String stringResponse = response.body().string();
             if(response.code()==200){
-                return JsonHelper.OBJECT_MAPPER.readTree(stringResponse);
+                return TwitterClient.OBJECT_MAPPER.readTree(stringResponse);
             } else if (response.code() == 401){
                 response.close();
                 LOGGER.info(()->"user private, not authorized");
@@ -266,7 +267,7 @@ public class RequestHelper {
             return null;
         }
         try {
-            TwitterCredentials twitterCredentials = JsonHelper.OBJECT_MAPPER.readValue(twitterCredentialsFile, TwitterCredentials.class);
+            TwitterCredentials twitterCredentials = TwitterClient.OBJECT_MAPPER.readValue(twitterCredentialsFile, TwitterCredentials.class);
             if(twitterCredentials.getAccessToken()==null) LOGGER.severe("Access token is null in twitter-credentials.json");
             if(twitterCredentials.getAccessTokenSecret()==null) LOGGER.severe("Secret token is null in twitter-credentials.json");
             if(twitterCredentials.getApiKey()==null) LOGGER.severe("Consumer key is null in twitter-credentials.json");

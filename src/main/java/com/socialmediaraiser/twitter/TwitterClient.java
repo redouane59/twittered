@@ -1,11 +1,13 @@
 package com.socialmediaraiser.twitter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socialmediaraiser.RelationType;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv1;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
-import com.socialmediaraiser.twitter.helpers.JsonHelper;
+
 import com.socialmediaraiser.twitter.helpers.RequestHelper;
 import com.socialmediaraiser.twitter.helpers.URLHelper;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
@@ -25,9 +27,9 @@ import java.util.logging.Logger;
 public class TwitterClient implements ITwitterClient {
 
     private static final Logger LOGGER = Logger.getLogger(TwitterClient.class.getName());
+    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private URLHelper urlHelper = new URLHelper();
     private RequestHelper requestHelper = new RequestHelper();
-    private JsonHelper jsonHelper = new JsonHelper();
     private static final String IDS = "ids";
     private static final String USERS = "users";
     private static final String CURSOR = "cursor";
@@ -38,6 +40,7 @@ public class TwitterClient implements ITwitterClient {
     private static final String FOLLOWED_BY = "followed_by";
     private static final String SOURCE = "source";
     private final String nullOrIdNotFoundError = "response null or ids not found !";
+    private static final String NEXT_CURSOR = "next_cursor";
 
     // can manage up to 5000 results / call . Max 15 calls / 15min ==> 75.000 results max. / 15min
     private List<String> getUserIdsByRelation(String url){
@@ -49,7 +52,7 @@ public class TwitterClient implements ITwitterClient {
             if(response!=null && response.has(IDS)){
                 List<String> ids = null;
                 try {
-                    ids = Arrays.asList(JsonHelper.OBJECT_MAPPER.treeToValue(response.get("ids"), String[].class));
+                    ids = Arrays.asList(OBJECT_MAPPER.treeToValue(response.get("ids"), String[].class));
                 } catch (JsonProcessingException e) {
                     LOGGER.severe(e.getMessage());
                 }
@@ -61,9 +64,9 @@ public class TwitterClient implements ITwitterClient {
                 return result;
             }
 
-            cursor = this.getJsonHelper().getLongFromCursorObject(response);
+            cursor = Optional.ofNullable(response.get(NEXT_CURSOR)).map(o -> o.asLong()).orElse(0L);
         }
-        while (cursor != null && cursor != 0);
+        while (cursor != 0);
         return result;
     }
 
@@ -76,7 +79,7 @@ public class TwitterClient implements ITwitterClient {
             if(response!=null && response.has(IDS)){
                 List<String> ids = null;
                 try {
-                    ids = Arrays.asList(JsonHelper.OBJECT_MAPPER.treeToValue(response.get("ids"), String[].class));
+                    ids = Arrays.asList(OBJECT_MAPPER.treeToValue(response.get("ids"), String[].class));
                 } catch (JsonProcessingException e) {
                     LOGGER.severe(e.getMessage());
                 }
@@ -88,9 +91,9 @@ public class TwitterClient implements ITwitterClient {
                 return result;
             }
 
-            cursor = this.getJsonHelper().getLongFromCursorObject(response);
+            cursor = Optional.ofNullable(response.get(NEXT_CURSOR)).map(o -> o.asLong()).orElse(0L);
         }
-        while (cursor != null && cursor != 0);
+        while (cursor != 0);
         return result;
     }
 
@@ -108,15 +111,15 @@ public class TwitterClient implements ITwitterClient {
             }
             List<IUser> users = null;
             try {
-                users = Arrays.asList(JsonHelper.OBJECT_MAPPER.treeToValue(response.get(USERS), UserDTOv1[].class));
+                users = Arrays.asList(OBJECT_MAPPER.treeToValue(response.get(USERS), UserDTOv1[].class));
             } catch (JsonProcessingException e) {
                 LOGGER.severe(e.getMessage());
             }
             result.addAll(users);
-            cursor = this.getJsonHelper().getLongFromCursorObject(response);
+            cursor = Optional.ofNullable(response.get(NEXT_CURSOR)).map(o -> o.asLong()).orElse(0L);
             nbCalls++;
             LOGGER.info(result.size() + " | ");
-        } while (cursor != 0 && cursor!=null);
+        } while (cursor != 0);
         LOGGER.info("\n");
         return result;
     }
@@ -171,7 +174,7 @@ public class TwitterClient implements ITwitterClient {
         String response = this.getRequestHelper().executeGetRequestV2(url);
         if(response!=null) {
             try {
-                RelationshipDTO relationshipDTO = JsonHelper.OBJECT_MAPPER.readValue(this.getRequestHelper().executeGetRequestV2(url), RelationshipObjectResponseDTO.class).getRelationship();
+                RelationshipDTO relationshipDTO = OBJECT_MAPPER.readValue(this.getRequestHelper().executeGetRequestV2(url), RelationshipObjectResponseDTO.class).getRelationship();
                 Boolean followedBy = relationshipDTO.getSource().isFollowedBy();
                 Boolean following = relationshipDTO.getSource().isFollowing();
                 if (followedBy && following){
@@ -203,7 +206,7 @@ public class TwitterClient implements ITwitterClient {
         String url = this.urlHelper.getFollowUrl(userId);
         JsonNode jsonResponse = this.requestHelper.executePostRequest(url, new HashMap<>());
         if(jsonResponse!=null) {
-            if (jsonResponse.has(JsonHelper.FOLLOWING)) {
+            if (jsonResponse.has(FOLLOWING)) {
                 return true;
             } else{
                 LOGGER.severe(()->"following property not found :(  " + userId + " not followed !");
@@ -244,7 +247,7 @@ public class TwitterClient implements ITwitterClient {
         String response = this.getRequestHelper().executeGetRequestV2(url);
         if(response!=null){
             try{
-                return JsonHelper.OBJECT_MAPPER.readValue(response, UserDTOv2.class);
+                return OBJECT_MAPPER.readValue(response, UserDTOv2.class);
             } catch(Exception e){
                 this.logError(e, response);
             }
@@ -259,7 +262,7 @@ public class TwitterClient implements ITwitterClient {
         String response = this.getRequestHelper().executeGetRequestV2(url);
         if (response != null) {
             try {
-                return JsonHelper.OBJECT_MAPPER.readValue(response, UserDTOv2.class);
+                return OBJECT_MAPPER.readValue(response, UserDTOv2.class);
             } catch (IOException e) {
                 this.logError(e, response);
             }
@@ -272,7 +275,7 @@ public class TwitterClient implements ITwitterClient {
         JsonNode response = this.getRequestHelper().executeGetRequestReturningArray(url);
         if(response!=null){
             try {
-                return Arrays.asList(JsonHelper.OBJECT_MAPPER.treeToValue(response.get(USERS), UserDTOv1[].class));
+                return Arrays.asList(OBJECT_MAPPER.treeToValue(response.get(USERS), UserDTOv1[].class));
             } catch (JsonProcessingException e) {
                 LOGGER.severe(e.getMessage());
             }
@@ -285,7 +288,7 @@ public class TwitterClient implements ITwitterClient {
         JsonNode response = this.getRequestHelper().executeGetRequestReturningArray(url);
         if(response!=null) {
             try {
-                return Arrays.asList(JsonHelper.OBJECT_MAPPER.treeToValue(response, UserDTOv1[].class));
+                return Arrays.asList(OBJECT_MAPPER.treeToValue(response, UserDTOv1[].class));
             } catch (JsonProcessingException e) {
                 LOGGER.severe(e.getMessage());
             }
@@ -305,7 +308,7 @@ public class TwitterClient implements ITwitterClient {
         JsonNode response = this.getRequestHelper().executeGetRequestReturningArray(url);
         if(response!=null && response.size()>0){
             try {
-                return Arrays.asList(JsonHelper.OBJECT_MAPPER.treeToValue(response, TweetDTOv1[].class));
+                return Arrays.asList(OBJECT_MAPPER.treeToValue(response, TweetDTOv1[].class));
             } catch (JsonProcessingException e) {
                 LOGGER.severe(e.getMessage());
             }
@@ -338,14 +341,14 @@ public class TwitterClient implements ITwitterClient {
             JsonNode response = this.getRequestHelper().executeGetRequestWithParameters(this.getUrlHelper().getSearchTweets30daysUrl(),parameters);
             JsonNode responseArray = null;
             try {
-                responseArray = JsonHelper.OBJECT_MAPPER.readTree(response.get("results").toString());
+                responseArray = OBJECT_MAPPER.readTree(response.get("results").toString());
             } catch (IOException e) {
                 LOGGER.severe(e.getMessage());
             }
 
             if(response.size() > 0){
                 try {
-                    result.addAll(Arrays.asList(JsonHelper.OBJECT_MAPPER.treeToValue(responseArray, TweetDTOv1[].class)));
+                    result.addAll(Arrays.asList(OBJECT_MAPPER.treeToValue(responseArray, TweetDTOv1[].class)));
                 } catch (JsonProcessingException e) {
                     LOGGER.severe(e.getMessage());
                 }
@@ -374,6 +377,6 @@ public class TwitterClient implements ITwitterClient {
             LOGGER.severe("file not found at : " + file.toURI().toString());
             return null;
         }
-        return  Arrays.asList(JsonHelper.OBJECT_MAPPER.readValue(file, TweetDataDTO[].class));
+        return  Arrays.asList(OBJECT_MAPPER.readValue(file, TweetDataDTO[].class));
     }
 }

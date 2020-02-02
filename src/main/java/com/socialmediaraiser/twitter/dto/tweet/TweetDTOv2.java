@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.socialmediaraiser.twitter.IUser;
-import com.socialmediaraiser.twitter.helpers.JsonHelper;
+import com.socialmediaraiser.twitter.helpers.ConverterHelper;
+
 import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
 import lombok.Data;
 
@@ -38,10 +39,6 @@ public class TweetDTOv2 implements ITweet {
         @JsonProperty("possibly_sensitive")
         private boolean possiblySensitive;
         private String lang;
-        private String source;
-        private String format;
-        private JsonNode attachments;
-        private JsonNode geo;
 
         @Override
         public int getRetweetCount() {
@@ -59,6 +56,11 @@ public class TweetDTOv2 implements ITweet {
         }
 
         @Override
+        public int getQuoteCount() {
+            return this.stats.getQuoteCount();
+        }
+
+        @Override
         public String getInReplyToStatusId() {
             return this.referencedTweets.get(0).getId();
         }
@@ -70,7 +72,7 @@ public class TweetDTOv2 implements ITweet {
 
         @Override
         public Date getCreatedAt(){
-            return JsonHelper.getDateFromTwitterDateV2(this.createdAt);
+            return ConverterHelper.getDateFromTwitterDateV2(this.createdAt);
         }
 
     }
@@ -116,6 +118,11 @@ public class TweetDTOv2 implements ITweet {
     @Override
     public int getReplyCount() {
         return this.data[0].getStats().getReplyCount();
+    }
+
+    @Override
+    public int getQuoteCount() {
+        return this.data[0].getStats().getQuoteCount();
     }
 
     @Override

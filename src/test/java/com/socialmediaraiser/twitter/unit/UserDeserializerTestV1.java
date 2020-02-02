@@ -1,9 +1,9 @@
 package com.socialmediaraiser.twitter.unit;
 
 import com.socialmediaraiser.twitter.IUser;
-
-import com.socialmediaraiser.twitter.helpers.JsonHelper;
+import com.socialmediaraiser.twitter.TwitterClient;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
+import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UserDeserializerTestV1 {
 
     private  File userFile1 = new File(getClass().getClassLoader().getResource("tests/user_example_v1.json").getFile());
-    private IUser userV1 = JsonHelper.OBJECT_MAPPER.readValue(userFile1, UserDTOv1.class);
+    private IUser userV1 = TwitterClient.OBJECT_MAPPER.readValue(userFile1, UserDTOv1.class);
 
     public UserDeserializerTestV1() throws IOException {
     }
@@ -52,11 +52,8 @@ public class UserDeserializerTestV1 {
 
     @Test
     public void testGetUserDateOfCreation() {
-        assertEquals(JsonHelper.getDateFromTwitterString("Wed May 23 06:01:13 +0000 2007"), userV1.getDateOfCreation());
+        assertEquals(ConverterHelper.getDateFromTwitterString("Wed May 23 06:01:13 +0000 2007"), userV1.getDateOfCreation());
     }
-
-
-
 
 }
 

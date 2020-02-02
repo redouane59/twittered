@@ -3,7 +3,9 @@ package com.socialmediaraiser.twitter.dto.user;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.socialmediaraiser.twitter.IUser;
-import com.socialmediaraiser.twitter.helpers.JsonHelper;
+import com.socialmediaraiser.twitter.dto.tweet.ITweet;
+import com.socialmediaraiser.twitter.helpers.ConverterHelper;
+
 import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv2;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,15 +32,10 @@ public class UserDTOv1 implements IUser {
     @JsonProperty("screen_name")
     @JsonAlias({"screen_name","username"})
     private String name;
-    private List<TweetDTOv2> mostRecentTweet;
+    private List<ITweet> mostRecentTweet;
     private String description;
-    private Date dateOfFollow;
     @JsonAlias("protected")
     private boolean protectedAccount;
-    private Date dateOfFollowBack;
-   // private UserScoringEngine scoringEngine;
-  // private int commonFollowers; // nb of occurrences in followers search
-  //  private int nbInteractions;
     @JsonProperty("followers_count")
     private int followersCount;
     @JsonProperty("friends_count")
@@ -56,7 +53,6 @@ public class UserDTOv1 implements IUser {
     @Override
     public boolean equals(Object o) {
         if (o==null || this.getClass() != o.getClass()) return false;
-
         UserDTOv1 otherUser = (UserDTOv1) o;
         return (otherUser).getId().equals(this.getId());
     }
@@ -70,23 +66,15 @@ public class UserDTOv1 implements IUser {
         this.setDateOfFollow(new Date());
     } */
 
-    public long getDaysBetweenFollowAndLastUpdate(){
-        if(dateOfFollow==null || this.getLastUpdate()==null){
-            return Long.MAX_VALUE;
-        }
-        return (dateOfFollow.getTime()-this.getLastUpdate().getTime()) / (24 * 60 * 60 * 1000);
-    }
-
-    public long getYearsBetweenFollowAndCreation(){
-        return (dateOfFollow.getTime()-this.getDateOfCreation().getTime()) / (365 * 24 * 60 * 60 * 1000);
-    }
-
     public Date getDateOfCreation(){
-        return JsonHelper.getDateFromTwitterString(this.dateOfCreation);
+        return ConverterHelper.getDateFromTwitterString(this.dateOfCreation);
     }
 
     public Date getLastUpdate(){
-        return JsonHelper.getDateFromTwitterString(this.lastUpdate);
+        return ConverterHelper.getDateFromTwitterString(this.lastUpdate);
     }
 
+    public List<ITweet> getMostRecentTweet(){
+        throw new UnsupportedOperationException();
+    }
 }

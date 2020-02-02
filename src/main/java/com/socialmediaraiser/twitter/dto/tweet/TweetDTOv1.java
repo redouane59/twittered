@@ -3,7 +3,8 @@ package com.socialmediaraiser.twitter.dto.tweet;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.socialmediaraiser.twitter.helpers.JsonHelper;
+import com.socialmediaraiser.twitter.helpers.ConverterHelper;
+
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,8 @@ public class TweetDTOv1 implements ITweet {
     private int likeCount;
     @JsonProperty("reply_count")
     private int replyCount;
+    @JsonProperty("quote_count")
+    private int quoteCount;
     @JsonAlias({"text","full_text"})
     private String text;
     @JsonProperty("created_at")
@@ -41,7 +44,7 @@ public class TweetDTOv1 implements ITweet {
     private String inReplyToUserId;
 
     public Date getCreatedAt(){
-        return JsonHelper.getDateFromTwitterString(this.createdAt);
+        return ConverterHelper.getDateFromTwitterString(this.createdAt);
     }
 
 }

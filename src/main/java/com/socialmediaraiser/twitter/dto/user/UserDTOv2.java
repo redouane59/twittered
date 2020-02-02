@@ -3,14 +3,16 @@ package com.socialmediaraiser.twitter.dto.user;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.socialmediaraiser.twitter.IUser;
-import com.socialmediaraiser.twitter.helpers.JsonHelper;
+import com.socialmediaraiser.twitter.dto.tweet.ITweet;
+import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv2;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -36,7 +38,6 @@ public class UserDTOv2 implements IUser {
         private String location;
         private String url;
         private boolean verified;
-        private JsonNode entities;
         @JsonProperty("profile_image_url")
         private String profileImageUrl;
         private UserStatsDTO stats;
@@ -44,7 +45,6 @@ public class UserDTOv2 implements IUser {
         private String mostRecentTweetId;
         @JsonProperty("pinned_tweet_id")
         private String pinnedTweetId;
-        private String format;
         private String description;
         private String lang;
         private boolean isProtectedAccount;
@@ -56,7 +56,7 @@ public class UserDTOv2 implements IUser {
 
         @Override
         public Date getDateOfCreation() {
-            return JsonHelper.getDateFromTwitterString(this.createdAt);
+            return ConverterHelper.getDateFromTwitterString(this.createdAt);
         }
 
         @Override
@@ -72,6 +72,11 @@ public class UserDTOv2 implements IUser {
         @Override
         public int getTweetCount() {
             return this.stats.getTweetCount();
+        }
+
+        @Override
+        public List<ITweet> getMostRecentTweet() {
+            throw new UnsupportedOperationException();
         }
 
         @Override
@@ -103,7 +108,7 @@ public class UserDTOv2 implements IUser {
 
     @Override
     public Date getDateOfCreation() {
-        return JsonHelper.getDateFromTwitterDateV2(this.data[0].getCreatedAt());
+        return ConverterHelper.getDateFromTwitterDateV2(this.data[0].getCreatedAt());
     }
 
     @Override
@@ -115,14 +120,11 @@ public class UserDTOv2 implements IUser {
         }
     }
 
- /*   @Override
-    public Date getLastUpdate() {
-        if(this.getMostRecentTweet()==null || !this.getMostRecentTweet().isEmpty()){
-            LOGGER.severe(()->"mostRecentTweet null");
-            return null;
-        }
-        return JsonHelper.getDateFromTwitterDateV2(this.getMostRecentTweet().get(0).getCreatedAt());
-    } */
+    @Override
+    public List<ITweet> getMostRecentTweet(){
+        return Arrays.asList(this.includes.getTweets());
+    }
+
 
     @Override
     public int getFollowersCount() {
@@ -141,20 +143,12 @@ public class UserDTOv2 implements IUser {
 
     @Override
     public String getLang() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean isProtectedAccount() {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
- /*   @Override
-    public String getLang() {
-        if(this.getMostRecentTweet()==null && !this.getMostRecentTweet().isEmpty()){
-            LOGGER.severe(()->"mostRecentTweet null");
-            return null;
-        }
-        return this.getMostRecentTweet().get(0).getLang();
-    } */
 }

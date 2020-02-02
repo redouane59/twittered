@@ -1,7 +1,10 @@
 package com.socialmediaraiser.twitter.unit;
 
 import com.socialmediaraiser.twitter.IUser;
-import com.socialmediaraiser.twitter.helpers.JsonHelper;
+import com.socialmediaraiser.twitter.TwitterClient;
+import com.socialmediaraiser.twitter.dto.tweet.ITweet;
+import com.socialmediaraiser.twitter.helpers.ConverterHelper;
+
 import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
 import org.junit.jupiter.api.Test;
 
@@ -9,11 +12,12 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class UserDeserializerTestV2 {
 
     private  File userFile2 = new File(getClass().getClassLoader().getResource("tests/user_example_v2.json").getFile());
-    private IUser userV2 = JsonHelper.OBJECT_MAPPER.readValue(userFile2, UserDTOv2.class);
+    private IUser userV2 = TwitterClient.OBJECT_MAPPER.readValue(userFile2, UserDTOv2.class);
 
     public UserDeserializerTestV2() throws IOException {
     }
@@ -56,12 +60,27 @@ public class UserDeserializerTestV2 {
 
     @Test
     public void testGetUserDateOfCreation() {
-        assertEquals(JsonHelper.getDateFromTwitterDateV2("2009-11-23T17:53:15.000Z"), userV2.getDateOfCreation());
+        assertEquals(ConverterHelper.getDateFromTwitterDateV2("2009-11-23T17:53:15.000Z"), userV2.getDateOfCreation());
     }
 
     @Test
     public void testGetUserLastUpdate(){
-        assertEquals(JsonHelper.getDateFromTwitterDateV2("2020-01-29T07:21:31.000Z"), userV2.getLastUpdate());
+        assertEquals(ConverterHelper.getDateFromTwitterDateV2("2020-01-29T07:21:31.000Z"), userV2.getLastUpdate());
+    }
+
+    @Test
+    public void testGetUserLastTweet(){
+        ITweet mostRecentTweet = userV2.getMostRecentTweet().get(0);
+        assertNotNull(mostRecentTweet);
+        assertEquals("1222419484046241792",mostRecentTweet.getId());
+        assertEquals("fr", mostRecentTweet.getLang());
+        assertEquals("Ok ok", mostRecentTweet.getText());
+        assertEquals(41, mostRecentTweet.getRetweetCount());
+        assertEquals(102, mostRecentTweet.getLikeCount());
+        assertEquals(2, mostRecentTweet.getReplyCount());
+        assertEquals(3, mostRecentTweet.getQuoteCount());
+        assertEquals(ConverterHelper.getDateFromTwitterDateV2("2020-01-29T07:21:31." +
+                "000Z"), mostRecentTweet.getCreatedAt());
     }
 }
 

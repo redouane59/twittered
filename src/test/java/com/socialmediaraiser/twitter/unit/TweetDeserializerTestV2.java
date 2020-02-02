@@ -1,7 +1,9 @@
 package com.socialmediaraiser.twitter.unit;
 
 import com.socialmediaraiser.twitter.IUser;
-import com.socialmediaraiser.twitter.helpers.JsonHelper;
+import com.socialmediaraiser.twitter.TwitterClient;
+import com.socialmediaraiser.twitter.helpers.ConverterHelper;
+
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv2;
 import org.junit.jupiter.api.Test;
@@ -15,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class TweetDeserializerTestV2 {
 
     private File tweetFile1 = new File(getClass().getClassLoader().getResource("tests/tweet_example_v2.json").getFile());
-    private ITweet tweetv2 = JsonHelper.OBJECT_MAPPER.readValue(tweetFile1, TweetDTOv2.class);
+    private ITweet tweetv2 = TwitterClient.OBJECT_MAPPER.readValue(tweetFile1, TweetDTOv2.class);
 
     public TweetDeserializerTestV2() throws IOException {
     }
@@ -47,7 +49,7 @@ public class TweetDeserializerTestV2 {
 
     @Test
     public void testCreateAt(){
-        assertEquals(JsonHelper.getDateFromTwitterDateV2("2020-01-28T17:02:51.000Z"), tweetv2.getCreatedAt());
+        assertEquals(ConverterHelper.getDateFromTwitterDateV2("2020-01-28T17:02:51.000Z"), tweetv2.getCreatedAt());
     }
 
     @Test

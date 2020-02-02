@@ -1,10 +1,15 @@
 package com.socialmediaraiser.twitter.helpers;
 
+import io.vavr.control.Option;
+import io.vavr.control.Try;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class ConverterHelper {
 
@@ -39,5 +44,19 @@ public class ConverterHelper {
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MINUTE, -minutes);
         return cal.getTime();
+    }
+
+    public static Date getDateFromTwitterString(String date)
+    {
+        if(date==null) return null;
+        final String TWITTER = "EEE MMM dd HH:mm:ss Z yyyy";
+        SimpleDateFormat sf = new SimpleDateFormat(TWITTER, Locale.ENGLISH);
+        sf.setLenient(true);
+        return Try.of(() -> sf.parse(date)).getOrNull();
+    }
+
+    public static Date getDateFromTwitterDateV2(String date)
+    {
+        return Option.of(date).map(d -> Date.from(Instant.parse(date))).getOrNull();
     }
 }
