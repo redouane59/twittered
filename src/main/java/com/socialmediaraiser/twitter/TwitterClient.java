@@ -49,7 +49,7 @@ public class TwitterClient implements ITwitterClient {
         do {
             String urlWithCursor = url + "&"+CURSOR+"=" + cursor;
             IdListDTO idListResponse = this.getRequestHelper().executeGetRequest(urlWithCursor, IdListDTO.class);
-                result.addAll(idListResponse.getIds());
+            result.addAll(idListResponse.getIds());
             cursor = idListResponse.getNextCursor();
         }
         while (!cursor.equals("0"));
@@ -215,28 +215,21 @@ public class TwitterClient implements ITwitterClient {
 
     public List<IUser> getUsersFromUserNames(List<String> userNames)  {
         String url = this.getUrlHelper().getUsersUrlbyNames(userNames);
-        JsonNode response = this.getRequestHelper().executeGetRequestReturningArray(url);
-        if(response!=null){
-            try {
-                return Arrays.asList(OBJECT_MAPPER.treeToValue(response.get(USERS), UserDTOv1[].class));
-            } catch (JsonProcessingException e) {
-                LOGGER.severe(e.getMessage());
-            }
-        }
-        return new ArrayList<>();
+        UserDTOv1[] response = this.getRequestHelper().executeGetRequestReturningArray(url, UserDTOv1[].class);
+        return Arrays.asList(response);
     }
 
     public List<IUser> getUsersFromUserIds(List<String> userIds)  {
         String url = this.getUrlHelper().getUsersUrlbyIds(userIds);
-        JsonNode response = this.getRequestHelper().executeGetRequestReturningArray(url);
-        if(response!=null) {
-            try {
-                return Arrays.asList(OBJECT_MAPPER.treeToValue(response, UserDTOv1[].class));
-            } catch (JsonProcessingException e) {
-                LOGGER.severe(e.getMessage());
-            }
-        }
-        return new ArrayList<>();
+        UserDTOv1[] response = this.getRequestHelper().executeGetRequestReturningArray(url, UserDTOv1[].class);
+        return Arrays.asList(response);
+    }
+
+    @Override
+    public List<ITweet> getUserLastTweets(String userId, int count){
+        String url = this.getUrlHelper().getUserTweetsUrl(userId, count);
+        TweetDTOv1[] response = this.getRequestHelper().executeGetRequestReturningArray(url, TweetDTOv1[].class);
+        return Arrays.asList(response);
     }
 
     @Override
@@ -245,19 +238,6 @@ public class TwitterClient implements ITwitterClient {
         return this.getRequestHelper().executeGetRequestV2(url);
     }
 
-    @Override
-    public List<ITweet> getUserLastTweets(String userId, int count){
-        String url = this.getUrlHelper().getUserTweetsUrl(userId, count);
-        JsonNode response = this.getRequestHelper().executeGetRequestReturningArray(url);
-        if(response!=null && response.size()>0){
-            try {
-                return Arrays.asList(OBJECT_MAPPER.treeToValue(response, TweetDTOv1[].class));
-            } catch (JsonProcessingException e) {
-                LOGGER.severe(e.getMessage());
-            }
-        }
-        return new ArrayList<>();
-    }
 
     @Override
     public void likeTweet(String tweetId) {

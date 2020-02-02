@@ -4,13 +4,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socialmediaraiser.twitter.TwitterClient;
 import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
-import com.socialmediaraiser.twitter.signature.TwitterCredentials;
 import com.socialmediaraiser.twitter.signature.Oauth1SigningInterceptor;
-import io.vavr.control.Try;
+import com.socialmediaraiser.twitter.signature.TwitterCredentials;
 import lombok.NoArgsConstructor;
 import okhttp3.*;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -160,19 +160,19 @@ public class RequestHelper {
     }
 
     @Deprecated
-    public JsonNode executeGetRequestReturningArray(String url) {
+    public <T> T executeGetRequestReturningArray(String url, Class<T> classType) {
         try {
             Response response = this.getHttpClient(url)
                     .newCall(this.getSignedRequest(this.getRequest(url))).execute();
             String stringResponse = response.body().string();
             if(response.code()==200){
-                return TwitterClient.OBJECT_MAPPER.readTree(stringResponse);
+                return TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
             } else if (response.code() == 401){
                 response.close();
                 LOGGER.info(()->"user private, not authorized");
             } else if (response.code()==429){
                 this.wait(sleepTime, response, url);
-                return this.executeGetRequestReturningArray(url);
+                return this.executeGetRequestReturningArray(url, classType);
             } else{
                 LOGGER.severe(()->"not 200 (return null) calling " + url + " " + response.message() + " - " + response.code());
             }
