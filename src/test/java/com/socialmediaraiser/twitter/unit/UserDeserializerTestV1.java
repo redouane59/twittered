@@ -5,10 +5,8 @@ import com.socialmediaraiser.twitter.TwitterClient;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserDeserializerTestV1 {

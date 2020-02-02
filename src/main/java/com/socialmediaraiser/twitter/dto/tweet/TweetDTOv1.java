@@ -4,13 +4,11 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
-
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.Date;
 
 /**

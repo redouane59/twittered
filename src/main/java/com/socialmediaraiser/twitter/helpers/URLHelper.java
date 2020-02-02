@@ -1,7 +1,6 @@
 package com.socialmediaraiser.twitter.helpers;
 
 import lombok.Data;
-
 import java.util.List;
 import java.util.logging.Logger;
 

@@ -4,13 +4,10 @@ import com.socialmediaraiser.twitter.IUser;
 import com.socialmediaraiser.twitter.TwitterClient;
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
-
 import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
 import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

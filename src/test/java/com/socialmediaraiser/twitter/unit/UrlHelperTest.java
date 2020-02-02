@@ -2,9 +2,7 @@ package com.socialmediaraiser.twitter.unit;
 
 import com.socialmediaraiser.twitter.helpers.URLHelper;
 import org.junit.jupiter.api.Test;
-
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UrlHelperTest {

@@ -7,15 +7,12 @@ import com.socialmediaraiser.twitter.TwitterClient;
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv1;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
-
 import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonHelperTest {

@@ -2,9 +2,7 @@ package com.socialmediaraiser.twitter.unit;
 
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import org.junit.jupiter.api.Test;
-
 import java.util.Date;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 

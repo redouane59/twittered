@@ -5,10 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.socialmediaraiser.twitter.IUser;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
-
 import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
 import lombok.Data;
-
 import java.util.Date;
 import java.util.List;
 

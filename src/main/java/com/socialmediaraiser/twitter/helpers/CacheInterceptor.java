@@ -3,7 +3,6 @@ package com.socialmediaraiser.twitter.helpers;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.Response;
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 

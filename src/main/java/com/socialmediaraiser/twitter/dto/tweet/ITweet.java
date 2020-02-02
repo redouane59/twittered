@@ -1,7 +1,6 @@
 package com.socialmediaraiser.twitter.dto.tweet;
 
 import com.socialmediaraiser.twitter.IUser;
-
 import java.util.Date;
 
 public interface ITweet {

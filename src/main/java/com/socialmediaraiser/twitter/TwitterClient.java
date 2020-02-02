@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socialmediaraiser.RelationType;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv1;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
-
 import com.socialmediaraiser.twitter.helpers.RequestHelper;
 import com.socialmediaraiser.twitter.helpers.URLHelper;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
@@ -17,7 +16,6 @@ import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
 import lombok.Data;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.*;

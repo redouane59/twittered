@@ -3,7 +3,6 @@ package com.socialmediaraiser.twitter;
 import com.socialmediaraiser.RelationType;
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -11,7 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface ITwitterClient {
-
 
     /**
      * Get a list of the user followers calling https://api.twitter.com/1.1/followers

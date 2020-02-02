@@ -1,7 +1,6 @@
 package com.socialmediaraiser.twitter;
 
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
-
 import java.util.Date;
 import java.util.List;
 

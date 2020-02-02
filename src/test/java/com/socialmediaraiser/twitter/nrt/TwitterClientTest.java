@@ -8,13 +8,11 @@ import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
 import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TwitterClientTest {

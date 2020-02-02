@@ -2,7 +2,6 @@ package com.socialmediaraiser.twitter.helpers;
 
 import io.vavr.control.Option;
 import io.vavr.control.Try;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
