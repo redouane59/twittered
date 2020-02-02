@@ -98,6 +98,12 @@ public class UrlHelperTest {
     }
 
     @Test
+    public void testGetFollowersByIdUrl(){
+        assertEquals("https://api.twitter.com/1.1/followers/list.json?user_id=12345&count=200",
+                urlHelper.getFollowerUsersUrl("12345"));
+    }
+
+    @Test
     public void testSearchTweetsUrl(){
         //https://api.twitter.com/1.1/tweets/search/30day/DevImproveMyTwitter.json
         assertEquals("https://api.twitter.com/1.1/tweets/search/30day/dev.json",
@@ -145,6 +151,12 @@ public class UrlHelperTest {
         String tweetId = "12345";
         assertEquals("https://api.twitter.com/1.1/favorites/create.json?id="+tweetId,
                 urlHelper.getLikeUrl(tweetId));
+    }
+
+    @Test
+    public void testGetUserUrlFromName(){
+        assertEquals("https://api.twitter.com/labs/1/users?usernames=RedTheOne&user.format=detailed&tweet.format=detailed&expansions=most_recent_tweet_id"
+                , urlHelper.getUserUrlFromName("RedTheOne"));
     }
 
 }

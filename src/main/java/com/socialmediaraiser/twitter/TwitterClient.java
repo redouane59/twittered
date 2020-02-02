@@ -123,7 +123,6 @@ public class TwitterClient implements ITwitterClient {
         return this.getUsersInfoByRelation(url);
     }
 
-    @Override
     public Set<String> getUserFollowersIds(String userId){
         return this.getUserIdsByRelationSet(this.urlHelper.getFollowerIdsUrl(userId));
     }
@@ -298,7 +297,7 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public List<ITweet> searchForTweets(String query, Date fromDate, Date toDate){
+    public List<ITweet> searchForTweetsWithin30days(String query, Date fromDate, Date toDate){
         int count = 100;
         Map<String, String> parameters = new HashMap<>();
         parameters.put("query",query);
