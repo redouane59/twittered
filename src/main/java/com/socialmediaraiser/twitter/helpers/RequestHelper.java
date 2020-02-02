@@ -29,14 +29,12 @@ public class RequestHelper {
     public static TwitterCredentials TWITTER_CREDENTIALS = getAuthentication();
     private int sleepTime = 5;
 
-    // @todo Optional<TwitterResponse> as return type instead of JsonNode
     public <T> T executeGetRequest(String url, Class<T> classType) {
         try {
             Response response = this.getHttpClient(url)
                     .newCall(this.getSignedRequest(this.getRequest(url)))
                     .execute();
             String stringResponse = response.body().string();
-            JsonNode node = new ObjectMapper().readTree(stringResponse);
             if(response.code()==200){
                 return TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
             } else if (response.code()==429){
