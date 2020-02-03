@@ -1,7 +1,5 @@
 package com.socialmediaraiser.twitter.helpers;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socialmediaraiser.twitter.TwitterClient;
 import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
 import com.socialmediaraiser.twitter.signature.Oauth1SigningInterceptor;
@@ -11,6 +9,7 @@ import okhttp3.*;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 
+import javax.swing.text.html.Option;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -19,6 +18,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -29,14 +29,15 @@ public class RequestHelper {
     public static TwitterCredentials TWITTER_CREDENTIALS = getAuthentication();
     private int sleepTime = 5;
 
-    public <T> T executeGetRequest(String url, Class<T> classType) {
+    public <T> Optional<T> executeGetRequest(String url, Class<T> classType) {
+        T result = null;
         try {
             Response response = this.getHttpClient(url)
                     .newCall(this.getSignedRequest(this.getRequest(url)))
                     .execute();
             String stringResponse = response.body().string();
             if(response.code()==200){
-                return TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
+                result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
             } else if (response.code()==429){
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequest(url, classType);
@@ -46,10 +47,11 @@ public class RequestHelper {
         } catch(Exception e){
             LOGGER.severe("exception in executeGetRequest " + e.getMessage());
         }
-        return null;
+        return Optional.ofNullable(result);
     }
 
-    public JsonNode executeGetRequestWithParameters(String url, Map<String, String> parameters) {
+    public <T> Optional<T> executeGetRequestWithParameters(String url, Map<String, String> parameters, Class<T> classType) {
+        T result = null;
         try {
             HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
             if (parameters != null) {
@@ -64,42 +66,43 @@ public class RequestHelper {
                     .newCall(requesthttp)
                     .execute();
             String stringResponse = response.body().string();
-            JsonNode node = new ObjectMapper().readTree(stringResponse);
             if(response.code()==200){
-                return node;
+                result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
             } else if (response.code()==429){
                 this.wait(sleepTime, response, url);
-                return this.executeGetRequest(url, JsonNode.class); // @todo to edit
+                return this.executeGetRequest(url, classType);
             } else{
                 logGetError(url, stringResponse);
             }
         } catch(Exception e){
             LOGGER.severe("exception in executeGetRequest " + e.getMessage());
         }
-        return null;
+        return Optional.ofNullable(result);
     }
 
-    public String executeGetRequestV2(String url) {
+    public <T> Optional<T> executeGetRequestV2(String url, Class<T> classType) {
+        T result = null;
         try {
             Response response = this.getHttpClient(url)
                     .newCall(this.getSignedRequest(this.getRequest(url))).execute();
             String stringResponse = response.body().string();
             if(response.code()==200){
                 response.close();
-                return stringResponse;
+                result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
             } else if (response.code()==429){
                 this.wait(sleepTime, response, url);
-                return this.executeGetRequestV2(url);
+                return this.executeGetRequestV2(url, classType);
             } else{
                 logGetError(url, stringResponse);
             }
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
         }
-        return null;
+        return Optional.ofNullable(result);
     }
 
-    public <T> T executePostRequest(String url, Map<String, String> parameters, Class<T> classType) {
+    public <T> Optional<T> executePostRequest(String url, Map<String, String> parameters, Class<T> classType) {
+        T result = null;
         try {
             String json = TwitterClient.OBJECT_MAPPER.writeValueAsString(parameters);
             RequestBody requestBody = RequestBody.create(null, json);
@@ -113,19 +116,19 @@ public class RequestHelper {
             if(response.code()!=200){
                 LOGGER.severe(()->"(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
                 if(response.code()==429){
-                    RequestTokenDTO result = this.executeTokenRequest();
-                    TWITTER_CREDENTIALS.setAccessToken(result.getOauthToken());
-                    TWITTER_CREDENTIALS.setAccessTokenSecret(result.getOauthTokenSecret());
+                    RequestTokenDTO requestTokenDTO = this.executeTokenRequest();
+                    TWITTER_CREDENTIALS.setAccessToken(requestTokenDTO.getOauthToken());
+                    TWITTER_CREDENTIALS.setAccessTokenSecret(requestTokenDTO.getOauthTokenSecret());
                     LOGGER.info(()->"token reset, now sleeping 30sec");
                     TimeUnit.SECONDS.sleep(30);
                 }
             }
             String stringResponse = response.body().string();
-            return TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
+            result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
-            return null;
         }
+        return Optional.ofNullable(result);
     }
 
     public RequestTokenDTO executeTokenRequest(){
@@ -134,17 +137,11 @@ public class RequestHelper {
                     .url("https://api.twitter.com/oauth/request_token")
                     .post(RequestBody.create(null, "{}"))
                     .build();
-
             Request signedRequest = this.getSignedRequest(request);
-
             Response response = this.getHttpClient("https://api.twitter.com/oauth/request_token").newCall(signedRequest).execute();
-
             String stringResponse = response.body().string();
-
             List<NameValuePair> params = URLEncodedUtils.parse(new URI("twitter.com?"+stringResponse), StandardCharsets.UTF_8.name());
-
             RequestTokenDTO requestTokenDTO = new RequestTokenDTO();
-
             for (NameValuePair param : params) {
                 if(param.getName().equals("oauth_token")){
                     requestTokenDTO.setOauthToken(param.getValue());
@@ -226,7 +223,7 @@ public class RequestHelper {
         }
     }
 
-
+    // @todo use a json configuration file instead
     private int getCacheTimeoutFromUrl(String url){
         int defaultCache = 48;
         if(url.contains("/friends")){
