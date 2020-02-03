@@ -137,10 +137,7 @@ public class TwitterClient implements ITwitterClient {
     public RelationType getRelationType(String userId1, String userId2){
         String url = this.urlHelper.getFriendshipUrl(userId1, userId2);
         Optional<RelationshipObjectResponseDTO> relationshipDTO = this.getRequestHelper().executeGetRequestV2(url, RelationshipObjectResponseDTO.class);
-        if(relationshipDTO.isEmpty()){
-            LOGGER.severe(()->"Relation type not found");
-            return null;
-        }
+        relationshipDTO.orElseThrow(NoSuchElementException::new);
         Boolean followedBy = relationshipDTO.get().getRelationship().getSource().isFollowedBy();
         Boolean following = relationshipDTO.get().getRelationship().getSource().isFollowing();
         if (followedBy && following){
