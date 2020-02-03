@@ -2,6 +2,7 @@ package com.socialmediaraiser.twitter.helpers;
 
 import io.vavr.control.Option;
 import io.vavr.control.Try;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,11 +10,17 @@ import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 public class ConverterHelper {
 
-    public static String DATE_PATTERN_SIMPLE = "yyyyMMdd";
-    public static String DATE_PATTERN_LARGE = "yyyyMMddHHmm";
+    private static final Logger LOGGER = Logger.getLogger(ConverterHelper.class.getName());
+    public static final String DATE_PATTERN_SIMPLE = "yyyyMMdd";
+    public static final String DATE_PATTERN_LARGE = "yyyyMMddHHmm";
+
+    private ConverterHelper() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static Date getDateFromString(String stringDate){
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_PATTERN_LARGE);
@@ -23,7 +30,7 @@ public class ConverterHelper {
         try {
            return formatter.parse(stringDate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            LOGGER.severe(e.getMessage());
         }
         return null;
     }

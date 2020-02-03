@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import okhttp3.*;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-
-import javax.swing.text.html.Option;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -27,7 +25,7 @@ import java.util.logging.Logger;
 public class RequestHelper {
 
     private static final Logger LOGGER = Logger.getLogger(RequestHelper.class.getName());
-    public static TwitterCredentials TWITTER_CREDENTIALS = getAuthentication();
+    public static final TwitterCredentials TWITTER_CREDENTIALS = getAuthentication();
     private int sleepTime = 5;
 
     public <T> Optional<T> executeGetRequest(String url, Class<T> classType) {
@@ -117,10 +115,9 @@ public class RequestHelper {
             if(response.code()!=200){
                 LOGGER.severe(()->"(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
                 if(response.code()==429){
-                    Optional<RequestTokenDTO> requestTokenDTO = this.executeTokenRequest();
-                    requestTokenDTO.orElseThrow(NoSuchElementException::new);
-                    TWITTER_CREDENTIALS.setAccessToken(requestTokenDTO.get().getOauthToken());
-                    TWITTER_CREDENTIALS.setAccessTokenSecret(requestTokenDTO.get().getOauthTokenSecret());
+                    RequestTokenDTO requestTokenDTO = this.executeTokenRequest().orElseThrow(NoSuchElementException::new);
+                    TWITTER_CREDENTIALS.setAccessToken(requestTokenDTO.getOauthToken());
+                    TWITTER_CREDENTIALS.setAccessTokenSecret(requestTokenDTO.getOauthTokenSecret());
                     LOGGER.info(()->"token reset, now sleeping 30sec");
                     TimeUnit.SECONDS.sleep(30);
                 }

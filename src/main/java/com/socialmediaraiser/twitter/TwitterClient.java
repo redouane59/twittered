@@ -17,10 +17,8 @@ import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import com.socialmediaraiser.twitter.helpers.RequestHelper;
 import com.socialmediaraiser.twitter.helpers.URLHelper;
 import lombok.Data;
-
 import java.io.File;
 import java.io.IOException;
-import java.rmi.UnexpectedException;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -40,7 +38,7 @@ public class TwitterClient implements ITwitterClient {
     private static final String FOLLOWING = "following";
     private static final String FOLLOWED_BY = "followed_by";
     private static final String SOURCE = "source";
-    private final String nullOrIdNotFoundError = "response null or ids not found !";
+    private final static String nullOrIdNotFoundError = "response null or ids not found !";
     private static final String NEXT_CURSOR = "next_cursor";
 
     // can manage up to 5000 results / call . Max 15 calls / 15min ==> 75.000 results max. / 15min
@@ -263,10 +261,12 @@ public class TwitterClient implements ITwitterClient {
     // @TODO TweetDTO instead of TweetData ?
     @Override
     public List<TweetDataDTO> readTwitterDataFile(File file) throws IOException {
+        List<TweetDataDTO> result = new ArrayList<>();
         if(!file.exists()) {
-            LOGGER.severe("file not found at : " + file.toURI().toString());
-            return null;
+            LOGGER.severe(()->"file not found at : " + file.toURI().toString());
+        } else{
+            result = Arrays.asList(OBJECT_MAPPER.readValue(file, TweetDataDTO[].class));
         }
-        return  Arrays.asList(OBJECT_MAPPER.readValue(file, TweetDataDTO[].class));
+        return result;
     }
 }

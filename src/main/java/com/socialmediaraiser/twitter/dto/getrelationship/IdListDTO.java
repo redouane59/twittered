@@ -11,5 +11,5 @@ public class IdListDTO {
     @JsonProperty("next_cursor_str")
     private String nextCursor;
     @JsonProperty("previous_cursor_str")
-    private String previous_cursor_str;
+    private String previousCursorStr;
 }
