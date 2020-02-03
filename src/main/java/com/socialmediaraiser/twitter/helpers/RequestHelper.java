@@ -212,7 +212,7 @@ public class RequestHelper {
                 .build();
     }
 
-    public static void wait(int sleepTime, Response response, String url){
+    public void wait(int sleepTime, Response response, String url){
         LOGGER.info(()->"\n" + response +"\nWaiting ... " + url); // do a wait and return this function recursively
         try {
             TimeUnit.MINUTES.sleep(sleepTime);
