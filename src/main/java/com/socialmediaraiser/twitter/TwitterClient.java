@@ -136,10 +136,10 @@ public class TwitterClient implements ITwitterClient {
     @Override
     public RelationType getRelationType(String userId1, String userId2){
         String url = this.urlHelper.getFriendshipUrl(userId1, userId2);
-        Optional<RelationshipObjectResponseDTO> relationshipDTO = this.getRequestHelper().executeGetRequestV2(url, RelationshipObjectResponseDTO.class);
-        relationshipDTO.orElseThrow(NoSuchElementException::new);
-        Boolean followedBy = relationshipDTO.get().getRelationship().getSource().isFollowedBy();
-        Boolean following = relationshipDTO.get().getRelationship().getSource().isFollowing();
+        RelationshipObjectResponseDTO relationshipDTO = this.getRequestHelper()
+                .executeGetRequestV2(url, RelationshipObjectResponseDTO.class).orElseThrow(NoSuchElementException::new);
+        Boolean followedBy = relationshipDTO.getRelationship().getSource().isFollowedBy();
+        Boolean following = relationshipDTO.getRelationship().getSource().isFollowing();
         if (followedBy && following){
             return RelationType.FRIENDS;
         } else if (!followedBy && !following){
@@ -160,72 +160,66 @@ public class TwitterClient implements ITwitterClient {
     @Override
     public boolean follow(String userId) {
         String url = this.urlHelper.getFollowUrl(userId);
-        Optional<UserDTOv1> userResponse = this.requestHelper.executePostRequest(url, new HashMap<>(), UserDTOv1.class);
-        userResponse.orElseThrow(NoSuchElementException::new);
-        return !userResponse.get().isFollowing();
+        UserDTOv1 userResponse = this.requestHelper
+                .executePostRequest(url, new HashMap<>(), UserDTOv1.class).orElseThrow(NoSuchElementException::new);
+        return !userResponse.isFollowing();
     }
 
     @Override
     public boolean unfollow(String userId) {
         String url = this.urlHelper.getUnfollowUrl(userId);
-        Optional<UserDTOv1> userResponse = this.requestHelper.executePostRequest(url, new HashMap<>(), UserDTOv1.class);
-        userResponse.orElseThrow(NoSuchElementException::new);
-        return userResponse.get().isFollowing();
+        UserDTOv1 userResponse = this.requestHelper
+                .executePostRequest(url, new HashMap<>(), UserDTOv1.class).orElseThrow(NoSuchElementException::new);
+        return userResponse.isFollowing();
     }
 
     @Override
     public boolean unfollowByName(String userName) {
         String url = this.urlHelper.getUnfollowByUsernameUrl(userName);
-        Optional<UserDTOv1> userResponse = this.requestHelper.executePostRequest(url, new HashMap<>(), UserDTOv1.class);
-        userResponse.orElseThrow(NoSuchElementException::new);
-        return userResponse.get().isFollowing();
+        UserDTOv1 userResponse = this.requestHelper
+                .executePostRequest(url, new HashMap<>(), UserDTOv1.class).orElseThrow(NoSuchElementException::new);
+        return userResponse.isFollowing();
     }
 
     // UserV2
     @Override
     public IUser getUserFromUserId(String userId)  {
         String url = this.getUrlHelper().getUserUrl(userId);
-        Optional<UserDTOv2> user = this.getRequestHelper().executeGetRequestV2(url, UserDTOv2.class);
-        user.orElseThrow(NoSuchElementException::new);
-        return user.get();
+        return this.getRequestHelper().executeGetRequestV2(url, UserDTOv2.class).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
     public UserDTOv2 getUserFromUserName(String userName) {
         String url = this.getUrlHelper().getUserUrlFromName(userName);
-        Optional<UserDTOv2> user = this.getRequestHelper().executeGetRequestV2(url, UserDTOv2.class);
-        user.orElseThrow(NoSuchElementException::new);
-        return user.get();
+        return this.getRequestHelper().executeGetRequestV2(url, UserDTOv2.class).orElseThrow(NoSuchElementException::new);
     }
 
     public List<IUser> getUsersFromUserNames(List<String> userNames)  {
         String url = this.getUrlHelper().getUsersUrlbyNames(userNames);
-        Optional<UserDTOv1[]> response = this.getRequestHelper().executeGetRequestReturningArray(url, UserDTOv1[].class);
-        response.orElseThrow(NoSuchElementException::new);
-        return Arrays.asList(response.get());
+        UserDTOv1[] response = this.getRequestHelper()
+                .executeGetRequestReturningArray(url, UserDTOv1[].class).orElseThrow(NoSuchElementException::new);
+        return Arrays.asList(response);
     }
 
     public List<IUser> getUsersFromUserIds(List<String> userIds)  {
         String url = this.getUrlHelper().getUsersUrlbyIds(userIds);
-        Optional<UserDTOv1[]> response = this.getRequestHelper().executeGetRequestReturningArray(url, UserDTOv1[].class);
-        response.orElseThrow(NoSuchElementException::new);
-        return Arrays.asList(response.get());
+        UserDTOv1[] response = this.getRequestHelper()
+                .executeGetRequestReturningArray(url, UserDTOv1[].class).orElseThrow(NoSuchElementException::new);
+        return Arrays.asList(response);
     }
 
     @Override
     public List<ITweet> getUserLastTweets(String userId, int count){
         String url = this.getUrlHelper().getUserTweetsUrl(userId, count);
-        Optional<TweetDTOv1[]> response = this.getRequestHelper().executeGetRequestReturningArray(url, TweetDTOv1[].class);
-        response.orElseThrow(NoSuchElementException::new);
-        return Arrays.asList(response.get());
+        TweetDTOv1[] response = this.getRequestHelper()
+                .executeGetRequestReturningArray(url, TweetDTOv1[].class).orElseThrow(NoSuchElementException::new);
+        return Arrays.asList(response);
     }
 
     @Override
     public RateLimitStatusDTO getRateLimitStatus(){
         String url = this.getUrlHelper().getRateLimitUrl();
-        Optional<RateLimitStatusDTO> rateLimitStatusDTO = this.getRequestHelper().executeGetRequestV2(url, RateLimitStatusDTO.class);
-        rateLimitStatusDTO.orElseThrow(NoSuchElementException::new);
-        return rateLimitStatusDTO.get();
+        return this.getRequestHelper().executeGetRequestV2(url, RateLimitStatusDTO.class).orElseThrow(NoSuchElementException::new);
     }
 
 
