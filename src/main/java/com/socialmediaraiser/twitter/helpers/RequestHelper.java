@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import okhttp3.*;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-
-import javax.swing.text.html.Option;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
