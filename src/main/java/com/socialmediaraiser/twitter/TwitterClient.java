@@ -164,30 +164,24 @@ public class TwitterClient implements ITwitterClient {
     public boolean follow(String userId) {
         String url = this.urlHelper.getFollowUrl(userId);
         Optional<UserDTOv1> userResponse = this.requestHelper.executePostRequest(url, new HashMap<>(), UserDTOv1.class);
-        if(userResponse.isPresent()){
-            return !userResponse.get().isFollowing();
-        }
-        return false;
+        userResponse.orElseThrow(NoSuchElementException::new);
+        return !userResponse.get().isFollowing();
     }
 
     @Override
     public boolean unfollow(String userId) {
         String url = this.urlHelper.getUnfollowUrl(userId);
         Optional<UserDTOv1> userResponse = this.requestHelper.executePostRequest(url, new HashMap<>(), UserDTOv1.class);
-        if(userResponse.isPresent()) {
-            return userResponse.get().isFollowing();
-        }
-        return false;
+        userResponse.orElseThrow(NoSuchElementException::new);
+        return userResponse.get().isFollowing();
     }
 
     @Override
     public boolean unfollowByName(String userName) {
         String url = this.urlHelper.getUnfollowByUsernameUrl(userName);
         Optional<UserDTOv1> userResponse = this.requestHelper.executePostRequest(url, new HashMap<>(), UserDTOv1.class);
-        if(userResponse.isPresent()){
-            return userResponse.get().isFollowing();
-        }
-        return false;
+        userResponse.orElseThrow(NoSuchElementException::new);
+        return userResponse.get().isFollowing();
     }
 
     // UserV2
@@ -195,20 +189,16 @@ public class TwitterClient implements ITwitterClient {
     public IUser getUserFromUserId(String userId)  {
         String url = this.getUrlHelper().getUserUrl(userId);
         Optional<UserDTOv2> user = this.getRequestHelper().executeGetRequestV2(url, UserDTOv2.class);
-        if(user.isPresent()){
-            return user.get();
-        }
-        return null;
+        user.orElseThrow(NoSuchElementException::new);
+        return user.get();
     }
 
     @Override
     public UserDTOv2 getUserFromUserName(String userName) {
         String url = this.getUrlHelper().getUserUrlFromName(userName);
         Optional<UserDTOv2> user = this.getRequestHelper().executeGetRequestV2(url, UserDTOv2.class);
-        if(user.isPresent()){
-            return user.get();
-        }
-        return null;
+        user.orElseThrow(NoSuchElementException::new);
+        return user.get();
     }
 
     public List<IUser> getUsersFromUserNames(List<String> userNames)  {
@@ -234,10 +224,8 @@ public class TwitterClient implements ITwitterClient {
     public RateLimitStatusDTO getRateLimitStatus(){
         String url = this.getUrlHelper().getRateLimitUrl();
         Optional<RateLimitStatusDTO> rateLimitStatusDTO = this.getRequestHelper().executeGetRequestV2(url, RateLimitStatusDTO.class);
-        if(rateLimitStatusDTO.isPresent()){
-            return rateLimitStatusDTO.get();
-        }
-        return null;
+        rateLimitStatusDTO.orElseThrow(NoSuchElementException::new);
+        return rateLimitStatusDTO.get();
     }
 
 
