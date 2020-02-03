@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import okhttp3.*;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+
+import javax.swing.text.html.Option;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -16,6 +18,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -114,9 +117,10 @@ public class RequestHelper {
             if(response.code()!=200){
                 LOGGER.severe(()->"(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
                 if(response.code()==429){
-                    RequestTokenDTO requestTokenDTO = this.executeTokenRequest();
-                    TWITTER_CREDENTIALS.setAccessToken(requestTokenDTO.getOauthToken());
-                    TWITTER_CREDENTIALS.setAccessTokenSecret(requestTokenDTO.getOauthTokenSecret());
+                    Optional<RequestTokenDTO> requestTokenDTO = this.executeTokenRequest();
+                    requestTokenDTO.orElseThrow(NoSuchElementException::new);
+                    TWITTER_CREDENTIALS.setAccessToken(requestTokenDTO.get().getOauthToken());
+                    TWITTER_CREDENTIALS.setAccessTokenSecret(requestTokenDTO.get().getOauthTokenSecret());
                     LOGGER.info(()->"token reset, now sleeping 30sec");
                     TimeUnit.SECONDS.sleep(30);
                 }
@@ -129,7 +133,8 @@ public class RequestHelper {
         return Optional.ofNullable(result);
     }
 
-    public RequestTokenDTO executeTokenRequest(){
+    public Optional<RequestTokenDTO> executeTokenRequest(){
+        RequestTokenDTO result = null;
         try {
             Request request = new Request.Builder()
                     .url("https://api.twitter.com/oauth/request_token")
@@ -139,29 +144,29 @@ public class RequestHelper {
             Response response = this.getHttpClient("https://api.twitter.com/oauth/request_token").newCall(signedRequest).execute();
             String stringResponse = response.body().string();
             List<NameValuePair> params = URLEncodedUtils.parse(new URI("twitter.com?"+stringResponse), StandardCharsets.UTF_8.name());
-            RequestTokenDTO requestTokenDTO = new RequestTokenDTO();
+            result = new RequestTokenDTO();
             for (NameValuePair param : params) {
                 if(param.getName().equals("oauth_token")){
-                    requestTokenDTO.setOauthToken(param.getValue());
+                    result.setOauthToken(param.getValue());
                 } else if (param.getName().equals("oauth_token_secret")){
-                    requestTokenDTO.setOauthTokenSecret(param.getValue());
+                    result.setOauthTokenSecret(param.getValue());
                 }
             }
-            return requestTokenDTO;
         } catch(IOException | URISyntaxException e){
             LOGGER.severe(e.getMessage());
-            return null;
         }
+        return Optional.ofNullable(result);
     }
 
     @Deprecated
-    public <T> T executeGetRequestReturningArray(String url, Class<T> classType) {
+    public <T> Optional<T> executeGetRequestReturningArray(String url, Class<T> classType) {
+        T result = null;
         try {
             Response response = this.getHttpClient(url)
                     .newCall(this.getSignedRequest(this.getRequest(url))).execute();
             String stringResponse = response.body().string();
             if(response.code()==200){
-                return TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
+                result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
             } else if (response.code() == 401){
                 response.close();
                 LOGGER.info(()->"user private, not authorized");
@@ -169,13 +174,12 @@ public class RequestHelper {
                 this.wait(sleepTime, response, url);
                 return this.executeGetRequestReturningArray(url, classType);
             } else{
-                LOGGER.severe(()->"not 200 (return null) calling " + url + " " + response.message() + " - " + response.code());
+                LOGGER.severe(()->"not 200 calling " + url + " " + response.message() + " - " + response.code());
             }
         } catch(Exception e){
-            LOGGER.severe(()->"exception return null");
             LOGGER.severe(e.getMessage());
         }
-        return null;
+        return Optional.ofNullable(result);
     }
 
     private Request getSignedRequest(Request request){

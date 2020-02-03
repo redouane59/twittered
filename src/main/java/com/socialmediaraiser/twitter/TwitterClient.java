@@ -200,21 +200,24 @@ public class TwitterClient implements ITwitterClient {
 
     public List<IUser> getUsersFromUserNames(List<String> userNames)  {
         String url = this.getUrlHelper().getUsersUrlbyNames(userNames);
-        UserDTOv1[] response = this.getRequestHelper().executeGetRequestReturningArray(url, UserDTOv1[].class);
-        return Arrays.asList(response);
+        Optional<UserDTOv1[]> response = this.getRequestHelper().executeGetRequestReturningArray(url, UserDTOv1[].class);
+        response.orElseThrow(NoSuchElementException::new);
+        return Arrays.asList(response.get());
     }
 
     public List<IUser> getUsersFromUserIds(List<String> userIds)  {
         String url = this.getUrlHelper().getUsersUrlbyIds(userIds);
-        UserDTOv1[] response = this.getRequestHelper().executeGetRequestReturningArray(url, UserDTOv1[].class);
-        return Arrays.asList(response);
+        Optional<UserDTOv1[]> response = this.getRequestHelper().executeGetRequestReturningArray(url, UserDTOv1[].class);
+        response.orElseThrow(NoSuchElementException::new);
+        return Arrays.asList(response.get());
     }
 
     @Override
     public List<ITweet> getUserLastTweets(String userId, int count){
         String url = this.getUrlHelper().getUserTweetsUrl(userId, count);
-        TweetDTOv1[] response = this.getRequestHelper().executeGetRequestReturningArray(url, TweetDTOv1[].class);
-        return Arrays.asList(response);
+        Optional<TweetDTOv1[]> response = this.getRequestHelper().executeGetRequestReturningArray(url, TweetDTOv1[].class);
+        response.orElseThrow(NoSuchElementException::new);
+        return Arrays.asList(response.get());
     }
 
     @Override
@@ -261,10 +264,6 @@ public class TwitterClient implements ITwitterClient {
         }
         while (next!= null && result.size()<count);
         return result;
-    }
-
-    private void logError(Exception e, String response){
-        LOGGER.severe(() -> e.getMessage() + " response = " + response);
     }
 
     // @TODO TweetDTO instead of TweetData ?
