@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TwitterClientTest {
@@ -235,9 +237,10 @@ public class TwitterClientTest {
     public void testGetTokens(){
         RequestHelper.TWITTER_CREDENTIALS.setAccessToken("");
         RequestHelper.TWITTER_CREDENTIALS.setAccessTokenSecret("");
-        RequestTokenDTO result = twitterClient.getRequestHelper().executeTokenRequest();
-        assertTrue(result.getOauthToken().length()>1);
-        assertTrue(result.getOauthTokenSecret().length()>1);
+        Optional<RequestTokenDTO> result = twitterClient.getRequestHelper().executeTokenRequest();
+        assertTrue(result.isPresent());
+        assertTrue(result.get().getOauthToken().length()>1);
+        assertTrue(result.get().getOauthTokenSecret().length()>1);
     }
 
     @Test

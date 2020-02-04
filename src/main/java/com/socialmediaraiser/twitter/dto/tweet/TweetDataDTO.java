@@ -1,12 +1,14 @@
 package com.socialmediaraiser.twitter.dto.tweet;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @version data archive
  */
 
-@Data
+@Getter
+@Setter
 public class TweetDataDTO {
     private TweetDTOv1 tweet;
 }

@@ -5,26 +5,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.socialmediaraiser.twitter.IUser;
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
-import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv2;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * @version current
  */
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@CustomLog
 public class UserDTOv1 implements IUser {
-
-    private static final Logger LOGGER = Logger.getLogger(UserDTOv1.class.getName());
 
     private String id;
     @JsonProperty("screen_name")

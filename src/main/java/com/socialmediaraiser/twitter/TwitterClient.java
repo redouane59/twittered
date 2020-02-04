@@ -1,32 +1,34 @@
 package com.socialmediaraiser.twitter;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socialmediaraiser.RelationType;
 import com.socialmediaraiser.twitter.dto.getrelationship.IdListDTO;
+import com.socialmediaraiser.twitter.dto.getrelationship.RelationshipObjectResponseDTO;
 import com.socialmediaraiser.twitter.dto.getrelationship.UserListDTO;
+import com.socialmediaraiser.twitter.dto.others.RateLimitStatusDTO;
+import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv1;
+import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
+import com.socialmediaraiser.twitter.dto.tweet.TweetSearchV1DTO;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
+import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
+import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import com.socialmediaraiser.twitter.helpers.RequestHelper;
 import com.socialmediaraiser.twitter.helpers.URLHelper;
-import com.socialmediaraiser.twitter.helpers.ConverterHelper;
-import com.socialmediaraiser.twitter.dto.getrelationship.RelationshipDTO;
-import com.socialmediaraiser.twitter.dto.getrelationship.RelationshipObjectResponseDTO;
-import com.socialmediaraiser.twitter.dto.tweet.ITweet;
-import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
-import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
-import lombok.Data;
+import lombok.CustomLog;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Logger;
 
-@Data
+@Getter
+@Setter
+@CustomLog
 public class TwitterClient implements ITwitterClient {
 
-    private static final Logger LOGGER = Logger.getLogger(TwitterClient.class.getName());
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private URLHelper urlHelper = new URLHelper();
     private RequestHelper requestHelper = new RequestHelper();
@@ -39,7 +41,7 @@ public class TwitterClient implements ITwitterClient {
     private static final String FOLLOWING = "following";
     private static final String FOLLOWED_BY = "followed_by";
     private static final String SOURCE = "source";
-    private final String nullOrIdNotFoundError = "response null or ids not found !";
+    private final static String NULL_OR_ID_NOT_FOUND_ERROR = "response null or ids not found !";
     private static final String NEXT_CURSOR = "next_cursor";
 
     // can manage up to 5000 results / call . Max 15 calls / 15min ==> 75.000 results max. / 15min
@@ -48,9 +50,10 @@ public class TwitterClient implements ITwitterClient {
         List<String> result = new ArrayList<>();
         do {
             String urlWithCursor = url + "&"+CURSOR+"=" + cursor;
-            IdListDTO idListResponse = this.getRequestHelper().executeGetRequest(urlWithCursor, IdListDTO.class);
-            result.addAll(idListResponse.getIds());
-            cursor = idListResponse.getNextCursor();
+            Optional<IdListDTO> idListResponse = this.getRequestHelper().executeGetRequest(urlWithCursor, IdListDTO.class);
+            if(idListResponse.isEmpty()) break;
+            result.addAll(idListResponse.get().getIds());
+            cursor = idListResponse.get().getNextCursor();
         }
         while (!cursor.equals("0"));
         return result;
@@ -61,9 +64,10 @@ public class TwitterClient implements ITwitterClient {
         Set<String> result = new HashSet<>();
         do {
             String urlWithCursor = url + "&"+CURSOR+"=" + cursor;
-            IdListDTO idListResponse = this.getRequestHelper().executeGetRequest(urlWithCursor, IdListDTO.class);
-            result.addAll(idListResponse.getIds());
-            cursor = idListResponse.getNextCursor();
+            Optional<IdListDTO> idListResponse = this.getRequestHelper().executeGetRequest(urlWithCursor, IdListDTO.class);
+            if(idListResponse.isEmpty()) break;
+            result.addAll(idListResponse.get().getIds());
+            cursor = idListResponse.get().getNextCursor();
         }
         while (!cursor.equals("0"));
         return result;
@@ -76,9 +80,10 @@ public class TwitterClient implements ITwitterClient {
         LOGGER.fine(() -> "users : ");
         do {
             String urlWithCursor = url + "&"+CURSOR+"=" + cursor;
-            UserListDTO userListDTO = this.getRequestHelper().executeGetRequest(urlWithCursor, UserListDTO.class);
-            result.addAll(userListDTO.getUsers());
-            cursor = userListDTO.getNextCursor();
+            Optional<UserListDTO> userListDTO = this.getRequestHelper().executeGetRequest(urlWithCursor, UserListDTO.class);
+            if(userListDTO.isEmpty()) break;
+            result.addAll(userListDTO.get().getUsers());
+            cursor = userListDTO.get().getNextCursor();
         }
         while (!cursor.equals("0"));
         LOGGER.info("\n");
@@ -132,28 +137,19 @@ public class TwitterClient implements ITwitterClient {
     @Override
     public RelationType getRelationType(String userId1, String userId2){
         String url = this.urlHelper.getFriendshipUrl(userId1, userId2);
-        String response = this.getRequestHelper().executeGetRequestV2(url);
-        if(response!=null) {
-            try {
-                RelationshipDTO relationshipDTO = OBJECT_MAPPER.readValue(this.getRequestHelper().executeGetRequestV2(url), RelationshipObjectResponseDTO.class).getRelationship();
-                Boolean followedBy = relationshipDTO.getSource().isFollowedBy();
-                Boolean following = relationshipDTO.getSource().isFollowing();
-                if (followedBy && following){
-                    return RelationType.FRIENDS;
-                } else if (!followedBy && !following){
-                    return RelationType.NONE;
-                } else if(followedBy){
-                    return RelationType.FOLLOWER;
-                } else{
-                    return RelationType.FOLLOWING;
-                }
-
-            } catch (IOException e) {
-                this.logError(e, response);
-            }
+        RelationshipObjectResponseDTO relationshipDTO = this.getRequestHelper()
+                .executeGetRequestV2(url, RelationshipObjectResponseDTO.class).orElseThrow(NoSuchElementException::new);
+        Boolean followedBy = relationshipDTO.getRelationship().getSource().isFollowedBy();
+        Boolean following = relationshipDTO.getRelationship().getSource().isFollowing();
+        if (followedBy && following){
+            return RelationType.FRIENDS;
+        } else if (!followedBy && !following){
+            return RelationType.NONE;
+        } else if(followedBy){
+            return RelationType.FOLLOWER;
+        } else{
+            return RelationType.FOLLOWING;
         }
-        LOGGER.severe(() -> "areFriends was null for " + userId2 + "! -> false ");
-        return null;
     }
 
     @Override
@@ -165,21 +161,24 @@ public class TwitterClient implements ITwitterClient {
     @Override
     public boolean follow(String userId) {
         String url = this.urlHelper.getFollowUrl(userId);
-        UserDTOv1 userResponse = this.requestHelper.executePostRequest(url, new HashMap<>(), UserDTOv1.class);
+        UserDTOv1 userResponse = this.requestHelper
+                .executePostRequest(url, new HashMap<>(), UserDTOv1.class).orElseThrow(NoSuchElementException::new);
         return !userResponse.isFollowing();
     }
 
     @Override
     public boolean unfollow(String userId) {
         String url = this.urlHelper.getUnfollowUrl(userId);
-        UserDTOv1 userResponse = this.requestHelper.executePostRequest(url, new HashMap<>(), UserDTOv1.class);
+        UserDTOv1 userResponse = this.requestHelper
+                .executePostRequest(url, new HashMap<>(), UserDTOv1.class).orElseThrow(NoSuchElementException::new);
         return userResponse.isFollowing();
     }
 
     @Override
     public boolean unfollowByName(String userName) {
         String url = this.urlHelper.getUnfollowByUsernameUrl(userName);
-        UserDTOv1 userResponse = this.requestHelper.executePostRequest(url, new HashMap<>(), UserDTOv1.class);
+        UserDTOv1 userResponse = this.requestHelper
+                .executePostRequest(url, new HashMap<>(), UserDTOv1.class).orElseThrow(NoSuchElementException::new);
         return userResponse.isFollowing();
     }
 
@@ -187,55 +186,41 @@ public class TwitterClient implements ITwitterClient {
     @Override
     public IUser getUserFromUserId(String userId)  {
         String url = this.getUrlHelper().getUserUrl(userId);
-        String response = this.getRequestHelper().executeGetRequestV2(url);
-        if(response!=null){
-            try{
-                return OBJECT_MAPPER.readValue(response, UserDTOv2.class);
-            } catch(Exception e){
-                this.logError(e, response);
-            }
-        }
-        LOGGER.severe(()->"getUserFromUserId return null for " + userId);
-        return null;
+        return this.getRequestHelper().executeGetRequestV2(url, UserDTOv2.class).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
     public UserDTOv2 getUserFromUserName(String userName) {
         String url = this.getUrlHelper().getUserUrlFromName(userName);
-        String response = this.getRequestHelper().executeGetRequestV2(url);
-        if (response != null) {
-            try {
-                return OBJECT_MAPPER.readValue(response, UserDTOv2.class);
-            } catch (IOException e) {
-                this.logError(e, response);
-            }
-        }
-        return null;
+        return this.getRequestHelper().executeGetRequestV2(url, UserDTOv2.class).orElseThrow(NoSuchElementException::new);
     }
 
     public List<IUser> getUsersFromUserNames(List<String> userNames)  {
         String url = this.getUrlHelper().getUsersUrlbyNames(userNames);
-        UserDTOv1[] response = this.getRequestHelper().executeGetRequestReturningArray(url, UserDTOv1[].class);
-        return Arrays.asList(response);
+        UserDTOv1[] response = this.getRequestHelper()
+                .executeGetRequestReturningArray(url, UserDTOv1[].class).orElseThrow(NoSuchElementException::new);
+        return List.of(response);
     }
 
     public List<IUser> getUsersFromUserIds(List<String> userIds)  {
         String url = this.getUrlHelper().getUsersUrlbyIds(userIds);
-        UserDTOv1[] response = this.getRequestHelper().executeGetRequestReturningArray(url, UserDTOv1[].class);
-        return Arrays.asList(response);
+        UserDTOv1[] response = this.getRequestHelper()
+                .executeGetRequestReturningArray(url, UserDTOv1[].class).orElseThrow(NoSuchElementException::new);
+        return List.of(response);
     }
 
     @Override
     public List<ITweet> getUserLastTweets(String userId, int count){
         String url = this.getUrlHelper().getUserTweetsUrl(userId, count);
-        TweetDTOv1[] response = this.getRequestHelper().executeGetRequestReturningArray(url, TweetDTOv1[].class);
-        return Arrays.asList(response);
+        TweetDTOv1[] response = this.getRequestHelper()
+                .executeGetRequestReturningArray(url, TweetDTOv1[].class).orElseThrow(NoSuchElementException::new);
+        return List.of(response);
     }
 
     @Override
-    public String getRateLimitStatus(){
-        String url = this.getUrlHelper().getRateLimitUrl();
-        return this.getRequestHelper().executeGetRequestV2(url);
+    public RateLimitStatusDTO getRateLimitStatus(){
+        String url = URLHelper.rateLimitUrl;
+        return this.getRequestHelper().executeGetRequestV2(url, RateLimitStatusDTO.class).orElseThrow(NoSuchElementException::new);
     }
 
 
@@ -250,6 +235,7 @@ public class TwitterClient implements ITwitterClient {
         throw new UnsupportedOperationException();
     }
 
+    // @todo to test
     @Override
     public List<ITweet> searchForTweetsWithin30days(String query, Date fromDate, Date toDate){
         int count = 100;
@@ -261,45 +247,29 @@ public class TwitterClient implements ITwitterClient {
         String next;
         List<ITweet> result = new ArrayList<>();
         do {
-            JsonNode response = this.getRequestHelper().executeGetRequestWithParameters(this.getUrlHelper().getSearchTweets30daysUrl(),parameters);
-            JsonNode responseArray = null;
-            try {
-                responseArray = OBJECT_MAPPER.readTree(response.get("results").toString());
-            } catch (IOException e) {
-                LOGGER.severe(e.getMessage());
-            }
-
-            if(response.size() > 0){
-                try {
-                    result.addAll(Arrays.asList(OBJECT_MAPPER.treeToValue(responseArray, TweetDTOv1[].class)));
-                } catch (JsonProcessingException e) {
-                    LOGGER.severe(e.getMessage());
-                }
-            } else{
-                LOGGER.severe(()->nullOrIdNotFoundError);
-            }
-
-            if(!response.has(NEXT)){
+            Optional<TweetSearchV1DTO> tweetSearchV1DTO = this.getRequestHelper().executeGetRequestWithParameters(
+                    URLHelper.searchTweet30daysUrl,parameters, TweetSearchV1DTO.class);
+            if(tweetSearchV1DTO.isEmpty()){
+                LOGGER.severe(()->"empty response");
                 break;
             }
-            next = response.get(NEXT).toString();
+            result.addAll(tweetSearchV1DTO.get().getResults());
+            next = tweetSearchV1DTO.get().getNext();
             parameters.put(NEXT, next);
         }
         while (next!= null && result.size()<count);
         return result;
     }
 
-    private void logError(Exception e, String response){
-        LOGGER.severe(() -> e.getMessage() + " response = " + response);
-    }
-
     // @TODO TweetDTO instead of TweetData ?
     @Override
     public List<TweetDataDTO> readTwitterDataFile(File file) throws IOException {
+        List<TweetDataDTO> result = new ArrayList<>();
         if(!file.exists()) {
-            LOGGER.severe("file not found at : " + file.toURI().toString());
-            return null;
+            LOGGER.severe(()->"file not found at : " + file.toURI().toString());
+        } else{
+            result = List.of(OBJECT_MAPPER.readValue(file, TweetDataDTO[].class));
         }
-        return  Arrays.asList(OBJECT_MAPPER.readValue(file, TweetDataDTO[].class));
+        return result;
     }
 }

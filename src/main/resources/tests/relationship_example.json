@@ -1,0 +1,32 @@
+{
+   "relationship":{
+      "source":{
+         "id":92073489,
+         "id_str":"92073489",
+         "screen_name":"RedTheOne",
+         "following":true,
+         "followed_by":false,
+         "live_following":false,
+         "following_received":false,
+         "following_requested":false,
+         "notifications_enabled":false,
+         "can_dm":true,
+         "can_media_tag":false,
+         "blocking":false,
+         "blocked_by":false,
+         "muting":false,
+         "want_retweets":true,
+         "all_replies":false,
+         "marked_spam":false
+      },
+      "target":{
+         "id":126267113,
+         "id_str":"126267113",
+         "screen_name":"Decathlon",
+         "following":false,
+         "followed_by":true,
+         "following_received":false,
+         "following_requested":false
+      }
+   }
+}

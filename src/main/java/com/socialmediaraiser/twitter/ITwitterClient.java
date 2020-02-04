@@ -1,13 +1,13 @@
 package com.socialmediaraiser.twitter;
 
 import com.socialmediaraiser.RelationType;
+import com.socialmediaraiser.twitter.dto.others.RateLimitStatusDTO;
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 public interface ITwitterClient {
 
@@ -108,7 +108,7 @@ public interface ITwitterClient {
      * Get the twitter rate limit status calling https://api.twitter.com/1.1/application/
      * @return the twitter response
      */
-    String getRateLimitStatus();
+    RateLimitStatusDTO getRateLimitStatus();
 
     /**
      * Get the last tweets of a user calling https://api.twitter.com/1.1/statuses/

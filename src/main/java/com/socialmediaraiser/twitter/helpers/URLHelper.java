@@ -1,13 +1,15 @@
 package com.socialmediaraiser.twitter.helpers;
 
-import lombok.Data;
+import lombok.CustomLog;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
-import java.util.logging.Logger;
 
-@Data
+@Getter
+@Setter
+@CustomLog
 public class URLHelper {
-
-    private static final Logger LOGGER = Logger.getLogger(URLHelper.class.getName());
 
     private static final String ROOT_URL = "https://api.twitter.com/1.1";
     private static final String ROOT_URL_V2 = "https://api.twitter.com/labs/1";
@@ -45,6 +47,12 @@ public class URLHelper {
     private static final int MAX_COUNT = 200;
     private static final int RETWEET_MAX_COUNT = 100;
     private static final int MAX_LOOKUP = 100;
+    public static final String lastTweetListUrl = ROOT_URL + STATUSES + USER_TIMELINE;
+    public static final String rateLimitUrl = ROOT_URL + "/application/rate_limit_status.json";;
+    public static final String searchTweet30daysUrl = ROOT_URL + TWEETS + SEARCH + THIRTY_DAYS + DEV_ENV_NAME + JSON;
+    public static final String searchTweetFullArchiveUrl = ROOT_URL + TWEETS + SEARCH + FULL_ARCHIVE + DEV_ENV_NAME + JSON;
+    public static final String searchTweetStandardUrl = ROOT_URL + SEARCH + TWEETS + JSON;
+    public static final String liveEventUrl = ROOT_URL + ACCOUNT_ACTIVITY + DEV_ENV_NAME + WEBHOOKS + JSON;
 
     public String getFollowUrl(String userId) {
         return new StringBuilder(ROOT_URL)
@@ -105,7 +113,6 @@ public class URLHelper {
                 .toString();
     }
 
-
     public String getFollowerUsersUrl(String userId){
         return new StringBuilder(ROOT_URL)
                 .append(FOLLOWERS)
@@ -136,12 +143,6 @@ public class URLHelper {
                 .toString();
     }
 
-    public String getLastTweetListUrl(){
-        return new StringBuilder(ROOT_URL)
-                .append(STATUSES)
-                .append(USER_TIMELINE).toString();
-    }
-
     public String getUserUrl(String userId) {
         return new StringBuilder(ROOT_URL_V2)
                 .append(USERS)
@@ -163,7 +164,6 @@ public class URLHelper {
                 .append("&"+EXPANSIONS_RECENT_TWEET)
                 .toString();
     }
-
 
     public String getUsersUrlbyNames(List<String> names) {
         StringBuilder result = new StringBuilder(ROOT_URL)
@@ -197,13 +197,6 @@ public class URLHelper {
         return result.toString();
     }
 
-    public String getRateLimitUrl(){
-        return new StringBuilder(ROOT_URL)
-                .append("/application")
-                .append("/rate_limit_status.json")
-                .toString();
-    }
-
     @Deprecated
     public String getTweetInfoUrl(String tweetId) {
         return new StringBuilder(ROOT_URL)
@@ -229,44 +222,6 @@ public class URLHelper {
 
     public String getUserTweetsUrlV2(String userId, int count){
         throw new UnsupportedOperationException();
-    }
-
-    public String getSearchTweets30daysUrl() {
-        return new StringBuilder(ROOT_URL)
-                .append(TWEETS)
-                .append(SEARCH)
-                .append(THIRTY_DAYS)
-                .append(DEV_ENV_NAME)
-                .append(JSON)
-                .toString();
-    }
-
-    public String getSearchTweetsUrlFull() {
-        return new StringBuilder(ROOT_URL)
-                .append(TWEETS)
-                .append(SEARCH)
-                .append(FULL_ARCHIVE)
-                .append(DEV_ENV_NAME)
-                .append(JSON)
-                .toString();
-    }
-
-    public String getSearchTweetUrlStandard(){
-        return new StringBuilder(ROOT_URL)
-                .append(SEARCH)
-                .append(TWEETS)
-                .append(JSON)
-                .toString();
-    }
-
-
-    public String getLiveEventUrl() {
-        return new StringBuilder(ROOT_URL)
-                .append(ACCOUNT_ACTIVITY)
-                .append(DEV_ENV_NAME)
-                .append(WEBHOOKS)
-                .append(JSON)
-                .toString();
     }
 
     public String getLikeUrl(String tweetId) {

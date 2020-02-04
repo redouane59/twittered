@@ -1,8 +1,10 @@
 package com.socialmediaraiser.twitter.dto.others;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class RequestTokenDTO {
     private String oauthToken;
     private String oauthTokenSecret;
