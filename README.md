@@ -27,6 +27,7 @@ See : [ITwitterClient.java](https://github.com/redouane59/twitter-client/blob/ma
 
 ### Special thanks
 [@hypr2771](https://github.com/hypr2771)
+[@mmornati](https://github.com/mmornati)
 [@andypiper](https://github.com/andypiper)
 [@igorbrigadir](https://github.com/igorbrigadir)
 
