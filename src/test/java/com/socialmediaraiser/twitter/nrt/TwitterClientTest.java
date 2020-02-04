@@ -16,12 +16,11 @@ import java.util.Date;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@Disabled
 public class TwitterClientTest {
 
     private TwitterClient twitterClient = new TwitterClient();
 
-    /*
     @Test
     public void testGetFollowingIdsById() {
         List<String> followings = twitterClient.getFollowingIds("882266619115864066");
@@ -92,7 +91,7 @@ public class TwitterClientTest {
         String userId = "92073489";
         IUser user = twitterClient.getUserFromUserId(userId);
         assertTrue(user.getTweetCount() > 0);
-    } */
+    }
 
 /* // @todo to add then
     @Test
@@ -112,7 +111,6 @@ public class TwitterClientTest {
         assertTrue(user.getFollowersRatio() > 1);
     } */
 
-    /*
     @Test
     public void testGetUserWithCache() {
         String userId = "92073489";
@@ -185,7 +183,7 @@ public class TwitterClientTest {
         Date lastUpdate = user.getLastUpdate();
         long diffDays = (now.getTime() - lastUpdate.getTime()) / (24 * 60 * 60 * 1000);
         assertTrue(diffDays < 15);
-    } */
+    }
 
     /* //@todo to add
     @Test
@@ -195,7 +193,7 @@ public class TwitterClientTest {
         assertFalse(user.getMostRecentTweet().isEmpty());
     } */
 
-/*
+
     @Test
     public void testGetLastTweetByUserName() {
         String userName = "RedTheOne";
@@ -210,7 +208,7 @@ public class TwitterClientTest {
         List<ITweet> response = twitterClient.getUserLastTweets(userId, 3);
         assertTrue(response.get(0).getLang().equals("fr")
                 || response.get(1).getLang().equals("fr"));
-    } */
+    }
 
   /*   @Test
     @Disabled
@@ -234,7 +232,7 @@ public class TwitterClientTest {
         assertNotNull(results);
         assertTrue(results.size() > 0);
     } */
-/*
+
     @Test
     public void testGetTokens(){
         RequestHelper.TWITTER_CREDENTIALS.setAccessToken("");
@@ -265,5 +263,5 @@ public class TwitterClientTest {
     @Test
     public void likeTweet(){
         twitterClient.likeTweet("1107533");
-    } */
+    }
 }
