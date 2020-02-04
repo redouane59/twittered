@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
 public class TwitterClientTest {
 
     private TwitterClient twitterClient = new TwitterClient();
