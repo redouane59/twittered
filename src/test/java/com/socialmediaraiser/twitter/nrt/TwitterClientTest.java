@@ -16,33 +16,30 @@ import java.util.Date;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
+
 public class TwitterClientTest {
 
     private TwitterClient twitterClient = new TwitterClient();
 
+    /*
     @Test
-    @Disabled
     public void testGetFollowingIdsById() {
         List<String> followings = twitterClient.getFollowingIds("882266619115864066");
         assertTrue(followings.size() > 200);
     }
 
-    @Disabled
     @Test
     public void testGetFollowersIdsById() {
         List<String> followers = twitterClient.getFollowerIds("882266619115864066");
         assertTrue(followers.size() > 200);
     }
 
-    @Disabled
     @Test
     public void testGetFollowersUsersById() {
         List<IUser> followers = twitterClient.getFollowerUsers("882266619115864066");
         assertTrue(followers.size() > 200);
     }
 
-    @Disabled
     @Test
     public void testFriendshipByIdYes() {
         String userId1 = "92073489";
@@ -51,7 +48,6 @@ public class TwitterClientTest {
         assertEquals(RelationType.FRIENDS, result);
     }
 
-    @Disabled
     @Test
     public void getUserByUserName() {
         String userName = "RedTheOne";
@@ -62,7 +58,6 @@ public class TwitterClientTest {
         assertEquals("RedouaneBali", result.getName());
     }
 
-    @Disabled
     @Test
     public void testFriendshipByIdNo() {
         String userId1 = "92073489";
@@ -71,7 +66,6 @@ public class TwitterClientTest {
         assertNotEquals(RelationType.FRIENDS, result);
     }
 
-    @Disabled
     @Test
     public void testGetUserInfoName() {
         String userId = "92073489";
@@ -79,7 +73,6 @@ public class TwitterClientTest {
         assertEquals("RedTheOne", user.getName());
     }
 
-    @Disabled
     @Test
     public void testGetUserInfoId() {
         String userId = "92073489";
@@ -87,7 +80,6 @@ public class TwitterClientTest {
         assertEquals(userId, user.getId());
     }
 
-    @Disabled
     @Test
     public void testGetUserInfoFavouritesDateOfCreation() {
         String userId = "92073489";
@@ -95,13 +87,12 @@ public class TwitterClientTest {
         assertTrue(user.getDateOfCreation() != null);
     }
 
-    @Disabled
     @Test
     public void testGetUserInfoStatusesCount() {
         String userId = "92073489";
         IUser user = twitterClient.getUserFromUserId(userId);
         assertTrue(user.getTweetCount() > 0);
-    }
+    } */
 
 /* // @todo to add then
     @Test
@@ -121,7 +112,7 @@ public class TwitterClientTest {
         assertTrue(user.getFollowersRatio() > 1);
     } */
 
-    @Disabled
+    /*
     @Test
     public void testGetUserWithCache() {
         String userId = "92073489";
@@ -141,13 +132,11 @@ public class TwitterClientTest {
         assertEquals("Soltana", result.get(1).getName());
     }
 
-    @Disabled
     @Test
     public void testGetRateLimitStatus() {
         assertNotEquals(null, twitterClient.getRateLimitStatus());
     }
 
-    @Disabled
     @Test
     public void testRelationBetweenUsersIdFriends() {
         String userId1 = "92073489";
@@ -156,7 +145,6 @@ public class TwitterClientTest {
         assertEquals(RelationType.FRIENDS, result);
     }
 
-    @Disabled
     @Test
     public void testRelationBetweenUsersIdNone() {
         String userId1 = "92073489";
@@ -165,7 +153,6 @@ public class TwitterClientTest {
         assertEquals(RelationType.NONE, result);
     }
 
-    @Disabled
     @Test
     public void testRelationBetweenUsersIdFollowing() {
         String userId1 = "92073489";
@@ -174,7 +161,6 @@ public class TwitterClientTest {
         assertEquals(RelationType.FOLLOWING, result);
     }
 
-    @Disabled
     @Test
     public void testRelationBetweenUsersIdFollower() {
         String userId1 = "92073489";
@@ -183,7 +169,6 @@ public class TwitterClientTest {
         assertEquals(RelationType.FOLLOWER, result);
     }
 
-    @Disabled
     @Test
     public void testGetRetweetersId() {
         String tweetId = "1078358350000205824";
@@ -192,7 +177,6 @@ public class TwitterClientTest {
 
     // @todo to add then
 
-    @Disabled
     @Test
     public void getLastUpdate() {
         String userId = "92073489";
@@ -201,7 +185,7 @@ public class TwitterClientTest {
         Date lastUpdate = user.getLastUpdate();
         long diffDays = (now.getTime() - lastUpdate.getTime()) / (24 * 60 * 60 * 1000);
         assertTrue(diffDays < 15);
-    }
+    } */
 
     /* //@todo to add
     @Test
@@ -211,7 +195,7 @@ public class TwitterClientTest {
         assertFalse(user.getMostRecentTweet().isEmpty());
     } */
 
-    @Disabled
+/*
     @Test
     public void testGetLastTweetByUserName() {
         String userName = "RedTheOne";
@@ -220,14 +204,13 @@ public class TwitterClientTest {
                 || response.get(1).getLang().equals("fr"));
     }
 
-    @Disabled
     @Test
     public void testGetLastTweetByUserId() {
         String userId = "92073489";
         List<ITweet> response = twitterClient.getUserLastTweets(userId, 3);
         assertTrue(response.get(0).getLang().equals("fr")
                 || response.get(1).getLang().equals("fr"));
-    }
+    } */
 
   /*   @Test
     @Disabled
@@ -251,8 +234,7 @@ public class TwitterClientTest {
         assertNotNull(results);
         assertTrue(results.size() > 0);
     } */
-
-    @Disabled
+/*
     @Test
     public void testGetTokens(){
         RequestHelper.TWITTER_CREDENTIALS.setAccessToken("");
@@ -262,7 +244,6 @@ public class TwitterClientTest {
         assertTrue(result.getOauthTokenSecret().length()>1);
     }
 
-    @Disabled
     @Test
     public void testGetTweetDataFile() throws IOException {
         File file = new File(this.getClass().getClassLoader().getResource("tweet.json").getFile());
@@ -274,7 +255,6 @@ public class TwitterClientTest {
         assertNotNull(result.get(0).getTweet().getInReplyToUserId());
     }
 
-    @Disabled
     @Test
     public void testFollowAndUnfollow(){
         IUser user = twitterClient.getUserFromUserName("red1");
@@ -282,9 +262,8 @@ public class TwitterClientTest {
         twitterClient.unfollow(user.getId());
     }
 
-    @Disabled
     @Test
     public void likeTweet(){
         twitterClient.likeTweet("1107533");
-    }
+    } */
 }
