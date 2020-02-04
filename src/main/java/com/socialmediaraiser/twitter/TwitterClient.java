@@ -16,16 +16,19 @@ import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import com.socialmediaraiser.twitter.helpers.RequestHelper;
 import com.socialmediaraiser.twitter.helpers.URLHelper;
-import lombok.Data;
+import lombok.CustomLog;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Logger;
 
-@Data
+@Getter
+@Setter
+@CustomLog
 public class TwitterClient implements ITwitterClient {
 
-    private static final Logger LOGGER = Logger.getLogger(TwitterClient.class.getName());
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private URLHelper urlHelper = new URLHelper();
     private RequestHelper requestHelper = new RequestHelper();
@@ -196,14 +199,14 @@ public class TwitterClient implements ITwitterClient {
         String url = this.getUrlHelper().getUsersUrlbyNames(userNames);
         UserDTOv1[] response = this.getRequestHelper()
                 .executeGetRequestReturningArray(url, UserDTOv1[].class).orElseThrow(NoSuchElementException::new);
-        return Arrays.asList(response);
+        return List.of(response);
     }
 
     public List<IUser> getUsersFromUserIds(List<String> userIds)  {
         String url = this.getUrlHelper().getUsersUrlbyIds(userIds);
         UserDTOv1[] response = this.getRequestHelper()
                 .executeGetRequestReturningArray(url, UserDTOv1[].class).orElseThrow(NoSuchElementException::new);
-        return Arrays.asList(response);
+        return List.of(response);
     }
 
     @Override
@@ -211,12 +214,12 @@ public class TwitterClient implements ITwitterClient {
         String url = this.getUrlHelper().getUserTweetsUrl(userId, count);
         TweetDTOv1[] response = this.getRequestHelper()
                 .executeGetRequestReturningArray(url, TweetDTOv1[].class).orElseThrow(NoSuchElementException::new);
-        return Arrays.asList(response);
+        return List.of(response);
     }
 
     @Override
     public RateLimitStatusDTO getRateLimitStatus(){
-        String url = this.getUrlHelper().getRateLimitUrl();
+        String url = URLHelper.rateLimitUrl;
         return this.getRequestHelper().executeGetRequestV2(url, RateLimitStatusDTO.class).orElseThrow(NoSuchElementException::new);
     }
 
@@ -245,7 +248,7 @@ public class TwitterClient implements ITwitterClient {
         List<ITweet> result = new ArrayList<>();
         do {
             Optional<TweetSearchV1DTO> tweetSearchV1DTO = this.getRequestHelper().executeGetRequestWithParameters(
-                    this.getUrlHelper().getSearchTweets30daysUrl(),parameters, TweetSearchV1DTO.class);
+                    URLHelper.searchTweet30daysUrl,parameters, TweetSearchV1DTO.class);
             if(tweetSearchV1DTO.isEmpty()){
                 LOGGER.severe(()->"empty response");
                 break;
@@ -265,7 +268,7 @@ public class TwitterClient implements ITwitterClient {
         if(!file.exists()) {
             LOGGER.severe(()->"file not found at : " + file.toURI().toString());
         } else{
-            result = Arrays.asList(OBJECT_MAPPER.readValue(file, TweetDataDTO[].class));
+            result = List.of(OBJECT_MAPPER.readValue(file, TweetDataDTO[].class));
         }
         return result;
     }

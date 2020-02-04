@@ -2,12 +2,14 @@ package com.socialmediaraiser.twitter.dto.others;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Map;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class RateLimitStatusDTO {
 
@@ -15,7 +17,8 @@ public class RateLimitStatusDTO {
     private RateLimitContextDTO rateLimitContext;
     private Map<String, JsonNode> resources;
 
-    @Data
+    @Getter
+    @Setter
     @NoArgsConstructor
     public static class RateLimitContextDTO{
         @JsonProperty("access_token")

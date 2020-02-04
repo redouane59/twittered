@@ -2,6 +2,7 @@ package com.socialmediaraiser.twitter.helpers;
 
 import io.vavr.control.Option;
 import io.vavr.control.Try;
+import lombok.CustomLog;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -10,11 +11,10 @@ import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.logging.Logger;
 
+@CustomLog
 public class ConverterHelper {
 
-    private static final Logger LOGGER = Logger.getLogger(ConverterHelper.class.getName());
     public static final String DATE_PATTERN_SIMPLE = "yyyyMMdd";
     public static final String DATE_PATTERN_LARGE = "yyyyMMddHHmm";
 

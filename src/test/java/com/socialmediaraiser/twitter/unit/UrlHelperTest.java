@@ -36,7 +36,7 @@ public class UrlHelperTest {
     @Test
     public void testUrlLastTweet(){
         assertEquals("https://api.twitter.com/1.1/statuses/user_timeline.json?",
-                urlHelper.getLastTweetListUrl());
+                URLHelper.lastTweetListUrl);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class UrlHelperTest {
     @Test
     public void testUrlGetRateLimitStatus(){
         assertEquals("https://api.twitter.com/1.1/application/rate_limit_status.json",
-                urlHelper.getRateLimitUrl());
+                URLHelper.rateLimitUrl);
     }
 
     @Test
@@ -105,21 +105,21 @@ public class UrlHelperTest {
     public void testSearchTweetsUrl(){
         //https://api.twitter.com/1.1/tweets/search/30day/DevImproveMyTwitter.json
         assertEquals("https://api.twitter.com/1.1/tweets/search/30day/dev.json",
-                urlHelper.getSearchTweets30daysUrl());
+                URLHelper.searchTweet30daysUrl);
     }
 
     @Test
     public void testSearchTweetsUrlFull(){
         // /search/fullarchive/:label.json
         assertEquals("https://api.twitter.com/1.1/tweets/search/fullarchive/dev.json",
-                urlHelper.getSearchTweetsUrlFull());
+                URLHelper.searchTweetFullArchiveUrl);
     }
 
     @Test
     public void testSearchTweetsUrlStandard(){
         https://api.twitter.com/1.1/search/tweets.json
         assertEquals("https://api.twitter.com/1.1/search/tweets.json",
-                urlHelper.getSearchTweetUrlStandard());
+                URLHelper.searchTweetStandardUrl);
     }
 
     @Test
@@ -140,7 +140,7 @@ public class UrlHelperTest {
     public void testLiveEventUrl(){
         //https://api.twitter.com/1.1/account_activity/all/:env_name/webhooks.json
         assertEquals("https://api.twitter.com/1.1/account_activity/all/dev/webhooks.json",
-                urlHelper.getLiveEventUrl());
+                URLHelper.liveEventUrl);
     }
 
     @Test

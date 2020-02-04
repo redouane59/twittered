@@ -1,19 +1,23 @@
 package com.socialmediaraiser.twitter.dto.getrelationship;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class RelationshipObjectResponseDTO {
 
     private RelationshipDTO relationship;
 
-    @Data
+    @Getter
+    @Setter
     public static class RelationshipDTO {
         private SourceDTO source;
         private TargetDTO target;
 
-        @Data
+        @Getter
+        @Setter
         public static class SourceDTO {
             @JsonProperty("can_dm")
             private boolean canDm;
@@ -45,7 +49,8 @@ public class RelationshipObjectResponseDTO {
             private boolean followingReceived;
         }
 
-        @Data
+        @Getter
+        @Setter
         public static class TargetDTO {
             @JsonProperty("followed_by")
             private boolean followedBy;

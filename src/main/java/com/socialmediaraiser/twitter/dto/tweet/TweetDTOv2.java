@@ -6,20 +6,24 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.socialmediaraiser.twitter.IUser;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 import java.util.List;
 
 /**
  * @version labs
  */
-@Data
+@Getter
+@Setter
 public class TweetDTOv2 implements ITweet {
 
     private TweetData[] data;
     private Includes includes;
 
-    @Data
+    @Getter
+    @Setter
     public static class TweetData implements ITweet {
         private String id;
         @JsonProperty("created_at")
@@ -75,7 +79,8 @@ public class TweetDTOv2 implements ITweet {
 
     }
 
-    @Data
+    @Getter
+    @Setter
     private static class Includes{
         private UserDTOv2.UserData[] users; // @TODO problem here
     }
@@ -133,13 +138,15 @@ public class TweetDTOv2 implements ITweet {
         return this.includes.getUsers()[0];
     }
 
-    @Data
+    @Getter
+    @Setter
     private static class ReferencedTweetDTO {
         private String type;
         private String id;
     }
 
-    @Data
+    @Getter
+    @Setter
     private static class TwitterStatsDTO {
         @JsonProperty("retweet_count")
         private int retweetCount;

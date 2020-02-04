@@ -26,13 +26,15 @@ import java.util.Map;
 import java.util.Random;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.logging.Logger;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+
+import lombok.CustomLog;
 import okhttp3.*;
 import okio.Buffer;
 import okio.ByteString;
 
+@CustomLog
 public final class Oauth1SigningInterceptor implements Interceptor {
     private static final Escaper ESCAPER_FORM = UrlEscapers.urlFormParameterEscaper();
     private static final Escaper ESCAPER_PATH = UrlEscapers.urlPathSegmentEscaper();
@@ -45,7 +47,6 @@ public final class Oauth1SigningInterceptor implements Interceptor {
     private static final String OAUTH_ACCESS_TOKEN = "oauth_token";
     private static final String OAUTH_VERSION = "oauth_version";
     private static final String OAUTH_VERSION_VALUE = "1.0";
-    private static final Logger LOGGER = Logger.getLogger(Oauth1SigningInterceptor.class.getName());
 
     private final String consumerKey;
     private final String consumerSecret;

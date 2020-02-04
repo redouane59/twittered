@@ -1,8 +1,10 @@
 package com.socialmediaraiser.twitter.signature;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class TwitterCredentials {
     private String apiKey;
     private String apiSecretKey;

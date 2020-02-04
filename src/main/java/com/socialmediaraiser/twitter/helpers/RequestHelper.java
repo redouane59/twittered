@@ -4,6 +4,7 @@ import com.socialmediaraiser.twitter.TwitterClient;
 import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
 import com.socialmediaraiser.twitter.signature.Oauth1SigningInterceptor;
 import com.socialmediaraiser.twitter.signature.TwitterCredentials;
+import lombok.CustomLog;
 import lombok.NoArgsConstructor;
 import okhttp3.*;
 import org.apache.http.NameValuePair;
@@ -19,12 +20,11 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 @NoArgsConstructor
+@CustomLog
 public class RequestHelper {
 
-    private static final Logger LOGGER = Logger.getLogger(RequestHelper.class.getName());
     public static final TwitterCredentials TWITTER_CREDENTIALS = getAuthentication();
     private int sleepTime = 5;
 

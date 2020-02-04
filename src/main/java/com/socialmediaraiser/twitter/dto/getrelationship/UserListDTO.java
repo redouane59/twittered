@@ -2,11 +2,13 @@ package com.socialmediaraiser.twitter.dto.getrelationship;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 public class UserListDTO {
     private List<UserDTOv1> users;
     @JsonProperty("next_cursor_str")

@@ -5,29 +5,26 @@ import com.socialmediaraiser.twitter.IUser;
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv2;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import java.util.Arrays;
+import lombok.*;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * @version labs
  */
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@CustomLog
 public class UserDTOv2 implements IUser {
-    private static final Logger LOGGER = Logger.getLogger(UserDTOv2.class.getName());
 
     private UserData[] data;
     private UserData.Includes includes;
 
-    @Data
+    @Getter
+    @Setter
     public static class UserData implements IUser{
         private String id;
         @JsonProperty("created_at")
@@ -49,8 +46,8 @@ public class UserDTOv2 implements IUser {
         private boolean isProtectedAccount;
         private boolean following;
 
-
-        @Data
+        @Getter
+        @Setter
         public static class Includes{
             private TweetDTOv2.TweetData[] tweets; // @TODO problem here
         }
@@ -123,7 +120,7 @@ public class UserDTOv2 implements IUser {
 
     @Override
     public List<ITweet> getMostRecentTweet(){
-        return Arrays.asList(this.includes.getTweets());
+        return List.of(this.includes.getTweets());
     }
 
 
