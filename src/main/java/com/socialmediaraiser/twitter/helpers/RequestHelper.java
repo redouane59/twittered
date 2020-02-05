@@ -222,21 +222,22 @@ public class RequestHelper {
         }
     }
 
-    // @todo use a json configuration file instead
     private int getCacheTimeoutFromUrl(String url){
         int defaultCache = 48;
-        if(url.contains("/friends")){
-            defaultCache = 24;
-        } else if (url.contains("/friendships")){
-            defaultCache = 24;
-        } else if (url.contains("/followers")){
-            defaultCache = 24;
-        } else if (url.contains("/users")){
-            defaultCache = 168;
-        } else if (url.contains("/user_timeline")){
-            defaultCache = 168;
-        } else if (url.contains("30days")){
-            defaultCache = 24;
+        URL cacheUrl = this.getClass().getClassLoader().getResource("cache-config.json");
+        if(cacheUrl==null){
+            LOGGER.severe("cache-config.json file not found in src/main/resources");
+            return defaultCache;
+        }
+        try {
+            Map<String, Integer> map = TwitterClient.OBJECT_MAPPER.readValue(cacheUrl, Map.class);
+            for(Map.Entry<String, Integer> e : map.entrySet()){
+                if(url.contains(e.getKey())){
+                    return e.getValue();
+                }
+            }
+        } catch (IOException e) {
+            LOGGER.severe(e.getMessage());
         }
         return defaultCache;
     }
