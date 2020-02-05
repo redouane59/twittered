@@ -157,4 +157,10 @@ public class UrlHelperTest {
                 , urlHelper.getUserUrlFromName("RedTheOne"));
     }
 
+    @Test
+    public void testSearch7DaysUrl(){
+        assertEquals("https://api.twitter.com/labs/1/tweets/search",
+                URLHelper.searchTweet7daysUrl);
+    }
+
 }

@@ -7,10 +7,7 @@ import com.socialmediaraiser.twitter.dto.getrelationship.IdListDTO;
 import com.socialmediaraiser.twitter.dto.getrelationship.RelationshipObjectResponseDTO;
 import com.socialmediaraiser.twitter.dto.getrelationship.UserListDTO;
 import com.socialmediaraiser.twitter.dto.others.RateLimitStatusDTO;
-import com.socialmediaraiser.twitter.dto.tweet.ITweet;
-import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv1;
-import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
-import com.socialmediaraiser.twitter.dto.tweet.TweetSearchV1DTO;
+import com.socialmediaraiser.twitter.dto.tweet.*;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
@@ -255,6 +252,31 @@ public class TwitterClient implements ITwitterClient {
             }
             result.addAll(tweetSearchV1DTO.get().getResults());
             next = tweetSearchV1DTO.get().getNext();
+            parameters.put(NEXT, next);
+        }
+        while (next!= null && result.size()<count);
+        return result;
+    }
+
+    @Override
+    public List<ITweet> searchForTweetsWithin7days(String query, Date fromDate, Date toDate) {
+        int count = 100;
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("query",query);
+        parameters.put("maxResults",String.valueOf(count));
+        parameters.put("fromDate",ConverterHelper.getStringFromDate(fromDate));
+        parameters.put("toDate", ConverterHelper.getStringFromDate(toDate));
+        String next;
+        List<ITweet> result = new ArrayList<>();
+        do {
+            Optional<TweetSearchV2DTO> tweetSearchV2DTO = this.getRequestHelper().executeGetRequestWithParameters(
+                    URLHelper.searchTweet7daysUrl,parameters, TweetSearchV2DTO.class);
+            if(tweetSearchV2DTO.isEmpty()){
+                LOGGER.severe(()->"empty response");
+                break;
+            }
+            result.addAll(tweetSearchV2DTO.get().getData());
+            next = tweetSearchV2DTO.get().getMeta().getNextToken();
             parameters.put(NEXT, next);
         }
         while (next!= null && result.size()<count);

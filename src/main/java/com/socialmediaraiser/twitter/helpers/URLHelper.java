@@ -53,7 +53,7 @@ public class URLHelper {
     public static final String searchTweetFullArchiveUrl = ROOT_URL + TWEETS + SEARCH + FULL_ARCHIVE + DEV_ENV_NAME + JSON;
     public static final String searchTweetStandardUrl = ROOT_URL + SEARCH + TWEETS + JSON;
     public static final String liveEventUrl = ROOT_URL + ACCOUNT_ACTIVITY + DEV_ENV_NAME + WEBHOOKS + JSON;
-
+    public static final String searchTweet7daysUrl = ROOT_URL_V2+TWEETS+SEARCH;
     public String getFollowUrl(String userId) {
         return new StringBuilder(ROOT_URL)
                 .append(FRIENDSHIPS)

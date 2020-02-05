@@ -1,0 +1,327 @@
+{
+    "data": [
+        {
+            "author_id": "1185960130384465921",
+            "created_at": "2020-02-05T21:19:00.000Z",
+            "entities": {
+                "mentions": [
+                    {
+                        "start": 0,
+                        "end": 12,
+                        "username": "passelapeuf"
+                    }
+                ]
+            },
+            "id": "1225166961807699968",
+            "in_reply_to_user_id": "1089427876376702976",
+            "lang": "fr",
+            "possibly_sensitive": false,
+            "referenced_tweets": [
+                {
+                    "type": "replied_to",
+                    "id": "1225166452128460802"
+                }
+            ],
+            "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+            "stats": {
+                "retweet_count": 0,
+                "reply_count": 1,
+                "like_count": 0,
+                "quote_count": 0
+            },
+            "text": "@passelapeuf mais de botch il a voilà l'accent on m'a dis il est de tourcoing jai vu flou",
+            "format": "detailed"
+        },
+        {
+            "author_id": "565755788",
+            "created_at": "2020-02-05T21:16:48.000Z",
+            "entities": {
+                "hashtags": [
+                    {
+                        "start": 84,
+                        "end": 98,
+                        "tag": "HautsdeFrance"
+                    }
+                ],
+                "mentions": [
+                    {
+                        "start": 3,
+                        "end": 18,
+                        "username": "Me_and_My_Boss"
+                    }
+                ]
+            },
+            "id": "1225166404728520705",
+            "lang": "fr",
+            "possibly_sensitive": false,
+            "referenced_tweets": [
+                {
+                    "type": "retweeted",
+                    "id": "1224385818204295172"
+                }
+            ],
+            "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+            "stats": {
+                "retweet_count": 2,
+                "reply_count": 0,
+                "like_count": 0,
+                "quote_count": 0
+            },
+            "text": "RT @Me_and_My_Boss: 📆 ÉVÉNEMENT |💡 Me &amp; My BOSS vous donne rendez-vous dans les #HautsdeFrance pour son premier événement Les #Brainstormer…",
+            "format": "detailed"
+        },
+        {
+            "author_id": "1179885844582342656",
+            "created_at": "2020-02-05T21:16:08.000Z",
+            "entities": {
+                "mentions": [
+                    {
+                        "start": 3,
+                        "end": 10,
+                        "username": "Clngqr"
+                    }
+                ]
+            },
+            "id": "1225166239703748608",
+            "lang": "fr",
+            "possibly_sensitive": false,
+            "referenced_tweets": [
+                {
+                    "type": "retweeted",
+                    "id": "1224821106487504896"
+                }
+            ],
+            "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+            "stats": {
+                "retweet_count": 17,
+                "reply_count": 0,
+                "like_count": 0,
+                "quote_count": 0
+            },
+            "text": "RT @Clngqr: 🔺RECHERCHE PLACE POUR 47TER À TOURCOING LE 28 FÉVRIER\nRT APPRÉCIÉS 🍀",
+            "format": "detailed"
+        },
+        {
+            "author_id": "1095454708318248963",
+            "created_at": "2020-02-05T21:15:38.000Z",
+            "entities": {
+                "mentions": [
+                    {
+                        "start": 3,
+                        "end": 12,
+                        "username": "yse_dvrx"
+                    }
+                ]
+            },
+            "id": "1225166114075881472",
+            "lang": "fr",
+            "possibly_sensitive": false,
+            "referenced_tweets": [
+                {
+                    "type": "retweeted",
+                    "id": "1225164986651156481"
+                }
+            ],
+            "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+            "stats": {
+                "retweet_count": 2,
+                "reply_count": 0,
+                "like_count": 0,
+                "quote_count": 0
+            },
+            "text": "RT @yse_dvrx: est ce que qqn aurait un bail pour avoir une place pour Pomme à Tourcoing le 27 février svp?",
+            "format": "detailed"
+        },
+        {
+            "author_id": "1170740841842954240",
+            "created_at": "2020-02-05T21:14:52.000Z",
+            "entities": {
+                "mentions": [
+                    {
+                        "start": 3,
+                        "end": 11,
+                        "username": "fwed229"
+                    }
+                ]
+            },
+            "id": "1225165918310891521",
+            "lang": "fr",
+            "possibly_sensitive": false,
+            "referenced_tweets": [
+                {
+                    "type": "quoted",
+                    "id": "1224039741592612865"
+                },
+                {
+                    "type": "retweeted",
+                    "id": "1224597817051828226"
+                }
+            ],
+            "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+            "stats": {
+                "retweet_count": 280,
+                "reply_count": 0,
+                "like_count": 0,
+                "quote_count": 0
+            },
+            "text": "RT @fwed229: Roubaix                      Tourcoing \nHem                             Le reste du 59\nLille",
+            "format": "detailed"
+        },
+        {
+            "author_id": "921744842",
+            "created_at": "2020-02-05T21:13:47.000Z",
+            "entities": {
+                "mentions": [
+                    {
+                        "start": 3,
+                        "end": 12,
+                        "username": "yse_dvrx"
+                    }
+                ]
+            },
+            "id": "1225165649493794817",
+            "lang": "fr",
+            "possibly_sensitive": false,
+            "referenced_tweets": [
+                {
+                    "type": "retweeted",
+                    "id": "1225164986651156481"
+                }
+            ],
+            "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+            "stats": {
+                "retweet_count": 2,
+                "reply_count": 0,
+                "like_count": 0,
+                "quote_count": 0
+            },
+            "text": "RT @yse_dvrx: est ce que qqn aurait un bail pour avoir une place pour Pomme à Tourcoing le 27 février svp?",
+            "format": "detailed"
+        },
+        {
+            "author_id": "2356842537",
+            "created_at": "2020-02-05T21:11:09.000Z",
+            "id": "1225164986651156481",
+            "lang": "fr",
+            "possibly_sensitive": false,
+            "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+            "stats": {
+                "retweet_count": 2,
+                "reply_count": 2,
+                "like_count": 1,
+                "quote_count": 0
+            },
+            "text": "est ce que qqn aurait un bail pour avoir une place pour Pomme à Tourcoing le 27 février svp?",
+            "format": "detailed"
+        },
+        {
+            "author_id": "1561194313",
+            "created_at": "2020-02-05T21:01:29.000Z",
+            "entities": {
+                "mentions": [
+                    {
+                        "start": 3,
+                        "end": 10,
+                        "username": "A_mkdm"
+                    }
+                ]
+            },
+            "id": "1225162553657118721",
+            "lang": "fr",
+            "possibly_sensitive": false,
+            "referenced_tweets": [
+                {
+                    "type": "retweeted",
+                    "id": "1225029260319936512"
+                }
+            ],
+            "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+            "stats": {
+                "retweet_count": 2,
+                "reply_count": 0,
+                "like_count": 0,
+                "quote_count": 0
+            },
+            "text": "RT @A_mkdm: Cherche place pour concert de Pomme le 27 février à Tourcoing, fav ou RT appréciés",
+            "format": "detailed"
+        },
+        {
+            "author_id": "1026952080",
+            "created_at": "2020-02-05T21:00:24.000Z",
+            "entities": {
+                "mentions": [
+                    {
+                        "start": 0,
+                        "end": 9,
+                        "username": "zohraa59"
+                    }
+                ]
+            },
+            "id": "1225162281144766464",
+            "in_reply_to_user_id": "1077981021738545152",
+            "lang": "tl",
+            "possibly_sensitive": false,
+            "referenced_tweets": [
+                {
+                    "type": "replied_to",
+                    "id": "1224887216100532225"
+                }
+            ],
+            "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+            "stats": {
+                "retweet_count": 0,
+                "reply_count": 0,
+                "like_count": 0,
+                "quote_count": 0
+            },
+            "text": "@zohraa59 Tourcoing li zhommes",
+            "format": "detailed"
+        },
+        {
+            "author_id": "2453419811",
+            "created_at": "2020-02-05T20:59:13.000Z",
+            "entities": {
+                "mentions": [
+                    {
+                        "start": 3,
+                        "end": 16,
+                        "username": "lavoixdunord"
+                    }
+                ],
+                "urls": [
+                    {
+                        "start": 111,
+                        "end": 134,
+                        "url": "https://t.co/T0745CHe3y",
+                        "expanded_url": "https://www.lavoixdunord.fr/705679/article/2020-02-05/dans-son-nouveau-clip-un-rappeur-fait-un-gros-big-la-police-de-tourcoing-et-de?utm_medium=Social&utm_source=Twitter#Echobox=1580923413",
+                        "display_url": "lavoixdunord.fr/705679/article…"
+                    }
+                ]
+            },
+            "id": "1225161981608460290",
+            "lang": "fr",
+            "possibly_sensitive": false,
+            "referenced_tweets": [
+                {
+                    "type": "retweeted",
+                    "id": "1225110335893446658"
+                }
+            ],
+            "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+            "stats": {
+                "retweet_count": 7,
+                "reply_count": 0,
+                "like_count": 0,
+                "quote_count": 0
+            },
+            "text": "RT @lavoixdunord: Dans son nouveau clip, un rappeur fait un «gros big up» à la police de Tourcoing et de Lille https://t.co/T0745CHe3y http…",
+            "format": "detailed"
+        }
+    ],
+    "meta": {
+        "newest_id": "1225166961807699968",
+        "oldest_id": "1225161981608460290",
+        "next_token": "b26v89c19zqg8o3fo71fwv0keya6uf3i22rwgq9pksubh",
+        "result_count": 10
+    }
+}

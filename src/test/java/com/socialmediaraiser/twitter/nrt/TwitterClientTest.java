@@ -3,6 +3,8 @@ package com.socialmediaraiser.twitter.nrt;
 import com.socialmediaraiser.RelationType;
 import com.socialmediaraiser.twitter.IUser;
 import com.socialmediaraiser.twitter.TwitterClient;
+import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv2;
+import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import com.socialmediaraiser.twitter.helpers.RequestHelper;
 import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
@@ -264,7 +266,15 @@ public class TwitterClientTest {
     }
 
     @Test
-    public void likeTweet(){
+    public void testLikeTweet(){
         twitterClient.likeTweet("1107533");
+    }
+
+    @Test
+    public void testSearchTweets7days(){
+        Date startDate = ConverterHelper.dayBeforeNow(5);
+        Date endDate = new Date();
+        List<ITweet> result = twitterClient.searchForTweetsWithin7days("@RedTheOne",startDate, endDate);
+        assertTrue(result.size()>10);
     }
 }
