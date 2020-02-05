@@ -222,7 +222,6 @@ public class RequestHelper {
         }
     }
 
-    // @todo use a json configuration file instead
     private int getCacheTimeoutFromUrl(String url){
         int defaultCache = 48;
         URL cacheUrl = this.getClass().getClassLoader().getResource("cache-config.json");
@@ -230,10 +229,8 @@ public class RequestHelper {
             LOGGER.severe("cache-config.json file not found in src/main/resources");
             return defaultCache;
         }
-
         try {
             Map<String, Integer> map = TwitterClient.OBJECT_MAPPER.readValue(cacheUrl, Map.class);
-
             for(Map.Entry<String, Integer> e : map.entrySet()){
                 if(url.contains(e.getKey())){
                     return e.getValue();
@@ -242,7 +239,6 @@ public class RequestHelper {
         } catch (IOException e) {
             LOGGER.severe(e.getMessage());
         }
-
         return defaultCache;
     }
 
