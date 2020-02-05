@@ -1,0 +1,12 @@
+{
+  "/default": 48,
+  "/friends": 24,
+  "/friendships": 24,
+  "/followers": 24,
+  "/users": 128,
+  "/user_timeline": 168,
+  "/30days": 24,
+  "/retweeters": 48,
+  "/rate_limit_status": 0,
+  "/request_token": 0
+}
