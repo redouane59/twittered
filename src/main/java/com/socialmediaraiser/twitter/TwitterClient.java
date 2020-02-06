@@ -6,6 +6,7 @@ import com.socialmediaraiser.RelationType;
 import com.socialmediaraiser.twitter.dto.getrelationship.IdListDTO;
 import com.socialmediaraiser.twitter.dto.getrelationship.RelationshipObjectResponseDTO;
 import com.socialmediaraiser.twitter.dto.getrelationship.UserListDTO;
+import com.socialmediaraiser.twitter.dto.others.BearerTokenDTO;
 import com.socialmediaraiser.twitter.dto.others.RateLimitStatusDTO;
 import com.socialmediaraiser.twitter.dto.tweet.*;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
@@ -16,6 +17,7 @@ import com.socialmediaraiser.twitter.helpers.URLHelper;
 import lombok.CustomLog;
 import lombok.Getter;
 import lombok.Setter;
+import okio.ByteString;
 
 import java.io.File;
 import java.io.IOException;
@@ -293,5 +295,20 @@ public class TwitterClient implements ITwitterClient {
             result = List.of(OBJECT_MAPPER.readValue(file, TweetDataDTO[].class));
         }
         return result;
+    }
+
+    @Override
+    public String getBearerToken() {
+        String url = URLHelper.getBearerTokenUrl;
+        String valueToCrypt = RequestHelper.TWITTER_CREDENTIALS.getApiKey()
+                +":"+RequestHelper.TWITTER_CREDENTIALS.getApiSecretKey();
+        String cryptedValue = Base64.getEncoder().encodeToString(valueToCrypt.getBytes());
+        Map<String, String> params = new HashMap<>();
+        params.put("Authorization", "Basic " + cryptedValue);
+        params.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+        String body = "grant_type=client_credentials";
+        BearerTokenDTO result = this.requestHelper
+                .executePostRequestWithHeader(url, params, body, BearerTokenDTO.class).orElseThrow(NoSuchElementException::new);
+        return result.getAccessToken();
     }
 }

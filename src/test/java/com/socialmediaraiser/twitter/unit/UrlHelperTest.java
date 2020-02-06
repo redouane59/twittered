@@ -163,4 +163,11 @@ public class UrlHelperTest {
                 URLHelper.searchTweet7daysUrl);
     }
 
+    @Test
+    public void testGetBearerTokenurl(){
+        assertEquals("https://api.twitter.com/oauth2/token",
+                URLHelper.getBearerTokenUrl);
+
+    }
+
 }

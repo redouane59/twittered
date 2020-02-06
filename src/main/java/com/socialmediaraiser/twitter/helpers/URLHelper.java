@@ -54,6 +54,9 @@ public class URLHelper {
     public static final String searchTweetStandardUrl = ROOT_URL + SEARCH + TWEETS + JSON;
     public static final String liveEventUrl = ROOT_URL + ACCOUNT_ACTIVITY + DEV_ENV_NAME + WEBHOOKS + JSON;
     public static final String searchTweet7daysUrl = ROOT_URL_V2+TWEETS+SEARCH;
+    public static final String getBearerTokenUrl = "https://api.twitter.com/oauth2/token";
+
+
     public String getFollowUrl(String userId) {
         return new StringBuilder(ROOT_URL)
                 .append(FRIENDSHIPS)

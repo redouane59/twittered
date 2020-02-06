@@ -277,4 +277,11 @@ public class TwitterClientTest {
         List<ITweet> result = twitterClient.searchForTweetsWithin7days("@RedTheOne",startDate, endDate);
         assertTrue(result.size()>10);
     }
+
+    @Test
+    public void testGetBearerToken(){
+        String token = twitterClient.getBearerToken();
+        assertNotNull(token);
+        assertTrue(token.length()>50);
+    }
 }
