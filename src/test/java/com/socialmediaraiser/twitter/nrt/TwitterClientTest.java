@@ -9,14 +9,12 @@ import com.socialmediaraiser.twitter.helpers.RequestHelper;
 import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
+import org.apache.commons.lang.time.DateUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -272,8 +270,8 @@ public class TwitterClientTest {
 
     @Test
     public void testSearchTweets7days(){
-        Date startDate = ConverterHelper.dayBeforeNow(5);
-        Date endDate = new Date();
+        Date startDate = DateUtils.round(ConverterHelper.dayBeforeNow(5),Calendar.HOUR);
+        Date endDate = DateUtils.round(ConverterHelper.dayBeforeNow(1),Calendar.HOUR);
         List<ITweet> result = twitterClient.searchForTweetsWithin7days("@RedTheOne",startDate, endDate);
         assertTrue(result.size()>10);
     }

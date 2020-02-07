@@ -17,6 +17,7 @@ public class ConverterHelper {
 
     public static final String DATE_PATTERN_SIMPLE = "yyyyMMdd";
     public static final String DATE_PATTERN_LARGE = "yyyyMMddHHmm";
+    public static final String DATE_PATTERN_V2 = "yyyy-MM-dd'T'HH:mm:ss.000'Z'";
 
     private ConverterHelper() {
         throw new IllegalStateException("Utility class");
@@ -37,6 +38,11 @@ public class ConverterHelper {
 
     public static String getStringFromDate(Date d){
         DateFormat df = new SimpleDateFormat(DATE_PATTERN_LARGE);
+        return df.format(d);
+    }
+
+    public static String getStringFromDateV2(Date d){
+        DateFormat df = new SimpleDateFormat(DATE_PATTERN_V2);
         return df.format(d);
     }
 

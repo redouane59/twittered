@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class TweetSearchV2DTO {
-    private List<TweetDTOv2> data;
+    private List<TweetDTOv2.TweetData> data;
     private Meta meta;
 
     @Getter

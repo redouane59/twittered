@@ -13,6 +13,7 @@ import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import com.socialmediaraiser.twitter.helpers.RequestHelper;
+import com.socialmediaraiser.twitter.helpers.RequestHelperV2;
 import com.socialmediaraiser.twitter.helpers.URLHelper;
 import lombok.CustomLog;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class TwitterClient implements ITwitterClient {
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private URLHelper urlHelper = new URLHelper();
     private RequestHelper requestHelper = new RequestHelper();
+    private RequestHelperV2 requestHelperV2 = new RequestHelperV2();
     private static final String IDS = "ids";
     private static final String USERS = "users";
     private static final String CURSOR = "cursor";
@@ -265,15 +267,15 @@ public class TwitterClient implements ITwitterClient {
         int count = 100;
         Map<String, String> parameters = new HashMap<>();
         parameters.put("query",query);
-        parameters.put("maxResults",String.valueOf(count));
-        parameters.put("fromDate",ConverterHelper.getStringFromDate(fromDate));
-        parameters.put("toDate", ConverterHelper.getStringFromDate(toDate));
+        parameters.put("max_results",String.valueOf(count));
+        parameters.put("start_time",ConverterHelper.getStringFromDateV2(fromDate));
+        parameters.put("end_time", ConverterHelper.getStringFromDateV2(toDate));
         String next;
         List<ITweet> result = new ArrayList<>();
         do {
-            Optional<TweetSearchV2DTO> tweetSearchV2DTO = this.getRequestHelper().executeGetRequestWithParameters(
-                    URLHelper.searchTweet7daysUrl,parameters, TweetSearchV2DTO.class);
-            if(tweetSearchV2DTO.isEmpty()){
+            Optional<TweetSearchV2DTO> tweetSearchV2DTO = this.getRequestHelperV2().executeGetRequestWithParameters(
+                    URLHelper.searchTweet7daysUrl,parameters, this.getBearerToken(), TweetSearchV2DTO.class);
+            if(tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData()==null){
                 LOGGER.severe(()->"empty response");
                 break;
             }
