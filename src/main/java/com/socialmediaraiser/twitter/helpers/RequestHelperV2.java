@@ -2,7 +2,6 @@ package com.socialmediaraiser.twitter.helpers;
 
 import com.socialmediaraiser.twitter.TwitterClient;
 import lombok.CustomLog;
-import lombok.NoArgsConstructor;
 import org.apache.http.client.utils.URIBuilder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -10,13 +9,15 @@ import java.net.http.HttpResponse;
 import java.util.Map;
 import java.util.Optional;
 
-
-@NoArgsConstructor
 @CustomLog
 public class RequestHelperV2 extends AbstractRequestHelper {
 
-    private int sleepTime = 5;
-    private HttpClient httpClient = HttpClient.newHttpClient();;
+    public static String bearerToken;
+    private HttpClient httpClient = HttpClient.newHttpClient();
+
+    public RequestHelperV2(String token){
+        bearerToken = token;
+    }
 
     public <T> Optional<T> executeGetRequestWithParameters(String url, Map<String, String> parameters, String bearerToken, Class<T> classType) {
         T result = null;

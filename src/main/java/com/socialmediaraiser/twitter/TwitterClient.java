@@ -32,7 +32,7 @@ public class TwitterClient implements ITwitterClient {
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private URLHelper urlHelper = new URLHelper();
     private RequestHelper requestHelper = new RequestHelper();
-    private RequestHelperV2 requestHelperV2 = new RequestHelperV2();
+    private RequestHelperV2 requestHelperV2 = new RequestHelperV2(this.getBearerToken());
     private static final String IDS = "ids";
     private static final String USERS = "users";
     private static final String CURSOR = "cursor";
@@ -251,7 +251,7 @@ public class TwitterClient implements ITwitterClient {
             Optional<TweetSearchV1DTO> tweetSearchV1DTO = this.getRequestHelper().executeGetRequestWithParameters(
                     URLHelper.searchTweet30daysUrl,parameters, TweetSearchV1DTO.class);
             if(tweetSearchV1DTO.isEmpty()){
-                LOGGER.severe(()->"empty response");
+                LOGGER.severe(()->"empty response on searchForTweetsWithin30days");
                 break;
             }
             result.addAll(tweetSearchV1DTO.get().getResults());
@@ -276,7 +276,7 @@ public class TwitterClient implements ITwitterClient {
             Optional<TweetSearchV2DTO> tweetSearchV2DTO = this.getRequestHelperV2().executeGetRequestWithParameters(
                     URLHelper.searchTweet7daysUrl,parameters, this.getBearerToken(), TweetSearchV2DTO.class);
             if(tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData()==null){
-                LOGGER.severe(()->"empty response");
+                LOGGER.severe(()->"empty response on searchForTweetsWithin7days");
                 break;
             }
             result.addAll(tweetSearchV2DTO.get().getData());

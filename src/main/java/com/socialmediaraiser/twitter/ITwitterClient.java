@@ -145,8 +145,8 @@ public interface ITwitterClient {
     List<TweetDataDTO> readTwitterDataFile(File file) throws IOException;
 
     /**
-     * Get a bearer token
-     * @return the token
+     * Get a bearer token calling https://api.twitter.com/oauth2/token
+     * @return the generated token
      */
     String getBearerToken();
 }
