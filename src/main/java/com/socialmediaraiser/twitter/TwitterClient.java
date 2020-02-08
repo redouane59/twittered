@@ -11,10 +11,7 @@ import com.socialmediaraiser.twitter.dto.others.RateLimitStatusDTO;
 import com.socialmediaraiser.twitter.dto.tweet.*;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
-import com.socialmediaraiser.twitter.helpers.ConverterHelper;
-import com.socialmediaraiser.twitter.helpers.RequestHelper;
-import com.socialmediaraiser.twitter.helpers.RequestHelperV2;
-import com.socialmediaraiser.twitter.helpers.URLHelper;
+import com.socialmediaraiser.twitter.helpers.*;
 import lombok.CustomLog;
 import lombok.Getter;
 import lombok.Setter;
@@ -302,8 +299,8 @@ public class TwitterClient implements ITwitterClient {
     @Override
     public String getBearerToken() {
         String url = URLHelper.getBearerTokenUrl;
-        String valueToCrypt = RequestHelper.TWITTER_CREDENTIALS.getApiKey()
-                +":"+RequestHelper.TWITTER_CREDENTIALS.getApiSecretKey();
+        String valueToCrypt = AbstractRequestHelper.TWITTER_CREDENTIALS.getApiKey()
+                +":"+AbstractRequestHelper.TWITTER_CREDENTIALS.getApiSecretKey();
         String cryptedValue = Base64.getEncoder().encodeToString(valueToCrypt.getBytes());
         Map<String, String> params = new HashMap<>();
         params.put("Authorization", "Basic " + cryptedValue);

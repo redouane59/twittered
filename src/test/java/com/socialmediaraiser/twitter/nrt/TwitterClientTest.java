@@ -6,6 +6,7 @@ import com.socialmediaraiser.twitter.TwitterClient;
 import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
+import com.socialmediaraiser.twitter.helpers.AbstractRequestHelper;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import com.socialmediaraiser.twitter.helpers.RequestHelper;
 import org.apache.commons.lang.time.DateUtils;
@@ -237,8 +238,8 @@ public class TwitterClientTest {
 
     @Test
     public void testGetTokens(){
-        RequestHelper.TWITTER_CREDENTIALS.setAccessToken("");
-        RequestHelper.TWITTER_CREDENTIALS.setAccessTokenSecret("");
+        AbstractRequestHelper.TWITTER_CREDENTIALS.setAccessToken("");
+        AbstractRequestHelper.TWITTER_CREDENTIALS.setAccessTokenSecret("");
         Optional<RequestTokenDTO> result = twitterClient.getRequestHelper().executeTokenRequest();
         assertTrue(result.isPresent());
         assertTrue(result.get().getOauthToken().length()>1);
