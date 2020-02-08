@@ -128,11 +128,26 @@ public interface ITwitterClient {
     List<ITweet> searchForTweetsWithin30days(String query, Date fromDate, Date toDate);
 
     /**
+     * Search historic tweets calling https://api.twitter.com/labs/1/tweets/search
+     * @param query the search query
+     * @param fromDate the start date
+     * @param toDate the end date
+     * @return a list of tweets
+     */
+    List<ITweet> searchForTweetsWithin7days(String query, Date fromDate, Date toDate);
+
+    /**
      * Parse the Twitter extract data archive file in a List of Tweets
      * @param file the downloaded file on https://twitter.com/settings/your_twitter_data converted in .json format
      * @return the list of tweets
      * @throws IOException
      */
     List<TweetDataDTO> readTwitterDataFile(File file) throws IOException;
+
+    /**
+     * Get a bearer token calling https://api.twitter.com/oauth2/token
+     * @return the generated token
+     */
+    String getBearerToken();
 }
 

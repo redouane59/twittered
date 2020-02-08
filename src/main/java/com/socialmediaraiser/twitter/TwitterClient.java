@@ -6,19 +6,16 @@ import com.socialmediaraiser.RelationType;
 import com.socialmediaraiser.twitter.dto.getrelationship.IdListDTO;
 import com.socialmediaraiser.twitter.dto.getrelationship.RelationshipObjectResponseDTO;
 import com.socialmediaraiser.twitter.dto.getrelationship.UserListDTO;
+import com.socialmediaraiser.twitter.dto.others.BearerTokenDTO;
 import com.socialmediaraiser.twitter.dto.others.RateLimitStatusDTO;
-import com.socialmediaraiser.twitter.dto.tweet.ITweet;
-import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv1;
-import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
-import com.socialmediaraiser.twitter.dto.tweet.TweetSearchV1DTO;
+import com.socialmediaraiser.twitter.dto.tweet.*;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
-import com.socialmediaraiser.twitter.helpers.ConverterHelper;
-import com.socialmediaraiser.twitter.helpers.RequestHelper;
-import com.socialmediaraiser.twitter.helpers.URLHelper;
+import com.socialmediaraiser.twitter.helpers.*;
 import lombok.CustomLog;
 import lombok.Getter;
 import lombok.Setter;
+import okio.ByteString;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +29,7 @@ public class TwitterClient implements ITwitterClient {
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private URLHelper urlHelper = new URLHelper();
     private RequestHelper requestHelper = new RequestHelper();
+    private RequestHelperV2 requestHelperV2 = new RequestHelperV2(this.getBearerToken());
     private static final String IDS = "ids";
     private static final String USERS = "users";
     private static final String CURSOR = "cursor";
@@ -250,11 +248,36 @@ public class TwitterClient implements ITwitterClient {
             Optional<TweetSearchV1DTO> tweetSearchV1DTO = this.getRequestHelper().executeGetRequestWithParameters(
                     URLHelper.searchTweet30daysUrl,parameters, TweetSearchV1DTO.class);
             if(tweetSearchV1DTO.isEmpty()){
-                LOGGER.severe(()->"empty response");
+                LOGGER.severe(()->"empty response on searchForTweetsWithin30days");
                 break;
             }
             result.addAll(tweetSearchV1DTO.get().getResults());
             next = tweetSearchV1DTO.get().getNext();
+            parameters.put(NEXT, next);
+        }
+        while (next!= null && result.size()<count);
+        return result;
+    }
+
+    @Override
+    public List<ITweet> searchForTweetsWithin7days(String query, Date fromDate, Date toDate) {
+        int count = 100;
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("query",query);
+        parameters.put("max_results",String.valueOf(count));
+        parameters.put("start_time",ConverterHelper.getStringFromDateV2(fromDate));
+        parameters.put("end_time", ConverterHelper.getStringFromDateV2(toDate));
+        String next;
+        List<ITweet> result = new ArrayList<>();
+        do {
+            Optional<TweetSearchV2DTO> tweetSearchV2DTO = this.getRequestHelperV2().executeGetRequestWithParameters(
+                    URLHelper.searchTweet7daysUrl,parameters, this.getBearerToken(), TweetSearchV2DTO.class);
+            if(tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData()==null){
+                LOGGER.severe(()->"empty response on searchForTweetsWithin7days");
+                break;
+            }
+            result.addAll(tweetSearchV2DTO.get().getData());
+            next = tweetSearchV2DTO.get().getMeta().getNextToken();
             parameters.put(NEXT, next);
         }
         while (next!= null && result.size()<count);
@@ -271,5 +294,20 @@ public class TwitterClient implements ITwitterClient {
             result = List.of(OBJECT_MAPPER.readValue(file, TweetDataDTO[].class));
         }
         return result;
+    }
+
+    @Override
+    public String getBearerToken() {
+        String url = URLHelper.getBearerTokenUrl;
+        String valueToCrypt = AbstractRequestHelper.TWITTER_CREDENTIALS.getApiKey()
+                +":"+AbstractRequestHelper.TWITTER_CREDENTIALS.getApiSecretKey();
+        String cryptedValue = Base64.getEncoder().encodeToString(valueToCrypt.getBytes());
+        Map<String, String> params = new HashMap<>();
+        params.put("Authorization", "Basic " + cryptedValue);
+        params.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+        String body = "grant_type=client_credentials";
+        BearerTokenDTO result = this.requestHelper
+                .executePostRequestWithHeader(url, params, body, BearerTokenDTO.class).orElseThrow(NoSuchElementException::new);
+        return result.getAccessToken();
     }
 }

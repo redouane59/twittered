@@ -4,9 +4,11 @@ import com.socialmediaraiser.twitter.TwitterClient;
 import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
 import com.socialmediaraiser.twitter.signature.Oauth1SigningInterceptor;
 import com.socialmediaraiser.twitter.signature.TwitterCredentials;
+import jdk.jfr.ContentType;
 import lombok.CustomLog;
 import lombok.NoArgsConstructor;
 import okhttp3.*;
+import okhttp3.internal.http2.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import java.io.File;
@@ -15,17 +17,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @NoArgsConstructor
 @CustomLog
-public class RequestHelper {
+public class RequestHelper extends AbstractRequestHelper {
 
-    public static final TwitterCredentials TWITTER_CREDENTIALS = getAuthentication();
     private int sleepTime = 5;
 
     public <T> Optional<T> executeGetRequest(String url, Class<T> classType) {
@@ -121,6 +119,28 @@ public class RequestHelper {
                     LOGGER.info(()->"token reset, now sleeping 30sec");
                     TimeUnit.SECONDS.sleep(30);
                 }
+            }
+            String stringResponse = response.body().string();
+            result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
+        } catch(Exception e){
+            LOGGER.severe(e.getMessage());
+        }
+        return Optional.ofNullable(result);
+    }
+
+    public <T> Optional<T> executePostRequestWithHeader(String url, Map<String, String> headersMap, String body, Class<T> classType) {
+        T result = null;
+        try {
+            Request request = new Request.Builder()
+                    .url(url)
+                    .method("POST",RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), body))
+                    .headers(Headers.of(headersMap))
+                    .build();
+           // Request signedRequest = this.getSignedRequest(request);
+            Response response = this.getHttpClient(url)
+                    .newCall(request).execute();
+            if(response.code()!=200){
+                LOGGER.severe(()->"(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
             }
             String stringResponse = response.body().string();
             result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
@@ -246,22 +266,4 @@ public class RequestHelper {
         LOGGER.severe(()->" Error calling " + url + " : " + response);
     }
 
-    public static TwitterCredentials getAuthentication(){
-        URL twitterCredentialsFile = TwitterCredentials.class.getClassLoader().getResource("twitter-credentials.json");
-        if(twitterCredentialsFile==null){
-            LOGGER.severe("twitter-credentials.json file not found in src/main/resources");
-            return null;
-        }
-        try {
-            TwitterCredentials twitterCredentials = TwitterClient.OBJECT_MAPPER.readValue(twitterCredentialsFile, TwitterCredentials.class);
-            if(twitterCredentials.getAccessToken()==null) LOGGER.severe("Access token is null in twitter-credentials.json");
-            if(twitterCredentials.getAccessTokenSecret()==null) LOGGER.severe("Secret token is null in twitter-credentials.json");
-            if(twitterCredentials.getApiKey()==null) LOGGER.severe("Consumer key is null in twitter-credentials.json");
-            if(twitterCredentials.getApiSecretKey()==null) LOGGER.severe("Consumer secret is null in twitter-credentials.json");
-            return twitterCredentials;
-        } catch (IOException e) {
-            LOGGER.severe(e.getMessage());
-            return null;
-        }
-    }
 }
