@@ -271,14 +271,14 @@ public class TwitterClient implements ITwitterClient {
         List<ITweet> result = new ArrayList<>();
         do {
             Optional<TweetSearchV2DTO> tweetSearchV2DTO = this.getRequestHelperV2().executeGetRequestWithParameters(
-                    URLHelper.searchTweet7daysUrl,parameters, this.getBearerToken(), TweetSearchV2DTO.class);
+                    URLHelper.searchTweet7daysUrl,parameters, TweetSearchV2DTO.class);
             if(tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData()==null){
                 LOGGER.severe(()->"empty response on searchForTweetsWithin7days");
                 break;
             }
             result.addAll(tweetSearchV2DTO.get().getData());
             next = tweetSearchV2DTO.get().getMeta().getNextToken();
-            parameters.put(NEXT, next);
+            parameters.put("next_token", next);
         }
         while (next!= null && result.size()<count);
         return result;

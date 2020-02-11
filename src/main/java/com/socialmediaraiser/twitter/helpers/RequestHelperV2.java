@@ -19,7 +19,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
         bearerToken = token;
     }
 
-    public <T> Optional<T> executeGetRequestWithParameters(String url, Map<String, String> parameters, String bearerToken, Class<T> classType) {
+    public <T> Optional<T> executeGetRequestWithParameters(String url, Map<String, String> parameters, Class<T> classType) {
         T result = null;
         try {
             URIBuilder builder = new URIBuilder(url);
@@ -32,6 +32,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
                     .build();
             HttpResponse response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             String stringResponse = response.body().toString();
+            LOGGER.info(()->stringResponse);
             result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());

@@ -73,6 +73,11 @@ public class TweetDTOv2 implements ITweet {
         }
 
         @Override
+        public String getAuthorId(){
+            return this.authorId;
+        }
+
+        @Override
         public Date getCreatedAt(){
             return ConverterHelper.getDateFromTwitterDateV2(this.createdAt);
         }
@@ -136,6 +141,11 @@ public class TweetDTOv2 implements ITweet {
     @Override
     public IUser getUser() {
         return this.includes.getUsers()[0];
+    }
+
+    @Override
+    public String getAuthorId(){
+        return this.data[0].getAuthorId();
     }
 
     @Getter

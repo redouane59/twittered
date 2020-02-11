@@ -44,4 +44,9 @@ public class TweetDTOv1 implements ITweet {
         return ConverterHelper.getDateFromTwitterString(this.createdAt);
     }
 
+    @Override
+    public String getAuthorId() {
+        return this.user.getId();
+    }
+
 }

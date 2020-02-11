@@ -15,5 +15,6 @@ public interface ITweet {
     String getInReplyToStatusId();
     String getLang();
     IUser getUser();
+    String getAuthorId();
 
 }
