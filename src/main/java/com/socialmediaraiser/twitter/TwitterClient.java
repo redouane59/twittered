@@ -8,6 +8,7 @@ import com.socialmediaraiser.twitter.dto.getrelationship.RelationshipObjectRespo
 import com.socialmediaraiser.twitter.dto.getrelationship.UserListDTO;
 import com.socialmediaraiser.twitter.dto.others.BearerTokenDTO;
 import com.socialmediaraiser.twitter.dto.others.RateLimitStatusDTO;
+import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
 import com.socialmediaraiser.twitter.dto.tweet.*;
 import com.socialmediaraiser.twitter.dto.user.IUser;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
@@ -16,9 +17,13 @@ import com.socialmediaraiser.twitter.helpers.*;
 import lombok.CustomLog;
 import lombok.Getter;
 import lombok.Setter;
-
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Getter
@@ -309,5 +314,27 @@ public class TwitterClient implements ITwitterClient {
         BearerTokenDTO result = this.requestHelper
                 .executePostRequestWithHeader(url, params, body, BearerTokenDTO.class).orElseThrow(NoSuchElementException::new);
         return result.getAccessToken();
+    }
+
+    @Override
+    public RequestTokenDTO getOauth1Token(){
+        String url = URLHelper.GET_OAUTH1_TOKEN_URL;
+        String stringResponse = this.requestHelper.executePostRequest(url, new HashMap<>(),String.class)
+                .orElseThrow(NoSuchElementException::new);
+        List<NameValuePair> params = null;
+        try {
+            params = URLEncodedUtils.parse(new URI("twitter.com?"+stringResponse), StandardCharsets.UTF_8.name());
+        } catch (URISyntaxException e) {
+            LOGGER.severe(e.getMessage());
+        }
+        RequestTokenDTO requestTokenDTO = new RequestTokenDTO();
+        for (NameValuePair param : params) {
+            if(param.getName().equals("oauth_token")){
+                requestTokenDTO.setOauthToken(param.getValue());
+            } else if (param.getName().equals("oauth_token_secret")){
+                requestTokenDTO.setOauthTokenSecret(param.getValue());
+            }
+        }
+        return requestTokenDTO;
     }
 }

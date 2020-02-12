@@ -11,7 +11,6 @@ import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -236,13 +235,12 @@ public class TwitterClientTest {
     } */
 
     @Test
-    public void testGetTokens(){
+    public void testGetOauth1Token(){
         AbstractRequestHelper.TWITTER_CREDENTIALS.setAccessToken("");
         AbstractRequestHelper.TWITTER_CREDENTIALS.setAccessTokenSecret("");
-        Optional<RequestTokenDTO> result = twitterClient.getRequestHelper().executeTokenRequest();
-        assertTrue(result.isPresent());
-        assertTrue(result.get().getOauthToken().length()>1);
-        assertTrue(result.get().getOauthTokenSecret().length()>1);
+        RequestTokenDTO result = twitterClient.getOauth1Token();
+        assertTrue(result.getOauthToken().length()>1);
+        assertTrue(result.getOauthTokenSecret().length()>1);
     }
 
     @Test

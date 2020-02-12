@@ -2,10 +2,10 @@ package com.socialmediaraiser.twitter;
 
 import com.socialmediaraiser.RelationType;
 import com.socialmediaraiser.twitter.dto.others.RateLimitStatusDTO;
+import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
 import com.socialmediaraiser.twitter.dto.user.IUser;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -148,9 +148,15 @@ public interface ITwitterClient {
     List<TweetDataDTO> readTwitterDataFile(File file) throws IOException;
 
     /**
-     * Get a bearer token calling https://api.twitter.com/oauth2/token
+     * Get a bearer token (oAuth2) calling https://api.twitter.com/oauth2/token
      * @return the generated token
      */
     String getBearerToken();
+
+    /**
+     * Get token & secret token (oAuth1) calling https://api.twitter.com/oauth/request_token
+     * @return and object containing the oauth token and the oauth token secret
+     */
+    RequestTokenDTO getOauth1Token();
 }
 

@@ -113,15 +113,15 @@ public class RequestHelper extends AbstractRequestHelper {
             if(response.code()!=200){
                 LOGGER.severe(()->"(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
                 if(response.code()==429){
-                    RequestTokenDTO requestTokenDTO = this.executeTokenRequest().orElseThrow(NoSuchElementException::new);
-                    TWITTER_CREDENTIALS.setAccessToken(requestTokenDTO.getOauthToken());
-                    TWITTER_CREDENTIALS.setAccessTokenSecret(requestTokenDTO.getOauthTokenSecret());
-                    LOGGER.info(()->"token reset, now sleeping 30sec");
-                    TimeUnit.SECONDS.sleep(30);
+                    LOGGER.severe(()->"Reset your token");
                 }
             }
             String stringResponse = response.body().string();
-            result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
+            if(classType.equals(String.class)){ // dirty, to manage token oauth1
+                result = (T)stringResponse;
+            } else{
+                result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
+            }
         } catch(Exception e){
             LOGGER.severe(e.getMessage());
         }
@@ -145,31 +145,6 @@ public class RequestHelper extends AbstractRequestHelper {
             String stringResponse = response.body().string();
             result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
         } catch(Exception e){
-            LOGGER.severe(e.getMessage());
-        }
-        return Optional.ofNullable(result);
-    }
-
-    public Optional<RequestTokenDTO> executeTokenRequest(){
-        RequestTokenDTO result = null;
-        try {
-            Request request = new Request.Builder()
-                    .url("https://api.twitter.com/oauth/request_token")
-                    .post(RequestBody.create(null, "{}"))
-                    .build();
-            Request signedRequest = this.getSignedRequest(request);
-            Response response = this.getHttpClient("https://api.twitter.com/oauth/request_token").newCall(signedRequest).execute();
-            String stringResponse = response.body().string();
-            List<NameValuePair> params = URLEncodedUtils.parse(new URI("twitter.com?"+stringResponse), StandardCharsets.UTF_8.name());
-            result = new RequestTokenDTO();
-            for (NameValuePair param : params) {
-                if(param.getName().equals("oauth_token")){
-                    result.setOauthToken(param.getValue());
-                } else if (param.getName().equals("oauth_token_secret")){
-                    result.setOauthTokenSecret(param.getValue());
-                }
-            }
-        } catch(IOException | URISyntaxException e){
             LOGGER.severe(e.getMessage());
         }
         return Optional.ofNullable(result);
