@@ -13,6 +13,4 @@ public class RequestTokenDTO {
     private String oauthToken;
     @JsonProperty("oauth_token_secret")
     private String oauthTokenSecret;
-    @JsonProperty("auth_callback_confirmed")
-    private boolean authCallbackConfirmed;
 }

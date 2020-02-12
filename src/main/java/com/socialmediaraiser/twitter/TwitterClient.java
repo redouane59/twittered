@@ -19,7 +19,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
