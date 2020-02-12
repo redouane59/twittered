@@ -274,7 +274,6 @@ public class TwitterClientTest {
         Date endDate = DateUtils.round(ConverterHelper.dayBeforeNow(1),Calendar.HOUR);
         List<ITweet> result = twitterClient.searchForTweetsWithin7days("@RedTheOne -RT",startDate, endDate);
         assertTrue(result.size()>10);
-        assertNotNull(result.get(0).getUser());
     }
 
     @Test
