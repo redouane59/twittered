@@ -36,7 +36,7 @@ public class UrlHelperTest {
     @Test
     public void testUrlLastTweet(){
         assertEquals("https://api.twitter.com/1.1/statuses/user_timeline.json?",
-                URLHelper.lastTweetListUrl);
+                URLHelper.LAST_TWEET_LIST_URL);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class UrlHelperTest {
     @Test
     public void testUrlGetRateLimitStatus(){
         assertEquals("https://api.twitter.com/1.1/application/rate_limit_status.json",
-                URLHelper.rateLimitUrl);
+                URLHelper.RATE_LIMIT_URL);
     }
 
     @Test
@@ -105,21 +105,21 @@ public class UrlHelperTest {
     public void testSearchTweetsUrl(){
         //https://api.twitter.com/1.1/tweets/search/30day/DevImproveMyTwitter.json
         assertEquals("https://api.twitter.com/1.1/tweets/search/30day/dev.json",
-                URLHelper.searchTweet30daysUrl);
+                URLHelper.SEARCH_TWEET_30_DAYS_URL);
     }
 
     @Test
     public void testSearchTweetsUrlFull(){
         // /search/fullarchive/:label.json
         assertEquals("https://api.twitter.com/1.1/tweets/search/fullarchive/dev.json",
-                URLHelper.searchTweetFullArchiveUrl);
+                URLHelper.SEARCH_TWEET_FULL_ARCHIVE_URL);
     }
 
     @Test
     public void testSearchTweetsUrlStandard(){
         https://api.twitter.com/1.1/search/tweets.json
         assertEquals("https://api.twitter.com/1.1/search/tweets.json",
-                URLHelper.searchTweetStandardUrl);
+                URLHelper.SEARCH_TWEET_STANDARD_URL);
     }
 
     @Test
@@ -140,7 +140,7 @@ public class UrlHelperTest {
     public void testLiveEventUrl(){
         //https://api.twitter.com/1.1/account_activity/all/:env_name/webhooks.json
         assertEquals("https://api.twitter.com/1.1/account_activity/all/dev/webhooks.json",
-                URLHelper.liveEventUrl);
+                URLHelper.LIVE_EVENT_URL);
     }
 
     @Test
@@ -160,13 +160,13 @@ public class UrlHelperTest {
     @Test
     public void testSearch7DaysUrl(){
         assertEquals("https://api.twitter.com/labs/1/tweets/search",
-                URLHelper.searchTweet7daysUrl);
+                URLHelper.SEARCH_TWEET_7_DAYS_URL);
     }
 
     @Test
     public void testGetBearerTokenurl(){
         assertEquals("https://api.twitter.com/oauth2/token",
-                URLHelper.getBearerTokenUrl);
+                URLHelper.GET_BEARER_TOKEN_URL);
 
     }
 

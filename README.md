@@ -3,7 +3,7 @@ This project is a JAVA library which allows you to consume the Twitter API.
 ## /!\ Development in progress... Any feedback is welcome :) /!\ 
 
 ### Configuration
-The file `src/main/resources/twitter-credentials.json` should contain your twitter credentials like this :
+A file `src/main/resources/twitter-credentials.json` should contain your twitter credentials like this :
 ```
 {
   "apiKey": "xxx",
@@ -21,7 +21,11 @@ tab.
 3) Start using `TwitterClient` class
 
 ### Available methods
-See : [ITwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/ITwitterClient.java)
+See : 
+- [ITwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/ITwitterClient.java)
+- [ITweet.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/dto/tweet/ITweet.java)
+- [IUser.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/dto/user/IUser.java)
+
 ### External Resources
 [Twitter Developers docs](https://developer.twitter.com/en/docs)
 

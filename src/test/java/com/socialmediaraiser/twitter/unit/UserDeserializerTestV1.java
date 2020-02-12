@@ -1,6 +1,6 @@
 package com.socialmediaraiser.twitter.unit;
 
-import com.socialmediaraiser.twitter.IUser;
+import com.socialmediaraiser.twitter.dto.user.IUser;
 import com.socialmediaraiser.twitter.TwitterClient;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;

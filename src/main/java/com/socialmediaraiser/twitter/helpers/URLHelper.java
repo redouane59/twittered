@@ -47,14 +47,14 @@ public class URLHelper {
     private static final int MAX_COUNT = 200;
     private static final int RETWEET_MAX_COUNT = 100;
     private static final int MAX_LOOKUP = 100;
-    public static final String lastTweetListUrl = ROOT_URL + STATUSES + USER_TIMELINE;
-    public static final String rateLimitUrl = ROOT_URL + "/application/rate_limit_status.json";;
-    public static final String searchTweet30daysUrl = ROOT_URL + TWEETS + SEARCH + THIRTY_DAYS + DEV_ENV_NAME + JSON;
-    public static final String searchTweetFullArchiveUrl = ROOT_URL + TWEETS + SEARCH + FULL_ARCHIVE + DEV_ENV_NAME + JSON;
-    public static final String searchTweetStandardUrl = ROOT_URL + SEARCH + TWEETS + JSON;
-    public static final String liveEventUrl = ROOT_URL + ACCOUNT_ACTIVITY + DEV_ENV_NAME + WEBHOOKS + JSON;
-    public static final String searchTweet7daysUrl = ROOT_URL_V2+TWEETS+SEARCH;
-    public static final String getBearerTokenUrl = "https://api.twitter.com/oauth2/token";
+    public static final String LAST_TWEET_LIST_URL = ROOT_URL + STATUSES + USER_TIMELINE;
+    public static final String RATE_LIMIT_URL = ROOT_URL + "/application/rate_limit_status.json";;
+    public static final String SEARCH_TWEET_30_DAYS_URL = ROOT_URL + TWEETS + SEARCH + THIRTY_DAYS + DEV_ENV_NAME + JSON;
+    public static final String SEARCH_TWEET_FULL_ARCHIVE_URL = ROOT_URL + TWEETS + SEARCH + FULL_ARCHIVE + DEV_ENV_NAME + JSON;
+    public static final String SEARCH_TWEET_STANDARD_URL = ROOT_URL + SEARCH + TWEETS + JSON;
+    public static final String LIVE_EVENT_URL = ROOT_URL + ACCOUNT_ACTIVITY + DEV_ENV_NAME + WEBHOOKS + JSON;
+    public static final String SEARCH_TWEET_7_DAYS_URL = ROOT_URL_V2+TWEETS+SEARCH;
+    public static final String GET_BEARER_TOKEN_URL = "https://api.twitter.com/oauth2/token";
 
 
     public String getFollowUrl(String userId) {

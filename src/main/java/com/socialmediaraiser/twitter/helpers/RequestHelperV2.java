@@ -12,7 +12,7 @@ import java.util.Optional;
 @CustomLog
 public class RequestHelperV2 extends AbstractRequestHelper {
 
-    public static String bearerToken;
+    public String bearerToken;
     private HttpClient httpClient = HttpClient.newHttpClient();
 
     public RequestHelperV2(String token){

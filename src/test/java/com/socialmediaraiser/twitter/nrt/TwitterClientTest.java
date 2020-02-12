@@ -1,14 +1,13 @@
 package com.socialmediaraiser.twitter.nrt;
 
 import com.socialmediaraiser.RelationType;
-import com.socialmediaraiser.twitter.IUser;
+import com.socialmediaraiser.twitter.dto.user.IUser;
 import com.socialmediaraiser.twitter.TwitterClient;
 import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
 import com.socialmediaraiser.twitter.helpers.AbstractRequestHelper;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
-import com.socialmediaraiser.twitter.helpers.RequestHelper;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

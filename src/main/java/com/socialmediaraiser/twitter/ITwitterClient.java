@@ -4,6 +4,8 @@ import com.socialmediaraiser.RelationType;
 import com.socialmediaraiser.twitter.dto.others.RateLimitStatusDTO;
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
+import com.socialmediaraiser.twitter.dto.user.IUser;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -14,7 +16,7 @@ public interface ITwitterClient {
     /**
      * Get a list of the user followers calling https://api.twitter.com/1.1/followers
      * @param userId the id of the targeted user
-     * @return a list of AbstractUser who are following the targeted user
+     * @return a list of users who are following the targeted user
      */
     List<IUser> getFollowerUsers(String userId);
 
@@ -28,9 +30,9 @@ public interface ITwitterClient {
     /**
      * Get a list of the user followings calling https://api.twitter.com/1.1/friends
      * @param userId the id of the targeted user
-     * @return a list of AbstractUser that the targeted user is following
+     * @return a list of users that the targeted user is following
      */
-    List<IUser> getFollowingsUsers(String userId);
+    List<IUser> getFollowingUsers(String userId);
 
     /**
      * Get a list of the user followings ids calling https://api.twitter.com/1.1/friends
@@ -62,7 +64,8 @@ public interface ITwitterClient {
      * Get the relation between two users calling https://api.twitter.com/1.1/friendships/
      * @param userId1 id of the first user
      * @param userId2 id of the second user
-     * @return FRIENDS if the two users are following each other,
+     * @return One of the following RelationType enum value :
+     * FRIENDS if the two users are following each other,
      * NONE if they neither of the two is following the other,
      * FOLLOWER if user2 follows user1,
      * FOLLOWING if user1 follows user2
@@ -72,28 +75,28 @@ public interface ITwitterClient {
     /**
      * Retreive a user from his screen name calling https://api.twitter.com/labs/1/users/
      * @param userName the name of the targeted user
-     * @return an AbstractUser object related to the targeted user
+     * @return an user object related to the targeted user
      */
     IUser getUserFromUserName(String userName);
 
     /**
      * Retreive a user from his id calling https://api.twitter.com/labs/1/users/
      * @param userId the id of the user
-     * @return an AbstractUser object related to the targeted user
+     * @return an user object related to the targeted user
      */
     IUser getUserFromUserId(String userId);
 
     /**
      * Follow a user calling https://api.twitter.com/1.1/friendships/
      * @param userId the id of the user
-     * @return true if the action works
+     * @return true if the action worked
      */
     boolean follow(String userId);
 
     /**
      * Unfollow a user calling https://api.twitter.com/1.1/friendships/
      * @param userId the id of the user
-     * @return true if the action works
+     * @return true if the action worked
      */
     boolean unfollow(String userId);
 

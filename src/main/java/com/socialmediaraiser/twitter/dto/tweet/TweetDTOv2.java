@@ -3,7 +3,7 @@ package com.socialmediaraiser.twitter.dto.tweet;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.socialmediaraiser.twitter.IUser;
+import com.socialmediaraiser.twitter.dto.user.IUser;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
 import lombok.Getter;
