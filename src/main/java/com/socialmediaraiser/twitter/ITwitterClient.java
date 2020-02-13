@@ -132,7 +132,7 @@ public interface ITwitterClient {
 
     /**
      * Search tweets from last 30 days calling https://api.twitter.com/1.1/tweets/search/30day/dev.json
-     * You development environment name should be "dev". See https://developer.twitter.com/en/account/environments
+     * Your development environment name should be "dev". See https://developer.twitter.com/en/account/environments
      * @param query the search query
      * @param fromDate the start date
      * @param toDate the end date
@@ -142,7 +142,7 @@ public interface ITwitterClient {
 
     /**
      * Search historic tweets calling https://api.twitter.com/1.1/tweets/search/fullarchive/dev.json
-     * You development environment name should be "dev". See https://developer.twitter.com/en/account/environments
+     * Your development environment name should be "dev". See https://developer.twitter.com/en/account/environments
      * @param query the search query
      * @param fromDate the start date
      * @param toDate the end date
