@@ -238,7 +238,6 @@ public class TwitterClient implements ITwitterClient {
         throw new UnsupportedOperationException();
     }
 
-    // @todo to test
     @Override
     public List<ITweet> searchForTweetsWithin30days(String query, Date fromDate, Date toDate){
         int count = 100;

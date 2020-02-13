@@ -23,6 +23,4 @@ public class UserDTOv1Test {
         user2 = UserDTOv1.builder().id("23456").build();
         assertNotEquals(user, user2);
     }
-
-    // @todo test diff dates string
 }

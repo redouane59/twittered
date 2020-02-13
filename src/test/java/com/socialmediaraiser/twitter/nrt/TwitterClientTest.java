@@ -91,10 +91,10 @@ public class TwitterClientTest {
     public void testGetUserInfoStatusesCount() {
         String userId = "92073489";
         IUser user = twitterClient.getUserFromUserId(userId);
+
         assertTrue(user.getTweetCount() > 0);
     }
 
-/* // @todo to add then
     @Test
     public void testGetUserInfoLastUpdate() {
         String userId = "92073489";
@@ -102,15 +102,6 @@ public class TwitterClientTest {
         assertEquals(userId, user.getId());
         assertTrue(user.getLastUpdate() != null);
     }
- */
-    /* // @todo to add then
-    @Test
-    public void testGetUserInfoFollowingRatio() {
-        String userId = "92073489";
-        IUser user = twitterClient.getUserFromUserId(userId);
-        assertEquals(userId, user.getId());
-        assertTrue(user.getFollowersRatio() > 1);
-    } */
 
     @Test
     public void testGetUserWithCache() {
@@ -174,8 +165,6 @@ public class TwitterClientTest {
         assertTrue(twitterClient.getRetweetersId(tweetId).size() > 10);
     }
 
-    // @todo to add then
-
     @Test
     public void getLastUpdate() {
         String userId = "92073489";
@@ -186,14 +175,12 @@ public class TwitterClientTest {
         assertTrue(diffDays < 15);
     }
 
-    /* //@todo to add
     @Test
     public void getMostRecentTweets(){
         String userId = "92073489";
         IUser user = twitterClient.getUserFromUserId(userId);
         assertFalse(user.getMostRecentTweet().isEmpty());
-    } */
-
+    }
 
     @Test
     public void testGetLastTweetByUserName() {

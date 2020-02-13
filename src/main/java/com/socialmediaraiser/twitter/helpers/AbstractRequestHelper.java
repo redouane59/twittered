@@ -10,7 +10,7 @@ import java.net.URL;
 
 @CustomLog
 @Getter
-public class AbstractRequestHelper {
+public abstract class AbstractRequestHelper {
 
     public static final TwitterCredentials TWITTER_CREDENTIALS = getAuthentication();
 
