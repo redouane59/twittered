@@ -198,29 +198,6 @@ public class TwitterClientTest {
                 || response.get(1).getLang().equals("fr"));
     }
 
-  /*   @Test
-    @Disabled
-   public void testSearchForTweetsFull() {
-        SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMddHHmm");
-        String strdate1 = "201901300000";
-        String strdate2 = "202001310000";
-        List<Tweet> results = null;
-        results = twitterClient.searchForTweets("@redtheone @demi_sword", 10, strdate1, strdate2,
-                this.twitterClient.getUrlHelper().getSearchTweetsUrlFull());
-        assertNotNull(results);
-        assertTrue(results.size() > 0);
-    }
-*/
-  /*
-    @Test
-    @Disabled
-    public void testSearchForTweets() {
-        List<Tweet> results = twitterClient.searchForLast100Tweets30days("@RedTheOne -RT",
-                ConverterHelper.getStringFromDate(ConverterHelper.minutesBefore(75)));
-        assertNotNull(results);
-        assertTrue(results.size() > 0);
-    } */
-
     @Test
     public void testGetOauth1Token(){
         AbstractRequestHelper.TWITTER_CREDENTIALS.setAccessToken("");
@@ -255,10 +232,26 @@ public class TwitterClientTest {
 
     @Test
     public void testSearchTweets7days(){
-        Date startDate = DateUtils.round(ConverterHelper.dayBeforeNow(5),Calendar.HOUR);
-        Date endDate = DateUtils.round(ConverterHelper.dayBeforeNow(1),Calendar.HOUR);
+        Date startDate = DateUtils.truncate(ConverterHelper.dayBeforeNow(5),Calendar.DAY_OF_MONTH);
+        Date endDate = DateUtils.truncate(ConverterHelper.dayBeforeNow(1),Calendar.DAY_OF_MONTH);
         List<ITweet> result = twitterClient.searchForTweetsWithin7days("@RedTheOne -RT",startDate, endDate);
         assertTrue(result.size()>10);
+    }
+
+    @Test
+    public void testSearchTweets30days(){
+        Date startDate = DateUtils.truncate(new Date(),Calendar.MONTH);
+        Date endDate = DateUtils.addDays(startDate, 1);
+        List<ITweet> result = twitterClient.searchForTweetsWithin30days("@RedTheOne -RT",startDate, endDate);
+        assertTrue(result.size()>0);
+    }
+
+    @Test
+    public void testSearchTweetsArchive(){
+        Date startDate = DateUtils.truncate(ConverterHelper.dayBeforeNow(60),Calendar.MONTH);
+        Date endDate = DateUtils.addDays(startDate, 1);
+        List<ITweet> result = twitterClient.searchForTweetsArchive("@RedTheOne -RT",startDate, endDate);
+        assertTrue(result.size()>0);
     }
 
     @Test
