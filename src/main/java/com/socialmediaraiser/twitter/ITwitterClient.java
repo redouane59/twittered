@@ -122,7 +122,17 @@ public interface ITwitterClient {
     List<ITweet> getUserLastTweets(String userId, int count);
 
     /**
-     * Search historic tweets calling https://api.twitter.com/1.1/tweets/search/30day/
+     * Search tweets from last 7 days calling https://api.twitter.com/labs/1/tweets/search
+     * @param query the search query
+     * @param fromDate the start date
+     * @param toDate the end date
+     * @return a list of tweets
+     */
+    List<ITweet> searchForTweetsWithin7days(String query, Date fromDate, Date toDate);
+
+    /**
+     * Search tweets from last 30 days calling https://api.twitter.com/1.1/tweets/search/30day/dev.json
+     * Your development environment name should be "dev". See https://developer.twitter.com/en/account/environments
      * @param query the search query
      * @param fromDate the start date
      * @param toDate the end date
@@ -131,13 +141,14 @@ public interface ITwitterClient {
     List<ITweet> searchForTweetsWithin30days(String query, Date fromDate, Date toDate);
 
     /**
-     * Search historic tweets calling https://api.twitter.com/labs/1/tweets/search
+     * Search historic tweets calling https://api.twitter.com/1.1/tweets/search/fullarchive/dev.json
+     * Your development environment name should be "dev". See https://developer.twitter.com/en/account/environments
      * @param query the search query
      * @param fromDate the start date
      * @param toDate the end date
      * @return a list of tweets
      */
-    List<ITweet> searchForTweetsWithin7days(String query, Date fromDate, Date toDate);
+    List<ITweet> searchForTweetsArchive(String query, Date fromDate, Date toDate);
 
     /**
      * Parse the Twitter extract data archive file in a List of Tweets
