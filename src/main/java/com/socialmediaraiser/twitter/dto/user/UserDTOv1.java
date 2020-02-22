@@ -6,6 +6,7 @@ import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,6 +70,7 @@ public class UserDTOv1 implements IUser {
     }
 
     public List<ITweet> getMostRecentTweet(){
-        throw new UnsupportedOperationException();
+        LOGGER.finer("UnsupportedOperation");
+        return new ArrayList<>();
     }
 }

@@ -259,7 +259,7 @@ public class TwitterClient implements ITwitterClient {
             next = tweetSearchV2DTO.get().getMeta().getNextToken();
             parameters.put("next_token", next);
         }
-        while (next!= null && result.size()<count);
+        while (next!= null);
         return result;
     }
 
@@ -284,7 +284,7 @@ public class TwitterClient implements ITwitterClient {
             next = tweetSearchV1DTO.get().getNext();
             parameters.put(NEXT, next);
         }
-        while (next!= null && result.size()<count);
+        while (next!= null);
         return result;
     }
 
@@ -309,7 +309,7 @@ public class TwitterClient implements ITwitterClient {
             next = tweetSearchV1DTO.get().getNext();
             parameters.put(NEXT, next);
         }
-        while (next!= null && result.size()<count);
+        while (next!= null);
         return result;
     }
 
