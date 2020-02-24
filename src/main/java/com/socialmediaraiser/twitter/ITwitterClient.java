@@ -89,23 +89,20 @@ public interface ITwitterClient {
     /**
      * Follow a user calling https://api.twitter.com/1.1/friendships/
      * @param userId the id of the user
-     * @return true if the action worked
      */
-    boolean follow(String userId);
+    void follow(String userId);
 
     /**
      * Unfollow a user calling https://api.twitter.com/1.1/friendships/
      * @param userId the id of the user
-     * @return true if the action worked
      */
-    boolean unfollow(String userId);
+    void unfollow(String userId);
 
     /**
      * Unfollow a user calling https://api.twitter.com/1.1/friendships/
      * @param userName the scree name of the user
-     * @return true if the action works
      */
-    boolean unfollowByName(String userName);
+    void unfollowByName(String userName);
 
     /**
      * Get the twitter rate limit status calling https://api.twitter.com/1.1/application/
