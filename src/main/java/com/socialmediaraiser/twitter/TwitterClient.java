@@ -162,27 +162,24 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public boolean follow(String userId) {
+    public void follow(String userId) {
         String url = this.urlHelper.getFollowUrl(userId);
         UserDTOv1 userResponse = this.requestHelper
                 .executePostRequest(url, new HashMap<>(), UserDTOv1.class).orElseThrow(NoSuchElementException::new);
-        return !userResponse.isFollowing();
     }
 
     @Override
-    public boolean unfollow(String userId) {
+    public void unfollow(String userId) {
         String url = this.urlHelper.getUnfollowUrl(userId);
         UserDTOv1 userResponse = this.requestHelper
                 .executePostRequest(url, new HashMap<>(), UserDTOv1.class).orElseThrow(NoSuchElementException::new);
-        return userResponse.isFollowing();
     }
 
     @Override
-    public boolean unfollowByName(String userName) {
+    public void unfollowByName(String userName) {
         String url = this.urlHelper.getUnfollowByUsernameUrl(userName);
         UserDTOv1 userResponse = this.requestHelper
                 .executePostRequest(url, new HashMap<>(), UserDTOv1.class).orElseThrow(NoSuchElementException::new);
-        return userResponse.isFollowing();
     }
 
     // UserV2
