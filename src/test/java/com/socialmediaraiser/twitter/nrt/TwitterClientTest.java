@@ -17,7 +17,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//@Disabled
+@Disabled
 public class TwitterClientTest {
 
     private TwitterClient twitterClient = new TwitterClient();
@@ -220,6 +220,7 @@ public class TwitterClientTest {
         assertTrue(result.size()>10);
     }
 
+    /*
     @Test
     public void testSearchTweets30days(){
         Date startDate = DateUtils.truncate(new Date(),Calendar.MONTH);
@@ -234,7 +235,7 @@ public class TwitterClientTest {
         Date endDate = DateUtils.addDays(startDate, 1);
         List<ITweet> result = twitterClient.searchForTweetsArchive("@RedTheOne -RT",startDate, endDate);
         assertTrue(result.size()>0);
-    }
+    } */
 
     @Test
     public void testGetBearerToken(){
