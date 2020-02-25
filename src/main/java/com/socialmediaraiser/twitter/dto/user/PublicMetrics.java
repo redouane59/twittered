@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserStatsDTO {
+public class PublicMetrics {
     @JsonProperty("followers_count")
     private int followersCount;
     @JsonProperty("following_count")

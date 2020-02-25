@@ -12,7 +12,7 @@ import java.util.List;
 public class URLHelper {
 
     private static final String ROOT_URL = "https://api.twitter.com/1.1";
-    private static final String ROOT_URL_V2 = "https://api.twitter.com/labs/1";
+    private static final String ROOT_URL_V2 = "https://api.twitter.com/labs/2";
     private static final String IDS_JSON = "/ids.json?";
     private static final String SCREEN_NAME = "screen_name";
     private static final String ID = "id";
@@ -150,22 +150,28 @@ public class URLHelper {
     public String getUserUrl(String userId) {
         return new StringBuilder(ROOT_URL_V2)
                 .append(USERS)
-                .append("?ids=")
+                .append("/")
                 .append(userId)
-                .append("&"+USER_FORMAT_DETAILED)
-                .append("&"+TWEET_FORMAT_DETAILED)
-                .append("&"+EXPANSIONS_RECENT_TWEET)
+                .append("?user.fields=")
+                .append("id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected")
                 .toString();
     }
 
     public String getUserUrlFromName(String username) {
         return new StringBuilder(ROOT_URL_V2)
                 .append(USERS)
-                .append("?usernames=")
+                .append("/by/username/")
                 .append(username)
-                .append("&"+USER_FORMAT_DETAILED)
-                .append("&"+TWEET_FORMAT_DETAILED)
-                .append("&"+EXPANSIONS_RECENT_TWEET)
+                .append("?user.fields=")
+                .append("id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected")
+                .toString();
+    }
+
+    public String getTweetUrl(String tweetId){
+        return new StringBuilder(ROOT_URL_V2)
+                .append("/tweets/")
+                .append(tweetId)
+                .append("?tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld")
                 .toString();
     }
 

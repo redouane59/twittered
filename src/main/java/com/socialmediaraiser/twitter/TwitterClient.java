@@ -237,6 +237,12 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
+    public ITweet getTweetById(String tweetId){
+        String url = this.getUrlHelper().getTweetUrl(tweetId);
+        return this.getRequestHelper().executeGetRequest(url, TweetDTOv2.class).orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
     public List<ITweet> searchForTweetsWithin7days(String query, Date fromDate, Date toDate) {
         int count = 100;
         Map<String, String> parameters = new HashMap<>();

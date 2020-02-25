@@ -73,14 +73,14 @@ public interface ITwitterClient {
     RelationType getRelationType(String userId1, String userId2);
 
     /**
-     * Retreive a user from his screen name calling https://api.twitter.com/labs/1/users/
+     * Retreive a user from his screen name calling https://api.twitter.com/labs/2/users/
      * @param userName the name of the targeted user
      * @return an user object related to the targeted user
      */
     IUser getUserFromUserName(String userName);
 
     /**
-     * Retreive a user from his id calling https://api.twitter.com/labs/1/users/
+     * Retreive a user from his id calling https://api.twitter.com/labs/2/users/
      * @param userId the id of the user
      * @return an user object related to the targeted user
      */
@@ -118,8 +118,10 @@ public interface ITwitterClient {
      */
     List<ITweet> getUserLastTweets(String userId, int count);
 
+    ITweet getTweetById(String tweetId);
+
     /**
-     * Search tweets from last 7 days calling https://api.twitter.com/labs/1/tweets/search
+     * Search tweets from last 7 days calling https://api.twitter.com/labs/2/tweets/search
      * @param query the search query
      * @param fromDate the start date
      * @param toDate the end date

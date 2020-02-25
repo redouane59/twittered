@@ -1,82 +1,72 @@
 {
-   "data": [
-      {
-         "author_id": "817167901073506304",
-         "created_at": "2020-01-28T17:02:51.000Z",
-         "entities": {
-            "mentions": [
-               {
-                  "start": 0,
-                  "end": 10,
-                  "username": "RedTheOne"
-               }
-            ]
-         },
-         "id": "1222203395647397889",
-         "in_reply_to_user_id": "92073489",
-         "lang": "fr",
-         "possibly_sensitive": false,
-         "referenced_tweets": [
+   "data":{
+      "author_id":"1120050519182016513",
+      "created_at":"2020-02-02T18:48:26.000Z",
+      "entities":{
+         "hashtags":[
             {
-               "type": "replied_to",
-               "id": "1222130381815795717"
+               "start":210,
+               "end":215,
+               "tag":"java"
+            },
+            {
+               "start":216,
+               "end":224,
+               "tag":"twitter"
+            },
+            {
+               "start":225,
+               "end":229,
+               "tag":"api"
+            },
+            {
+               "start":230,
+               "end":241,
+               "tag":"twitterapi"
+            },
+            {
+               "start":242,
+               "end":246,
+               "tag":"dev"
+            },
+            {
+               "start":247,
+               "end":255,
+               "tag":"backend"
+            },
+            {
+               "start":256,
+               "end":276,
+               "tag":"softwaredevelopment"
             }
          ],
-         "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
-         "stats": {
-            "retweet_count": 1,
-            "reply_count": 1,
-            "like_count": 5,
-            "quote_count": 0
-         },
-         "text": "@RedTheOne Mais c’est trop bon le Perrier",
-         "format": "detailed"
-      }
-   ],
-   "includes": {
-      "users": [
-         {
-            "created_at": "2009-11-23T17:53:15.000Z",
-            "description": "En vérité, j'suis à ma place quand je les dérange. Jamais dans la tendance, toujours dans la bonne direction... #Lille #Montréal #Madrid 💍🇩🇿🇮🇹",
-            "entities": {
-               "description": {
-                  "hashtags": [
-                     {
-                        "start": 112,
-                        "end": 118,
-                        "tag": "Lille"
-                     },
-                     {
-                        "start": 119,
-                        "end": 128,
-                        "tag": "Montréal"
-                     },
-                     {
-                        "start": 129,
-                        "end": 136,
-                        "tag": "Madrid"
-                     }
-                  ]
-               }
-            },
-            "id": "92073489",
-            "location": "Madrid, Spain",
-            "most_recent_tweet_id": "1222976840886890496",
-            "name": "Red'1",
-            "pinned_tweet_id": "1035192987008020480",
-            "profile_image_url": "https://pbs.twimg.com/profile_images/1162352850661445633/c1Rw5BI0_normal.jpg",
-            "protected": false,
-            "stats": {
-               "followers_count": 5929,
-               "following_count": 2587,
-               "tweet_count": 38178,
-               "listed_count": 79
-            },
-            "url": "",
-            "username": "RedTheOne",
-            "verified": false,
-            "format": "detailed"
-         }
-      ]
+         "mentions":[
+            {
+               "start":42,
+               "end":53,
+               "username":"TwitterAPI"
+            }
+         ],
+         "urls":[
+            {
+               "start":184,
+               "end":207,
+               "url":"https://t.co/20S8ScRohV",
+               "expanded_url":"https://github.com/redouane59/twitter-client",
+               "display_url":"github.com/redouane59/twi…"
+            }
+         ]
+      },
+      "id":"1224041905333379073",
+      "lang":"en",
+      "possibly_sensitive":false,
+      "public_metrics":{
+         "retweet_count":2,
+         "reply_count":4,
+         "like_count":5,
+         "quote_count":0
+      },
+      "source":"Twitter Web App",
+      "text":"If some JAVA developers want to play with @TwitterAPI , I'm developing a library to consume their different endpoints including the most recent ones from Labs. Any feedback welcome\uD83D\uDE01\n\uD83D\uDC49 https://t.co/20S8ScRohV \uD83D\uDC48\n#java #twitter #api #twitterapi #dev #backend #softwaredevelopment"
    }
 }

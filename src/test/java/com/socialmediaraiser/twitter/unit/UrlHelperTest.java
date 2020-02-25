@@ -53,7 +53,7 @@ public class UrlHelperTest {
 
     @Test
     public void testUrlGetUserByIdV2(){
-        assertEquals("https://api.twitter.com/labs/1/users?ids=12345&user.format=detailed&tweet.format=detailed&expansions=most_recent_tweet_id",
+        assertEquals("https://api.twitter.com/labs/2/users/12345?user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
                 urlHelper.getUserUrl("12345"));
     }
 
@@ -152,14 +152,21 @@ public class UrlHelperTest {
     }
 
     @Test
+    public void testTweetUrl(){
+        String tweetId = "12345";
+        assertEquals("https://api.twitter.com/labs/2/tweets/12345?tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld",
+                urlHelper.getTweetUrl("12345"));
+    }
+
+    @Test
     public void testGetUserUrlFromName(){
-        assertEquals("https://api.twitter.com/labs/1/users?usernames=RedTheOne&user.format=detailed&tweet.format=detailed&expansions=most_recent_tweet_id"
+        assertEquals("https://api.twitter.com/labs/2/users/by/username/RedTheOne?user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected"
                 , urlHelper.getUserUrlFromName("RedTheOne"));
     }
 
     @Test
     public void testSearch7DaysUrl(){
-        assertEquals("https://api.twitter.com/labs/1/tweets/search",
+        assertEquals("https://api.twitter.com/labs/2/tweets/search",
                 URLHelper.SEARCH_TWEET_7_DAYS_URL);
     }
 

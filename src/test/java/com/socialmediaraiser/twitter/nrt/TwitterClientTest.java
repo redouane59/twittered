@@ -17,7 +17,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
+//@Disabled
 public class TwitterClientTest {
 
     private TwitterClient twitterClient = new TwitterClient();
@@ -96,14 +96,6 @@ public class TwitterClientTest {
     }
 
     @Test
-    public void testGetUserInfoLastUpdate() {
-        String userId = "92073489";
-        IUser user = twitterClient.getUserFromUserId(userId);
-        assertEquals(userId, user.getId());
-        assertTrue(user.getLastUpdate() != null);
-    }
-
-    @Test
     public void testGetUserWithCache() {
         String userId = "92073489";
         IUser user = twitterClient.getUserFromUserId(userId);
@@ -166,23 +158,6 @@ public class TwitterClientTest {
     }
 
     @Test
-    public void getLastUpdate() {
-        String userId = "92073489";
-        IUser user = twitterClient.getUserFromUserId(userId);
-        Date now = new Date();
-        Date lastUpdate = user.getLastUpdate();
-        long diffDays = (now.getTime() - lastUpdate.getTime()) / (24 * 60 * 60 * 1000);
-        assertTrue(diffDays < 15);
-    }
-
-    @Test
-    public void getMostRecentTweets(){
-        String userId = "92073489";
-        IUser user = twitterClient.getUserFromUserId(userId);
-        assertFalse(user.getMostRecentTweet().isEmpty());
-    }
-
-    @Test
     public void testGetLastTweetByUserName() {
         String userName = "RedTheOne";
         List<ITweet> response = twitterClient.getUserLastTweets(userName, 2);
@@ -196,6 +171,13 @@ public class TwitterClientTest {
         List<ITweet> response = twitterClient.getUserLastTweets(userId, 3);
         assertTrue(response.get(0).getLang().equals("fr")
                 || response.get(1).getLang().equals("fr"));
+    }
+
+    @Test
+    public void testGetTweetById(){
+        String tweetId = "1224041905333379073";
+        ITweet tweet = twitterClient.getTweetById(tweetId);
+        assertNotNull(tweet);
     }
 
     @Test
