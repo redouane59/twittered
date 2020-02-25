@@ -2,6 +2,7 @@ package com.socialmediaraiser.twitter;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.socialmediaraiser.RelationType;
 import com.socialmediaraiser.twitter.dto.getrelationship.IdListDTO;
 import com.socialmediaraiser.twitter.dto.getrelationship.RelationshipObjectResponseDTO;
@@ -312,12 +313,17 @@ public class TwitterClient implements ITwitterClient {
 
     // @TODO TweetDTO instead of TweetData ?
     @Override
-    public List<TweetDataDTO> readTwitterDataFile(File file) throws IOException {
-        List<TweetDataDTO> result = new ArrayList<>();
+    public List<TweetDTOv1> readTwitterDataFile(File file) throws IOException {
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(TweetDTOv1.class, new TweetDTOv1Deserializer());
+        ObjectMapper customObjectMapper = new ObjectMapper();
+        customObjectMapper.registerModule(module);
+
+        List<TweetDTOv1> result = new ArrayList<>();
         if(!file.exists()) {
             LOGGER.severe(()->"file not found at : " + file.toURI().toString());
         } else{
-            result = List.of(OBJECT_MAPPER.readValue(file, TweetDataDTO[].class));
+            result = List.of(customObjectMapper.readValue(file, TweetDTOv1[].class));
         }
         return result;
     }
