@@ -1,11 +1,11 @@
 package com.socialmediaraiser.twitter.nrt;
 
 import com.socialmediaraiser.RelationType;
+import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv1;
 import com.socialmediaraiser.twitter.dto.user.IUser;
 import com.socialmediaraiser.twitter.TwitterClient;
 import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
 import com.socialmediaraiser.twitter.dto.tweet.ITweet;
-import com.socialmediaraiser.twitter.dto.tweet.TweetDataDTO;
 import com.socialmediaraiser.twitter.helpers.AbstractRequestHelper;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import org.apache.commons.lang.time.DateUtils;
@@ -210,12 +210,12 @@ public class TwitterClientTest {
     @Test
     public void testGetTweetDataFile() throws IOException {
         File file = new File(this.getClass().getClassLoader().getResource("tweet.json").getFile());
-        List<TweetDataDTO> result = twitterClient.readTwitterDataFile(file);
+        List<TweetDTOv1> result = twitterClient.readTwitterDataFile(file);
         assertTrue(result.size()>10);
-        assertNotNull(result.get(0).getTweet().getCreatedAt());
-        assertNotNull(result.get(0).getTweet().getId());
-        assertNotNull(result.get(0).getTweet().getText());
-        assertNotNull(result.get(0).getTweet().getInReplyToUserId());
+        assertNotNull(result.get(0).getCreatedAt());
+        assertNotNull(result.get(0).getId());
+        assertNotNull(result.get(0).getText());
+        assertNotNull(result.get(0).getInReplyToUserId());
     }
 
     @Test
