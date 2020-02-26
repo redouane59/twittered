@@ -152,8 +152,8 @@ public class URLHelper {
                 .append(USERS)
                 .append("/")
                 .append(userId)
-                .append("?user.fields=")
-                .append("id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected")
+                .append("?")
+                .append("user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected")
                 .toString();
     }
 
@@ -162,8 +162,8 @@ public class URLHelper {
                 .append(USERS)
                 .append("/by/username/")
                 .append(username)
-                .append("?user.fields=")
-                .append("id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected")
+                .append("?")
+                .append("user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected")
                 .toString();
     }
 
@@ -171,9 +171,12 @@ public class URLHelper {
         return new StringBuilder(ROOT_URL_V2)
                 .append("/tweets/")
                 .append(tweetId)
-                .append("?expansions=author_id")
-                .append("&tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld")
-                .append("&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected")
+                .append("?")
+                .append("expansions=author_id")
+                .append("&")
+                .append("tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld")
+                .append("&")
+                .append("user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected")
                 .toString();
     }
 
