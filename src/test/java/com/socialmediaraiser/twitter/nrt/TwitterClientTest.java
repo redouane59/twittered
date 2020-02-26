@@ -96,14 +96,6 @@ public class TwitterClientTest {
     }
 
     @Test
-    public void testGetUserInfoLastUpdate() {
-        String userId = "92073489";
-        IUser user = twitterClient.getUserFromUserId(userId);
-        assertEquals(userId, user.getId());
-        assertTrue(user.getLastUpdate() != null);
-    }
-
-    @Test
     public void testGetUserWithCache() {
         String userId = "92073489";
         IUser user = twitterClient.getUserFromUserId(userId);
@@ -166,23 +158,6 @@ public class TwitterClientTest {
     }
 
     @Test
-    public void getLastUpdate() {
-        String userId = "92073489";
-        IUser user = twitterClient.getUserFromUserId(userId);
-        Date now = new Date();
-        Date lastUpdate = user.getLastUpdate();
-        long diffDays = (now.getTime() - lastUpdate.getTime()) / (24 * 60 * 60 * 1000);
-        assertTrue(diffDays < 15);
-    }
-
-    @Test
-    public void getMostRecentTweets(){
-        String userId = "92073489";
-        IUser user = twitterClient.getUserFromUserId(userId);
-        assertFalse(user.getMostRecentTweet().isEmpty());
-    }
-
-    @Test
     public void testGetLastTweetByUserName() {
         String userName = "RedTheOne";
         List<ITweet> response = twitterClient.getUserLastTweets(userName, 2);
@@ -196,6 +171,13 @@ public class TwitterClientTest {
         List<ITweet> response = twitterClient.getUserLastTweets(userId, 3);
         assertTrue(response.get(0).getLang().equals("fr")
                 || response.get(1).getLang().equals("fr"));
+    }
+
+    @Test
+    public void testGetTweetById(){
+        String tweetId = "1224041905333379073";
+        ITweet tweet = twitterClient.getTweet(tweetId);
+        assertNotNull(tweet);
     }
 
     @Test
@@ -236,8 +218,18 @@ public class TwitterClientTest {
         Date endDate = DateUtils.truncate(ConverterHelper.dayBeforeNow(1),Calendar.DAY_OF_MONTH);
         List<ITweet> result = twitterClient.searchForTweetsWithin7days("@RedTheOne -RT",startDate, endDate);
         assertTrue(result.size()>10);
+        ITweet tweet = result.get(0);
+        assertNotNull(tweet.getId());
+        assertNotNull(tweet.getText());
+        assertNotNull(tweet.getCreatedAt());
+        assertNotNull(tweet.getAuthorId());
+        assertTrue(tweet.getRetweetCount()>=0);
+        assertTrue(tweet.getReplyCount()>=0);
+        assertTrue(tweet.getLikeCount()>=0);
+        assertNotNull(tweet.getLang());
     }
 
+    /*
     @Test
     public void testSearchTweets30days(){
         Date startDate = DateUtils.truncate(new Date(),Calendar.MONTH);
@@ -252,7 +244,7 @@ public class TwitterClientTest {
         Date endDate = DateUtils.addDays(startDate, 1);
         List<ITweet> result = twitterClient.searchForTweetsArchive("@RedTheOne -RT",startDate, endDate);
         assertTrue(result.size()>0);
-    }
+    } */
 
     @Test
     public void testGetBearerToken(){

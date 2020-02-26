@@ -41,17 +41,17 @@ public class UserDeserializerTestV2 {
 
     @Test
     public void testGetUserFollowersCount() {
-        assertEquals(5946, userV2.getFollowersCount());
+        assertEquals(5723, userV2.getFollowersCount());
     }
 
     @Test
     public void testGetUserFollowingCount() {
-        assertEquals(2578, userV2.getFollowingCount());
+        assertEquals(2352, userV2.getFollowingCount());
     }
 
     @Test
     public void testGetUserTweetsCount() {
-        assertEquals(38175, userV2.getTweetCount());
+        assertEquals(38632, userV2.getTweetCount());
     }
 
 
@@ -60,25 +60,6 @@ public class UserDeserializerTestV2 {
         assertEquals(ConverterHelper.getDateFromTwitterDateV2("2009-11-23T17:53:15.000Z"), userV2.getDateOfCreation());
     }
 
-    @Test
-    public void testGetUserLastUpdate(){
-        assertEquals(ConverterHelper.getDateFromTwitterDateV2("2020-01-29T07:21:31.000Z"), userV2.getLastUpdate());
-    }
-
-    @Test
-    public void testGetUserLastTweet(){
-        ITweet mostRecentTweet = userV2.getMostRecentTweet().get(0);
-        assertNotNull(mostRecentTweet);
-        assertEquals("1222419484046241792",mostRecentTweet.getId());
-        assertEquals("fr", mostRecentTweet.getLang());
-        assertEquals("Ok ok", mostRecentTweet.getText());
-        assertEquals(41, mostRecentTweet.getRetweetCount());
-        assertEquals(102, mostRecentTweet.getLikeCount());
-        assertEquals(2, mostRecentTweet.getReplyCount());
-        assertEquals(3, mostRecentTweet.getQuoteCount());
-        assertEquals(ConverterHelper.getDateFromTwitterDateV2("2020-01-29T07:21:31." +
-                "000Z"), mostRecentTweet.getCreatedAt());
-    }
 }
 
 

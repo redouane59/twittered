@@ -12,7 +12,7 @@ import java.util.List;
 public class URLHelper {
 
     private static final String ROOT_URL = "https://api.twitter.com/1.1";
-    private static final String ROOT_URL_V2 = "https://api.twitter.com/labs/1";
+    private static final String ROOT_URL_V2 = "https://api.twitter.com/labs/2";
     private static final String IDS_JSON = "/ids.json?";
     private static final String SCREEN_NAME = "screen_name";
     private static final String ID = "id";
@@ -47,6 +47,8 @@ public class URLHelper {
     private static final int MAX_COUNT = 200;
     private static final int RETWEET_MAX_COUNT = 100;
     private static final int MAX_LOOKUP = 100;
+    private static final String ALL_USER_FIELDS = "user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
+    private static final String ALL_TWEET_FIELDS = "tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld";
     public static final String LAST_TWEET_LIST_URL = ROOT_URL + STATUSES + USER_TIMELINE;
     public static final String RATE_LIMIT_URL = ROOT_URL + "/application/rate_limit_status.json";;
     public static final String SEARCH_TWEET_30_DAYS_URL = ROOT_URL + TWEETS + SEARCH + THIRTY_DAYS + DEV_ENV_NAME + JSON;
@@ -56,7 +58,6 @@ public class URLHelper {
     public static final String SEARCH_TWEET_7_DAYS_URL = ROOT_URL_V2+TWEETS+SEARCH;
     public static final String GET_BEARER_TOKEN_URL = "https://api.twitter.com/oauth2/token";
     public static final String GET_OAUTH1_TOKEN_URL = "https://api.twitter.com/oauth/request_token";
-
 
     public String getFollowUrl(String userId) {
         return new StringBuilder(ROOT_URL)
@@ -150,22 +151,33 @@ public class URLHelper {
     public String getUserUrl(String userId) {
         return new StringBuilder(ROOT_URL_V2)
                 .append(USERS)
-                .append("?ids=")
+                .append("/")
                 .append(userId)
-                .append("&"+USER_FORMAT_DETAILED)
-                .append("&"+TWEET_FORMAT_DETAILED)
-                .append("&"+EXPANSIONS_RECENT_TWEET)
+                .append("?")
+                .append(ALL_USER_FIELDS)
                 .toString();
     }
 
     public String getUserUrlFromName(String username) {
         return new StringBuilder(ROOT_URL_V2)
                 .append(USERS)
-                .append("?usernames=")
+                .append("/by/username/")
                 .append(username)
-                .append("&"+USER_FORMAT_DETAILED)
-                .append("&"+TWEET_FORMAT_DETAILED)
-                .append("&"+EXPANSIONS_RECENT_TWEET)
+                .append("?")
+                .append(ALL_USER_FIELDS)
+                .toString();
+    }
+
+    public String getTweetUrl(String tweetId){
+        return new StringBuilder(ROOT_URL_V2)
+                .append("/tweets/")
+                .append(tweetId)
+                .append("?")
+                .append("expansions=author_id")
+                .append("&")
+                .append(ALL_TWEET_FIELDS)
+                .append("&")
+                .append(ALL_USER_FIELDS)
                 .toString();
     }
 

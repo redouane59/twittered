@@ -21,12 +21,12 @@ public class TweetDeserializerTestV2 {
 
     @Test
     public void testTweetId(){
-        assertEquals("1222203395647397889",tweetv2.getId());
+        assertEquals("1224044675406925824",tweetv2.getId());
     }
 
     @Test
     public void testTweetText(){
-        assertEquals("@RedTheOne Mais c’est trop bon le Perrier", tweetv2.getText());
+        assertEquals("@RedouaneBali @TwitterAPI Try to use some function construct of the recebt Java version. It is a good train to improve your procedural code :)", tweetv2.getText());
     }
 
     @Test
@@ -35,42 +35,47 @@ public class TweetDeserializerTestV2 {
     }
 
     @Test
-    public void testFavoriteCount(){
-        assertEquals(5, tweetv2.getLikeCount());
+    public void testLikeCount(){
+        assertEquals(3, tweetv2.getLikeCount());
     }
 
     @Test
     public void testReplyCount(){
-        assertEquals(1, tweetv2.getReplyCount());
+        assertEquals(2, tweetv2.getReplyCount());
+    }
+
+    @Test
+    public void testQuoteCount(){
+        assertEquals(4, tweetv2.getQuoteCount());
     }
 
     @Test
     public void testCreateAt(){
-        assertEquals(ConverterHelper.getDateFromTwitterDateV2("2020-01-28T17:02:51.000Z"), tweetv2.getCreatedAt());
+        assertEquals(ConverterHelper.getDateFromTwitterDateV2("2020-02-02T18:59:26.000Z"), tweetv2.getCreatedAt());
     }
 
     @Test
     public void testinReplyToUserId(){
-        assertEquals("92073489", tweetv2.getInReplyToUserId());
+        assertEquals("1120050519182016513", tweetv2.getInReplyToUserId());
     }
 
     @Test
     public void testinReplyToStatusId(){
-        assertEquals("1222130381815795717", tweetv2.getInReplyToStatusId());
+        assertEquals("1224041905333379073", tweetv2.getInReplyToStatusId());
     }
 
     @Test
     public void testLang(){
-        assertEquals("fr", tweetv2.getLang());
+        assertEquals("en", tweetv2.getLang());
     }
 
     @Test
     public void testUser(){
         IUser user = tweetv2.getUser();
         assertNotNull(user);
-        assertEquals("RedTheOne", user.getName());
-        assertEquals("92073489", user.getId());
-        assertEquals(5929, user.getFollowersCount());
-        assertEquals(2587, user.getFollowingCount());
+        assertEquals("marcomornati", user.getName());
+        assertEquals("9920272", user.getId());
+        assertEquals(407, user.getFollowersCount());
+        assertEquals(764, user.getFollowingCount());
     }
 }

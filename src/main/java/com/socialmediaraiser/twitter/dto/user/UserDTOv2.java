@@ -1,12 +1,10 @@
 package com.socialmediaraiser.twitter.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv2;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import lombok.*;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @version labs
@@ -19,7 +17,7 @@ import java.util.List;
 @CustomLog
 public class UserDTOv2 implements IUser {
 
-    private UserData[] data;
+    private UserData data;
     private UserData.Includes includes;
 
     @Getter
@@ -35,7 +33,8 @@ public class UserDTOv2 implements IUser {
         private boolean verified;
         @JsonProperty("profile_image_url")
         private String profileImageUrl;
-        private UserStatsDTO stats;
+        @JsonProperty("public_metrics")
+        private UserPublicMetrics publicMetrics;
         @JsonProperty("most_recent_tweet_id")
         private String mostRecentTweetId;
         @JsonProperty("pinned_tweet_id")
@@ -58,84 +57,59 @@ public class UserDTOv2 implements IUser {
 
         @Override
         public int getFollowersCount() {
-            return this.stats.getFollowersCount();
+            return this.publicMetrics.getFollowersCount();
         }
 
         @Override
         public int getFollowingCount() {
-            return this.stats.getFollowingCount();
+            return this.publicMetrics.getFollowingCount();
         }
 
         @Override
         public int getTweetCount() {
-            return this.stats.getTweetCount();
-        }
-
-        @Override
-        public List<ITweet> getMostRecentTweet() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public Date getLastUpdate() {
-            throw new UnsupportedOperationException();
+            return this.publicMetrics.getTweetCount();
         }
 
     }
 
     @Override
     public String getId() {
-        return this.data[0].getId();
+        return this.data.getId();
     }
 
     @Override
     public String getName() {
-        return this.data[0].getName();
+        return this.data.getName();
     }
 
     @Override
     public String getLocation() {
-        return this.data[0].getLocation();
+        return this.data.getLocation();
     }
 
     @Override
     public String getDescription() {
-        return this.data[0].getDescription();
+        return this.data.getDescription();
     }
 
     @Override
     public Date getDateOfCreation() {
-        return ConverterHelper.getDateFromTwitterDateV2(this.data[0].getCreatedAt());
+        return ConverterHelper.getDateFromTwitterDateV2(this.data.getCreatedAt());
     }
-
-    @Override
-    public Date getLastUpdate() {
-        if(this.includes.getTweets().length>0){
-            return this.includes.getTweets()[0].getCreatedAt();
-        } else{
-            return null;
-        }
-    }
-
-    @Override
-    public List<ITweet> getMostRecentTweet(){
-        return List.of(this.includes.getTweets());
-    }
-
 
     @Override
     public int getFollowersCount() {
-        return this.data[0].getStats().getFollowersCount();
+        return this.data.getPublicMetrics().getFollowersCount();
     }
 
     @Override
     public int getFollowingCount() {
-        return this.data[0].getStats().getFollowingCount();
+        return this.data.getPublicMetrics().getFollowingCount();
     }
 
     @Override
     public int getTweetCount() {
-        return this.data[0].getStats().getTweetCount();
+        return this.data.getPublicMetrics().getTweetCount();
     }
 
     @Override
@@ -150,7 +124,7 @@ public class UserDTOv2 implements IUser {
 
     @Override
     public boolean isFollowing() {
-        return this.data[0].isFollowing();
+        return this.data.isFollowing();
     }
 
 }

@@ -37,12 +37,6 @@ public interface IUser {
     Date getDateOfCreation();
 
     /**
-     * Get the date of the last from the user
-     * @return the date of the last user tweet
-     */
-    Date getLastUpdate();
-
-    /**
      * Get the number of followers of the user
      * @return the user number of followers
      */
@@ -65,12 +59,6 @@ public interface IUser {
      * @return the user language
      */
     String getLang();
-
-    /**
-     * Get the user most recent tweet. Warning: this is not not support by all endpoints.
-     * @return
-     */
-    List<ITweet> getMostRecentTweet();
 
     /**
      * Get the protection level of the user account

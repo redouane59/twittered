@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 public class TweetDTOv2 implements ITweet {
 
-    private TweetData[] data;
+    private TweetData data;
     private Includes includes;
 
     @Getter
@@ -37,29 +37,30 @@ public class TweetDTOv2 implements ITweet {
         @JsonProperty("referenced_tweets")
         private List<ReferencedTweetDTO> referencedTweets;
         private JsonNode entities;
-        private TwitterStatsDTO stats;
+        @JsonProperty("public_metrics")
+        private TweetPublicMetricsDTO publicMetrics;
         @JsonProperty("possibly_sensitive")
         private boolean possiblySensitive;
         private String lang;
 
         @Override
         public int getRetweetCount() {
-            return this.stats.getRetweetCount();
+            return this.publicMetrics.getRetweetCount();
         }
 
         @Override
         public int getLikeCount() {
-            return this.stats.getLikeCount();
+            return this.publicMetrics.getLikeCount();
         }
 
         @Override
         public int getReplyCount() {
-            return this.stats.getReplyCount();
+            return this.publicMetrics.getReplyCount();
         }
 
         @Override
         public int getQuoteCount() {
-            return this.stats.getQuoteCount();
+            return this.publicMetrics.getQuoteCount();
         }
 
         @Override
@@ -92,50 +93,50 @@ public class TweetDTOv2 implements ITweet {
 
     @Override
     public String getInReplyToStatusId(){
-        if(this.data[0].getReferencedTweets().size()>0){
-            return this.data[0].getReferencedTweets().get(0).getId();
+        if(this.data.getReferencedTweets().size()>0){
+            return this.data.getReferencedTweets().get(0).getId();
         }
         return null;
     }
 
     @Override
     public String getLang() {
-        return this.data[0].getLang();
+        return this.data.getLang();
     }
 
     @Override
     public String getId() {
-        return this.data[0].getId();
+        return this.data.getId();
     }
 
     @Override
     public String getText() {
-        return this.data[0].getText();
+        return this.data.getText();
     }
 
     @Override
     public int getRetweetCount() {
-        return this.data[0].getStats().getRetweetCount();
+        return this.data.getPublicMetrics().getRetweetCount();
     }
 
     @Override
     public int getLikeCount() {
-        return  this.data[0].getStats().getLikeCount();
+        return  this.data.getPublicMetrics().getLikeCount();
     }
 
     @Override
     public int getReplyCount() {
-        return this.data[0].getStats().getReplyCount();
+        return this.data.getPublicMetrics().getReplyCount();
     }
 
     @Override
     public int getQuoteCount() {
-        return this.data[0].getStats().getQuoteCount();
+        return this.data.getPublicMetrics().getQuoteCount();
     }
 
     @Override
     public String getInReplyToUserId(){
-        return this.data[0].getInReplyToUserId();
+        return this.data.getInReplyToUserId();
     }
 
     @Override
@@ -145,7 +146,7 @@ public class TweetDTOv2 implements ITweet {
 
     @Override
     public String getAuthorId(){
-        return this.data[0].getAuthorId();
+        return this.data.getAuthorId();
     }
 
     @Getter
@@ -157,7 +158,7 @@ public class TweetDTOv2 implements ITweet {
 
     @Getter
     @Setter
-    private static class TwitterStatsDTO {
+    private static class TweetPublicMetricsDTO {
         @JsonProperty("retweet_count")
         private int retweetCount;
         @JsonProperty("reply_count")
@@ -169,6 +170,6 @@ public class TweetDTOv2 implements ITweet {
     }
 
     public Date getCreatedAt(){
-        return this.data[0].getCreatedAt();
+        return this.data.getCreatedAt();
     }
 }
