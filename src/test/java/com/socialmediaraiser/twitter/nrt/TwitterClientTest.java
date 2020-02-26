@@ -176,7 +176,7 @@ public class TwitterClientTest {
     @Test
     public void testGetTweetById(){
         String tweetId = "1224041905333379073";
-        ITweet tweet = twitterClient.getTweetById(tweetId);
+        ITweet tweet = twitterClient.getTweet(tweetId);
         assertNotNull(tweet);
     }
 

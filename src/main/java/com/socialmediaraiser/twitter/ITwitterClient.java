@@ -123,7 +123,7 @@ public interface ITwitterClient {
      * @param tweetId id of the tweet
      * @return a tweet object
      */
-    ITweet getTweetById(String tweetId);
+    ITweet getTweet(String tweetId);
 
     /**
      * Search tweets from last 7 days calling https://api.twitter.com/labs/2/tweets/search

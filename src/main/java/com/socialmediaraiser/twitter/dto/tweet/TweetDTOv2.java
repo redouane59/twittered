@@ -38,7 +38,7 @@ public class TweetDTOv2 implements ITweet {
         private List<ReferencedTweetDTO> referencedTweets;
         private JsonNode entities;
         @JsonProperty("public_metrics")
-        private TwitterPublicMetricsDTO publicMetrics;
+        private TweetPublicMetricsDTO publicMetrics;
         @JsonProperty("possibly_sensitive")
         private boolean possiblySensitive;
         private String lang;
@@ -158,7 +158,7 @@ public class TweetDTOv2 implements ITweet {
 
     @Getter
     @Setter
-    private static class TwitterPublicMetricsDTO {
+    private static class TweetPublicMetricsDTO {
         @JsonProperty("retweet_count")
         private int retweetCount;
         @JsonProperty("reply_count")

@@ -237,7 +237,7 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public ITweet getTweetById(String tweetId){
+    public ITweet getTweet(String tweetId){
         String url = this.getUrlHelper().getTweetUrl(tweetId);
         return this.getRequestHelper().executeGetRequest(url, TweetDTOv2.class).orElseThrow(NoSuchElementException::new);
     }

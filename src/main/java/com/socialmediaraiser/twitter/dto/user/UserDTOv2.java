@@ -1,12 +1,10 @@
 package com.socialmediaraiser.twitter.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv2;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import lombok.*;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @version labs
@@ -36,7 +34,7 @@ public class UserDTOv2 implements IUser {
         @JsonProperty("profile_image_url")
         private String profileImageUrl;
         @JsonProperty("public_metrics")
-        private PublicMetrics publicMetrics;
+        private UserPublicMetrics userPublicMetrics;
         @JsonProperty("most_recent_tweet_id")
         private String mostRecentTweetId;
         @JsonProperty("pinned_tweet_id")
@@ -59,17 +57,17 @@ public class UserDTOv2 implements IUser {
 
         @Override
         public int getFollowersCount() {
-            return this.publicMetrics.getFollowersCount();
+            return this.userPublicMetrics.getFollowersCount();
         }
 
         @Override
         public int getFollowingCount() {
-            return this.publicMetrics.getFollowingCount();
+            return this.userPublicMetrics.getFollowingCount();
         }
 
         @Override
         public int getTweetCount() {
-            return this.publicMetrics.getTweetCount();
+            return this.userPublicMetrics.getTweetCount();
         }
 
     }
@@ -101,17 +99,17 @@ public class UserDTOv2 implements IUser {
 
     @Override
     public int getFollowersCount() {
-        return this.data.getPublicMetrics().getFollowersCount();
+        return this.data.getUserPublicMetrics().getFollowersCount();
     }
 
     @Override
     public int getFollowingCount() {
-        return this.data.getPublicMetrics().getFollowingCount();
+        return this.data.getUserPublicMetrics().getFollowingCount();
     }
 
     @Override
     public int getTweetCount() {
-        return this.data.getPublicMetrics().getTweetCount();
+        return this.data.getUserPublicMetrics().getTweetCount();
     }
 
     @Override
