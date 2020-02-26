@@ -47,6 +47,10 @@ public class URLHelper {
     private static final int MAX_COUNT = 200;
     private static final int RETWEET_MAX_COUNT = 100;
     private static final int MAX_LOOKUP = 100;
+    private static final String ALL_USER_FIELDS = "user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
+    private static final String ALL_TWEET_FIELDS = "tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld";
+
+
     public static final String LAST_TWEET_LIST_URL = ROOT_URL + STATUSES + USER_TIMELINE;
     public static final String RATE_LIMIT_URL = ROOT_URL + "/application/rate_limit_status.json";;
     public static final String SEARCH_TWEET_30_DAYS_URL = ROOT_URL + TWEETS + SEARCH + THIRTY_DAYS + DEV_ENV_NAME + JSON;
@@ -56,7 +60,6 @@ public class URLHelper {
     public static final String SEARCH_TWEET_7_DAYS_URL = ROOT_URL_V2+TWEETS+SEARCH;
     public static final String GET_BEARER_TOKEN_URL = "https://api.twitter.com/oauth2/token";
     public static final String GET_OAUTH1_TOKEN_URL = "https://api.twitter.com/oauth/request_token";
-
 
     public String getFollowUrl(String userId) {
         return new StringBuilder(ROOT_URL)
@@ -153,7 +156,7 @@ public class URLHelper {
                 .append("/")
                 .append(userId)
                 .append("?")
-                .append("user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected")
+                .append(ALL_USER_FIELDS)
                 .toString();
     }
 
@@ -163,7 +166,7 @@ public class URLHelper {
                 .append("/by/username/")
                 .append(username)
                 .append("?")
-                .append("user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected")
+                .append(ALL_USER_FIELDS)
                 .toString();
     }
 
@@ -174,9 +177,9 @@ public class URLHelper {
                 .append("?")
                 .append("expansions=author_id")
                 .append("&")
-                .append("tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld")
+                .append(ALL_TWEET_FIELDS)
                 .append("&")
-                .append("user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected")
+                .append(ALL_USER_FIELDS)
                 .toString();
     }
 
