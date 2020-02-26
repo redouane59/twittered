@@ -1,72 +1,73 @@
 {
-   "data":{
-      "author_id":"1120050519182016513",
-      "created_at":"2020-02-02T18:48:26.000Z",
-      "entities":{
-         "hashtags":[
+   "data": {
+      "author_id": "9920272",
+      "created_at": "2020-02-02T18:59:26.000Z",
+      "entities": {
+         "mentions": [
             {
-               "start":210,
-               "end":215,
-               "tag":"java"
+               "start": 0,
+               "end": 13,
+               "username": "RedouaneBali"
             },
             {
-               "start":216,
-               "end":224,
-               "tag":"twitter"
-            },
-            {
-               "start":225,
-               "end":229,
-               "tag":"api"
-            },
-            {
-               "start":230,
-               "end":241,
-               "tag":"twitterapi"
-            },
-            {
-               "start":242,
-               "end":246,
-               "tag":"dev"
-            },
-            {
-               "start":247,
-               "end":255,
-               "tag":"backend"
-            },
-            {
-               "start":256,
-               "end":276,
-               "tag":"softwaredevelopment"
-            }
-         ],
-         "mentions":[
-            {
-               "start":42,
-               "end":53,
-               "username":"TwitterAPI"
-            }
-         ],
-         "urls":[
-            {
-               "start":184,
-               "end":207,
-               "url":"https://t.co/20S8ScRohV",
-               "expanded_url":"https://github.com/redouane59/twitter-client",
-               "display_url":"github.com/redouane59/twi…"
+               "start": 14,
+               "end": 25,
+               "username": "TwitterAPI"
             }
          ]
       },
-      "id":"1224041905333379073",
-      "lang":"en",
-      "possibly_sensitive":false,
-      "public_metrics":{
-         "retweet_count":2,
-         "reply_count":4,
-         "like_count":5,
-         "quote_count":0
+      "id": "1224044675406925824",
+      "in_reply_to_user_id": "1120050519182016513",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "public_metrics": {
+         "retweet_count": 1,
+         "reply_count": 2,
+         "like_count": 3,
+         "quote_count": 4
       },
-      "source":"Twitter Web App",
-      "text":"If some JAVA developers want to play with @TwitterAPI , I'm developing a library to consume their different endpoints including the most recent ones from Labs. Any feedback welcome\uD83D\uDE01\n\uD83D\uDC49 https://t.co/20S8ScRohV \uD83D\uDC48\n#java #twitter #api #twitterapi #dev #backend #softwaredevelopment"
+      "referenced_tweets": [
+         {
+            "type": "replied_to",
+            "id": "1224041905333379073"
+         }
+      ],
+      "source": "Twitter for Android",
+      "text": "@RedouaneBali @TwitterAPI Try to use some function construct of the recebt Java version. It is a good train to improve your procedural code :)"
+   },
+   "includes": {
+      "users": [
+         {
+            "created_at": "2007-11-03T17:51:40.000Z",
+            "description": "Developer for life and pleasure... Nevermind the languages and technologies.\nLoving photo and adventure... Or: make a trip to take photos.",
+            "entities": {
+               "url": {
+                  "urls": [
+                     {
+                        "start": 0,
+                        "end": 23,
+                        "url": "https://t.co/6kr5iASFBT",
+                        "expanded_url": "http://www.mornati.net",
+                        "display_url": "mornati.net"
+                     }
+                  ]
+               }
+            },
+            "id": "9920272",
+            "location": "Ronchin, France",
+            "name": "Marco Mornati",
+            "profile_image_url": "https://pbs.twimg.com/profile_images/678825720081211392/Q9nerYaB_normal.jpg",
+            "protected": false,
+            "public_metrics": {
+               "followers_count": 407,
+               "following_count": 764,
+               "tweet_count": 4202,
+               "listed_count": 29
+            },
+            "url": "https://t.co/6kr5iASFBT",
+            "username": "marcomornati",
+            "verified": false
+         }
+      ]
    }
 }

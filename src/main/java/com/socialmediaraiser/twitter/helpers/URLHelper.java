@@ -171,7 +171,9 @@ public class URLHelper {
         return new StringBuilder(ROOT_URL_V2)
                 .append("/tweets/")
                 .append(tweetId)
-                .append("?tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld")
+                .append("?expansions=author_id")
+                .append("&tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld")
+                .append("&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected")
                 .toString();
     }
 

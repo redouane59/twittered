@@ -21,56 +21,61 @@ public class TweetDeserializerTestV2 {
 
     @Test
     public void testTweetId(){
-        assertEquals("1224041905333379073",tweetv2.getId());
+        assertEquals("1224044675406925824",tweetv2.getId());
     }
 
     @Test
     public void testTweetText(){
-        assertEquals("If some JAVA developers want to play with @TwitterAPI , I'm developing a library to consume their different endpoints including the most recent ones from Labs. Any feedback welcome\uD83D\uDE01\n\uD83D\uDC49 https://t.co/20S8ScRohV \uD83D\uDC48\n#java #twitter #api #twitterapi #dev #backend #softwaredevelopment", tweetv2.getText());
+        assertEquals("@RedouaneBali @TwitterAPI Try to use some function construct of the recebt Java version. It is a good train to improve your procedural code :)", tweetv2.getText());
     }
 
     @Test
     public void testRetweetCount(){
-        assertEquals(2, tweetv2.getRetweetCount());
+        assertEquals(1, tweetv2.getRetweetCount());
     }
 
     @Test
     public void testLikeCount(){
-        assertEquals(5, tweetv2.getLikeCount());
+        assertEquals(3, tweetv2.getLikeCount());
     }
 
     @Test
     public void testReplyCount(){
-        assertEquals(4, tweetv2.getReplyCount());
+        assertEquals(2, tweetv2.getReplyCount());
+    }
+
+    @Test
+    public void testQuoteCount(){
+        assertEquals(4, tweetv2.getQuoteCount());
     }
 
     @Test
     public void testCreateAt(){
-        assertEquals(ConverterHelper.getDateFromTwitterDateV2("2020-02-02T18:48:26.000Z"), tweetv2.getCreatedAt());
+        assertEquals(ConverterHelper.getDateFromTwitterDateV2("2020-02-02T18:59:26.000Z"), tweetv2.getCreatedAt());
     }
-/*
+
     @Test
     public void testinReplyToUserId(){
-        assertEquals("92073489", tweetv2.getInReplyToUserId());
+        assertEquals("1120050519182016513", tweetv2.getInReplyToUserId());
     }
 
     @Test
     public void testinReplyToStatusId(){
-        assertEquals("1222130381815795717", tweetv2.getInReplyToStatusId());
+        assertEquals("1224041905333379073", tweetv2.getInReplyToStatusId());
     }
-*/
+
     @Test
     public void testLang(){
         assertEquals("en", tweetv2.getLang());
     }
 
-/*    @Test
+    @Test
     public void testUser(){
         IUser user = tweetv2.getUser();
         assertNotNull(user);
-        assertEquals("RedTheOne", user.getName());
-        assertEquals("92073489", user.getId());
-        assertEquals(5929, user.getFollowersCount());
-        assertEquals(2587, user.getFollowingCount());
-    } */
+        assertEquals("marcomornati", user.getName());
+        assertEquals("9920272", user.getId());
+        assertEquals(407, user.getFollowersCount());
+        assertEquals(764, user.getFollowingCount());
+    }
 }
