@@ -34,7 +34,7 @@ public class UserDTOv2 implements IUser {
         @JsonProperty("profile_image_url")
         private String profileImageUrl;
         @JsonProperty("public_metrics")
-        private UserPublicMetrics userPublicMetrics;
+        private UserPublicMetrics publicMetrics;
         @JsonProperty("most_recent_tweet_id")
         private String mostRecentTweetId;
         @JsonProperty("pinned_tweet_id")
@@ -57,17 +57,17 @@ public class UserDTOv2 implements IUser {
 
         @Override
         public int getFollowersCount() {
-            return this.userPublicMetrics.getFollowersCount();
+            return this.publicMetrics.getFollowersCount();
         }
 
         @Override
         public int getFollowingCount() {
-            return this.userPublicMetrics.getFollowingCount();
+            return this.publicMetrics.getFollowingCount();
         }
 
         @Override
         public int getTweetCount() {
-            return this.userPublicMetrics.getTweetCount();
+            return this.publicMetrics.getTweetCount();
         }
 
     }
@@ -99,17 +99,17 @@ public class UserDTOv2 implements IUser {
 
     @Override
     public int getFollowersCount() {
-        return this.data.getUserPublicMetrics().getFollowersCount();
+        return this.data.getPublicMetrics().getFollowersCount();
     }
 
     @Override
     public int getFollowingCount() {
-        return this.data.getUserPublicMetrics().getFollowingCount();
+        return this.data.getPublicMetrics().getFollowingCount();
     }
 
     @Override
     public int getTweetCount() {
-        return this.data.getUserPublicMetrics().getTweetCount();
+        return this.data.getPublicMetrics().getTweetCount();
     }
 
     @Override
