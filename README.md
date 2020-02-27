@@ -26,6 +26,14 @@ See :
 - [ITweet.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/dto/tweet/ITweet.java)
 - [IUser.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/dto/user/IUser.java)
 
+### Contribution
+If you want to contribute to the project, don't hesitate to submite pull requests.
+To add a new feature :
+- Create the interface method in the related interface (i.e [ITwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/ITwitterClient.java))
+- If needed, add the endpoint URL in [URLHelper.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/helpers/URLHelper.java)
+- Implement your method in the child class (i.e [TwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/TwitterClient.java))
+
+
 ### External Resources
 [Twitter Developers docs](https://developer.twitter.com/en/docs)
 
