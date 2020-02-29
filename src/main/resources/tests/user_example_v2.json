@@ -1,21 +1,77 @@
 {
-  "data":{
-    "created_at":"2009-11-23T17:53:15.000Z",
-    "description":"En vérité, j'suis à ma place quand je les dérange. Jamais dans la tendance, toujours dans la bonne direction... #Lille #Montréal #Madrid \uD83D\uDC8D\uD83C\uDDE9\uD83C\uDDFF\uD83C\uDDEE\uD83C\uDDF9",
-    "id":"92073489",
-    "location":"Madrid, España",
-    "name":"Red'1",
-    "pinned_tweet_id":"1035192987008020480",
-    "profile_image_url":"https://pbs.twimg.com/profile_images/1162352850661445633/c1Rw5BI0_normal.jpg",
-    "protected":false,
-    "public_metrics":{
-      "followers_count":5723,
-      "following_count":2352,
-      "tweet_count":38632,
-      "listed_count":80
+  "data": {
+    "created_at": "2009-11-23T17:53:15.000Z",
+    "description": "En vérité, j'suis à ma place quand je les dérange. Jamais dans la tendance, toujours dans la bonne direction... #Lille #Montréal #Madrid 💍🇩🇿🇮🇹",
+    "entities": {
+      "description": {
+        "hashtags": [
+          {
+            "start": 112,
+            "end": 118,
+            "tag": "Lille"
+          },
+          {
+            "start": 119,
+            "end": 128,
+            "tag": "Montréal"
+          },
+          {
+            "start": 129,
+            "end": 136,
+            "tag": "Madrid"
+          }
+        ]
+      }
     },
-    "url":"",
-    "username":"RedTheOne",
-    "verified":false
+    "id": "92073489",
+    "location": "Madrid, Spain",
+    "name": "Red'1",
+    "pinned_tweet_id": "1035192987008020480",
+    "profile_image_url": "https://pbs.twimg.com/profile_images/1162352850661445633/c1Rw5BI0_normal.jpg",
+    "protected": false,
+    "public_metrics": {
+      "followers_count": 5708,
+      "following_count": 2357,
+      "tweet_count": 38793,
+      "listed_count": 81
+    },
+    "url": "",
+    "username": "RedTheOne",
+    "verified": false
+  },
+  "includes": {
+    "tweets": [
+      {
+        "attachments": {
+          "media_keys": [
+            "3_1035190907354734592"
+          ]
+        },
+        "author_id": "92073489",
+        "created_at": "2018-08-30T15:50:15.000Z",
+        "entities": {
+          "urls": [
+            {
+              "start": 125,
+              "end": 148,
+              "url": "https://t.co/a17cfKwyXH",
+              "expanded_url": "https://twitter.com/RedTheOne/status/1035192987008020480/photo/1",
+              "display_url": "pic.twitter.com/a17cfKwyXH"
+            }
+          ]
+        },
+        "id": "1035192987008020480",
+        "lang": "fr",
+        "possibly_sensitive": false,
+        "public_metrics": {
+          "retweet_count": 1910,
+          "reply_count": 232,
+          "like_count": 2286,
+          "quote_count": 237
+        },
+        "source": "Twitter Web Client",
+        "text": "Thread sur ce qui m'a poussé à partir de France et tout laisser derrière moi... 🇫🇷\n\"La France, elle m'aime ou je la quitte\"👇 https://t.co/a17cfKwyXH"
+      }
+    ]
   }
 }

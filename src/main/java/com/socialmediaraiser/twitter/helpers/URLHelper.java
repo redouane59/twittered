@@ -154,6 +154,8 @@ public class URLHelper {
                 .append("/")
                 .append(userId)
                 .append("?")
+                .append("expansions=pinned_tweet_id")
+                .append("&")
                 .append(ALL_USER_FIELDS)
                 .toString();
     }
@@ -164,6 +166,8 @@ public class URLHelper {
                 .append("/by/username/")
                 .append(username)
                 .append("?")
+                .append("expansions=pinned_tweet_id")
+                .append("&")
                 .append(ALL_USER_FIELDS)
                 .toString();
     }

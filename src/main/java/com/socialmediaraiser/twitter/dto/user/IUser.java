@@ -61,6 +61,12 @@ public interface IUser {
     String getLang();
 
     /**
+     * Get the pinned tweet of the user
+     * @return the pinned tweet of the user
+     */
+    ITweet getPinnedTweet();
+
+    /**
      * Get the protection level of the user account
      * @return true if the account is protected, else false
      */

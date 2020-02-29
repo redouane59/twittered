@@ -85,12 +85,6 @@ public class TweetDTOv2 implements ITweet {
 
     }
 
-    @Getter
-    @Setter
-    private static class Includes{
-        private UserDTOv2.UserData[] users; // @TODO problem here
-    }
-
     @Override
     public String getInReplyToStatusId(){
         if(this.data.getReferencedTweets().size()>0){
@@ -149,11 +143,21 @@ public class TweetDTOv2 implements ITweet {
         return this.data.getAuthorId();
     }
 
+    public Date getCreatedAt(){
+        return this.data.getCreatedAt();
+    }
+
     @Getter
     @Setter
     private static class ReferencedTweetDTO {
         private String type;
         private String id;
+    }
+
+    @Getter
+    @Setter
+    private static class Includes{
+        private UserDTOv2.UserData[] users;
     }
 
     @Getter
@@ -169,7 +173,6 @@ public class TweetDTOv2 implements ITweet {
         private int quoteCount;
     }
 
-    public Date getCreatedAt(){
-        return this.data.getCreatedAt();
-    }
+
+
 }

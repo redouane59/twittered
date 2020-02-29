@@ -8,8 +8,8 @@ import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserDeserializerTestV2 {
 
@@ -54,10 +54,24 @@ public class UserDeserializerTestV2 {
         assertEquals(38632, userV2.getTweetCount());
     }
 
-
     @Test
     public void testGetUserDateOfCreation() {
         assertEquals(ConverterHelper.getDateFromTwitterDateV2("2009-11-23T17:53:15.000Z"), userV2.getDateOfCreation());
+    }
+
+    @Test
+    public void testGetUserPinnedTweet(){
+        ITweet pinnedTweet = userV2.getPinnedTweet();
+        assertNotNull(pinnedTweet);
+        assertEquals("92073489", pinnedTweet.getAuthorId());
+        assertEquals(ConverterHelper.getDateFromTwitterDateV2("2018-08-30T15:50:15.000Z"), pinnedTweet.getCreatedAt());
+        assertEquals("1035192987008020480", pinnedTweet.getId());
+        assertEquals("fr", pinnedTweet.getLang());
+        assertEquals(1910, pinnedTweet.getRetweetCount());
+        assertEquals(232, pinnedTweet.getReplyCount());
+        assertEquals(2286, pinnedTweet.getLikeCount());
+        assertEquals(237, pinnedTweet.getQuoteCount());
+        assertTrue(pinnedTweet.getText().contains("Thread sur ce qui m'a poussé à partir"));
     }
 
 }
