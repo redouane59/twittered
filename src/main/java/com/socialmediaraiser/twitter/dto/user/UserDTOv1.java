@@ -74,9 +74,4 @@ public class UserDTOv1 implements IUser {
     public Date getLastUpdate(){
         return ConverterHelper.getDateFromTwitterString(this.lastUpdate);
     }
-
-    public List<ITweet> getMostRecentTweet(){
-        LOGGER.finer("UnsupportedOperation");
-        return new ArrayList<>();
-    }
 }
