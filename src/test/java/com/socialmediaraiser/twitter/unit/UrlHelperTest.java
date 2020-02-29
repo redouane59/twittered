@@ -53,7 +53,7 @@ public class UrlHelperTest {
 
     @Test
     public void testUrlGetUserByIdV2(){
-        assertEquals("https://api.twitter.com/labs/2/users/12345?user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        assertEquals("https://api.twitter.com/labs/2/users/12345?expansions=pinned_tweet_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
                 urlHelper.getUserUrl("12345"));
     }
 
@@ -159,7 +159,7 @@ public class UrlHelperTest {
 
     @Test
     public void testGetUserUrlFromName(){
-        assertEquals("https://api.twitter.com/labs/2/users/by/username/RedTheOne?user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected"
+        assertEquals("https://api.twitter.com/labs/2/users/by/username/RedTheOne?expansions=pinned_tweet_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected"
                 , urlHelper.getUserUrlFromName("RedTheOne"));
     }
 

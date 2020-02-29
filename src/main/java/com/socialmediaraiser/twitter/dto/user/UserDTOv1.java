@@ -65,12 +65,13 @@ public class UserDTOv1 implements IUser {
         return ConverterHelper.getDateFromTwitterString(this.dateOfCreation);
     }
 
-    public Date getLastUpdate(){
-        return ConverterHelper.getDateFromTwitterString(this.lastUpdate);
+    @Override
+    public ITweet getPinnedTweet() {
+        LOGGER.finer("UnsupportedOperation");
+        return null;
     }
 
-    public List<ITweet> getMostRecentTweet(){
-        LOGGER.finer("UnsupportedOperation");
-        return new ArrayList<>();
+    public Date getLastUpdate(){
+        return ConverterHelper.getDateFromTwitterString(this.lastUpdate);
     }
 }

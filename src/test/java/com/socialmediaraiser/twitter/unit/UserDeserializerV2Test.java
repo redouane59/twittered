@@ -8,15 +8,15 @@ import com.socialmediaraiser.twitter.dto.user.UserDTOv2;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class UserDeserializerTestV2 {
+import static org.junit.jupiter.api.Assertions.*;
+
+public class UserDeserializerV2Test {
 
     private  File userFile2 = new File(getClass().getClassLoader().getResource("tests/user_example_v2.json").getFile());
     private IUser userV2 = TwitterClient.OBJECT_MAPPER.readValue(userFile2, UserDTOv2.class);
 
-    public UserDeserializerTestV2() throws IOException {
+    public UserDeserializerV2Test() throws IOException {
     }
 
     @Test
@@ -31,7 +31,7 @@ public class UserDeserializerTestV2 {
 
     @Test
     public void testGetUserLocationV2() {
-        assertEquals("Madrid, España", userV2.getLocation());
+        assertEquals("Madrid, Spain", userV2.getLocation());
     }
 
     @Test
@@ -41,23 +41,37 @@ public class UserDeserializerTestV2 {
 
     @Test
     public void testGetUserFollowersCount() {
-        assertEquals(5723, userV2.getFollowersCount());
+        assertEquals(5708, userV2.getFollowersCount());
     }
 
     @Test
     public void testGetUserFollowingCount() {
-        assertEquals(2352, userV2.getFollowingCount());
+        assertEquals(2357, userV2.getFollowingCount());
     }
 
     @Test
     public void testGetUserTweetsCount() {
-        assertEquals(38632, userV2.getTweetCount());
+        assertEquals(38793, userV2.getTweetCount());
     }
-
 
     @Test
     public void testGetUserDateOfCreation() {
         assertEquals(ConverterHelper.getDateFromTwitterDateV2("2009-11-23T17:53:15.000Z"), userV2.getDateOfCreation());
+    }
+
+    @Test
+    public void testGetUserPinnedTweet(){
+        ITweet pinnedTweet = userV2.getPinnedTweet();
+        assertNotNull(pinnedTweet);
+        assertEquals("92073489", pinnedTweet.getAuthorId());
+        assertEquals(ConverterHelper.getDateFromTwitterDateV2("2018-08-30T15:50:15.000Z"), pinnedTweet.getCreatedAt());
+        assertEquals("1035192987008020480", pinnedTweet.getId());
+        assertEquals("fr", pinnedTweet.getLang());
+        assertEquals(1910, pinnedTweet.getRetweetCount());
+        assertEquals(232, pinnedTweet.getReplyCount());
+        assertEquals(2286, pinnedTweet.getLikeCount());
+        assertEquals(237, pinnedTweet.getQuoteCount());
+        assertTrue(pinnedTweet.getText().contains("Thread sur ce qui m'a poussé à partir"));
     }
 
 }

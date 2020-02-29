@@ -10,12 +10,12 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class TweetDeserializerTestV1 {
+public class TweetDeserializerV1Test {
 
     private File tweetFile1 = new File(getClass().getClassLoader().getResource("tests/tweet_example_v1.json").getFile());
     private ITweet tweetV1 = TwitterClient.OBJECT_MAPPER.readValue(tweetFile1, TweetDTOv1.class);
 
-    public TweetDeserializerTestV1() throws IOException {
+    public TweetDeserializerV1Test() throws IOException {
     }
 
     @Test

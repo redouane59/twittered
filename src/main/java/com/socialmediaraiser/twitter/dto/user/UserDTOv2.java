@@ -1,6 +1,7 @@
 package com.socialmediaraiser.twitter.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.socialmediaraiser.twitter.dto.tweet.ITweet;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv2;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import lombok.*;
@@ -35,8 +36,6 @@ public class UserDTOv2 implements IUser {
         private String profileImageUrl;
         @JsonProperty("public_metrics")
         private UserPublicMetrics publicMetrics;
-        @JsonProperty("most_recent_tweet_id")
-        private String mostRecentTweetId;
         @JsonProperty("pinned_tweet_id")
         private String pinnedTweetId;
         private String description;
@@ -47,7 +46,7 @@ public class UserDTOv2 implements IUser {
         @Getter
         @Setter
         public static class Includes{
-            private TweetDTOv2.TweetData[] tweets; // @TODO problem here
+            private TweetDTOv2.TweetData[] tweets;
         }
 
         @Override
@@ -70,6 +69,11 @@ public class UserDTOv2 implements IUser {
             return this.publicMetrics.getTweetCount();
         }
 
+        @Override
+        public ITweet getPinnedTweet(){
+            LOGGER.severe("Enable to access the data from here");
+            return null;
+        }
     }
 
     @Override
@@ -127,4 +131,12 @@ public class UserDTOv2 implements IUser {
         return this.data.isFollowing();
     }
 
+    @Override
+    public ITweet getPinnedTweet(){
+        if(this.includes.getTweets().length<1){
+            LOGGER.severe("No tweet found");
+            return null;
+        }
+        return this.includes.getTweets()[0];
+    }
 }
