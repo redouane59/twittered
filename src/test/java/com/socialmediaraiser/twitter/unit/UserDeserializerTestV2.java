@@ -31,7 +31,7 @@ public class UserDeserializerTestV2 {
 
     @Test
     public void testGetUserLocationV2() {
-        assertEquals("Madrid, España", userV2.getLocation());
+        assertEquals("Madrid, Spain", userV2.getLocation());
     }
 
     @Test
@@ -41,17 +41,17 @@ public class UserDeserializerTestV2 {
 
     @Test
     public void testGetUserFollowersCount() {
-        assertEquals(5723, userV2.getFollowersCount());
+        assertEquals(5708, userV2.getFollowersCount());
     }
 
     @Test
     public void testGetUserFollowingCount() {
-        assertEquals(2352, userV2.getFollowingCount());
+        assertEquals(2357, userV2.getFollowingCount());
     }
 
     @Test
     public void testGetUserTweetsCount() {
-        assertEquals(38632, userV2.getTweetCount());
+        assertEquals(38793, userV2.getTweetCount());
     }
 
     @Test
