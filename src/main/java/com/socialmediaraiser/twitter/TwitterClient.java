@@ -318,7 +318,6 @@ public class TwitterClient implements ITwitterClient {
         return result;
     }
 
-    // @TODO TweetDTO instead of TweetData ?
     @Override
     public List<TweetDTOv1> readTwitterDataFile(File file) throws IOException {
         SimpleModule module = new SimpleModule();

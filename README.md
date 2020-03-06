@@ -20,6 +20,8 @@ tab.
 2) Add a dependency on your project with the generated `.jar` file from `target` folder
 3) Start using `TwitterClient` class
 
+/!\ [JDK 12](https://jdk.java.net/12/) is needed to run the project /!\
+
 ### Available methods
 See : 
 - [ITwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/ITwitterClient.java)
