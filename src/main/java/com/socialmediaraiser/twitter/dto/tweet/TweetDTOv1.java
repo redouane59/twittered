@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
 import lombok.*;
-
 import java.util.Date;
 import java.util.List;
 

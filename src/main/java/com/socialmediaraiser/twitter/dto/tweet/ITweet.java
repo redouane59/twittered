@@ -1,8 +1,6 @@
 package com.socialmediaraiser.twitter.dto.tweet;
 
 import com.socialmediaraiser.twitter.dto.user.IUser;
-
-import javax.naming.Context;
 import java.util.Date;
 import java.util.List;
 
