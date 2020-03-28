@@ -42,6 +42,8 @@ public class TweetDTOv2 implements ITweet {
         @JsonProperty("possibly_sensitive")
         private boolean possiblySensitive;
         private String lang;
+        @JsonProperty("context_annotations")
+        private List<ContextAnnotation> contextAnnotations;
 
         @Override
         public int getRetweetCount() {
@@ -145,6 +147,10 @@ public class TweetDTOv2 implements ITweet {
 
     public Date getCreatedAt(){
         return this.data.getCreatedAt();
+    }
+
+    public List<ContextAnnotation> getContextAnnotations(){
+        return this.data.getContextAnnotations();
     }
 
     @Getter
