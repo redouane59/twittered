@@ -2,6 +2,7 @@ package com.socialmediaraiser.twitter.dto.tweet;
 
 import com.socialmediaraiser.twitter.dto.user.IUser;
 import java.util.Date;
+import java.util.List;
 
 public interface ITweet {
     /**
@@ -75,4 +76,10 @@ public interface ITweet {
      * @return the tweet id of the initial tweet.
      */
     String getInReplyToStatusId();
+
+    /**
+     * Get the context annotations of the tweet
+     * @return a list of ContextAnnotations
+     */
+    List<ContextAnnotation> getContextAnnotations();
 }

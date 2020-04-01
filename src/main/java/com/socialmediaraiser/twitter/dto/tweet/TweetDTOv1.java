@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.socialmediaraiser.twitter.helpers.ConverterHelper;
 import com.socialmediaraiser.twitter.dto.user.UserDTOv1;
 import lombok.*;
-
 import java.util.Date;
+import java.util.List;
 
 /**
  * @version current
@@ -19,6 +19,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@CustomLog
 public class TweetDTOv1 implements ITweet {
     private String id;
     private String lang;
@@ -42,6 +43,12 @@ public class TweetDTOv1 implements ITweet {
 
     public Date getCreatedAt(){
         return ConverterHelper.getDateFromTwitterString(this.createdAt);
+    }
+
+    @Override
+    public List<ContextAnnotation> getContextAnnotations() {
+        LOGGER.severe("not implemented");
+        return null;
     }
 
     @Override
