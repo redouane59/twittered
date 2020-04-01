@@ -250,7 +250,7 @@ public class TwitterClient implements ITwitterClient {
         parameters.put("max_results",String.valueOf(count));
         parameters.put("start_time",ConverterHelper.getStringFromDateV2(fromDate));
         parameters.put("end_time", ConverterHelper.getStringFromDateV2(toDate));
-        parameters.put("tweet.fields", "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld");
+        parameters.put("tweet.fields", "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations");
         String next;
         List<ITweet> result = new ArrayList<>();
         do {
