@@ -235,11 +235,11 @@ public class URLHelper {
         return ROOT_URL + FAVORITES + CREATE_JSON + ID + "=" + tweetId;
     }
 
-    public String getFavoriteTweetsUrl(String userId){
-        return "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id="+userId;
-    }
-
-    public String getFavoriteTweetsByNameUrl(String userName){
-        return "https://api.twitter.com/1.1/favorites/list.json?count=200&screen_name="+userName;
+    public String getFavoriteTweetsUrl(String userId, String maxId){
+        if(maxId==null || maxId.length()==0){
+            return "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id="+userId;
+        } else{
+            return "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id="+userId+"&max_id="+maxId;
+        }
     }
 }

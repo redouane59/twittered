@@ -231,9 +231,10 @@ public class TwitterClientTest {
 
     @Test
     public void testGetFavorites(){
-        List<ITweet> favorites = twitterClient.getFavorites("92073489");
+        int count = 1500;
+        List<ITweet> favorites = twitterClient.getFavorites("92073489", count);
         assertNotNull(favorites);
-        assertTrue(favorites.size()>0);
+        assertTrue(favorites.size()>count);
     }
 
     /*

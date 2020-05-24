@@ -243,9 +243,18 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public List<ITweet> getFavorites(String userId) {
-        return this.getRequestHelper().executeGetRequest(this.getUrlHelper().getFavoriteTweetsUrl(userId), List.class)
-                .orElseThrow(NoSuchElementException::new);
+    public List<ITweet> getFavorites(String userId, int count) {
+        List<ITweet> favoriteTweets = new ArrayList<>();
+        List<TweetDTOv1> result;
+        String maxId = null;
+        do{
+            result = List.of(this.getRequestHelper().executeGetRequest(this.getUrlHelper().getFavoriteTweetsUrl(userId, maxId), TweetDTOv1[].class)
+                    .orElseThrow(NoSuchElementException::new));
+            favoriteTweets.addAll(result);
+            maxId = result.get(result.size()-1).getId();
+        } while (favoriteTweets.size() < count);
+
+        return favoriteTweets;
     }
 
     @Override
