@@ -250,10 +250,9 @@ public class TwitterClient implements ITwitterClient {
         do{
             result = List.of(this.getRequestHelper().executeGetRequest(this.getUrlHelper().getFavoriteTweetsUrl(userId, maxId), TweetDTOv1[].class)
                     .orElseThrow(NoSuchElementException::new));
-            favoriteTweets.addAll(result);
             maxId = result.get(result.size()-1).getId();
+            favoriteTweets.addAll(result.subList(0,result.size()-1)); // to avoid having duplicates
         } while (favoriteTweets.size() < count);
-
         return favoriteTweets;
     }
 
