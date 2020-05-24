@@ -229,6 +229,14 @@ public class TwitterClientTest {
         assertNotNull(tweet.getLang());
     }
 
+    @Test
+    public void testGetFavorites(){
+        int count = 1500;
+        List<ITweet> favorites = twitterClient.getFavorites("92073489", count);
+        assertNotNull(favorites);
+        assertTrue(favorites.size()>count);
+    }
+
     /*
     @Test
     public void testSearchTweets30days(){

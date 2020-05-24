@@ -243,6 +243,20 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
+    public List<ITweet> getFavorites(String userId, int count) {
+        List<ITweet> favoriteTweets = new ArrayList<>();
+        List<TweetDTOv1> result;
+        String maxId = null;
+        do{
+            result = List.of(this.getRequestHelper().executeGetRequest(this.getUrlHelper().getFavoriteTweetsUrl(userId, maxId), TweetDTOv1[].class)
+                    .orElseThrow(NoSuchElementException::new));
+            maxId = result.get(result.size()-1).getId();
+            favoriteTweets.addAll(result.subList(0,result.size()-1)); // to avoid having duplicates
+        } while (favoriteTweets.size() < count);
+        return favoriteTweets;
+    }
+
+    @Override
     public List<ITweet> searchForTweetsWithin7days(String query, Date fromDate, Date toDate) {
         int count = 100;
         Map<String, String> parameters = new HashMap<>();
