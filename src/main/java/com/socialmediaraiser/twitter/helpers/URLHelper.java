@@ -60,129 +60,118 @@ public class URLHelper {
     public static final String GET_OAUTH1_TOKEN_URL = "https://api.twitter.com/oauth/request_token";
 
     public String getFollowUrl(String userId) {
-        return new StringBuilder(ROOT_URL)
-                .append(FRIENDSHIPS)
-                .append(CREATE_JSON)
-                .append(USER_ID+"=")
-                .append(userId)
-                .toString();
+        return ROOT_URL +
+                FRIENDSHIPS +
+                CREATE_JSON +
+                USER_ID + "=" +
+                userId;
     }
 
     public String getUnfollowUrl(String userId) {
-        return new StringBuilder(ROOT_URL)
-                .append(FRIENDSHIPS)
-                .append(DESTROY_JSON)
-                .append(USER_ID+"=")
-                .append(userId)
-                .toString();
+        return ROOT_URL +
+                FRIENDSHIPS +
+                DESTROY_JSON +
+                USER_ID + "=" +
+                userId;
     }
 
     public String getUnfollowByUsernameUrl(String userName) {
-        return new StringBuilder(ROOT_URL)
-                .append(FRIENDSHIPS)
-                .append(DESTROY_JSON)
-                .append(SCREEN_NAME+"=")
-                .append(userName)
-                .toString();
+        return ROOT_URL +
+                FRIENDSHIPS +
+                DESTROY_JSON +
+                SCREEN_NAME + "=" +
+                userName;
     }
 
     public String getFriendshipUrl(String sourceId, String targetId) {
-        return new StringBuilder(ROOT_URL)
-                .append(FRIENDSHIPS)
-                .append(SHOW_JSON)
-                .append("source_"+ ID +"=")
-                .append(sourceId)
-                .append("&target_"+ ID +"=")
-                .append(targetId)
-                .toString();
+        return ROOT_URL +
+                FRIENDSHIPS +
+                SHOW_JSON +
+                "source_" + ID + "=" +
+                sourceId +
+                "&target_" + ID + "=" +
+                targetId;
     }
 
     public String getRetweetersUrl(String tweetId){
-        return new StringBuilder(ROOT_URL)
-                .append(STATUSES)
-                .append(RETWEETERS)
-                .append(IDS_JSON)
-                .append(ID +"=")
-                .append(tweetId)
-                .append("&"+COUNT+"=")
-                .append(RETWEET_MAX_COUNT)
-                .toString();
+        return ROOT_URL +
+                STATUSES +
+                RETWEETERS +
+                IDS_JSON +
+                ID + "=" +
+                tweetId +
+                "&" + COUNT + "=" +
+                RETWEET_MAX_COUNT;
     }
 
     public String getFollowerIdsUrl(String userId){
-        return new StringBuilder(ROOT_URL)
-                .append(FOLLOWERS)
-                .append(IDS_JSON)
-                .append(USER_ID + "=")
-                .append(userId)
-                .toString();
+        return ROOT_URL +
+                FOLLOWERS +
+                IDS_JSON +
+                USER_ID + "=" +
+                userId;
     }
 
     public String getFollowerUsersUrl(String userId){
-        return new StringBuilder(ROOT_URL)
-                .append(FOLLOWERS)
-                .append(LIST_JSON)
-                .append(USER_ID + "=")
-                .append(userId)
-                .append("&"+COUNT+"=")
-                .append(MAX_COUNT)
-                .toString();
+        return ROOT_URL +
+                FOLLOWERS +
+                LIST_JSON +
+                USER_ID + "=" +
+                userId +
+                "&" + COUNT + "=" +
+                MAX_COUNT;
     }
 
     public String getFollowingIdsUrl(String userId){
-        return new StringBuilder(ROOT_URL)
-                .append(FRIENDS)
-                .append(IDS_JSON)
-                .append(USER_ID + "=")
-                .append(userId).toString();
+        return ROOT_URL +
+                FRIENDS +
+                IDS_JSON +
+                USER_ID + "=" +
+                userId;
     }
 
     public String getFollowingUsersUrl(String userId){
-        return new StringBuilder(ROOT_URL)
-                .append(FRIENDS)
-                .append(LIST_JSON)
-                .append(USER_ID + "=")
-                .append(userId)
-                .append("&"+COUNT+"=")
-                .append(MAX_COUNT)
-                .toString();
+        return ROOT_URL +
+                FRIENDS +
+                LIST_JSON +
+                USER_ID + "=" +
+                userId +
+                "&" + COUNT + "=" +
+                MAX_COUNT;
     }
 
     public String getUserUrl(String userId) {
-        return new StringBuilder(ROOT_URL_V2)
-                .append(USERS)
-                .append("/")
-                .append(userId)
-                .append("?")
-                .append("expansions=pinned_tweet_id")
-                .append("&")
-                .append(ALL_USER_FIELDS)
-                .toString();
+        return ROOT_URL_V2 +
+                USERS +
+                "/" +
+                userId +
+                "?" +
+                "expansions=pinned_tweet_id" +
+                "&" +
+                ALL_USER_FIELDS;
     }
 
     public String getUserUrlFromName(String username) {
-        return new StringBuilder(ROOT_URL_V2)
-                .append(USERS)
-                .append("/by/username/")
-                .append(username)
-                .append("?")
-                .append("expansions=pinned_tweet_id")
-                .append("&")
-                .append(ALL_USER_FIELDS)
-                .toString();
+        return ROOT_URL_V2 +
+                USERS +
+                "/by/username/" +
+                username +
+                "?" +
+                "expansions=pinned_tweet_id" +
+                "&" +
+                ALL_USER_FIELDS;
     }
 
     public String getTweetUrl(String tweetId){
-        return new StringBuilder(ROOT_URL_V2)
-                .append("/tweets/")
-                .append(tweetId)
-                .append("?")
-                .append("expansions=author_id")
-                .append("&")
-                .append(ALL_TWEET_FIELDS)
-                .append("&")
-                .append(ALL_USER_FIELDS)
-                .toString();
+        return ROOT_URL_V2 +
+                "/tweets/" +
+                tweetId +
+                "?" +
+                "expansions=author_id" +
+                "&" +
+                ALL_TWEET_FIELDS +
+                "&" +
+                ALL_USER_FIELDS;
     }
 
     public String getUsersUrlbyNames(List<String> names) {
@@ -219,25 +208,23 @@ public class URLHelper {
 
     @Deprecated
     public String getTweetInfoUrl(String tweetId) {
-        return new StringBuilder(ROOT_URL)
-                .append(STATUSES)
-                .append(SHOW_JSON)
-                .append(ID+"=")
-                .append(tweetId)
-                .toString();
+        return ROOT_URL +
+                STATUSES +
+                SHOW_JSON +
+                ID + "=" +
+                tweetId;
     }
 
     public String getUserTweetsUrl(String userId, int count){
-        return new StringBuilder(ROOT_URL)
-                .append(STATUSES)
-                .append(USER_TIMELINE)
-                .append(USER_ID+"=")
-                .append(userId)
-                .append("&"+COUNT+"=")
-                .append(count)
-                .append("&"+TRIM_USER)
-                .append("&"+EXCLUDE_RTS)
-                .toString();
+        return ROOT_URL +
+                STATUSES +
+                USER_TIMELINE +
+                USER_ID + "=" +
+                userId +
+                "&" + COUNT + "=" +
+                count +
+                "&" + TRIM_USER +
+                "&" + EXCLUDE_RTS;
     }
 
     public String getUserTweetsUrlV2(String userId, int count){
@@ -245,11 +232,14 @@ public class URLHelper {
     }
 
     public String getLikeUrl(String tweetId) {
-        return new StringBuilder(ROOT_URL)
-                .append(FAVORITES)
-                .append(CREATE_JSON)
-                .append(ID+"=")
-                .append(tweetId)
-                .toString();
+        return ROOT_URL + FAVORITES + CREATE_JSON + ID + "=" + tweetId;
+    }
+
+    public String getFavoriteTweetsUrl(String userId){
+        return "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id="+userId;
+    }
+
+    public String getFavoriteTweetsByNameUrl(String userName){
+        return "https://api.twitter.com/1.1/favorites/list.json?count=200&screen_name="+userName;
     }
 }

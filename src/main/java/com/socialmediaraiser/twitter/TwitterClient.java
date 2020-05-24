@@ -243,6 +243,12 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
+    public List<ITweet> getFavorites(String userId) {
+        return this.getRequestHelper().executeGetRequest(this.getUrlHelper().getFavoriteTweetsUrl(userId), List.class)
+                .orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
     public List<ITweet> searchForTweetsWithin7days(String query, Date fromDate, Date toDate) {
         int count = 100;
         Map<String, String> parameters = new HashMap<>();

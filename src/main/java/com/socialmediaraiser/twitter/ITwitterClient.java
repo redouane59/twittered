@@ -126,6 +126,12 @@ public interface ITwitterClient {
     ITweet getTweet(String tweetId);
 
     /**
+     * Get the most recent Tweets liked
+     * @return a list of liked tweets
+     */
+    List<ITweet> getFavorites(String userId);
+
+    /**
      * Search tweets from last 7 days calling https://api.twitter.com/labs/2/tweets/search
      * @param query the search query
      * @param fromDate the start date
