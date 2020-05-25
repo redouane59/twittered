@@ -252,7 +252,7 @@ public class TwitterClient implements ITwitterClient {
                     .orElseThrow(NoSuchElementException::new));
             maxId = result.get(result.size()-1).getId();
             favoriteTweets.addAll(result.subList(0,result.size()-1)); // to avoid having duplicates
-        } while (favoriteTweets.size() < count);
+        } while (favoriteTweets.size() < count && result.size()>1);
         return favoriteTweets;
     }
 
@@ -383,5 +383,15 @@ public class TwitterClient implements ITwitterClient {
             }
         }
         return requestTokenDTO;
+    }
+
+    @Override
+    public String getInitialTweetId(ITweet tweet){
+        ITweet currentTweet = tweet;
+        while(currentTweet.getInReplyToStatusId()!=null){
+            System.out.println(currentTweet.getId());
+            currentTweet = this.getTweet(currentTweet.getInReplyToStatusId());
+        }
+        return currentTweet.getId();
     }
 }
