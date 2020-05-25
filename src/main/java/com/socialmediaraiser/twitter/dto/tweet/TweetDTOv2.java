@@ -67,6 +67,9 @@ public class TweetDTOv2 implements ITweet {
 
         @Override
         public String getInReplyToStatusId() {
+            if(this.referencedTweets==null || this.referencedTweets.size()==0){
+                return null;
+            }
             return this.referencedTweets.get(0).getId();
         }
 
@@ -93,7 +96,6 @@ public class TweetDTOv2 implements ITweet {
             return null;
         }
         return this.data.getReferencedTweets().get(0).getId();
-
     }
 
     @Override
