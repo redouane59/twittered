@@ -89,10 +89,11 @@ public class TweetDTOv2 implements ITweet {
 
     @Override
     public String getInReplyToStatusId(){
-        if(this.data.getReferencedTweets().size()>0){
-            return this.data.getReferencedTweets().get(0).getId();
+        if(this.data.getReferencedTweets()==null || this.data.getReferencedTweets().size()==0){
+            return null;
         }
-        return null;
+        return this.data.getReferencedTweets().get(0).getId();
+
     }
 
     @Override

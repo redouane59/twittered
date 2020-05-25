@@ -153,6 +153,13 @@ public interface ITwitterClient {
     List<ITweet> searchForTweetsWithin30days(String query, Date fromDate, Date toDate);
 
     /**
+     * Get the id of the first tweet of a conversation
+     * @param tweet the tweet from which to start
+     * @return the id of the initial tweet
+     */
+    String getInitialTweetId(ITweet tweet);
+
+    /**
      * Search historic tweets calling https://api.twitter.com/1.1/tweets/search/fullarchive/dev.json
      * Your development environment name should be "dev". See https://developer.twitter.com/en/account/environments
      * @param query the search query

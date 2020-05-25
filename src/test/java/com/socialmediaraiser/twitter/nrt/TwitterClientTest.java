@@ -237,6 +237,12 @@ public class TwitterClientTest {
         assertTrue(favorites.size()>count);
     }
 
+    @Test
+    public void testGetInitialTweet(){
+        ITweet tweetAnswer = twitterClient.getTweet("1264550388881149953");
+        assertEquals("1264545868226707457",twitterClient.getInitialTweetId(tweetAnswer));
+    }
+
     /*
     @Test
     public void testSearchTweets30days(){
