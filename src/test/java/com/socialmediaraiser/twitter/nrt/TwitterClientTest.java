@@ -243,6 +243,12 @@ public class TwitterClientTest {
         assertEquals("1264545868226707457",twitterClient.getInitialTweetId(tweetAnswer));
     }
 
+    @Test
+    public void testGetInitialTweetOnInitialTweet(){
+        ITweet tweetAnswer = twitterClient.getTweet("1264545868226707457");
+        assertEquals("1264545868226707457",twitterClient.getInitialTweetId(tweetAnswer));
+    }
+
     /*
     @Test
     public void testSearchTweets30days(){

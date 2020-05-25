@@ -389,7 +389,6 @@ public class TwitterClient implements ITwitterClient {
     public String getInitialTweetId(ITweet tweet){
         ITweet currentTweet = tweet;
         while(currentTweet.getInReplyToStatusId()!=null){
-            System.out.println(currentTweet.getId());
             currentTweet = this.getTweet(currentTweet.getInReplyToStatusId());
         }
         return currentTweet.getId();
