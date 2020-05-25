@@ -92,7 +92,7 @@ public class TweetDTOv2 implements ITweet {
 
     @Override
     public String getInReplyToStatusId(){
-        if(this.data.getReferencedTweets()==null || this.data.getReferencedTweets().size()==0){
+        if(this.data == null || this.data.getReferencedTweets()==null || this.data.getReferencedTweets().size()==0){
             return null;
         }
         return this.data.getReferencedTweets().get(0).getId();
@@ -100,59 +100,71 @@ public class TweetDTOv2 implements ITweet {
 
     @Override
     public String getLang() {
+        if(this.data==null) return null;
         return this.data.getLang();
     }
 
     @Override
     public String getId() {
+        if(this.data==null) return null;
         return this.data.getId();
     }
 
     @Override
     public String getText() {
+        if(this.data==null) return null;
         return this.data.getText();
     }
 
     @Override
     public int getRetweetCount() {
+        if(this.data==null) return 0;
         return this.data.getPublicMetrics().getRetweetCount();
     }
 
     @Override
     public int getLikeCount() {
+        if(this.data==null) return 0;
         return  this.data.getPublicMetrics().getLikeCount();
     }
 
     @Override
     public int getReplyCount() {
+        if(this.data==null) return 0;
         return this.data.getPublicMetrics().getReplyCount();
     }
 
     @Override
     public int getQuoteCount() {
+        if(this.data==null) return 0;
         return this.data.getPublicMetrics().getQuoteCount();
     }
 
     @Override
     public String getInReplyToUserId(){
+        if(this.data==null) return null;
         return this.data.getInReplyToUserId();
     }
 
     @Override
     public IUser getUser() {
+        if(this.includes==null) return null;
         return this.includes.getUsers()[0];
     }
 
     @Override
     public String getAuthorId(){
+        if(this.data==null) return null;
         return this.data.getAuthorId();
     }
 
     public Date getCreatedAt(){
+        if(this.data==null) return null;
         return this.data.getCreatedAt();
     }
 
     public List<ContextAnnotation> getContextAnnotations(){
+        if(this.data==null) return null;
         return this.data.getContextAnnotations();
     }
 
