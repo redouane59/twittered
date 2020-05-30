@@ -1,8 +1,9 @@
 {
   "/retweeters": 480,
+  "/tweets": 168,
   "/friends": 48,
   "/friendships": 24,
-  "/followers": 48,
+  "/followers": 168,
   "/users": 128,
   "/user_timeline": 168,
   "/30days": 24,

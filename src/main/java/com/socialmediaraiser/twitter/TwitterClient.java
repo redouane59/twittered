@@ -386,11 +386,11 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public String getInitialTweetId(ITweet tweet){
+    public ITweet getInitialTweet(ITweet tweet){
         ITweet currentTweet = tweet;
         while(currentTweet.getInReplyToStatusId()!=null){
             currentTweet = this.getTweet(currentTweet.getInReplyToStatusId());
         }
-        return currentTweet.getId();
+        return currentTweet;
     }
 }

@@ -153,11 +153,11 @@ public interface ITwitterClient {
     List<ITweet> searchForTweetsWithin30days(String query, Date fromDate, Date toDate);
 
     /**
-     * Get the id of the first tweet of a conversation
+     * Get the the first tweet of a conversation
      * @param tweet the tweet from which to start
-     * @return the id of the initial tweet
+     * @return the initial tweet
      */
-    String getInitialTweetId(ITweet tweet);
+    ITweet getInitialTweet(ITweet tweet);
 
     /**
      * Search historic tweets calling https://api.twitter.com/1.1/tweets/search/fullarchive/dev.json
