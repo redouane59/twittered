@@ -2,6 +2,7 @@ package com.socialmediaraiser.twitter.nrt;
 
 import com.socialmediaraiser.RelationType;
 import com.socialmediaraiser.twitter.dto.tweet.TweetDTOv1;
+import com.socialmediaraiser.twitter.dto.tweet.TweetType;
 import com.socialmediaraiser.twitter.dto.user.IUser;
 import com.socialmediaraiser.twitter.TwitterClient;
 import com.socialmediaraiser.twitter.dto.others.RequestTokenDTO;
@@ -247,6 +248,13 @@ public class TwitterClientTest {
     public void testGetInitialTweetOnInitialTweet(){
         ITweet tweetAnswer = twitterClient.getTweet("1264545868226707457");
         assertEquals("1264545868226707457",twitterClient.getInitialTweet(tweetAnswer, true).getId());
+    }
+
+    @Test
+    public void testGetTweetType(){
+        assertEquals(TweetType.QUOTED, this.twitterClient.getTweet("1267115291991068673").getTweetType());
+        assertEquals(TweetType.REPLIED_TO, this.twitterClient.getTweet("1267132388632604673").getTweetType());
+        assertEquals(null, this.twitterClient.getTweet("1267010053040672768").getTweetType());
     }
 
     /*

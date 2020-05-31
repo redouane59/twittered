@@ -176,7 +176,7 @@ public class TweetDTOv2 implements ITweet {
 
     @Override
     public TweetType getTweetType() {
-        if(this.data==null || this.data.referencedTweets.size()==0) return null;
+        if(this.data==null || this.data.referencedTweets==null || this.data.referencedTweets.size()==0) return null;
         return TweetType.valueOfLabel(this.data.getReferencedTweets().get(0).getType());
     }
 
