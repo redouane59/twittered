@@ -386,9 +386,9 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public ITweet getInitialTweet(ITweet tweet){
+    public ITweet getInitialTweet(ITweet tweet, boolean excludeQuote){
         ITweet currentTweet = tweet;
-        while(currentTweet.getInReplyToStatusId()!=null){
+        while(currentTweet.getInReplyToStatusId()!=null && currentTweet.getTweetType()!=TweetType.QUOTED){
             currentTweet = this.getTweet(currentTweet.getInReplyToStatusId());
         }
         return currentTweet;

@@ -155,9 +155,10 @@ public interface ITwitterClient {
     /**
      * Get the the first tweet of a conversation
      * @param tweet the tweet from which to start
+     * @param excludeQuote true to not consider a quote as a source tweet
      * @return the initial tweet
      */
-    ITweet getInitialTweet(ITweet tweet);
+    ITweet getInitialTweet(ITweet tweet, boolean excludeQuote);
 
     /**
      * Search historic tweets calling https://api.twitter.com/1.1/tweets/search/fullarchive/dev.json

@@ -40,6 +40,8 @@ public class TweetDTOv1 implements ITweet {
     private String inReplyToStatusId;
     @JsonProperty("in_reply_to_user_id_str")
     private String inReplyToUserId;
+    @JsonProperty("is_quote_status")
+    private boolean isQuoteStatus;
 
     public Date getCreatedAt(){
         return ConverterHelper.getDateFromTwitterString(this.createdAt);
@@ -47,6 +49,13 @@ public class TweetDTOv1 implements ITweet {
 
     @Override
     public List<ContextAnnotation> getContextAnnotations() {
+        LOGGER.severe("not implemented");
+        return null;
+    }
+
+    @Override
+    public TweetType getTweetType() {
+        if(this.isQuoteStatus) return TweetType.QUOTED;
         LOGGER.severe("not implemented");
         return null;
     }

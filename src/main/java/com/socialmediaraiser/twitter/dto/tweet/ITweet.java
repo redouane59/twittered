@@ -82,4 +82,10 @@ public interface ITweet {
      * @return a list of ContextAnnotations
      */
     List<ContextAnnotation> getContextAnnotations();
+
+    /**
+     * Get the type of the tweet
+     * @return the tweet type
+     */
+    TweetType getTweetType();
 }
