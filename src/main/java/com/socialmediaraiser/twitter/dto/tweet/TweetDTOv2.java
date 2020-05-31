@@ -74,6 +74,12 @@ public class TweetDTOv2 implements ITweet {
         }
 
         @Override
+        public TweetType getTweetType() {
+            if(this.referencedTweets.size()==0) return null;
+            return TweetType.valueOfLabel(this.referencedTweets.get(0).getType());
+        }
+
+        @Override
         public IUser getUser() {
             throw new UnsupportedOperationException();
         }
@@ -166,6 +172,12 @@ public class TweetDTOv2 implements ITweet {
     public List<ContextAnnotation> getContextAnnotations(){
         if(this.data==null) return null;
         return this.data.getContextAnnotations();
+    }
+
+    @Override
+    public TweetType getTweetType() {
+        if(this.data==null || this.data.referencedTweets.size()==0) return null;
+        return TweetType.valueOfLabel(this.data.getReferencedTweets().get(0).getType());
     }
 
     @Getter

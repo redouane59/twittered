@@ -52,6 +52,12 @@ public class TweetDTOv1 implements ITweet {
     }
 
     @Override
+    public TweetType getTweetType() {
+        LOGGER.severe("not implemented");
+        return null;
+    }
+
+    @Override
     public String getAuthorId() {
         return this.user.getId();
     }
