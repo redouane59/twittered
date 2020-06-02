@@ -78,6 +78,13 @@ public interface ITweet {
     String getInReplyToStatusId();
 
     /**
+     * Get the id of the tweet from whom the tweet is replying. Can be null if the tweet is not a reply.
+     * @param type the type of the tweet if he contains several elements like quoted, retweeted
+     * @return the tweet id of the initial tweet.
+     */
+    String getInReplyToStatusId(TweetType type);
+
+    /**
      * Get the context annotations of the tweet
      * @return a list of ContextAnnotations
      */

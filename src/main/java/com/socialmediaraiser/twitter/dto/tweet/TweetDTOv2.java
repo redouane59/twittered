@@ -74,9 +74,22 @@ public class TweetDTOv2 implements ITweet {
         }
 
         @Override
+        public String getInReplyToStatusId(TweetType type) {
+            if(this.referencedTweets==null || this.referencedTweets.size()==0){
+                return null;
+            }
+            for(ReferencedTweetDTO referencedTweetDTO : this.referencedTweets){
+                if(referencedTweetDTO.getType() == type){
+                    return referencedTweetDTO.getId();
+                }
+            }
+            return null;
+        }
+
+        @Override
         public TweetType getTweetType() {
             if(this.referencedTweets.size()==0) return null;
-            return TweetType.valueOfLabel(this.referencedTweets.get(0).getType());
+            return this.referencedTweets.get(0).getType();
         }
 
         @Override
@@ -102,6 +115,19 @@ public class TweetDTOv2 implements ITweet {
             return null;
         }
         return this.data.getReferencedTweets().get(0).getId();
+    }
+
+    @Override
+    public String getInReplyToStatusId(TweetType type) {
+        if(this.data == null || this.data.getReferencedTweets()==null || this.data.getReferencedTweets().size()==0){
+            return null;
+        }
+        for(ReferencedTweetDTO referencedTweetDTO : this.data.getReferencedTweets()){
+            if(referencedTweetDTO.getType() == type){
+                return referencedTweetDTO.getId();
+            }
+        }
+        return null;
     }
 
     @Override
@@ -177,13 +203,13 @@ public class TweetDTOv2 implements ITweet {
     @Override
     public TweetType getTweetType() {
         if(this.data==null || this.data.referencedTweets==null || this.data.referencedTweets.size()==0) return null;
-        return TweetType.valueOfLabel(this.data.getReferencedTweets().get(0).getType());
+        return this.data.getReferencedTweets().get(0).getType();
     }
 
     @Getter
     @Setter
     private static class ReferencedTweetDTO {
-        private String type;
+        private TweetType type;
         private String id;
     }
 
