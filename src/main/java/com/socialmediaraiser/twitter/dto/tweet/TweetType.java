@@ -1,8 +1,13 @@
 package com.socialmediaraiser.twitter.dto.tweet;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum TweetType {
+    @JsonProperty("retweeted")
     RETWEETED("retweeted"),
+    @JsonProperty("quoted")
     QUOTED("quoted"),
+    @JsonProperty("replied_to")
     REPLIED_TO("replied_to");
 
     public final String label;

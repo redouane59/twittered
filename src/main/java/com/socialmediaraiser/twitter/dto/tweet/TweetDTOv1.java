@@ -56,12 +56,17 @@ public class TweetDTOv1 implements ITweet {
     @Override
     public TweetType getTweetType() {
         if(this.isQuoteStatus) return TweetType.QUOTED;
-        LOGGER.severe("not implemented");
         return null;
     }
 
     @Override
+    public String getInReplyToStatusId(TweetType type) {
+        return this.getInReplyToStatusId();
+    }
+
+    @Override
     public String getAuthorId() {
+        if(this.user==null) return null;
         return this.user.getId();
     }
 

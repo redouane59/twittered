@@ -257,6 +257,12 @@ public class TwitterClientTest {
         assertEquals(null, this.twitterClient.getTweet("1267010053040672768").getTweetType());
     }
 
+    @Test
+    public void testGetTweetIdWithTwoTypes(){
+        assertEquals("1264255917043920904", this.twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.RETWEETED));
+        assertEquals("1263783602485157889", this.twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.QUOTED));
+    }
+
     /*
     @Test
     public void testSearchTweets30days(){
