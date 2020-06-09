@@ -107,6 +107,10 @@ public class TweetDTOv2 implements ITweet {
             return ConverterHelper.getDateFromTwitterDateV2(this.createdAt);
         }
 
+        public int hashCode() {
+            return this.id.hashCode();
+        }
+
     }
 
     @Override
@@ -232,6 +236,9 @@ public class TweetDTOv2 implements ITweet {
         private int quoteCount;
     }
 
-
+    public int hashCode() {
+        if(this.data==null) return -1;
+        return this.getData().getId().hashCode();
+    }
 
 }

@@ -70,4 +70,8 @@ public class TweetDTOv1 implements ITweet {
         return this.user.getId();
     }
 
+    public int hashCode() {
+        return this.id.hashCode();
+    }
+
 }
