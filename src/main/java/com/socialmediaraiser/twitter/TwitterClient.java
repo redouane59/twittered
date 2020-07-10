@@ -81,7 +81,6 @@ public class TwitterClient implements ITwitterClient {
     private List<IUser> getUsersInfoByRelation(String url) {
         String cursor = "-1";
         List<IUser> result = new ArrayList<>();
-        LOGGER.fine(() -> "users : ");
         do {
             String urlWithCursor = url + "&"+CURSOR+"=" + cursor;
             Optional<UserListDTO> userListDTO = this.getRequestHelper().executeGetRequest(urlWithCursor, UserListDTO.class);
@@ -90,7 +89,6 @@ public class TwitterClient implements ITwitterClient {
             cursor = userListDTO.get().getNextCursor();
         }
         while (!cursor.equals("0"));
-        LOGGER.info("\n");
         return result;
     }
 
