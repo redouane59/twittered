@@ -31,17 +31,17 @@ tab.
 
 ### Available methods
 See : 
-- [ITwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/ITwitterClient.java)
-- [ITweet.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/dto/tweet/ITweet.java)
-- [IUser.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/dto/user/IUser.java)
+- [ITwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/ITwitterClient.java)
+- [ITweet.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/dto/tweet/ITweet.java)
+- [IUser.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/dto/user/IUser.java)
 
 ### Contribution
 If you want to contribute to the project, don't hesitate to submit pull requests.
 To add a new feature :
-- Create the interface method in the related interface (i.e [ITwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/ITwitterClient.java))
-- If needed, add the endpoint URL in [URLHelper.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/helpers/URLHelper.java)
-- Implement your method in the child class (i.e [TwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/socialmediaraiser/twitter/TwitterClient.java))
-- Don't forget to add your unit tests in `src/test/java/com/socialmediaraiser/twitter/unit`
+- Create the interface method in the related interface (i.e [ITwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/ITwitterClient.java))
+- If needed, add the endpoint URL in [URLHelper.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/helpers/URLHelper.java)
+- Implement your method in the child class (i.e [TwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/TwitterClient.java))
+- Don't forget to add your unit tests in `src/test/java/com/github/redouane59/twitter/unit`
 
 ### External Resources
 [Twitter Developers docs](https://developer.twitter.com/en/docs)
