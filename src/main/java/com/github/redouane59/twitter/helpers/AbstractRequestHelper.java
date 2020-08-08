@@ -2,19 +2,18 @@ package com.github.redouane59.twitter.helpers;
 
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
+import java.io.IOException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import lombok.CustomLog;
 import lombok.Getter;
-
-import java.io.IOException;
-import java.net.URL;
-import okhttp3.Response;
 
 @CustomLog
 @Getter
 public abstract class AbstractRequestHelper {
 
     public static final TwitterCredentials TWITTER_CREDENTIALS = getAuthentication();
+    private int sleepTime = 5;
 
     public static TwitterCredentials getAuthentication(){
         URL twitterCredentialsFile = TwitterCredentials.class.getClassLoader().getResource("twitter-credentials.json");
@@ -35,7 +34,7 @@ public abstract class AbstractRequestHelper {
         }
     }
 
-    public void wait(int sleepTime, String response, String url){
+    public void wait(String response, String url){
         LOGGER.info(()->"\n" + response +"\nWaiting ... " + url); // do a wait and return this function recursively
         try {
             TimeUnit.MINUTES.sleep(sleepTime);

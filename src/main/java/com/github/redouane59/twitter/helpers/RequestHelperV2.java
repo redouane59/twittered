@@ -12,7 +12,6 @@ import java.util.Optional;
 @CustomLog
 public class RequestHelperV2 extends AbstractRequestHelper {
 
-    private int sleepTime = 5;
     public String bearerToken;
     private HttpClient httpClient = HttpClient.newHttpClient();
 
@@ -34,7 +33,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
             HttpResponse response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             String stringResponse = response.body().toString();
             if (response.statusCode()==429){
-                this.wait(sleepTime, stringResponse, url);
+                this.wait(stringResponse, url);
                 return this.executeGetRequestWithParameters(url, parameters, classType);
             }
             LOGGER.info(()->stringResponse);
