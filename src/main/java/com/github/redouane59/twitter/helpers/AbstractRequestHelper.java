@@ -2,11 +2,13 @@ package com.github.redouane59.twitter.helpers;
 
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
+import java.util.concurrent.TimeUnit;
 import lombok.CustomLog;
 import lombok.Getter;
 
 import java.io.IOException;
 import java.net.URL;
+import okhttp3.Response;
 
 @CustomLog
 @Getter
@@ -30,6 +32,16 @@ public abstract class AbstractRequestHelper {
         } catch (IOException e) {
             LOGGER.severe(e.getMessage());
             return null;
+        }
+    }
+
+    public void wait(int sleepTime, String response, String url){
+        LOGGER.info(()->"\n" + response +"\nWaiting ... " + url); // do a wait and return this function recursively
+        try {
+            TimeUnit.MINUTES.sleep(sleepTime);
+        } catch (InterruptedException e) {
+            LOGGER.severe(e.getMessage());
+            Thread.currentThread().interrupt();
         }
     }
 }
