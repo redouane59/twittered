@@ -35,6 +35,9 @@ public class RequestHelperV2 extends AbstractRequestHelper {
             if (response.statusCode()==429){
                 this.wait(stringResponse, url);
                 return this.executeGetRequestWithParameters(url, parameters, classType);
+            } else if (response.statusCode()==401){
+                LOGGER.info(()->"Error 401, user may be private");
+                return Optional.empty();
             }
             LOGGER.info(()->stringResponse);
             result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);

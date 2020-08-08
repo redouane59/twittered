@@ -1,10 +1,6 @@
 package com.github.redouane59.twitter;
 
 import com.github.redouane59.RelationType;
-import com.github.redouane59.twitter.dto.tweet.ITweet;
-import com.github.redouane59.twitter.dto.tweet.TweetDTOv1;
-import com.github.redouane59.twitter.dto.user.IUser;
-import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.others.RateLimitStatusDTO;
 import com.github.redouane59.twitter.dto.others.RequestTokenDTO;
 import com.github.redouane59.twitter.dto.tweet.ITweet;
