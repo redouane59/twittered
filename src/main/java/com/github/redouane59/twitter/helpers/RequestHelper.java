@@ -24,8 +24,6 @@ import java.util.concurrent.TimeUnit;
 @CustomLog
 public class RequestHelper extends AbstractRequestHelper {
 
-    private int sleepTime = 5;
-
     public <T> Optional<T> executeGetRequest(String url, Class<T> classType) {
         T result = null;
         try {
@@ -36,7 +34,7 @@ public class RequestHelper extends AbstractRequestHelper {
             if(response.code()==200){
                 result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
             } else if (response.code()==429){
-                this.wait(sleepTime, response, url);
+                this.wait(stringResponse, url);
                 return this.executeGetRequest(url, classType);
             } else{
                 logGetError(url, stringResponse);
@@ -66,7 +64,7 @@ public class RequestHelper extends AbstractRequestHelper {
             if(response.code()==200){
                 result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
             } else if (response.code()==429){
-                this.wait(sleepTime, response, url);
+                this.wait(stringResponse, url);
                 return this.executeGetRequest(url, classType);
             } else{
                 logGetError(url, stringResponse);
@@ -87,7 +85,7 @@ public class RequestHelper extends AbstractRequestHelper {
                 response.close();
                 result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
             } else if (response.code()==429){
-                this.wait(sleepTime, response, url);
+                this.wait(stringResponse, url);
                 return this.executeGetRequestV2(url, classType);
             } else{
                 logGetError(url, stringResponse);
@@ -163,7 +161,7 @@ public class RequestHelper extends AbstractRequestHelper {
                 response.close();
                 LOGGER.info(()->"user private, not authorized");
             } else if (response.code()==429){
-                this.wait(sleepTime, response, url);
+                this.wait(stringResponse, url);
                 return this.executeGetRequestReturningArray(url, classType);
             } else{
                 LOGGER.severe(()->"not 200 calling " + url + " " + response.message() + " - " + response.code());
@@ -205,16 +203,6 @@ public class RequestHelper extends AbstractRequestHelper {
                 .readTimeout(60, TimeUnit.SECONDS)
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .build();
-    }
-
-    public void wait(int sleepTime, Response response, String url){
-        LOGGER.info(()->"\n" + response +"\nWaiting ... " + url); // do a wait and return this function recursively
-        try {
-            TimeUnit.MINUTES.sleep(sleepTime);
-        } catch (InterruptedException e) {
-            LOGGER.severe(e.getMessage());
-            Thread.currentThread().interrupt();
-        }
     }
 
     private int getCacheTimeoutFromUrl(String url){

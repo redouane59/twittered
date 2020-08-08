@@ -32,6 +32,10 @@ public class RequestHelperV2 extends AbstractRequestHelper {
                     .build();
             HttpResponse response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             String stringResponse = response.body().toString();
+            if (response.statusCode()==429){
+                this.wait(stringResponse, url);
+                return this.executeGetRequestWithParameters(url, parameters, classType);
+            }
             LOGGER.info(()->stringResponse);
             result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
         } catch (Exception e) {
