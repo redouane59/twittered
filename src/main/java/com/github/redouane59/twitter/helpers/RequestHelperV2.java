@@ -1,19 +1,18 @@
 package com.github.redouane59.twitter.helpers;
 
 import com.github.redouane59.twitter.TwitterClient;
-import lombok.CustomLog;
-import org.apache.http.client.utils.URIBuilder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Map;
 import java.util.Optional;
+import lombok.CustomLog;
+import okhttp3.Headers;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.apache.http.client.utils.URIBuilder;
 
 @CustomLog
 public class RequestHelperV2 extends AbstractRequestHelper {
 
     public String bearerToken;
-    private HttpClient httpClient = HttpClient.newHttpClient();
 
     public RequestHelperV2(String token){
         bearerToken = token;
@@ -26,16 +25,19 @@ public class RequestHelperV2 extends AbstractRequestHelper {
             for(Map.Entry<String, String> e : parameters.entrySet()){
                 builder.addParameter(e.getKey(), e.getValue());
             }
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(builder.build())
-                    .headers("Authorization", "Bearer " + bearerToken)
-                    .build();
-            HttpResponse response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .headers(Headers.of("Authorization", "Bearer " + bearerToken))
+                .build();
+
+            Response response = this.getHttpClient(url)
+                                    .newCall(request).execute();
             String stringResponse = response.body().toString();
-            if (response.statusCode()==429){
+            if (response.code()==429){
                 this.wait(stringResponse, url);
                 return this.executeGetRequestWithParameters(url, parameters, classType);
-            } else if (response.statusCode()==401){
+            } else if (response.code()==401){
                 LOGGER.info(()->"Error 401, user may be private");
                 return Optional.empty();
             }

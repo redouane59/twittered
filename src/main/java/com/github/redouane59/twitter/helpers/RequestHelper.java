@@ -1,24 +1,17 @@
 package com.github.redouane59.twitter.helpers;
 
 import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.others.RequestTokenDTO;
 import com.github.redouane59.twitter.signature.Oauth1SigningInterceptor;
-import com.github.redouane59.twitter.signature.TwitterCredentials;
-import jdk.jfr.ContentType;
+import java.util.Map;
+import java.util.Optional;
 import lombok.CustomLog;
 import lombok.NoArgsConstructor;
-import okhttp3.*;
-import okhttp3.internal.http2.Header;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import okhttp3.Headers;
+import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 @NoArgsConstructor
 @CustomLog
@@ -191,38 +184,6 @@ public class RequestHelper extends AbstractRequestHelper {
 
     private Request getRequest(HttpUrl.Builder httpBuilder){
         return new Request.Builder().get().url(httpBuilder.build()).build();
-    }
-
-    private OkHttpClient getHttpClient(String url){
-        long cacheSize = 1024L * 1024 * 1024; // 1go
-        String path = "../okhttpCache";
-        File file = new File(path);
-        return new OkHttpClient.Builder()
-                .addNetworkInterceptor(new CacheInterceptor(this.getCacheTimeoutFromUrl(url)))
-                .cache(new Cache(file, cacheSize))
-                .readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .build();
-    }
-
-    private int getCacheTimeoutFromUrl(String url){
-        int defaultCache = 48;
-        URL cacheUrl = this.getClass().getClassLoader().getResource("cache-config.json");
-        if(cacheUrl==null){
-            LOGGER.severe("cache-config.json file not found in src/main/resources");
-            return defaultCache;
-        }
-        try {
-            Map<String, Integer> map = TwitterClient.OBJECT_MAPPER.readValue(cacheUrl, Map.class);
-            for(Map.Entry<String, Integer> e : map.entrySet()){
-                if(url.contains(e.getKey())){
-                    return e.getValue();
-                }
-            }
-        } catch (IOException e) {
-            LOGGER.severe(e.getMessage());
-        }
-        return defaultCache;
     }
 
     private void logGetError(String url, String response){
