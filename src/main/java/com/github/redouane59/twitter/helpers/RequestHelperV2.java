@@ -3,6 +3,7 @@ package com.github.redouane59.twitter.helpers;
 import com.github.redouane59.twitter.TwitterClient;
 import java.util.Map;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
 import lombok.CustomLog;
 import okhttp3.Headers;
 import okhttp3.Request;
@@ -10,13 +11,10 @@ import okhttp3.Response;
 import org.apache.http.client.utils.URIBuilder;
 
 @CustomLog
+@AllArgsConstructor
 public class RequestHelperV2 extends AbstractRequestHelper {
 
     public String bearerToken;
-
-    public RequestHelperV2(String token){
-        bearerToken = token;
-    }
 
     public <T> Optional<T> executeGetRequestWithParameters(String url, Map<String, String> parameters, Class<T> classType) {
         T result = null;
@@ -30,7 +28,6 @@ public class RequestHelperV2 extends AbstractRequestHelper {
                 .get()
                 .headers(Headers.of("Authorization", "Bearer " + bearerToken))
                 .build();
-
             Response response = this.getHttpClient(url)
                                     .newCall(request).execute();
             String stringResponse = response.body().toString();
@@ -46,8 +43,6 @@ public class RequestHelperV2 extends AbstractRequestHelper {
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
         }
-
         return Optional.ofNullable(result);
     }
-
 }
