@@ -95,4 +95,10 @@ public interface ITweet {
      * @return the tweet type
      */
     TweetType getTweetType();
+
+    /**
+     * Get the related tweet id
+     * @return the id of the first tweet of the conversation
+     */
+    String getConversationId();
 }

@@ -11,9 +11,10 @@ import java.util.List;
 @CustomLog
 public class URLHelper {
 
-    private static final String ROOT_URL = "https://api.twitter.com/1.1";
-    private static final String ROOT_URL_V2 = "https://api.twitter.com/labs/2";
-    private static final String IDS_JSON = "/ids.json?";
+    private static final String ROOT_URL    = "https://api.twitter.com/1.1";
+    private static final String ROOT_URL_V2 = "https://api.twitter.com/2";
+    private static final String ROOT_URL_LABS_V2 = "https://api.twitter.com/labs/2";
+    private static final String IDS_JSON    = "/ids.json?";
     private static final String SCREEN_NAME = "screen_name";
     private static final String ID = "id";
     private static final String COUNT = "count";
@@ -55,7 +56,7 @@ public class URLHelper {
     public static final String SEARCH_TWEET_FULL_ARCHIVE_URL = ROOT_URL + TWEETS + SEARCH + FULL_ARCHIVE + DEV_ENV_NAME + JSON;
     public static final String SEARCH_TWEET_STANDARD_URL = ROOT_URL + SEARCH + TWEETS + JSON;
     public static final String LIVE_EVENT_URL = ROOT_URL + ACCOUNT_ACTIVITY + DEV_ENV_NAME + WEBHOOKS + JSON;
-    public static final String SEARCH_TWEET_7_DAYS_URL = ROOT_URL_V2+TWEETS+SEARCH;
+    public static final String SEARCH_TWEET_7_DAYS_URL = ROOT_URL_V2 + TWEETS + SEARCH;
     public static final String GET_BEARER_TOKEN_URL = "https://api.twitter.com/oauth2/token";
     public static final String GET_OAUTH1_TOKEN_URL = "https://api.twitter.com/oauth/request_token";
 
@@ -142,36 +143,36 @@ public class URLHelper {
 
     public String getUserUrl(String userId) {
         return ROOT_URL_V2 +
-                USERS +
-                "/" +
-                userId +
-                "?" +
-                "expansions=pinned_tweet_id" +
-                "&" +
-                ALL_USER_FIELDS;
+               USERS +
+               "/" +
+               userId +
+               "?" +
+               "expansions=pinned_tweet_id" +
+               "&" +
+               ALL_USER_FIELDS;
     }
 
     public String getUserUrlFromName(String username) {
         return ROOT_URL_V2 +
-                USERS +
-                "/by/username/" +
-                username +
-                "?" +
-                "expansions=pinned_tweet_id" +
-                "&" +
-                ALL_USER_FIELDS;
+               USERS +
+               "/by/username/" +
+               username +
+               "?" +
+               "expansions=pinned_tweet_id" +
+               "&" +
+               ALL_USER_FIELDS;
     }
 
     public String getTweetUrl(String tweetId){
         return ROOT_URL_V2 +
-                "/tweets/" +
-                tweetId +
-                "?" +
-                "expansions=author_id" +
-                "&" +
-                ALL_TWEET_FIELDS +
-                "&" +
-                ALL_USER_FIELDS;
+               "/tweets/" +
+               tweetId +
+               "?" +
+               "expansions=author_id" +
+               "&" +
+               ALL_TWEET_FIELDS +
+               "&" +
+               ALL_USER_FIELDS;
     }
 
     public String getUsersUrlbyNames(List<String> names) {

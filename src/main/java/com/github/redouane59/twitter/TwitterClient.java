@@ -390,6 +390,7 @@ public class TwitterClient implements ITwitterClient {
         return requestTokenDTO;
     }
 
+    // @todo use conversation_id
     @Override
     public ITweet getInitialTweet(ITweet tweet, boolean excludeQuote){
         ITweet currentTweet = tweet;
