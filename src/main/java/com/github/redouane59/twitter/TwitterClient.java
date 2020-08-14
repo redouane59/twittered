@@ -263,12 +263,16 @@ public class TwitterClient implements ITwitterClient {
 
     @Override
     public List<ITweet> searchForTweetsWithin7days(String query, Date fromDate, Date toDate) {
-        int count = 100;
+        int                 count      = 100;
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("query",query);
-        parameters.put("max_results",String.valueOf(count));
-        parameters.put("start_time",ConverterHelper.getStringFromDateV2(fromDate));
-        parameters.put("end_time", ConverterHelper.getStringFromDateV2(toDate));
+        parameters.put("query", query);
+        parameters.put("max_results", String.valueOf(count));
+        if (fromDate != null) {
+            parameters.put("start_time", ConverterHelper.getStringFromDateV2(fromDate));
+        }
+        if (toDate != null){
+            parameters.put("end_time", ConverterHelper.getStringFromDateV2(toDate));
+        }
         parameters.put("tweet.fields", "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations");
         String next;
         List<ITweet> result = new ArrayList<>();
@@ -285,6 +289,11 @@ public class TwitterClient implements ITwitterClient {
         }
         while (next!= null);
         return result;
+    }
+
+    @Override
+    public List<ITweet> searchForTweetsWithin7days(String query){
+        return this.searchForTweetsWithin7days(query, null, null);
     }
 
     @Override
@@ -390,13 +399,4 @@ public class TwitterClient implements ITwitterClient {
         return requestTokenDTO;
     }
 
-    // @todo use conversation_id
-    @Override
-    public ITweet getInitialTweet(ITweet tweet, boolean excludeQuote){
-        ITweet currentTweet = tweet;
-        while(currentTweet.getInReplyToStatusId()!=null && currentTweet.getTweetType()!=TweetType.QUOTED){
-            currentTweet = this.getTweet(currentTweet.getInReplyToStatusId());
-        }
-        return currentTweet;
-    }
 }

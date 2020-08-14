@@ -56,7 +56,7 @@ public class URLHelper {
     public static final String SEARCH_TWEET_FULL_ARCHIVE_URL = ROOT_URL + TWEETS + SEARCH + FULL_ARCHIVE + DEV_ENV_NAME + JSON;
     public static final String SEARCH_TWEET_STANDARD_URL = ROOT_URL + SEARCH + TWEETS + JSON;
     public static final String LIVE_EVENT_URL = ROOT_URL + ACCOUNT_ACTIVITY + DEV_ENV_NAME + WEBHOOKS + JSON;
-    public static final String SEARCH_TWEET_7_DAYS_URL = ROOT_URL_V2 + TWEETS + SEARCH;
+    public static final String SEARCH_TWEET_7_DAYS_URL = ROOT_URL_V2 + TWEETS + SEARCH + "/recent";
     public static final String GET_BEARER_TOKEN_URL = "https://api.twitter.com/oauth2/token";
     public static final String GET_OAUTH1_TOKEN_URL = "https://api.twitter.com/oauth/request_token";
 

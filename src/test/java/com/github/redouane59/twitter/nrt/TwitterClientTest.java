@@ -215,9 +215,7 @@ public class TwitterClientTest {
 
     @Test
     public void testSearchTweets7days(){
-        Date startDate = DateUtils.truncate(ConverterHelper.dayBeforeNow(5),Calendar.DAY_OF_MONTH);
-        Date endDate = DateUtils.truncate(ConverterHelper.dayBeforeNow(1),Calendar.DAY_OF_MONTH);
-        List<ITweet> result = twitterClient.searchForTweetsWithin7days("@RedTheOne -RT",startDate, endDate);
+        List<ITweet> result = twitterClient.searchForTweetsWithin7days("@RedTheOne -RT");
         assertTrue(result.size()>10);
         ITweet tweet = result.get(0);
         assertNotNull(tweet.getId());
@@ -236,18 +234,6 @@ public class TwitterClientTest {
         List<ITweet> favorites = twitterClient.getFavorites("92073489", count);
         assertNotNull(favorites);
         assertTrue(favorites.size()>count);
-    }
-
-    @Test
-    public void testGetInitialTweet(){
-        ITweet tweetAnswer = twitterClient.getTweet("1264550388881149953");
-        assertEquals("1264545868226707457",twitterClient.getInitialTweet(tweetAnswer, true).getId());
-    }
-
-    @Test
-    public void testGetInitialTweetOnInitialTweet(){
-        ITweet tweetAnswer = twitterClient.getTweet("1264545868226707457");
-        assertEquals("1264545868226707457",twitterClient.getInitialTweet(tweetAnswer, true).getId());
     }
 
     @Test
