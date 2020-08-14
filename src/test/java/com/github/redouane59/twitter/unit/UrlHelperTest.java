@@ -165,7 +165,7 @@ public class UrlHelperTest {
 
     @Test
     public void testSearch7DaysUrl(){
-        assertEquals("https://api.twitter.com/2/tweets/search",
+        assertEquals("https://api.twitter.com/2/tweets/search/recent",
                 URLHelper.SEARCH_TWEET_7_DAYS_URL);
     }
 
