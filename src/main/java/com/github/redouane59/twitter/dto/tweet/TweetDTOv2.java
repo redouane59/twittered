@@ -44,6 +44,8 @@ public class TweetDTOv2 implements ITweet {
         private String lang;
         @JsonProperty("context_annotations")
         private List<ContextAnnotation> contextAnnotations;
+        @JsonProperty("conversation_id")
+        private String conversationId;
 
         @Override
         public int getRetweetCount() {
@@ -150,6 +152,12 @@ public class TweetDTOv2 implements ITweet {
     public String getText() {
         if(this.data==null) return null;
         return this.data.getText();
+    }
+
+    @Override
+    public String getConversationId(){
+        if(this.data==null) return null;
+        return this.data.getConversationId();
     }
 
     @Override

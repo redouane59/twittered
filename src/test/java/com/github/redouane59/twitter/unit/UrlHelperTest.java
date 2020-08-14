@@ -53,7 +53,7 @@ public class UrlHelperTest {
 
     @Test
     public void testUrlGetUserByIdV2(){
-        assertEquals("https://api.twitter.com/labs/2/users/12345?expansions=pinned_tweet_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        assertEquals("https://api.twitter.com/2/users/12345?expansions=pinned_tweet_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
                 urlHelper.getUserUrl("12345"));
     }
 
@@ -153,19 +153,19 @@ public class UrlHelperTest {
 
     @Test
     public void testTweetUrl(){
-        assertEquals("https://api.twitter.com/labs/2/tweets/12345?expansions=author_id&tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        assertEquals("https://api.twitter.com/2/tweets/12345?expansions=author_id&tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
                 urlHelper.getTweetUrl("12345"));
     }
 
     @Test
     public void testGetUserUrlFromName(){
-        assertEquals("https://api.twitter.com/labs/2/users/by/username/RedTheOne?expansions=pinned_tweet_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected"
+        assertEquals("https://api.twitter.com/2/users/by/username/RedTheOne?expansions=pinned_tweet_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected"
                 , urlHelper.getUserUrlFromName("RedTheOne"));
     }
 
     @Test
     public void testSearch7DaysUrl(){
-        assertEquals("https://api.twitter.com/labs/2/tweets/search",
+        assertEquals("https://api.twitter.com/2/tweets/search/recent",
                 URLHelper.SEARCH_TWEET_7_DAYS_URL);
     }
 

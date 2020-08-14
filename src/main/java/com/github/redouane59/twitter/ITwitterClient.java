@@ -143,6 +143,13 @@ public interface ITwitterClient {
     List<ITweet> searchForTweetsWithin7days(String query, Date fromDate, Date toDate);
 
     /**
+     * Search tweets from last 7 days calling https://api.twitter.com/labs/2/tweets/search
+     * @param query the search query
+     * @return a list of tweets
+     */
+    List<ITweet> searchForTweetsWithin7days(String query);
+
+    /**
      * Search tweets from last 30 days calling https://api.twitter.com/1.1/tweets/search/30day/dev.json
      * Your development environment name should be "dev". See https://developer.twitter.com/en/account/environments
      * @param query the search query
@@ -151,14 +158,6 @@ public interface ITwitterClient {
      * @return a list of tweets
      */
     List<ITweet> searchForTweetsWithin30days(String query, Date fromDate, Date toDate);
-
-    /**
-     * Get the the first tweet of a conversation
-     * @param tweet the tweet from which to start
-     * @param excludeQuote true to not consider a quote as a source tweet
-     * @return the initial tweet
-     */
-    ITweet getInitialTweet(ITweet tweet, boolean excludeQuote);
 
     /**
      * Search historic tweets calling https://api.twitter.com/1.1/tweets/search/fullarchive/dev.json

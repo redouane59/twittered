@@ -83,6 +83,11 @@ public class TweetDeserializerV2Test {
     }
 
     @Test
+    public void testConversationId(){
+        assertEquals("1293983173114830848", tweetv2.getConversationId());
+    }
+
+    @Test
     public void testContextAnnotations(){
         List<ContextAnnotation> contextAnnotationList = tweetv2.getContextAnnotations();
         assertNotNull(contextAnnotationList);

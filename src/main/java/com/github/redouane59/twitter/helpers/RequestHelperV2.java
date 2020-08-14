@@ -6,9 +6,9 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.CustomLog;
 import okhttp3.Headers;
+import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.apache.http.client.utils.URIBuilder;
 
 @CustomLog
 @AllArgsConstructor
@@ -19,18 +19,21 @@ public class RequestHelperV2 extends AbstractRequestHelper {
     public <T> Optional<T> executeGetRequestWithParameters(String url, Map<String, String> parameters, Class<T> classType) {
         T result = null;
         try {
-            URIBuilder builder = new URIBuilder(url);
-            for(Map.Entry<String, String> e : parameters.entrySet()){
-                builder.addParameter(e.getKey(), e.getValue());
+            HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+            if (parameters != null) {
+                for(Map.Entry<String, String> param : parameters.entrySet()) {
+                    httpBuilder.addQueryParameter(param.getKey(),param.getValue());
+                }
             }
             Request request = new Request.Builder()
-                .url(url)
+                .url(httpBuilder.build())
                 .get()
                 .headers(Headers.of("Authorization", "Bearer " + bearerToken))
                 .build();
-            Response response = this.getHttpClient(url)
+            String newUrl = httpBuilder.build().url().toString();
+            Response response = this.getHttpClient(newUrl)
                                     .newCall(request).execute();
-            String stringResponse = response.body().toString();
+            String stringResponse = response.body().string();
             if (response.code()==429){
                 this.wait(stringResponse, url);
                 return this.executeGetRequestWithParameters(url, parameters, classType);

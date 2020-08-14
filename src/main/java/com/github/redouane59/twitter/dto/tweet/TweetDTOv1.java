@@ -60,6 +60,11 @@ public class TweetDTOv1 implements ITweet {
     }
 
     @Override
+    public String getConversationId() {
+        return null;
+    }
+
+    @Override
     public String getInReplyToStatusId(TweetType type) {
         return this.getInReplyToStatusId();
     }
