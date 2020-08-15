@@ -49,7 +49,7 @@ public class URLHelper {
     private static final int    RETWEET_MAX_COUNT       = 100;
     private static final int    MAX_LOOKUP              = 100;
     private static final String ALL_USER_FIELDS         = "user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
-    private static final String ALL_TWEET_FIELDS        = "tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations";
+    private static final String ALL_TWEET_FIELDS        = "tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id";
     public static final String  LAST_TWEET_LIST_URL     = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
     public static final String  RATE_LIMIT_URL          = ROOT_URL_V1 + "/application/rate_limit_status.json";;
     public static final String SEARCH_TWEET_30_DAYS_URL = ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + DEV_ENV_NAME + JSON;
@@ -175,10 +175,28 @@ public class URLHelper {
                ALL_USER_FIELDS;
     }
 
+    public String getTweetListUrl(List<String> ids){
+        StringBuilder result = new StringBuilder(ROOT_URL_V2 +
+                                                 "/tweets?ids=");
+        int i=0;
+        while(i<ids.size() && i<MAX_LOOKUP){
+            String id = ids.get(i);
+            result.append(id);
+            result.append(",");
+            i++;
+        }
+        result.delete(result.length() - 1, result.length());
+        result.append("&");
+        result.append(ALL_TWEET_FIELDS);
+        result.append("&");
+        result.append(ALL_USER_FIELDS);
+        return result.toString();
+    }
+
     public String getUsersUrlbyNames(List<String> names) {
         StringBuilder result = new StringBuilder(ROOT_URL_V2)
-                .append(USERS)
-                .append("/by?usernames=");
+            .append(USERS)
+            .append("/by?usernames=");
         int i=0;
         while(i<names.size() && i<MAX_LOOKUP){
             String name = names.get(i);
@@ -192,8 +210,8 @@ public class URLHelper {
 
     public String getUsersUrlbyIds(List<String> ids) {
         StringBuilder result = new StringBuilder(ROOT_URL_V2)
-                .append(USERS)
-                .append("?ids=");
+            .append(USERS)
+            .append("?ids=");
         int i=0;
         while(i<ids.size() && i<MAX_LOOKUP){
             String id = ids.get(i);

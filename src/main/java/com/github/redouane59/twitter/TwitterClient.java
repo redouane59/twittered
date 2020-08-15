@@ -5,21 +5,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.getrelationship.IdListDTO;
+import com.github.redouane59.twitter.dto.tweet.TweetDTOv2.TweetData;
 import com.github.redouane59.twitter.dto.user.IUser;
 import com.github.redouane59.twitter.dto.user.UserDTOListv2;
 import com.github.redouane59.twitter.dto.user.UserDTOv2.UserData;
 import com.github.redouane59.twitter.helpers.RequestHelper;
 import com.github.redouane59.twitter.helpers.RequestHelperV2;
 import com.github.redouane59.twitter.helpers.URLHelper;
-import com.github.redouane59.RelationType;
-import com.github.redouane59.twitter.dto.getrelationship.IdListDTO;
 import com.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponseDTO;
 import com.github.redouane59.twitter.dto.getrelationship.UserListDTO;
 import com.github.redouane59.twitter.dto.others.BearerTokenDTO;
 import com.github.redouane59.twitter.dto.others.RateLimitStatusDTO;
 import com.github.redouane59.twitter.dto.others.RequestTokenDTO;
 import com.github.redouane59.twitter.dto.tweet.*;
-import com.github.redouane59.twitter.dto.user.IUser;
 import com.github.redouane59.twitter.dto.user.UserDTOv1;
 import com.github.redouane59.twitter.dto.user.UserDTOv2;
 import com.github.redouane59.twitter.helpers.*;
@@ -251,6 +249,13 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
+    public List<ITweet> getTweets(List<String> tweetIds){
+        String          url    = this.getUrlHelper().getTweetListUrl(tweetIds);
+        List<TweetData> result = this.getRequestHelper().executeGetRequest(url, TweetDTOListv2.class).orElseThrow(NoSuchElementException::new).getData();
+        return result.stream().map(tweetData -> TweetDTOv2.builder().data(tweetData).build()).collect(Collectors.toList());
+    }
+
+    @Override
     public List<ITweet> getFavorites(String userId, int count) {
         List<ITweet> favoriteTweets = new ArrayList<>();
         List<TweetDTOv1> result;
@@ -277,7 +282,7 @@ public class TwitterClient implements ITwitterClient {
         if (toDate != null){
             parameters.put("end_time", ConverterHelper.getStringFromDateV2(toDate));
         }
-        parameters.put("tweet.fields", "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations");
+        parameters.put("tweet.fields", "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id");
         String next;
         List<ITweet> result = new ArrayList<>();
         do {

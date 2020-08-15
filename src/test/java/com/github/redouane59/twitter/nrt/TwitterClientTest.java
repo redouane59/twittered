@@ -197,6 +197,16 @@ public class TwitterClientTest {
     }
 
     @Test
+    public void testGetTweetsByIds(){
+        List<String> tweetIds = List.of("1294174710624849921,1294380029430960128,1294375095746666496");
+        List<ITweet> tweets = twitterClient.getTweets(tweetIds);
+        assertTrue(tweets.size()>0);
+        assertTrue(tweets.get(0).getText().length()>0);
+        assertTrue(tweets.get(1).getText().length()>0);
+        assertTrue(tweets.get(2).getText().length()>0);
+    }
+
+    @Test
     public void testGetOauth1Token(){
         AbstractRequestHelper.TWITTER_CREDENTIALS.setAccessToken("");
         AbstractRequestHelper.TWITTER_CREDENTIALS.setAccessTokenSecret("");
