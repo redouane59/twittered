@@ -4,16 +4,16 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.github.redouane59.twitter</groupId>
+    <artifactId>twitter-client</artifactId>
+    <version>SNAPSHOT-1.0</version>
+
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-
-    <groupId>com.github.redouane59.twitter</groupId>
-    <artifactId>twitter-client</artifactId>
-    <version>SPAPSHOT-1.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
