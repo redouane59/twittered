@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.getrelationship.IdListDTO;
 import com.github.redouane59.twitter.dto.user.IUser;
+import com.github.redouane59.twitter.dto.user.UserDTOListv2;
+import com.github.redouane59.twitter.dto.user.UserDTOv2.UserData;
 import com.github.redouane59.twitter.helpers.RequestHelper;
 import com.github.redouane59.twitter.helpers.RequestHelperV2;
 import com.github.redouane59.twitter.helpers.URLHelper;
@@ -21,6 +23,7 @@ import com.github.redouane59.twitter.dto.user.IUser;
 import com.github.redouane59.twitter.dto.user.UserDTOv1;
 import com.github.redouane59.twitter.dto.user.UserDTOv2;
 import com.github.redouane59.twitter.helpers.*;
+import java.util.stream.Collectors;
 import lombok.CustomLog;
 import lombok.Getter;
 import lombok.Setter;
@@ -201,17 +204,15 @@ public class TwitterClient implements ITwitterClient {
     }
 
     public List<IUser> getUsersFromUserNames(List<String> userNames)  {
-        String url = this.getUrlHelper().getUsersUrlbyNames(userNames);
-        UserDTOv1[] response = this.getRequestHelper()
-                                   .executeGetRequestReturningArray(url, UserDTOv1[].class).orElseThrow(NoSuchElementException::new);
-        return List.of(response);
+        String         url      = this.getUrlHelper().getUsersUrlbyNames(userNames);
+        List<UserData> result = this.getRequestHelper().executeGetRequestV2(url, UserDTOListv2.class).orElseThrow(NoSuchElementException::new).getData();
+        return result.stream().map(userData -> UserDTOv2.builder().data(userData).build()).collect(Collectors.toList());
     }
 
     public List<IUser> getUsersFromUserIds(List<String> userIds)  {
         String url = this.getUrlHelper().getUsersUrlbyIds(userIds);
-        UserDTOv1[] response = this.getRequestHelper()
-                                   .executeGetRequestReturningArray(url, UserDTOv1[].class).orElseThrow(NoSuchElementException::new);
-        return List.of(response);
+        List<UserData> result = this.getRequestHelper().executeGetRequestV2(url, UserDTOListv2.class).orElseThrow(NoSuchElementException::new).getData();
+        return result.stream().map(userData -> UserDTOv2.builder().data(userData).build()).collect(Collectors.toList());
     }
 
     @Override

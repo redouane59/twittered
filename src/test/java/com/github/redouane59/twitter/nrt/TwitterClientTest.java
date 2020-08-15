@@ -7,6 +7,7 @@ import com.github.redouane59.twitter.dto.user.IUser;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.others.RequestTokenDTO;
 import com.github.redouane59.twitter.dto.tweet.ITweet;
+import com.github.redouane59.twitter.dto.user.UserDTOv2;
 import com.github.redouane59.twitter.helpers.AbstractRequestHelper;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import org.apache.commons.lang.time.DateUtils;
@@ -57,6 +58,20 @@ public class TwitterClientTest {
         userName = "RedouaneBali";
         result = twitterClient.getUserFromUserName(userName);
         assertEquals("RedouaneBali", result.getName());
+    }
+
+    @Test
+    public void getUsersByUserNames(){
+        List<IUser> result = twitterClient.getUsersFromUserNames(List.of("Zidane", "Ronaldo", "RedTheOne"));
+        assertEquals(3, result.size());
+        assertEquals("92073489", result.get(2).getId());
+    }
+
+    @Test
+    public void getUsersByUserIds(){
+        List<IUser> result = twitterClient.getUsersFromUserIds(List.of("22848599","1976143068","92073489"));
+        assertEquals(3, result.size());
+        assertEquals("RedTheOne", result.get(2).getName());
     }
 
     @Test

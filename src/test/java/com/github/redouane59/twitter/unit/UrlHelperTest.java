@@ -63,7 +63,7 @@ public class UrlHelperTest {
         names.add("RedTheOne");
         names.add("Ronaldo");
         names.add("Zidane");
-        assertEquals("https://api.twitter.com/1.1/users/lookup.json?screen_name=RedTheOne,Ronaldo,Zidane",
+        assertEquals("https://api.twitter.com/2/users/by?usernames=RedTheOne,Ronaldo,Zidane",
                 urlHelper.getUsersUrlbyNames(names));
     }
 
@@ -73,7 +73,7 @@ public class UrlHelperTest {
         ids.add("12345");
         ids.add("23456");
         ids.add("34567");
-        assertEquals("https://api.twitter.com/1.1/users/lookup.json?user_id=12345,23456,34567",
+        assertEquals("https://api.twitter.com/2/users?ids=12345,23456,34567",
                 urlHelper.getUsersUrlbyIds(ids));
     }
 
