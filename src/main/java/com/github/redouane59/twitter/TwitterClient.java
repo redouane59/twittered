@@ -203,12 +203,15 @@ public class TwitterClient implements ITwitterClient {
         return this.getRequestHelper().executeGetRequestV2(url, UserDTOv2.class).orElseThrow(NoSuchElementException::new);
     }
 
+    @Override
     public List<IUser> getUsersFromUserNames(List<String> userNames)  {
         String         url      = this.getUrlHelper().getUsersUrlbyNames(userNames);
         List<UserData> result = this.getRequestHelper().executeGetRequestV2(url, UserDTOListv2.class).orElseThrow(NoSuchElementException::new).getData();
         return result.stream().map(userData -> UserDTOv2.builder().data(userData).build()).collect(Collectors.toList());
     }
 
+
+    @Override
     public List<IUser> getUsersFromUserIds(List<String> userIds)  {
         String url = this.getUrlHelper().getUsersUrlbyIds(userIds);
         List<UserData> result = this.getRequestHelper().executeGetRequestV2(url, UserDTOListv2.class).orElseThrow(NoSuchElementException::new).getData();

@@ -73,18 +73,32 @@ public interface ITwitterClient {
     RelationType getRelationType(String userId1, String userId2);
 
     /**
-     * Retreive a user from his screen name calling https://api.twitter.com/labs/2/users/
+     * Retreive a user from his screen name calling https://api.twitter.com/2/users/
      * @param userName the name of the targeted user
      * @return an user object related to the targeted user
      */
     IUser getUserFromUserName(String userName);
 
     /**
-     * Retreive a user from his id calling https://api.twitter.com/labs/2/users/
+     * Retreive a user from his id calling https://api.twitter.com/2/users/
      * @param userId the id of the user
      * @return an user object related to the targeted user
      */
     IUser getUserFromUserId(String userId);
+
+    /**
+     * Retreive a list of users from their usernames calling https://api.twitter.com/2/users/
+     * @param userNames the names of the targeted user
+     * @return an list of user objects related to the targeted users
+     */
+    List<IUser> getUsersFromUserNames(List<String> userNames);
+
+    /**
+     * Retreive a list of users from their ids calling https://api.twitter.com/2/users/
+     * @param userIds the id of the user
+     * @return an list of user object related to the targeted users
+     */
+    List<IUser> getUsersFromUserIds(List<String> userIds);
 
     /**
      * Follow a user calling https://api.twitter.com/1.1/friendships/
@@ -134,7 +148,7 @@ public interface ITwitterClient {
     List<ITweet> getFavorites(String userId, int count);
 
     /**
-     * Search tweets from last 7 days calling https://api.twitter.com/labs/2/tweets/search
+     * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
      * @param query the search query
      * @param fromDate the start date
      * @param toDate the end date
@@ -143,7 +157,7 @@ public interface ITwitterClient {
     List<ITweet> searchForTweetsWithin7days(String query, Date fromDate, Date toDate);
 
     /**
-     * Search tweets from last 7 days calling https://api.twitter.com/labs/2/tweets/search
+     * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
      * @param query the search query
      * @return a list of tweets
      */
