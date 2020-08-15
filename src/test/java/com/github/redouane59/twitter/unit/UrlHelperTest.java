@@ -153,8 +153,14 @@ public class UrlHelperTest {
 
     @Test
     public void testTweetUrl(){
-        assertEquals("https://api.twitter.com/2/tweets/12345?expansions=author_id&tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        assertEquals("https://api.twitter.com/2/tweets/12345?expansions=author_id&tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
                 urlHelper.getTweetUrl("12345"));
+    }
+
+    @Test
+    public void testUrlGetTweetsV2(){
+        assertEquals("https://api.twitter.com/2/tweets?ids=1294174710624849921,1294380029430960128,1294375095746666496&tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+                     urlHelper.getTweetListUrl(List.of("1294174710624849921,1294380029430960128,1294375095746666496")));
     }
 
     @Test

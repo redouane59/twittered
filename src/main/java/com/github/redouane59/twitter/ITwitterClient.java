@@ -133,11 +133,18 @@ public interface ITwitterClient {
     List<ITweet> getUserLastTweets(String userId, int count);
 
     /**
-     * Get a tweet from its id
+     * Get a tweet from its id calling https://api.twitter.com/2/tweets
      * @param tweetId id of the tweet
      * @return a tweet object
      */
     ITweet getTweet(String tweetId);
+
+    /**
+     * Get a tweet list from their id calling https://api.twitter.com/2/tweets
+     * @param tweetIds the ids of the tweets
+     * @return a tweet object list
+     */
+    List<ITweet> getTweets(List<String> tweetIds);
 
     /**
      * Get the most recent Tweets liked

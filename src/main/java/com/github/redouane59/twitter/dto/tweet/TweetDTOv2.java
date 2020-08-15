@@ -6,7 +6,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.github.redouane59.twitter.dto.user.IUser;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import com.github.redouane59.twitter.dto.user.UserDTOv2;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -17,6 +20,9 @@ import java.util.List;
  */
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class TweetDTOv2 implements ITweet {
 
     private TweetData data;
