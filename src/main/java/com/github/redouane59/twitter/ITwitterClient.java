@@ -194,7 +194,7 @@ public interface ITwitterClient {
      * Parse the Twitter extract data archive file in a List of Tweets
      * @param file the downloaded file on https://twitter.com/settings/your_twitter_data converted in .json format
      * @return the list of tweets
-     * @throws IOException
+     * @throws IOException if excpetion when reading file
      */
     List<TweetDTOv1> readTwitterDataFile(File file) throws IOException;
 
@@ -205,7 +205,7 @@ public interface ITwitterClient {
     String getBearerToken();
 
     /**
-     * Get token & secret token (oAuth1) calling https://api.twitter.com/oauth/request_token
+     * Get token and secret token (oAuth1) calling https://api.twitter.com/oauth/request_token
      * @return and object containing the oauth token and the oauth token secret
      */
     RequestTokenDTO getOauth1Token();
