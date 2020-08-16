@@ -1,7 +1,7 @@
 package com.github.redouane59.twitter.dto.tweet;
 
 import com.github.redouane59.twitter.dto.user.IUser;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ITweet {
@@ -57,7 +57,7 @@ public interface ITweet {
      * The date of creation of the tweet
      * @return the tweet creation date
      */
-    Date getCreatedAt();
+    LocalDateTime getCreatedAt();
 
     /**
      * Get the language of the tweet

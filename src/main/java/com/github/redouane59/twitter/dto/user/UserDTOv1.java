@@ -8,7 +8,7 @@ import com.github.redouane59.twitter.helpers.ConverterHelper;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -62,7 +62,7 @@ public class UserDTOv1 implements IUser {
         this.setDateOfFollow(new Date());
     } */
 
-    public Date getDateOfCreation(){
+    public LocalDateTime getDateOfCreation(){
         return ConverterHelper.getDateFromTwitterString(this.dateOfCreation);
     }
 
@@ -72,7 +72,7 @@ public class UserDTOv1 implements IUser {
         return null;
     }
 
-    public Date getLastUpdate(){
+    public LocalDateTime getLastUpdate(){
         return ConverterHelper.getDateFromTwitterString(this.lastUpdate);
     }
 }

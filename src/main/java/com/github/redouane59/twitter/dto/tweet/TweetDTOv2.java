@@ -6,13 +6,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.github.redouane59.twitter.dto.user.IUser;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import com.github.redouane59.twitter.dto.user.UserDTOv2;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -111,7 +110,7 @@ public class TweetDTOv2 implements ITweet {
         }
 
         @Override
-        public Date getCreatedAt(){
+        public LocalDateTime getCreatedAt(){
             return ConverterHelper.getDateFromTwitterDateV2(this.createdAt);
         }
 
@@ -208,7 +207,7 @@ public class TweetDTOv2 implements ITweet {
         return this.data.getAuthorId();
     }
 
-    public Date getCreatedAt(){
+    public LocalDateTime getCreatedAt(){
         if(this.data==null) return null;
         return this.data.getCreatedAt();
     }

@@ -277,16 +277,16 @@ public class TwitterClientTest {
     /*
     @Test
     public void testSearchTweets30days(){
-        Date startDate = DateUtils.truncate(new Date(),Calendar.MONTH);
-        Date endDate = DateUtils.addDays(startDate, 1);
+        LocalDateTime startDate = DateUtils.truncate(new Date(),Calendar.MONTH);
+        LocalDateTime endDate = DateUtils.addDays(startDate, 1);
         List<ITweet> result = twitterClient.searchForTweetsWithin30days("@RedTheOne -RT",startDate, endDate);
         assertTrue(result.size()>0);
     }
 
     @Test
     public void testSearchTweetsArchive(){
-        Date startDate = DateUtils.truncate(ConverterHelper.dayBeforeNow(60),Calendar.MONTH);
-        Date endDate = DateUtils.addDays(startDate, 1);
+        LocalDateTime startDate = DateUtils.truncate(ConverterHelper.dayBeforeNow(60),Calendar.MONTH);
+        LocalDateTime endDate = DateUtils.addDays(startDate, 1);
         List<ITweet> result = twitterClient.searchForTweetsArchive("@RedTheOne -RT",startDate, endDate);
         assertTrue(result.size()>0);
     } */
