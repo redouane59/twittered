@@ -5,7 +5,7 @@ import com.github.redouane59.twitter.dto.tweet.ITweet;
 import com.github.redouane59.twitter.dto.tweet.TweetDTOv2;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import lombok.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @version labs
@@ -50,7 +50,7 @@ public class UserDTOv2 implements IUser {
         }
 
         @Override
-        public Date getDateOfCreation() {
+        public LocalDateTime getDateOfCreation() {
             return ConverterHelper.getDateFromTwitterString(this.createdAt);
         }
 
@@ -97,7 +97,7 @@ public class UserDTOv2 implements IUser {
     }
 
     @Override
-    public Date getDateOfCreation() {
+    public LocalDateTime getDateOfCreation() {
         return ConverterHelper.getDateFromTwitterDateV2(this.data.getCreatedAt());
     }
 

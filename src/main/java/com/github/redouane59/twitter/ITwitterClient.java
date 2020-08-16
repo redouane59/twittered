@@ -8,7 +8,7 @@ import com.github.redouane59.twitter.dto.tweet.TweetDTOv1;
 import com.github.redouane59.twitter.dto.user.IUser;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ITwitterClient {
@@ -161,7 +161,7 @@ public interface ITwitterClient {
      * @param toDate the end date
      * @return a list of tweets
      */
-    List<ITweet> searchForTweetsWithin7days(String query, Date fromDate, Date toDate);
+    List<ITweet> searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate);
 
     /**
      * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
@@ -178,7 +178,7 @@ public interface ITwitterClient {
      * @param toDate the end date
      * @return a list of tweets
      */
-    List<ITweet> searchForTweetsWithin30days(String query, Date fromDate, Date toDate);
+    List<ITweet> searchForTweetsWithin30days(String query, LocalDateTime fromDate, LocalDateTime toDate);
 
     /**
      * Search historic tweets calling https://api.twitter.com/1.1/tweets/search/fullarchive/dev.json
@@ -188,7 +188,7 @@ public interface ITwitterClient {
      * @param toDate the end date
      * @return a list of tweets
      */
-    List<ITweet> searchForTweetsArchive(String query, Date fromDate, Date toDate);
+    List<ITweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate);
 
     /**
      * Parse the Twitter extract data archive file in a List of Tweets

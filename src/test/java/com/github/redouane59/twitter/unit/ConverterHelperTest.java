@@ -2,9 +2,10 @@ package com.github.redouane59.twitter.unit;
 
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import org.junit.jupiter.api.Test;
-import java.util.Date;
+import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import java.time.LocalDateTime;
 
 public class ConverterHelperTest {
 
@@ -17,7 +18,7 @@ public class ConverterHelperTest {
 
     @Test
     public void testGetStringFromDate(){
-        assertNotNull(ConverterHelper.getStringFromDate(new Date()));
+        assertNotNull(ConverterHelper.getStringFromDate(LocalDateTime.now()));
     }
 
     @Test

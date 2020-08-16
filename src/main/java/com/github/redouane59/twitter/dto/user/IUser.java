@@ -1,7 +1,7 @@
 package com.github.redouane59.twitter.dto.user;
 
 import com.github.redouane59.twitter.dto.tweet.ITweet;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IUser {
@@ -34,7 +34,7 @@ public interface IUser {
      * Get the date of creation of the user account
      * @return the user account date of creation
      */
-    Date getDateOfCreation();
+    LocalDateTime getDateOfCreation();
 
     /**
      * Get the number of followers of the user

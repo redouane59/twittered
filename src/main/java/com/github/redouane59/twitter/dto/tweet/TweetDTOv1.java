@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import com.github.redouane59.twitter.dto.user.UserDTOv1;
 import lombok.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -43,7 +43,7 @@ public class TweetDTOv1 implements ITweet {
     @JsonProperty("is_quote_status")
     private boolean isQuoteStatus;
 
-    public Date getCreatedAt(){
+    public LocalDateTime getCreatedAt(){
         return ConverterHelper.getDateFromTwitterString(this.createdAt);
     }
 

@@ -21,6 +21,7 @@ import com.github.redouane59.twitter.dto.tweet.*;
 import com.github.redouane59.twitter.dto.user.UserDTOv1;
 import com.github.redouane59.twitter.dto.user.UserDTOv2;
 import com.github.redouane59.twitter.helpers.*;
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import lombok.CustomLog;
 import lombok.Getter;
@@ -271,7 +272,7 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public List<ITweet> searchForTweetsWithin7days(String query, Date fromDate, Date toDate) {
+    public List<ITweet> searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate) {
         int                 count      = 100;
         Map<String, String> parameters = new HashMap<>();
         parameters.put("query", query);
@@ -306,7 +307,7 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public List<ITweet> searchForTweetsWithin30days(String query, Date fromDate, Date toDate){
+    public List<ITweet> searchForTweetsWithin30days(String query, LocalDateTime fromDate, LocalDateTime toDate){
         int count = 100;
         Map<String, String> parameters = new HashMap<>();
         parameters.put("query",query);
@@ -331,7 +332,7 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public List<ITweet> searchForTweetsArchive(String query, Date fromDate, Date toDate) {
+    public List<ITweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate) {
         int count = 100;
         Map<String, String> parameters = new HashMap<>();
         parameters.put("query",query);
