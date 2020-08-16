@@ -100,7 +100,7 @@ public class TwitterClientTest {
     public void testGetUserInfoFavouritesDateOfCreation() {
         String userId = "92073489";
         IUser user = twitterClient.getUserFromUserId(userId);
-        assertTrue(user.getDateOfCreation() != null);
+        assertNotNull(user.getDateOfCreation());
     }
 
     @Test
@@ -231,11 +231,18 @@ public class TwitterClientTest {
         IUser user = twitterClient.getUserFromUserName("red1");
         twitterClient.follow(user.getId());
         twitterClient.unfollow(user.getId());
+        assertEquals(RelationType.NONE, twitterClient.getRelationType("RedThOne","red1"));
     }
 
     @Test
     public void testLikeTweet(){
-        twitterClient.likeTweet("1107533");
+        Exception ex = null;
+        try {
+            twitterClient.likeTweet("1107533");
+        } catch (Exception e) {
+            ex = e;
+        }
+        assertNull(ex);
     }
 
     @Test

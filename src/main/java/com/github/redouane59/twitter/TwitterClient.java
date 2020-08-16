@@ -189,7 +189,6 @@ public class TwitterClient implements ITwitterClient {
             .executePostRequest(url, new HashMap<>(), UserDTOv1.class).orElseThrow(NoSuchElementException::new);
     }
 
-    // UserV2
     @Override
     public IUser getUserFromUserId(String userId)  {
         String url = this.getUrlHelper().getUserUrl(userId);

@@ -101,13 +101,13 @@ public class RequestHelper extends AbstractRequestHelper {
             Request signedRequest = this.getSignedRequest(request);
             Response response = this.getHttpClient(url)
                     .newCall(signedRequest).execute();
+            String stringResponse = response.body().string();
             if(response.code()!=200){
-                LOGGER.severe(()->"(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
+                LOGGER.severe(()->"(POST) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
                 if(response.code()==429){
                     LOGGER.severe(()->"Reset your token");
                 }
             }
-            String stringResponse = response.body().string();
             if(classType.equals(String.class)){ // dirty, to manage token oauth1
                 result = (T)stringResponse;
             } else{

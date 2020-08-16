@@ -213,7 +213,7 @@ public class TweetDTOv2 implements ITweet {
     }
 
     public List<ContextAnnotation> getContextAnnotations(){
-        if(this.data==null) return null;
+        if(this.data==null) return List.of();
         return this.data.getContextAnnotations();
     }
 

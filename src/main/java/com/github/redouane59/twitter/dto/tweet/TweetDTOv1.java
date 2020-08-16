@@ -50,7 +50,7 @@ public class TweetDTOv1 implements ITweet {
     @Override
     public List<ContextAnnotation> getContextAnnotations() {
         LOGGER.severe("not implemented");
-        return null;
+        return List.of();
     }
 
     @Override
