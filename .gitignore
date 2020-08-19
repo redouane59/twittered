@@ -15,3 +15,4 @@ target/
 /out
 /okhttpCache
 /okhttpCache/*
+*.asc
