@@ -4,15 +4,11 @@ import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import lombok.CustomLog;
 import lombok.Getter;
-import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 
