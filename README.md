@@ -16,7 +16,7 @@ In your pom.xml, add
 <dependency>
   <groupId>com.github.redouane59.twitter</groupId>
   <artifactId>twitter-client</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
 </dependency>
 ```
 In order to use your own developer credentials, pass through java argument your file path like `-Dtwitter.credentials.file.path=/my/path/to/json`
