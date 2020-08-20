@@ -10,7 +10,8 @@ This project is a JAVA library which allows you to consume the Twitter API.
 ## /!\ Development in progress... Any feedback is welcome :) /!\ 
 
 ### Configuration
-The file `src/main/resources/twitter-credentials.json` should contain your twitter credentials like this :
+In order to use your own developer credentials, pass through java argument your file path like `-Dtwitter.credentials.file.path=/my/path/to/json`
+This file should contain your twitter credentials like this :
 ```
 {
   "apiKey": "xxx",
