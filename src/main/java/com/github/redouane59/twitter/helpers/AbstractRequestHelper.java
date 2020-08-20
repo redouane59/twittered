@@ -4,6 +4,7 @@ import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -20,19 +21,21 @@ public abstract class AbstractRequestHelper {
     private int sleepTime = 5;
 
     public static TwitterCredentials getAuthentication(){
-        URL twitterCredentialsFile = TwitterCredentials.class.getClassLoader().getResource("twitter-credentials.json");
-        if(twitterCredentialsFile==null){
-            LOGGER.severe("twitter-credentials.json file not found in src/main/resources");
-            return null;
-        }
         try {
+            String credentialPath = System.getProperty("twitter.credentials.file.path");
+            if(credentialPath==null || !new File(credentialPath).exists()){
+                LOGGER.severe("twitter credentials json file not found in path " + credentialPath
+                              + ". Use program argument -Dtwitter.credentials.file.path=/my/path/to/json");
+                return null;
+            }
+            URL twitterCredentialsFile = new File(credentialPath).toURI().toURL();
             TwitterCredentials twitterCredentials = TwitterClient.OBJECT_MAPPER.readValue(twitterCredentialsFile, TwitterCredentials.class);
             if(twitterCredentials.getAccessToken()==null) LOGGER.severe("Access token is null in twitter-credentials.json");
             if(twitterCredentials.getAccessTokenSecret()==null) LOGGER.severe("Secret token is null in twitter-credentials.json");
             if(twitterCredentials.getApiKey()==null) LOGGER.severe("Consumer key is null in twitter-credentials.json");
             if(twitterCredentials.getApiSecretKey()==null) LOGGER.severe("Consumer secret is null in twitter-credentials.json");
             return twitterCredentials;
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             return null;
         }
