@@ -6,10 +6,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import lombok.CustomLog;
 import lombok.Getter;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 
@@ -32,8 +35,8 @@ public abstract class AbstractRequestHelper {
             return twitterCredentials;
         } catch (Exception e) {
             LOGGER.severe("twitter credentials json file error in path " + credentialPath
-                          + ". Use program argument -Dtwitter.credentials.file.path=/my/path/to/json . "
-                          + "Exception was : " + e.getMessage());
+                          + ". Use program argument -Dtwitter.credentials.file.path=/my/path/to/json . ");
+            LOGGER.severe(e.getMessage());
             return null;
         }
     }
