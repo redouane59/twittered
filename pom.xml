@@ -65,6 +65,9 @@
                     <skip>${maven.test.skip}</skip>
                     <output>file</output>
                     <append>true</append>
+                    <excludes>
+                        <exclude>target/**</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -158,7 +161,6 @@
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>0.8.5</version>
         </dependency>
-
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>

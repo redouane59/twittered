@@ -10,6 +10,15 @@ This project is a JAVA library which allows you to consume the Twitter API.
 ## /!\ Development in progress... Any feedback is welcome :) /!\ 
 
 ### Configuration
+
+In your pom.xml, add 
+```
+<dependency>
+  <groupId>com.github.redouane59.twitter</groupId>
+  <artifactId>twitter-client</artifactId>
+  <version>1.1</version>
+</dependency>
+```
 In order to use your own developer credentials, pass through java argument your file path like `-Dtwitter.credentials.file.path=/my/path/to/json`
 This file should contain your twitter credentials like this :
 ```
@@ -21,7 +30,7 @@ This file should contain your twitter credentials like this :
 }
 ```
 They can be found in [your twitter app page](https://developer.twitter.com/en/apps) in the _Key and tokens_
-tab.
+page.
 
 ### How to use it
 1) Run `mvn clean install`
