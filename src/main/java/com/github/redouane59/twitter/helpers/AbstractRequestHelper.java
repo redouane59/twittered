@@ -21,13 +21,8 @@ public abstract class AbstractRequestHelper {
     private int sleepTime = 5;
 
     public static TwitterCredentials getAuthentication(){
+        String credentialPath = System.getProperty("twitter.credentials.file.path");
         try {
-            String credentialPath = System.getProperty("twitter.credentials.file.path");
-            if(credentialPath==null || !new File(credentialPath).exists()){
-                LOGGER.severe("twitter credentials json file not found in path " + credentialPath
-                              + ". Use program argument -Dtwitter.credentials.file.path=/my/path/to/json");
-                return null;
-            }
             URL twitterCredentialsFile = new File(credentialPath).toURI().toURL();
             TwitterCredentials twitterCredentials = TwitterClient.OBJECT_MAPPER.readValue(twitterCredentialsFile, TwitterCredentials.class);
             if(twitterCredentials.getAccessToken()==null) LOGGER.severe("Access token is null in twitter-credentials.json");
@@ -36,7 +31,9 @@ public abstract class AbstractRequestHelper {
             if(twitterCredentials.getApiSecretKey()==null) LOGGER.severe("Consumer secret is null in twitter-credentials.json");
             return twitterCredentials;
         } catch (Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.severe("twitter credentials json file error in path " + credentialPath
+                          + ". Use program argument -Dtwitter.credentials.file.path=/my/path/to/json . "
+                          + "Exception was : " + e.getMessage());
             return null;
         }
     }
