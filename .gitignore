@@ -16,3 +16,4 @@ target/
 /okhttpCache
 /okhttpCache/*
 *.asc
+bundle.jar
