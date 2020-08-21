@@ -29,12 +29,12 @@ import java.util.TreeMap;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import lombok.CustomLog;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import okio.Buffer;
 import okio.ByteString;
 
-@CustomLog
+@Slf4j
 public final class Oauth1SigningInterceptor implements Interceptor {
     private static final Escaper ESCAPER_FORM = UrlEscapers.urlFormParameterEscaper();
     private static final Escaper ESCAPER_PATH = UrlEscapers.urlPathSegmentEscaper();
@@ -113,7 +113,7 @@ public final class Oauth1SigningInterceptor implements Interceptor {
                 }
             }
         }catch (Exception e){
-            LOGGER.severe(e.getMessage());
+            LOGGER.error(e.getMessage());
         } finally {
             body.close();
         }
@@ -161,7 +161,7 @@ public final class Oauth1SigningInterceptor implements Interceptor {
                     .addHeader("Authorization", authorization)
                     .build();
         } catch(Exception e){
-            LOGGER.severe(e.getMessage());
+            LOGGER.error(e.getMessage());
         } finally {
             base.close();
         }

@@ -8,6 +8,7 @@ import com.github.redouane59.twitter.dto.user.UserDTOv1;
 import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @version current
@@ -19,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-@CustomLog
+@Slf4j
 public class TweetDTOv1 implements ITweet {
     private String id;
     private String lang;
@@ -49,7 +50,7 @@ public class TweetDTOv1 implements ITweet {
 
     @Override
     public List<ContextAnnotation> getContextAnnotations() {
-        LOGGER.severe("not implemented");
+        LOGGER.error("not implemented");
         return List.of();
     }
 

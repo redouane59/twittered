@@ -6,6 +6,7 @@ import com.github.redouane59.twitter.dto.tweet.TweetDTOv2;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import lombok.*;
 import java.time.LocalDateTime;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @version labs
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@CustomLog
+@Slf4j
 public class UserDTOv2 implements IUser {
 
     private UserData data;
@@ -71,7 +72,7 @@ public class UserDTOv2 implements IUser {
 
         @Override
         public ITweet getPinnedTweet(){
-            LOGGER.severe("Enable to access the data from here");
+            LOGGER.error("Enable to access the data from here");
             return null;
         }
     }
@@ -134,7 +135,7 @@ public class UserDTOv2 implements IUser {
     @Override
     public ITweet getPinnedTweet(){
         if(this.includes.getTweets().length<1){
-            LOGGER.severe("No tweet found");
+            LOGGER.error("No tweet found");
             return null;
         }
         return this.includes.getTweets()[0];
