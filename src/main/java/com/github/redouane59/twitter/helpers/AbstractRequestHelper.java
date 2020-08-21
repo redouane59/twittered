@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import lombok.extern.slf4j.Slf4j;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 

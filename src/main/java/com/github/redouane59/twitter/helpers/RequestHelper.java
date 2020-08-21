@@ -4,7 +4,6 @@ import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.signature.Oauth1SigningInterceptor;
 import java.util.Map;
 import java.util.Optional;
-import lombok.extern.slf4j.Slf4j;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Headers;
