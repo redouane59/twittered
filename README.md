@@ -11,7 +11,7 @@ This project is a JAVA library which allows you to consume the Twitter API.
 
 ### Configuration
 
-In your pom.xml, add 
+In your pom.xml, add the following dependency :
 ```
 <dependency>
   <groupId>com.github.redouane59.twitter</groupId>
@@ -19,7 +19,7 @@ In your pom.xml, add
   <version>1.2</version>
 </dependency>
 ```
-In order to use your own developer credentials, pass through java argument your file path like `-Dtwitter.credentials.file.path=/my/path/to/json`
+In order to use your own developer credentials, pass through java argument your file path like `-Dtwitter.credentials.file.path=/my/path/to/json` .
 This file should contain your twitter credentials like this :
 ```
 {
@@ -31,13 +31,6 @@ This file should contain your twitter credentials like this :
 ```
 They can be found in [your twitter app page](https://developer.twitter.com/en/apps) in the _Key and tokens_
 page.
-
-### How to use it
-1) Run `mvn clean install`
-2) Add a dependency on your project with the generated `.jar` file from `target` folder
-3) Start using `TwitterClient` class
-
-/!\ [JDK 12](https://jdk.java.net/12/) is needed to run the project /!\
 
 ### Available methods
 See : 
@@ -52,6 +45,8 @@ To add a new feature :
 - If needed, add the endpoint URL in [URLHelper.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/helpers/URLHelper.java)
 - Implement your method in the child class (i.e [TwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/TwitterClient.java))
 - Don't forget to add your unit tests in `src/test/java/com/github/redouane59/twitter/unit`
+
+/!\ [JDK 12](https://jdk.java.net/12/) is needed to run the project /!\
 
 ### External Resources
 [Twitter Developers docs](https://developer.twitter.com/en/docs)
