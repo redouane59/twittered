@@ -136,7 +136,6 @@ public class TwitterClient implements ITwitterClient {
 
     @Override
     public List<String> getFollowingIds(String userId) {
-        LOGGER.debug("test");
         return this.getUserIdsByRelation(userId, RelationType.FOLLOWING);
     }
 
@@ -320,7 +319,7 @@ public class TwitterClient implements ITwitterClient {
             Optional<TweetSearchV1DTO> tweetSearchV1DTO = this.getRequestHelper().executeGetRequestWithParameters(
                 URLHelper.SEARCH_TWEET_30_DAYS_URL,parameters, TweetSearchV1DTO.class);
             if(tweetSearchV1DTO.isEmpty()){
-                LOGGER.debug("empty response on searchForTweetsWithin30days");
+                LOGGER.error("empty response on searchForTweetsWithin30days");
                 break;
             }
             result.addAll(tweetSearchV1DTO.get().getResults());
@@ -345,7 +344,7 @@ public class TwitterClient implements ITwitterClient {
             Optional<TweetSearchV1DTO> tweetSearchV1DTO = this.getRequestHelper().executeGetRequestWithParameters(
                 URLHelper.SEARCH_TWEET_FULL_ARCHIVE_URL,parameters, TweetSearchV1DTO.class);
             if(tweetSearchV1DTO.isEmpty()){
-                LOGGER.debug("empty response on searchForTweetsArchive");
+                LOGGER.error("empty response on searchForTweetsArchive");
                 break;
             }
             result.addAll(tweetSearchV1DTO.get().getResults());
@@ -365,7 +364,7 @@ public class TwitterClient implements ITwitterClient {
 
         List<TweetDTOv1> result = new ArrayList<>();
         if(!file.exists()) {
-            LOGGER.debug("file not found at : " + file.toURI().toString());
+            LOGGER.error("file not found at : " + file.toURI().toString());
         } else{
             result = List.of(customObjectMapper.readValue(file, TweetDTOv1[].class));
         }

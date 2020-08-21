@@ -104,9 +104,9 @@ public class RequestHelper extends AbstractRequestHelper {
                     .newCall(signedRequest).execute();
             String stringResponse = response.body().string();
             if(response.code()!=200){
-                LOGGER.debug("(POST) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
+                LOGGER.error("(POST) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
                 if(response.code()==429){
-                    LOGGER.debug("Reset your token");
+                    LOGGER.error("Reset your token");
                 }
             }
             if(classType.equals(String.class)){ // dirty, to manage token oauth1
@@ -132,7 +132,7 @@ public class RequestHelper extends AbstractRequestHelper {
             Response response = this.getHttpClient(url)
                     .newCall(request).execute();
             if(response.code()!=200){
-                LOGGER.debug("(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
+                LOGGER.error("(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
             }
             String stringResponse = response.body().string();
             result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
@@ -158,7 +158,7 @@ public class RequestHelper extends AbstractRequestHelper {
                 this.wait(stringResponse, url);
                 return this.executeGetRequestReturningArray(url, classType);
             } else{
-                LOGGER.debug("not 200 calling " + url + " " + response.message() + " - " + response.code());
+                LOGGER.error("not 200 calling " + url + " " + response.message() + " - " + response.code());
             }
         } catch(Exception e){
             LOGGER.error(e.getMessage());
@@ -188,7 +188,7 @@ public class RequestHelper extends AbstractRequestHelper {
     }
 
     private void logGetError(String url, String response){
-        LOGGER.debug(" Error calling " + url + " : " + response);
+        LOGGER.error(" Error calling " + url + " : " + response);
     }
 
 }
