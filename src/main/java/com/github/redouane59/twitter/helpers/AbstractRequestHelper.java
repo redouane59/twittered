@@ -31,8 +31,7 @@ public abstract class AbstractRequestHelper {
             return twitterCredentials;
         } catch (Exception e) {
             LOGGER.error("twitter credentials json file error in path " + credentialPath
-                          + ". Use program argument -Dtwitter.credentials.file.path=/my/path/to/json . ");
-            LOGGER.error(e.getMessage());
+                          + ". Use program argument -Dtwitter.credentials.file.path=/my/path/to/json . ", e);
             return null;
         }
     }
