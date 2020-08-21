@@ -1,23 +1,24 @@
 package com.github.redouane59.twitter.nrt;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.github.redouane59.RelationType;
-import com.github.redouane59.twitter.dto.tweet.TweetDTOv1;
-import com.github.redouane59.twitter.dto.tweet.TweetType;
-import com.github.redouane59.twitter.dto.user.IUser;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.others.RequestTokenDTO;
 import com.github.redouane59.twitter.dto.tweet.ITweet;
-import com.github.redouane59.twitter.dto.user.UserDTOv2;
+import com.github.redouane59.twitter.dto.tweet.TweetDTOv1;
+import com.github.redouane59.twitter.dto.tweet.TweetType;
+import com.github.redouane59.twitter.dto.user.IUser;
 import com.github.redouane59.twitter.helpers.AbstractRequestHelper;
-import com.github.redouane59.twitter.helpers.ConverterHelper;
-import org.apache.commons.lang.time.DateUtils;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 @Disabled
 public class TwitterClientTest {

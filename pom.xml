@@ -156,11 +156,6 @@
             <version>3.14.2</version>
         </dependency>
         <dependency>
-            <groupId>com.twitter</groupId>
-            <artifactId>hbc-core</artifactId>
-            <version>2.2.0</version>
-        </dependency>
-        <dependency>
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
             <version>0.10.2</version>
@@ -175,6 +170,10 @@
             <artifactId>google-api-client</artifactId>
             <version>1.23.0</version>
         </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
     </dependencies>
-
 </project>

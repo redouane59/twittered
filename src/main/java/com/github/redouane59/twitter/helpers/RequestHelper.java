@@ -4,8 +4,8 @@ import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.signature.Oauth1SigningInterceptor;
 import java.util.Map;
 import java.util.Optional;
-import lombok.CustomLog;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
@@ -14,7 +14,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 @NoArgsConstructor
-@CustomLog
+@Slf4j
 public class RequestHelper extends AbstractRequestHelper {
 
     public <T> Optional<T> executeGetRequest(String url, Class<T> classType) {
@@ -33,7 +33,7 @@ public class RequestHelper extends AbstractRequestHelper {
                 logGetError(url, stringResponse);
             }
         } catch(Exception e){
-            LOGGER.severe("exception in executeGetRequest " + e.getMessage());
+            LOGGER.error("exception in executeGetRequest " + e.getMessage());
         }
         return Optional.ofNullable(result);
     }
@@ -63,7 +63,7 @@ public class RequestHelper extends AbstractRequestHelper {
                 logGetError(url, stringResponse);
             }
         } catch(Exception e){
-            LOGGER.severe("exception in executeGetRequest " + e.getMessage());
+            LOGGER.error("exception in executeGetRequest " + e.getMessage());
         }
         return Optional.ofNullable(result);
     }
@@ -84,7 +84,7 @@ public class RequestHelper extends AbstractRequestHelper {
                 logGetError(url, stringResponse);
             }
         } catch(Exception e){
-            LOGGER.severe(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
         return Optional.ofNullable(result);
     }
@@ -103,9 +103,9 @@ public class RequestHelper extends AbstractRequestHelper {
                     .newCall(signedRequest).execute();
             String stringResponse = response.body().string();
             if(response.code()!=200){
-                LOGGER.severe(()->"(POST) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
+                LOGGER.error("(POST) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
                 if(response.code()==429){
-                    LOGGER.severe(()->"Reset your token");
+                    LOGGER.error("Reset your token");
                 }
             }
             if(classType.equals(String.class)){ // dirty, to manage token oauth1
@@ -114,7 +114,7 @@ public class RequestHelper extends AbstractRequestHelper {
                 result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
             }
         } catch(Exception e){
-            LOGGER.severe(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
         return Optional.ofNullable(result);
     }
@@ -131,12 +131,12 @@ public class RequestHelper extends AbstractRequestHelper {
             Response response = this.getHttpClient(url)
                     .newCall(request).execute();
             if(response.code()!=200){
-                LOGGER.severe(()->"(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
+                LOGGER.error("(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
             }
             String stringResponse = response.body().string();
             result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
         } catch(Exception e){
-            LOGGER.severe(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
         return Optional.ofNullable(result);
     }
@@ -152,15 +152,15 @@ public class RequestHelper extends AbstractRequestHelper {
                 result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
             } else if (response.code() == 401){
                 response.close();
-                LOGGER.info(()->"user private, not authorized");
+                LOGGER.info("user private, not authorized");
             } else if (response.code()==429){
                 this.wait(stringResponse, url);
                 return this.executeGetRequestReturningArray(url, classType);
             } else{
-                LOGGER.severe(()->"not 200 calling " + url + " " + response.message() + " - " + response.code());
+                LOGGER.error("not 200 calling " + url + " " + response.message() + " - " + response.code());
             }
         } catch(Exception e){
-            LOGGER.severe(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
         return Optional.ofNullable(result);
     }
@@ -187,7 +187,7 @@ public class RequestHelper extends AbstractRequestHelper {
     }
 
     private void logGetError(String url, String response){
-        LOGGER.severe(()->" Error calling " + url + " : " + response);
+        LOGGER.error(" Error calling " + url + " : " + response);
     }
 
 }

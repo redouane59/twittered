@@ -4,7 +4,7 @@ import io.vavr.control.Option;
 import io.vavr.control.Try;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import lombok.CustomLog;
+import lombok.extern.slf4j.Slf4j;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -14,7 +14,7 @@ import java.util.Calendar;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
-@CustomLog
+@Slf4j
 public class ConverterHelper {
 
     public static final String DATE_PATTERN_SIMPLE = "yyyyMMdd";
@@ -35,7 +35,7 @@ public class ConverterHelper {
                            .atZone(ZoneId.systemDefault())
                            .toLocalDateTime();
         } catch (ParseException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
         return null;
     }

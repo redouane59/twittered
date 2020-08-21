@@ -1,14 +1,13 @@
 package com.github.redouane59.twitter.helpers;
 
-import lombok.CustomLog;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter
-@CustomLog
+@Slf4j
 public class URLHelper {
 
     private static final String ROOT_URL_V1             = "https://api.twitter.com/1.1";

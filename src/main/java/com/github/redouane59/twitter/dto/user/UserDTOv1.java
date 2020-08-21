@@ -3,13 +3,15 @@ package com.github.redouane59.twitter.dto.user;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.redouane59.twitter.dto.tweet.ITweet;
-import com.github.redouane59.twitter.dto.tweet.ITweet;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
-import lombok.*;
-
-import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @version current
@@ -20,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@CustomLog
+@Slf4j
 public class UserDTOv1 implements IUser {
 
     private String id;
@@ -68,7 +70,7 @@ public class UserDTOv1 implements IUser {
 
     @Override
     public ITweet getPinnedTweet() {
-        LOGGER.finer("UnsupportedOperation");
+        LOGGER.debug("UnsupportedOperation");
         return null;
     }
 

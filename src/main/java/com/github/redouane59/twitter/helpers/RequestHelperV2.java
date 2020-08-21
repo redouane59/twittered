@@ -4,13 +4,13 @@ import com.github.redouane59.twitter.TwitterClient;
 import java.util.Map;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
-import lombok.CustomLog;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 
-@CustomLog
+@Slf4j
 @AllArgsConstructor
 public class RequestHelperV2 extends AbstractRequestHelper {
 
@@ -38,13 +38,13 @@ public class RequestHelperV2 extends AbstractRequestHelper {
                 this.wait(stringResponse, url);
                 return this.executeGetRequestWithParameters(url, parameters, classType);
             } else if (response.code()==401){
-                LOGGER.info(()->"Error 401, user may be private");
+                LOGGER.info("Error 401, user may be private");
                 return Optional.empty();
             }
-            LOGGER.info(()->stringResponse);
+            LOGGER.info(stringResponse);
             result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
         } catch (Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
         return Optional.ofNullable(result);
     }

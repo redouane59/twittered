@@ -23,7 +23,7 @@ import com.github.redouane59.twitter.dto.user.UserDTOv2;
 import com.github.redouane59.twitter.helpers.*;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
-import lombok.CustomLog;
+import lombok.extern.slf4j.Slf4j;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.http.NameValuePair;
@@ -37,7 +37,7 @@ import java.util.*;
 
 @Getter
 @Setter
-@CustomLog
+@Slf4j
 public class TwitterClient implements ITwitterClient {
 
     public static final  ObjectMapper    OBJECT_MAPPER   = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -289,7 +289,7 @@ public class TwitterClient implements ITwitterClient {
             Optional<TweetSearchV2DTO> tweetSearchV2DTO = this.getRequestHelperV2().executeGetRequestWithParameters(
                 URLHelper.SEARCH_TWEET_7_DAYS_URL,parameters, TweetSearchV2DTO.class);
             if(tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData()==null){
-                LOGGER.severe(()->"empty response on searchForTweetsWithin7days");
+                LOGGER.error("empty response on searchForTweetsWithin7days");
                 break;
             }
             result.addAll(tweetSearchV2DTO.get().getData());
@@ -319,7 +319,7 @@ public class TwitterClient implements ITwitterClient {
             Optional<TweetSearchV1DTO> tweetSearchV1DTO = this.getRequestHelper().executeGetRequestWithParameters(
                 URLHelper.SEARCH_TWEET_30_DAYS_URL,parameters, TweetSearchV1DTO.class);
             if(tweetSearchV1DTO.isEmpty()){
-                LOGGER.severe(()->"empty response on searchForTweetsWithin30days");
+                LOGGER.error("empty response on searchForTweetsWithin30days");
                 break;
             }
             result.addAll(tweetSearchV1DTO.get().getResults());
@@ -344,7 +344,7 @@ public class TwitterClient implements ITwitterClient {
             Optional<TweetSearchV1DTO> tweetSearchV1DTO = this.getRequestHelper().executeGetRequestWithParameters(
                 URLHelper.SEARCH_TWEET_FULL_ARCHIVE_URL,parameters, TweetSearchV1DTO.class);
             if(tweetSearchV1DTO.isEmpty()){
-                LOGGER.severe(()->"empty response on searchForTweetsArchive");
+                LOGGER.error("empty response on searchForTweetsArchive");
                 break;
             }
             result.addAll(tweetSearchV1DTO.get().getResults());
@@ -364,7 +364,7 @@ public class TwitterClient implements ITwitterClient {
 
         List<TweetDTOv1> result = new ArrayList<>();
         if(!file.exists()) {
-            LOGGER.severe(()->"file not found at : " + file.toURI().toString());
+            LOGGER.error("file not found at : " + file.toURI().toString());
         } else{
             result = List.of(customObjectMapper.readValue(file, TweetDTOv1[].class));
         }
@@ -395,7 +395,7 @@ public class TwitterClient implements ITwitterClient {
         try {
             params = URLEncodedUtils.parse(new URI("twitter.com?"+stringResponse), StandardCharsets.UTF_8.name());
         } catch (URISyntaxException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
         RequestTokenDTO requestTokenDTO = new RequestTokenDTO();
         for (NameValuePair param : params) {
