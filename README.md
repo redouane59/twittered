@@ -16,7 +16,7 @@ In your pom.xml, add the following dependency :
 <dependency>
   <groupId>com.github.redouane59.twitter</groupId>
   <artifactId>twitter-client</artifactId>
-  <version>1.2</version>
+  <version>1.3</version>
 </dependency>
 ```
 In order to use your own developer credentials, you have several options :
@@ -50,7 +50,7 @@ TwitterClient twitterClient = new TwitterClient(TwitterClient.OBJECT_MAPPER.read
 #### With hard-coded values
 ```
 TwitterClient twitterClient = new TwitterClient(TwitterCredentials.builder()
-                                                            .accessToken("<acess_token>")
+                                                            .accessToken("<access_token>")
                                                             .accessTokenSecret("<secret_token>")
                                                             .apiKey("<api_key>")
                                                             .apiSecretKey("<secret_key>")
