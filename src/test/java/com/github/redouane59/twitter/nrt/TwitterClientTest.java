@@ -33,7 +33,13 @@ public class TwitterClientTest {
         String credentialPath = "C:/Users/Perso/Documents/GitHub/twitter-credentials.json";
         URL twitterCredentialsFile = new File(credentialPath).toURI().toURL();
         twitterClient             = new TwitterClient(TwitterClient.OBJECT_MAPPER
-                                                           .readValue(twitterCredentialsFile, TwitterCredentials.class));
+                                                          .readValue(twitterCredentialsFile, TwitterCredentials.class));
+        twitterClient = new TwitterClient(TwitterCredentials.builder()
+                                                            .accessToken("<acess_token>")
+                                                            .accessTokenSecret("<secret_token>")
+                                                            .apiKey("<api_key>")
+                                                            .apiSecretKey("<secret_key>")
+                                                            .build());
     }
 
     @Test
@@ -190,7 +196,7 @@ public class TwitterClientTest {
         String userName = "RedTheOne";
         List<ITweet> response = twitterClient.getUserLastTweets(userName, 2);
         assertTrue(response.get(0).getLang().equals("fr")
-                || response.get(1).getLang().equals("fr"));
+                   || response.get(1).getLang().equals("fr"));
     }
 
     @Test
@@ -198,7 +204,7 @@ public class TwitterClientTest {
         String userId = "92073489";
         List<ITweet> response = twitterClient.getUserLastTweets(userId, 3);
         assertTrue(response.get(0).getLang().equals("fr")
-                || response.get(1).getLang().equals("fr"));
+                   || response.get(1).getLang().equals("fr"));
     }
 
     @Test
