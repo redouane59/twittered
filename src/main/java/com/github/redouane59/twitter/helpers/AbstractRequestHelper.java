@@ -16,25 +16,7 @@ import okhttp3.OkHttpClient;
 @Getter
 public abstract class AbstractRequestHelper {
 
-    public static final TwitterCredentials TWITTER_CREDENTIALS = getAuthentication();
     private int sleepTime = 5;
-
-    public static TwitterCredentials getAuthentication(){
-        String credentialPath = System.getProperty("twitter.credentials.file.path");
-        try {
-            URL twitterCredentialsFile = new File(credentialPath).toURI().toURL();
-            TwitterCredentials twitterCredentials = TwitterClient.OBJECT_MAPPER.readValue(twitterCredentialsFile, TwitterCredentials.class);
-            if(twitterCredentials.getAccessToken()==null) LOGGER.error("Access token is null in twitter-credentials.json");
-            if(twitterCredentials.getAccessTokenSecret()==null) LOGGER.error("Secret token is null in twitter-credentials.json");
-            if(twitterCredentials.getApiKey()==null) LOGGER.error("Consumer key is null in twitter-credentials.json");
-            if(twitterCredentials.getApiSecretKey()==null) LOGGER.error("Consumer secret is null in twitter-credentials.json");
-            return twitterCredentials;
-        } catch (Exception e) {
-            LOGGER.error("twitter credentials json file error in path " + credentialPath
-                          + ". Use program argument -Dtwitter.credentials.file.path=/my/path/to/json . ", e);
-            return null;
-        }
-    }
 
     public void wait(String response, String url){
         LOGGER.info("\n" + response +"\nWaiting ... " + url); // do a wait and return this function recursively

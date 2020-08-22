@@ -167,10 +167,10 @@ public class RequestHelper extends AbstractRequestHelper {
 
     private Request getSignedRequest(Request request){
         Oauth1SigningInterceptor oauth = new Oauth1SigningInterceptor.Builder()
-                .consumerKey(TWITTER_CREDENTIALS.getApiKey())
-                .consumerSecret(TWITTER_CREDENTIALS.getApiSecretKey())
-                .accessToken(TWITTER_CREDENTIALS.getAccessToken())
-                .accessSecret(TWITTER_CREDENTIALS.getAccessTokenSecret())
+                .consumerKey(TwitterClient.TWITTER_CREDENTIALS.getApiKey())
+                .consumerSecret(TwitterClient.TWITTER_CREDENTIALS.getApiSecretKey())
+                .accessToken(TwitterClient.TWITTER_CREDENTIALS.getAccessToken())
+                .accessSecret(TwitterClient.TWITTER_CREDENTIALS.getAccessTokenSecret())
                 .build();
         return oauth.signRequest(request);
     }
