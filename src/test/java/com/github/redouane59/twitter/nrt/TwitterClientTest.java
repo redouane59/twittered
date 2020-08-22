@@ -26,20 +26,13 @@ import org.junit.jupiter.api.Test;
 @Disabled
 public class TwitterClientTest {
 
-    private TwitterClient twitterClient;
+    private static TwitterClient twitterClient;
 
-    @BeforeEach
-    public void init() throws IOException {
+    @BeforeAll
+    public static void init() throws IOException {
         String credentialPath = "C:/Users/Perso/Documents/GitHub/twitter-credentials.json";
-        URL twitterCredentialsFile = new File(credentialPath).toURI().toURL();
         twitterClient             = new TwitterClient(TwitterClient.OBJECT_MAPPER
-                                                          .readValue(twitterCredentialsFile, TwitterCredentials.class));
-        twitterClient = new TwitterClient(TwitterCredentials.builder()
-                                                            .accessToken("<acess_token>")
-                                                            .accessTokenSecret("<secret_token>")
-                                                            .apiKey("<api_key>")
-                                                            .apiSecretKey("<secret_key>")
-                                                            .build());
+                                                          .readValue(new File(credentialPath), TwitterCredentials.class));
     }
 
     @Test

@@ -45,7 +45,8 @@ or
 
 ##### Using deserialization in your code
 ```
-TwitterClient twitterClient = new TwitterClient(TwitterClient.OBJECT_MAPPER.readValue(twitterCredentialsUrl, TwitterCredentials.class));
+TwitterClient twitterClient = new TwitterClient(TwitterClient.OBJECT_MAPPER
+                                                    .readValue(new File("/your/path/to/json"), TwitterCredentials.class));
 ``` 
 #### With hard-coded values
 ```
