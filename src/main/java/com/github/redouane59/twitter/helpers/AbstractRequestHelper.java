@@ -28,12 +28,13 @@ public abstract class AbstractRequestHelper {
     }
 
     public OkHttpClient getHttpClient(String url){
-        long   cacheSize = 1024L * 1024 * 1024; // 1go
-        File   file      = new File("../okhttpCache");
-        if(file.exists()){
+        File   configFile = new File("../cache-config.json");
+        if(configFile.exists()){
+            File   cacheFolder      = new File("../okhttpCache");
+            long   cacheSize = 1024L * 1024 * 1024; // 1go
             return new OkHttpClient.Builder()
-                .addNetworkInterceptor(new CacheInterceptor(this.getCacheTimeoutFromUrl(url, file)))
-                .cache(new Cache(file, cacheSize))
+                .addNetworkInterceptor(new CacheInterceptor(this.getCacheTimeoutFromUrl(url, configFile)))
+                .cache(new Cache(cacheFolder, cacheSize))
                 .readTimeout(60, TimeUnit.SECONDS)
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .build();
@@ -46,7 +47,6 @@ public abstract class AbstractRequestHelper {
     }
 
     private int getCacheTimeoutFromUrl(String url, File configFile){
-
         int defaultCache = 48;
         try {
             Map<String, Integer> map = TwitterClient.OBJECT_MAPPER.readValue(configFile, Map.class);
