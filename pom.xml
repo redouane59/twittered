@@ -29,9 +29,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/simpligility/ossrh-demo.git</connection>
-        <developerConnection>scm:git:ssh://github.com:simpligility/ossrh-demo.git</developerConnection>
-        <url>http://github.com/simpligility/ossrh-demo/tree/master</url>
+        <connection>scm:git:git://github.com/Redouane59/twitter-client.git</connection>
+        <developerConnection>scm:git:ssh://github.com:Redouane59/twitter-client.git</developerConnection>
+        <url>	http://github.com/Redouane59/twitter-client</url>
     </scm>
 
     <distributionManagement>
