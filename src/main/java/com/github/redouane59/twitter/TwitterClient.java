@@ -21,6 +21,8 @@ import com.github.redouane59.twitter.dto.tweet.*;
 import com.github.redouane59.twitter.dto.user.UserDTOv1;
 import com.github.redouane59.twitter.dto.user.UserDTOv2;
 import com.github.redouane59.twitter.helpers.*;
+import com.github.redouane59.twitter.signature.TwitterCredentials;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -40,10 +42,11 @@ import java.util.*;
 @Slf4j
 public class TwitterClient implements ITwitterClient {
 
+    public static TwitterCredentials TWITTER_CREDENTIALS;
     public static final  ObjectMapper    OBJECT_MAPPER   = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private              URLHelper       urlHelper       = new URLHelper();
-    private              RequestHelper   requestHelper   = new RequestHelper();
-    private              RequestHelperV2 requestHelperV2 = new RequestHelperV2(this.getBearerToken());
+    private              RequestHelper   requestHelper;
+    private              RequestHelperV2 requestHelperV2;
     private static final String          IDS             = "ids";
     private static final String USERS = "users";
     private static final String CURSOR = "cursor";
@@ -55,6 +58,18 @@ public class TwitterClient implements ITwitterClient {
     private static final String SOURCE = "source";
     private final static String NULL_OR_ID_NOT_FOUND_ERROR = "response null or ids not found !";
     private static final String NEXT_CURSOR = "next_cursor";
+
+    public TwitterClient(){
+        TWITTER_CREDENTIALS = getAuthentication();
+        requestHelper   = new RequestHelper();
+        requestHelperV2 = new RequestHelperV2(this.getBearerToken());
+    }
+
+    public TwitterClient(TwitterCredentials credentials){
+        TWITTER_CREDENTIALS = credentials;
+        requestHelper   = new RequestHelper();
+        requestHelperV2 = new RequestHelperV2(this.getBearerToken());
+    }
 
     // can manage up to 5000 results / call . Max 15 calls / 15min ==> 75.000 results max. / 15min
     private List<String> getUserIdsByRelation(String url){
@@ -374,8 +389,8 @@ public class TwitterClient implements ITwitterClient {
     @Override
     public String getBearerToken() {
         String url = URLHelper.GET_BEARER_TOKEN_URL;
-        String valueToCrypt = AbstractRequestHelper.TWITTER_CREDENTIALS.getApiKey()
-                              +":"+AbstractRequestHelper.TWITTER_CREDENTIALS.getApiSecretKey();
+        String valueToCrypt = TWITTER_CREDENTIALS.getApiKey()
+                              +":"+TWITTER_CREDENTIALS.getApiSecretKey();
         String cryptedValue = Base64.getEncoder().encodeToString(valueToCrypt.getBytes());
         Map<String, String> params = new HashMap<>();
         params.put("Authorization", "Basic " + cryptedValue);
@@ -406,6 +421,23 @@ public class TwitterClient implements ITwitterClient {
             }
         }
         return requestTokenDTO;
+    }
+
+    public static TwitterCredentials getAuthentication(){
+        String credentialPath = System.getProperty("twitter.credentials.file.path");
+        try {
+            URL                twitterCredentialsFile = new File(credentialPath).toURI().toURL();
+            TwitterCredentials twitterCredentials     = TwitterClient.OBJECT_MAPPER.readValue(twitterCredentialsFile, TwitterCredentials.class);
+            if(twitterCredentials.getAccessToken()==null) LOGGER.error("Access token is null in twitter-credentials.json");
+            if(twitterCredentials.getAccessTokenSecret()==null) LOGGER.error("Secret token is null in twitter-credentials.json");
+            if(twitterCredentials.getApiKey()==null) LOGGER.error("Consumer key is null in twitter-credentials.json");
+            if(twitterCredentials.getApiSecretKey()==null) LOGGER.error("Consumer secret is null in twitter-credentials.json");
+            return twitterCredentials;
+        } catch (Exception e) {
+            LOGGER.error("twitter credentials json file error in path " + credentialPath
+                         + ". Use program argument -Dtwitter.credentials.file.path=/my/path/to/json . ", e);
+            return null;
+        }
     }
 
 }

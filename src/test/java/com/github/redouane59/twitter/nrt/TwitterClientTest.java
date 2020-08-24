@@ -12,18 +12,28 @@ import com.github.redouane59.twitter.dto.tweet.ITweet;
 import com.github.redouane59.twitter.dto.tweet.TweetDTOv1;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
 import com.github.redouane59.twitter.dto.user.IUser;
-import com.github.redouane59.twitter.helpers.AbstractRequestHelper;
+import com.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
 public class TwitterClientTest {
 
-    private TwitterClient twitterClient = new TwitterClient();
+    private static TwitterClient twitterClient;
+
+    @BeforeAll
+    public static void init() throws IOException {
+        String credentialPath = "C:/Users/Perso/Documents/GitHub/twitter-credentials.json";
+        twitterClient             = new TwitterClient(TwitterClient.OBJECT_MAPPER
+                                                          .readValue(new File(credentialPath), TwitterCredentials.class));
+    }
 
     @Test
     public void testGetFollowingIdsById() {
@@ -179,7 +189,7 @@ public class TwitterClientTest {
         String userName = "RedTheOne";
         List<ITweet> response = twitterClient.getUserLastTweets(userName, 2);
         assertTrue(response.get(0).getLang().equals("fr")
-                || response.get(1).getLang().equals("fr"));
+                   || response.get(1).getLang().equals("fr"));
     }
 
     @Test
@@ -187,7 +197,7 @@ public class TwitterClientTest {
         String userId = "92073489";
         List<ITweet> response = twitterClient.getUserLastTweets(userId, 3);
         assertTrue(response.get(0).getLang().equals("fr")
-                || response.get(1).getLang().equals("fr"));
+                   || response.get(1).getLang().equals("fr"));
     }
 
     @Test
@@ -209,8 +219,8 @@ public class TwitterClientTest {
 
     @Test
     public void testGetOauth1Token(){
-        AbstractRequestHelper.TWITTER_CREDENTIALS.setAccessToken("");
-        AbstractRequestHelper.TWITTER_CREDENTIALS.setAccessTokenSecret("");
+        TwitterClient.TWITTER_CREDENTIALS.setAccessToken("");
+        TwitterClient.TWITTER_CREDENTIALS.setAccessTokenSecret("");
         RequestTokenDTO result = twitterClient.getOauth1Token();
         assertTrue(result.getOauthToken().length()>1);
         assertTrue(result.getOauthTokenSecret().length()>1);

@@ -16,11 +16,14 @@ In your pom.xml, add the following dependency :
 <dependency>
   <groupId>com.github.redouane59.twitter</groupId>
   <artifactId>twitter-client</artifactId>
-  <version>1.2</version>
+  <version>1.3</version>
 </dependency>
 ```
-In order to use your own developer credentials, pass through java argument your file path like `-Dtwitter.credentials.file.path=/my/path/to/json` .
-This file should contain your twitter credentials like this :
+In order to use your own developer credentials, you have several options :
+
+#### Using a json file
+
+File example :
 ```
 {
   "apiKey": "xxx",
@@ -29,8 +32,34 @@ This file should contain your twitter credentials like this :
   "accessTokenSecret": "xxx"
 }
 ```
-They can be found in [your twitter app page](https://developer.twitter.com/en/apps) in the _Key and tokens_
-page.
+
+##### With program argument
+
+Pass through java argument your file path like `-Dtwitter.credentials.file.path=/your/path/to/json` .
+Then instantiate the client like 
+```
+TwitterClient client = new TwitterClient();
+```
+
+or 
+
+##### Using deserialization in your code
+```
+TwitterClient twitterClient = new TwitterClient(TwitterClient.OBJECT_MAPPER
+                                                    .readValue(new File("/your/path/to/json"), TwitterCredentials.class));
+``` 
+#### With hard-coded values
+```
+TwitterClient twitterClient = new TwitterClient(TwitterCredentials.builder()
+                                                            .accessToken("<access_token>")
+                                                            .accessTokenSecret("<secret_token>")
+                                                            .apiKey("<api_key>")
+                                                            .apiSecretKey("<secret_key>")
+                                                            .build());
+``` 
+
+NB : Your twitter credentials can be found in [your twitter app page](https://developer.twitter.com/en/apps) in the _Key and tokens_
+page. 
 
 ### Available methods
 See : 
