@@ -3,11 +3,15 @@ package com.github.redouane59.twitter.helpers;
 import com.github.redouane59.twitter.TwitterClient;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 @Slf4j
@@ -48,6 +52,26 @@ public class RequestHelperV2 extends AbstractRequestHelper {
             LOGGER.info(stringResponse);
             result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
         } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        }
+        return Optional.ofNullable(result);
+    }
+
+    public static <T> Optional<T> executePostRequestWithHeader(String url, Map<String, String> headersMap, String body, Class<T> classType) {
+        T result = null;
+        try {
+            Request request = new Request.Builder()
+                .url(url)
+                .method("POST", RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), body))
+                .headers(Headers.of(headersMap))
+                .build();
+            Response response = new OkHttpClient.Builder().build().newCall(request).execute();
+            if(response.code()!=200){
+                LOGGER.error("(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
+            }
+            String stringResponse = response.body().string();
+            result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
+        } catch(Exception e){
             LOGGER.error(e.getMessage());
         }
         return Optional.ofNullable(result);

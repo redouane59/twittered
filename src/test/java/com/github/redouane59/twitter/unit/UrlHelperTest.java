@@ -145,10 +145,16 @@ public class UrlHelperTest {
 
     @Test
     public void testLikeUrl(){
-        //https://api.twitter.com/1.1/favorites/create.json?id=TWEET_ID_TO_FAVORITE
         String tweetId = "12345";
         assertEquals("https://api.twitter.com/1.1/favorites/create.json?id="+tweetId,
                 urlHelper.getLikeUrl(tweetId));
+    }
+
+    @Test
+    public void testUnlikeUrl(){
+        String tweetId = "12345";
+        assertEquals("https://api.twitter.com/1.1/favorites/destroy.json?id="+tweetId,
+                     urlHelper.getUnlikeUrl(tweetId));
     }
 
     @Test

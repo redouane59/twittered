@@ -243,12 +243,12 @@ public class URLHelper {
                "&" + EXCLUDE_RTS;
     }
 
-    public String getUserTweetsUrlV2(String userId, int count){
-        throw new UnsupportedOperationException();
-    }
-
     public String getLikeUrl(String tweetId) {
         return ROOT_URL_V1 + FAVORITES + CREATE_JSON + ID + "=" + tweetId;
+    }
+
+    public String getUnlikeUrl(String tweetId) {
+        return ROOT_URL_V1 + FAVORITES + DESTROY_JSON + ID + "=" + tweetId;
     }
 
     public String getFavoriteTweetsUrl(String userId, String maxId){

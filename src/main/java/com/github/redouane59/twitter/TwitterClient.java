@@ -184,23 +184,23 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
-    public void follow(String userId) {
+    public IUser follow(String userId) {
         String url = this.urlHelper.getFollowUrl(userId);
-        UserDTOv1 userResponse = this.requestHelper
+        return this.requestHelper
             .executePostRequest(url, new HashMap<>(), UserDTOv1.class).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public void unfollow(String userId) {
+    public IUser unfollow(String userId) {
         String url = this.urlHelper.getUnfollowUrl(userId);
-        UserDTOv1 userResponse = this.requestHelper
+        return this.requestHelper
             .executePostRequest(url, new HashMap<>(), UserDTOv1.class).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public void unfollowByName(String userName) {
+    public IUser unfollowByName(String userName) {
         String url = this.urlHelper.getUnfollowByUsernameUrl(userName);
-        UserDTOv1 userResponse = this.requestHelper
+        return this.requestHelper
             .executePostRequest(url, new HashMap<>(), UserDTOv1.class).orElseThrow(NoSuchElementException::new);
     }
 
@@ -234,8 +234,7 @@ public class TwitterClient implements ITwitterClient {
     @Override
     public List<ITweet> getUserLastTweets(String userId, int count){
         String url = this.getUrlHelper().getUserTweetsUrl(userId, count);
-        TweetDTOv1[] response = this.requestHelper
-                                    .executeGetRequestReturningArray(url, TweetDTOv1[].class).orElseThrow(NoSuchElementException::new);
+        TweetDTOv1[] response = this.requestHelperV2.executeGetRequest(url, TweetDTOv1[].class).orElseThrow(NoSuchElementException::new);
         return List.of(response);
     }
 
@@ -247,13 +246,19 @@ public class TwitterClient implements ITwitterClient {
 
 
     @Override
-    public void likeTweet(String tweetId) {
+    public ITweet likeTweet(String tweetId) {
         String url = this.getUrlHelper().getLikeUrl(tweetId);
-        this.requestHelper.executePostRequest(url, null, TweetDTOv1.class); // @todo migration
+        return this.requestHelper.executePostRequest(url, null, TweetDTOv1.class).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public void retweetTweet(String tweetId) {
+    public ITweet unlikeTweet(String tweetId) {
+        String url = this.getUrlHelper().getUnlikeUrl(tweetId);
+        return this.requestHelper.executePostRequest(url, null, TweetDTOv1.class).orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
+    public ITweet retweetTweet(String tweetId) {
         throw new UnsupportedOperationException();
     }
 
@@ -396,7 +401,7 @@ public class TwitterClient implements ITwitterClient {
         params.put("Authorization", "Basic " + cryptedValue);
         params.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
         String body = "grant_type=client_credentials";
-        BearerTokenDTO result = this.requestHelper
+        BearerTokenDTO result = this.requestHelperV2
             .executePostRequestWithHeader(url, params, body, BearerTokenDTO.class).orElseThrow(NoSuchElementException::new);
         return result.getAccessToken();
     }

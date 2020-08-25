@@ -3,7 +3,6 @@ package com.github.redouane59.twitter.nrt;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.TwitterClient;
@@ -15,11 +14,9 @@ import com.github.redouane59.twitter.dto.user.IUser;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -227,6 +224,7 @@ public class TwitterClientTest {
     }
 
     @Test
+    @Disabled
     public void testGetTweetDataFile() throws IOException {
         File file = new File(this.getClass().getClassLoader().getResource("tweet.json").getFile());
         List<TweetDTOv1> result = twitterClient.readTwitterDataFile(file);
@@ -240,20 +238,19 @@ public class TwitterClientTest {
     @Test
     public void testFollowAndUnfollow(){
         IUser user = twitterClient.getUserFromUserName("red1");
-        twitterClient.follow(user.getId());
-        twitterClient.unfollow(user.getId());
-        assertEquals(RelationType.NONE, twitterClient.getRelationType("RedThOne","red1"));
+        IUser followedUser = twitterClient.follow(user.getId());
+        assertEquals("red1",followedUser.getName());
+        IUser unfollowedUser = twitterClient.unfollow(user.getId());
+        assertEquals("red1",unfollowedUser.getName());
+        assertEquals(RelationType.NONE, twitterClient.getRelationType("92073489","66533"));
     }
 
     @Test
     public void testLikeTweet(){
-        Exception ex = null;
-        try {
-            twitterClient.likeTweet("1107533");
-        } catch (Exception e) {
-            ex = e;
-        }
-        assertNull(ex);
+        ITweet likedTweet = twitterClient.likeTweet("1107533");
+        assertEquals("1107533", likedTweet.getId());
+        ITweet unlikedTweet = twitterClient.unlikeTweet("1107533");
+        assertEquals("1107533", unlikedTweet.getId());
     }
 
     @Test
