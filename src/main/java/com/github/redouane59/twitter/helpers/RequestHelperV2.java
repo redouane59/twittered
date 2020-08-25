@@ -16,10 +16,6 @@ public class RequestHelperV2 extends AbstractRequestHelper {
 
     public String bearerToken;
 
-    public <T> Optional<T> executeGetRequest(String url, Class<T> classType) {
-        return this.executeGetRequestWithParameters(url, null, classType);
-    }
-
     public <T> Optional<T> executeGetRequestWithParameters(String url, Map<String, String> parameters, Class<T> classType) {
         T result = null;
         try {
