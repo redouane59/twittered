@@ -7,7 +7,6 @@ import java.util.Optional;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Headers;
-import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -16,78 +15,6 @@ import okhttp3.Response;
 @NoArgsConstructor
 @Slf4j
 public class RequestHelper extends AbstractRequestHelper {
-
-    public <T> Optional<T> executeGetRequest(String url, Class<T> classType) {
-        T result = null;
-        try {
-            Response response = this.getHttpClient(url)
-                    .newCall(this.getSignedRequest(this.getRequest(url)))
-                    .execute();
-            String stringResponse = response.body().string();
-            if(response.code()==200){
-                result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
-            } else if (response.code()==429){
-                this.wait(stringResponse, url);
-                return this.executeGetRequest(url, classType);
-            } else{
-                logGetError(url, stringResponse);
-            }
-        } catch(Exception e){
-            LOGGER.error("exception in executeGetRequest " + e.getMessage());
-        }
-        return Optional.ofNullable(result);
-    }
-
-    public <T> Optional<T> executeGetRequestWithParameters(String url, Map<String, String> parameters, Class<T> classType) {
-        T result = null;
-        try {
-            HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
-            if (parameters != null) {
-                for(Map.Entry<String, String> param : parameters.entrySet()) {
-                    httpBuilder.addQueryParameter(param.getKey(),param.getValue());
-                }
-            }
-            String newUrl = httpBuilder.build().url().toString();
-            Request requesthttp = this.getSignedRequest(this.getRequest(httpBuilder));
-
-            Response response = this.getHttpClient(newUrl)
-                    .newCall(requesthttp)
-                    .execute();
-            String stringResponse = response.body().string();
-            if(response.code()==200){
-                result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
-            } else if (response.code()==429){
-                this.wait(stringResponse, url);
-                return this.executeGetRequest(url, classType);
-            } else{
-                logGetError(url, stringResponse);
-            }
-        } catch(Exception e){
-            LOGGER.error("exception in executeGetRequest " + e.getMessage());
-        }
-        return Optional.ofNullable(result);
-    }
-
-    public <T> Optional<T> executeGetRequestV2(String url, Class<T> classType) {
-        T result = null;
-        try {
-            Response response = this.getHttpClient(url)
-                    .newCall(this.getSignedRequest(this.getRequest(url))).execute();
-            String stringResponse = response.body().string();
-            if(response.code()==200){
-                response.close();
-                result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
-            } else if (response.code()==429){
-                this.wait(stringResponse, url);
-                return this.executeGetRequestV2(url, classType);
-            } else{
-                logGetError(url, stringResponse);
-            }
-        } catch(Exception e){
-            LOGGER.error(e.getMessage());
-        }
-        return Optional.ofNullable(result);
-    }
 
     public <T> Optional<T> executePostRequest(String url, Map<String, String> parameters, Class<T> classType) {
         T result = null;
@@ -181,13 +108,4 @@ public class RequestHelper extends AbstractRequestHelper {
                 .get()
                 .build();
     }
-
-    private Request getRequest(HttpUrl.Builder httpBuilder){
-        return new Request.Builder().get().url(httpBuilder.build()).build();
-    }
-
-    private void logGetError(String url, String response){
-        LOGGER.error(" Error calling " + url + " : " + response);
-    }
-
 }
