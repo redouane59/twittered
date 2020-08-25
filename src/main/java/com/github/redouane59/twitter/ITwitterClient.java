@@ -44,18 +44,21 @@ public interface ITwitterClient {
     /**
      * Like a tweet calling https://api.twitter.com/1.1/favorites/create.json
      * @param tweetId the id of the tweet
+     * @return the liked tweet
      */
     ITweet likeTweet(String tweetId);
 
     /**
      * Unlike a tweet calling https://api.twitter.com/1.1/favorites/destroy.json
      * @param tweetId the id of the tweet
+     * @return the unliked tweet
      */
     ITweet unlikeTweet(String tweetId);
 
     /**
      * Retweet a tweet
      * @param tweetId the id of the tweet
+     * @return the retweeted tweet
      */
     ITweet retweetTweet(String tweetId);
 
