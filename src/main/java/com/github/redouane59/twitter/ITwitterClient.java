@@ -42,16 +42,25 @@ public interface ITwitterClient {
     List<String> getFollowingIds(String userId);
 
     /**
-     * Like a tweet calling https://api.twitter.com/1.1/favorites/
+     * Like a tweet calling https://api.twitter.com/1.1/favorites/create.json
      * @param tweetId the id of the tweet
+     * @return the liked tweet
      */
-    void likeTweet(String tweetId);
+    ITweet likeTweet(String tweetId);
+
+    /**
+     * Unlike a tweet calling https://api.twitter.com/1.1/favorites/destroy.json
+     * @param tweetId the id of the tweet
+     * @return the unliked tweet
+     */
+    ITweet unlikeTweet(String tweetId);
 
     /**
      * Retweet a tweet
      * @param tweetId the id of the tweet
+     * @return the retweeted tweet
      */
-    void retweetTweet(String tweetId);
+    ITweet retweetTweet(String tweetId);
 
     /**
      * Get a list of ids of the users who retweeted a tweet calling https://api.twitter.com/1.1/statuses/retweeters/
@@ -103,20 +112,23 @@ public interface ITwitterClient {
     /**
      * Follow a user calling https://api.twitter.com/1.1/friendships/
      * @param userId the id of the user
+     * @return the user
      */
-    void follow(String userId);
+    IUser follow(String userId);
 
     /**
      * Unfollow a user calling https://api.twitter.com/1.1/friendships/
      * @param userId the id of the user
+     * @return the user
      */
-    void unfollow(String userId);
+    IUser unfollow(String userId);
 
     /**
      * Unfollow a user calling https://api.twitter.com/1.1/friendships/
      * @param userName the scree name of the user
+     * @return the user
      */
-    void unfollowByName(String userName);
+    IUser unfollowByName(String userName);
 
     /**
      * Get the twitter rate limit status calling https://api.twitter.com/1.1/application/
