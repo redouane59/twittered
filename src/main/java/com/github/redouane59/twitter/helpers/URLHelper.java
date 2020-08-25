@@ -251,6 +251,10 @@ public class URLHelper {
         return ROOT_URL_V1 + FAVORITES + DESTROY_JSON + ID + "=" + tweetId;
     }
 
+    public String getPostTweetUrl(){
+        return ROOT_URL_V1 + STATUSES + "/update.json";
+    }
+
     public String getFavoriteTweetsUrl(String userId, String maxId){
         if(maxId==null || maxId.length()==0){
             return "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id="+userId;

@@ -253,6 +253,14 @@ public class TwitterClientTest {
         assertEquals("1107533", unlikedTweet.getId());
     }
 
+
+    @Test
+    public void testPostTweet(){
+        String text = "API Test 2020-08-24";
+        ITweet result = twitterClient.postTweet(text);
+        assertNotNull(result);
+    }
+
     @Test
     public void testSearchTweets7days(){
         List<ITweet> result = twitterClient.searchForTweetsWithin7days("@RedTheOne -RT");
@@ -312,4 +320,5 @@ public class TwitterClientTest {
         assertNotNull(token);
         assertTrue(token.length()>50);
     }
+
 }

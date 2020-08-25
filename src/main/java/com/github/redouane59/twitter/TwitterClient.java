@@ -263,6 +263,14 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
+    public ITweet postTweet(String text){
+        String url = this.getUrlHelper().getPostTweetUrl();
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("status", text);
+        return this.getRequestHelper().executePostRequest(url, parameters, TweetDTOv1.class).orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
     public ITweet getTweet(String tweetId){
         String url = this.getUrlHelper().getTweetUrl(tweetId);
         return this.requestHelperV2.executeGetRequest(url, TweetDTOv2.class).orElseThrow(NoSuchElementException::new);

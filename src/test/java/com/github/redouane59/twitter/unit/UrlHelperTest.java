@@ -182,10 +182,16 @@ public class UrlHelperTest {
     }
 
     @Test
-    public void testGetBearerTokenurl(){
+    public void testGetBearerTokenUrl(){
         assertEquals("https://api.twitter.com/oauth2/token",
                 URLHelper.GET_BEARER_TOKEN_URL);
-
     }
+
+    @Test
+    public void testPostNewTweetUrl(){
+        assertEquals("https://api.twitter.com/1.1/statuses/update.json", urlHelper.getPostTweetUrl());
+    }
+
+
 
 }
