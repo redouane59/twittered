@@ -135,7 +135,6 @@ public class UrlHelperTest {
                 urlHelper.getUnfollowUrl("12345"));
     }
 
-
     @Test
     public void testLiveEventUrl(){
         //https://api.twitter.com/1.1/account_activity/all/:env_name/webhooks.json
@@ -191,7 +190,5 @@ public class UrlHelperTest {
     public void testPostNewTweetUrl(){
         assertEquals("https://api.twitter.com/1.1/statuses/update.json", urlHelper.getPostTweetUrl());
     }
-
-
 
 }

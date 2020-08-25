@@ -248,13 +248,13 @@ public class TwitterClient implements ITwitterClient {
     @Override
     public ITweet likeTweet(String tweetId) {
         String url = this.getUrlHelper().getLikeUrl(tweetId);
-        return this.requestHelper.executePostRequest(url, null, TweetDTOv1.class).orElseThrow(NoSuchElementException::new);
+        return this.requestHelper.executePostRequest(url, new HashMap<>(), TweetDTOv1.class).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
     public ITweet unlikeTweet(String tweetId) {
         String url = this.getUrlHelper().getUnlikeUrl(tweetId);
-        return this.requestHelper.executePostRequest(url, null, TweetDTOv1.class).orElseThrow(NoSuchElementException::new);
+        return this.requestHelper.executePostRequest(url, new HashMap<>(), TweetDTOv1.class).orElseThrow(NoSuchElementException::new);
     }
 
     @Override

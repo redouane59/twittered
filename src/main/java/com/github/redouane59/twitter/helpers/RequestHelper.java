@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -17,10 +18,16 @@ public class RequestHelper extends AbstractRequestHelper {
     public <T> Optional<T> executePostRequest(String url, Map<String, String> parameters, Class<T> classType) {
         T result = null;
         try {
+            HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+            if (parameters != null) {
+                for(Map.Entry<String, String> param : parameters.entrySet()) {
+                    httpBuilder.addQueryParameter(param.getKey(),param.getValue());
+                }
+            }
             String json = TwitterClient.OBJECT_MAPPER.writeValueAsString(parameters);
             RequestBody requestBody = RequestBody.create(null, json);
             Request request = new Request.Builder()
-                    .url(url)
+                    .url(httpBuilder.build())
                     .post(requestBody)
                     .build();
             Request signedRequest = this.getSignedRequest(request);

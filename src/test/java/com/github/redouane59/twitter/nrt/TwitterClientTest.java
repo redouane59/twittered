@@ -14,6 +14,7 @@ import com.github.redouane59.twitter.dto.user.IUser;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
@@ -253,10 +254,9 @@ public class TwitterClientTest {
         assertEquals("1107533", unlikedTweet.getId());
     }
 
-
     @Test
     public void testPostTweet(){
-        String text = "API Test 2020-08-24";
+        String text = "API Test " + LocalDateTime.now() + " #TwitterAPI";
         ITweet result = twitterClient.postTweet(text);
         assertNotNull(result);
     }
