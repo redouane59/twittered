@@ -30,6 +30,7 @@ public class URLHelper {
     private static final String USERS = "/users";
     private static final String TWEETS = "/tweets";
     private static final String SEARCH = "/search";
+    private static final String STREAM = "/stream";
     private static final String THIRTY_DAYS = "/30day";
     private static final String FULL_ARCHIVE = "/fullarchive";
     private static final String DEV_ENV_NAME = "/dev"; // @todo config
@@ -265,5 +266,9 @@ public class URLHelper {
 
     public String getHideReplyUrl(final String tweetId) {
         return ROOT_URL_V2 + TWEETS + "/"+tweetId+"/hidden";
+    }
+
+    public String getRetrieveFilteredStreamRulesUrl(){
+        return ROOT_URL_V2 + TWEETS + SEARCH + STREAM + "/rules";
     }
 }

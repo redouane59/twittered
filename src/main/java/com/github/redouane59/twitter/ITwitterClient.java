@@ -3,6 +3,7 @@ package com.github.redouane59.twitter;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.others.RateLimitStatusDTO;
 import com.github.redouane59.twitter.dto.others.RequestTokenDTO;
+import com.github.redouane59.twitter.dto.stream.StreamRulesDTO.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.ITweet;
 import com.github.redouane59.twitter.dto.tweet.TweetDTOv1;
 import com.github.redouane59.twitter.dto.user.IUser;
@@ -216,6 +217,12 @@ public interface ITwitterClient {
      * @return a list of tweets
      */
     List<ITweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate);
+
+    /**
+     * Retrieve the filtered stream rules calling https://api.twitter.com/2/tweets/search/stream/rules
+     * @return a filtered stream rules list
+     */
+    List<StreamRule> retrieveFilteredStreamRules();
 
     /**
      * Parse the Twitter extract data archive file in a List of Tweets

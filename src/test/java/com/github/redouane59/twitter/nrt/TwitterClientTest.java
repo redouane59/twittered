@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.others.RequestTokenDTO;
+import com.github.redouane59.twitter.dto.stream.StreamRulesDTO.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.ITweet;
 import com.github.redouane59.twitter.dto.tweet.TweetDTOv1;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
@@ -305,6 +306,12 @@ public class TwitterClientTest {
         assertTrue(reply);
         reply = this.twitterClient.hideReply(tweetId, false);
         assertFalse(reply);
+    }
+
+    @Test
+    public void testGetFilteredStreamRules(){
+        List<StreamRule> result = this.twitterClient.retrieveFilteredStreamRules();
+        assertTrue(result.size()>0);
     }
 
     /*

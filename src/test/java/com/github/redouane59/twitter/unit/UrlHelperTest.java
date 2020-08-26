@@ -195,4 +195,9 @@ public class UrlHelperTest {
     public void testHideReplyUrl(){
         assertEquals("https://api.twitter.com/2/tweets/1298226351653056514/hidden", urlHelper.getHideReplyUrl("1298226351653056514"));
     }
+
+    @Test
+    public void testRetrieveFilteredStreamRulesUrl(){
+        assertEquals("https://api.twitter.com/2/tweets/search/stream/rules", urlHelper.getRetrieveFilteredStreamRulesUrl());
+    }
 }

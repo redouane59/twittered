@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.getrelationship.IdListDTO;
+import com.github.redouane59.twitter.dto.stream.StreamRulesDTO;
+import com.github.redouane59.twitter.dto.stream.StreamRulesDTO.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.HiddenResponseDTO.HiddenDataDTO;
 import com.github.redouane59.twitter.dto.tweet.TweetDTOv2.TweetData;
 import com.github.redouane59.twitter.dto.user.IUser;
@@ -397,6 +399,13 @@ public class TwitterClient implements ITwitterClient {
         }
         while (next!= null);
         return result;
+    }
+
+    @Override
+    public List<StreamRule> retrieveFilteredStreamRules() {
+        String       url    = this.urlHelper.getRetrieveFilteredStreamRulesUrl();
+        StreamRulesDTO result = this.requestHelperV2.executeGetRequest(url, StreamRulesDTO.class).orElseThrow(NoSuchElementException::new);
+        return result.getData();
     }
 
     @Override
