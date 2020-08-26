@@ -16,7 +16,7 @@ In your pom.xml, add the following dependency :
 <dependency>
   <groupId>com.github.redouane59.twitter</groupId>
   <artifactId>twitter-client</artifactId>
-  <version>1.3</version>
+  <version>1.4</version>
 </dependency>
 ```
 In order to use your own developer credentials, you have several options :
