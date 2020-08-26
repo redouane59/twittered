@@ -262,4 +262,8 @@ public class URLHelper {
             return "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id="+userId+"&max_id="+maxId;
         }
     }
+
+    public String getHideReplyUrl(final String tweetId) {
+        return ROOT_URL_V2 + TWEETS + "/"+tweetId+"/hidden";
+    }
 }

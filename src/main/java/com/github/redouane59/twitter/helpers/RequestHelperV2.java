@@ -3,7 +3,6 @@ package com.github.redouane59.twitter.helpers;
 import com.github.redouane59.twitter.TwitterClient;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Headers;

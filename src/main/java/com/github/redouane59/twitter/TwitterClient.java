@@ -284,6 +284,15 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
+    public boolean hideReply(final String tweetId, final boolean hide) {
+        String          url    = this.getUrlHelper().getHideReplyUrl(tweetId);
+        String body = "{\"hidden\": "+hide+"}";
+        HiddenResponseDTO response = this.requestHelper.executePutRequest(url, body, HiddenResponseDTO.class)
+                                   .orElseThrow(NoSuchElementException::new);
+        return response.getData().isHidden();
+    }
+
+    @Override
     public List<ITweet> getFavorites(String userId, int count) {
         List<ITweet> favoriteTweets = new ArrayList<>();
         List<TweetDTOv1> result;

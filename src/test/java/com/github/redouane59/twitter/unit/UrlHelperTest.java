@@ -191,4 +191,8 @@ public class UrlHelperTest {
         assertEquals("https://api.twitter.com/1.1/statuses/update.json", urlHelper.getPostTweetUrl());
     }
 
+    @Test
+    public void testHideReplyUrl(){
+        assertEquals("https://api.twitter.com/2/tweets/1298226351653056514/hidden", urlHelper.getHideReplyUrl("1298226351653056514"));
+    }
 }

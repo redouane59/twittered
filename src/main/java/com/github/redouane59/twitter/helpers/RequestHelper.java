@@ -7,6 +7,7 @@ import java.util.Optional;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -33,6 +34,34 @@ public class RequestHelper extends AbstractRequestHelper {
             Request signedRequest = this.getSignedRequest(request);
             Response response = this.getHttpClient(url)
                     .newCall(signedRequest).execute();
+            String stringResponse = response.body().string();
+            if(response.code()!=200){
+                LOGGER.error("(POST) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
+                if(response.code()==429){
+                    LOGGER.error("Reset your token");
+                }
+            }
+            if(classType.equals(String.class)){ // dirty, to manage token oauth1
+                result = (T)stringResponse;
+            } else{
+                result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
+            }
+        } catch(Exception e){
+            LOGGER.error(e.getMessage());
+        }
+        return Optional.ofNullable(result);
+    }
+
+    public <T> Optional<T> executePutRequest(String url, String body, Class<T> classType) {
+        T result = null;
+        try {
+            Request request = new Request.Builder()
+                .url(url)
+                .method("PUT", RequestBody.create(MediaType.parse("application/json"), body))
+                .build();
+            Request signedRequest = this.getSignedRequest(request);
+            Response response = this.getHttpClient(url)
+                                    .newCall(signedRequest).execute();
             String stringResponse = response.body().string();
             if(response.code()!=200){
                 LOGGER.error("(POST) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
