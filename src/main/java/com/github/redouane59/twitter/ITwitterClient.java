@@ -166,12 +166,20 @@ public interface ITwitterClient {
     List<ITweet> getTweets(List<String> tweetIds);
 
     /**
-     * Get the most recent Tweets liked
+     * Get the most recent Tweets liked calling https://api.twitter.com/1.1/favorites/list.json
      * @param userId id of the user
      * @param count number of needed tweets
      * @return a list of liked tweets
      */
     List<ITweet> getFavorites(String userId, int count);
+
+    /**
+     * Hide/Unide a reply using https://api.twitter.com/labs/2/tweets/:id/hidden
+     * @param tweetId id of the concerned reply
+     * @param hide true to hide the reply, false to unide it
+     * @return the hidden state
+     */
+    boolean hideReply(String tweetId, boolean hide);
 
     /**
      * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search

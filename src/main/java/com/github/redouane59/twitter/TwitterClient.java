@@ -1,10 +1,12 @@
 package com.github.redouane59.twitter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.getrelationship.IdListDTO;
+import com.github.redouane59.twitter.dto.tweet.HiddenResponseDTO.HiddenDataDTO;
 import com.github.redouane59.twitter.dto.tweet.TweetDTOv2.TweetData;
 import com.github.redouane59.twitter.dto.user.IUser;
 import com.github.redouane59.twitter.dto.user.UserDTOListv2;
@@ -163,7 +165,7 @@ public class TwitterClient implements ITwitterClient {
     public RelationType getRelationType(String userId1, String userId2){
         String url = this.urlHelper.getFriendshipUrl(userId1, userId2);
         RelationshipObjectResponseDTO relationshipDTO = this.requestHelperV2
-                                                            .executeGetRequest(url, RelationshipObjectResponseDTO.class).orElseThrow(NoSuchElementException::new);
+            .executeGetRequest(url, RelationshipObjectResponseDTO.class).orElseThrow(NoSuchElementException::new);
         Boolean followedBy = relationshipDTO.getRelationship().getSource().isFollowedBy();
         Boolean following = relationshipDTO.getRelationship().getSource().isFollowing();
         if (followedBy && following){
@@ -284,13 +286,27 @@ public class TwitterClient implements ITwitterClient {
     }
 
     @Override
+    public boolean hideReply(final String tweetId, final boolean hide) {
+        String url  = this.getUrlHelper().getHideReplyUrl(tweetId);
+        try {
+            String body = TwitterClient.OBJECT_MAPPER.writeValueAsString(new HiddenDataDTO(hide));
+            HiddenResponseDTO response = this.requestHelper.executePutRequest(url, body, HiddenResponseDTO.class)
+                                                           .orElseThrow(NoSuchElementException::new);
+            return response.getData().isHidden();
+        } catch (JsonProcessingException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new IllegalArgumentException();
+        }
+    }
+
+    @Override
     public List<ITweet> getFavorites(String userId, int count) {
         List<ITweet> favoriteTweets = new ArrayList<>();
         List<TweetDTOv1> result;
         String maxId = null;
         do{
             result = List.of(this.requestHelperV2.executeGetRequest(this.getUrlHelper().getFavoriteTweetsUrl(userId, maxId), TweetDTOv1[].class)
-                                 .orElseThrow(NoSuchElementException::new));
+                                                 .orElseThrow(NoSuchElementException::new));
             if(result.size()==0) break;
             maxId = result.get(result.size()-1).getId();
             favoriteTweets.addAll(result.subList(0, result.size() - 1)); // to avoid having duplicates

@@ -1,6 +1,7 @@
 package com.github.redouane59.twitter.nrt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -295,6 +296,15 @@ public class TwitterClientTest {
     public void testGetTweetIdWithTwoTypes(){
         assertEquals("1264255917043920904", this.twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.RETWEETED));
         assertEquals("1263783602485157889", this.twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.QUOTED));
+    }
+
+    @Test
+    public void testHideAndUnideReply(){
+        String tweetId = "1298226351653056514";
+        boolean reply = this.twitterClient.hideReply(tweetId, true);
+        assertTrue(reply);
+        reply = this.twitterClient.hideReply(tweetId, false);
+        assertFalse(reply);
     }
 
     /*
