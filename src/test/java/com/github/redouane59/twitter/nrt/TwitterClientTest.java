@@ -14,6 +14,7 @@ import com.github.redouane59.twitter.dto.user.IUser;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
@@ -254,6 +255,13 @@ public class TwitterClientTest {
     }
 
     @Test
+    public void testPostTweet(){
+        String text = "API Test " + LocalDateTime.now() + " #TwitterAPI";
+        ITweet result = twitterClient.postTweet(text);
+        assertNotNull(result);
+    }
+
+    @Test
     public void testSearchTweets7days(){
         List<ITweet> result = twitterClient.searchForTweetsWithin7days("@RedTheOne -RT");
         assertTrue(result.size()>10);
@@ -312,4 +320,5 @@ public class TwitterClientTest {
         assertNotNull(token);
         assertTrue(token.length()>50);
     }
+
 }

@@ -248,18 +248,26 @@ public class TwitterClient implements ITwitterClient {
     @Override
     public ITweet likeTweet(String tweetId) {
         String url = this.getUrlHelper().getLikeUrl(tweetId);
-        return this.requestHelper.executePostRequest(url, null, TweetDTOv1.class).orElseThrow(NoSuchElementException::new);
+        return this.requestHelper.executePostRequest(url, new HashMap<>(), TweetDTOv1.class).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
     public ITweet unlikeTweet(String tweetId) {
         String url = this.getUrlHelper().getUnlikeUrl(tweetId);
-        return this.requestHelper.executePostRequest(url, null, TweetDTOv1.class).orElseThrow(NoSuchElementException::new);
+        return this.requestHelper.executePostRequest(url, new HashMap<>(), TweetDTOv1.class).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
     public ITweet retweetTweet(String tweetId) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ITweet postTweet(String text){
+        String url = this.getUrlHelper().getPostTweetUrl();
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("status", text);
+        return this.getRequestHelper().executePostRequest(url, parameters, TweetDTOv1.class).orElseThrow(NoSuchElementException::new);
     }
 
     @Override

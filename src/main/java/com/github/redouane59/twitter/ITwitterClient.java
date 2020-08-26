@@ -63,6 +63,13 @@ public interface ITwitterClient {
     ITweet retweetTweet(String tweetId);
 
     /**
+     * Post a tweet calling https://api.twitter.com/1.1/statuses/update.json
+     * @param text the tweet text
+     * @return the created tweet
+     */
+    ITweet postTweet(String text);
+
+    /**
      * Get a list of ids of the users who retweeted a tweet calling https://api.twitter.com/1.1/statuses/retweeters/
      * @param tweetId the id of the tweet
      * @return a list of the ids of the users who retweeted a tweet
