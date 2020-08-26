@@ -63,7 +63,7 @@ public interface ITwitterClient {
     ITweet retweetTweet(String tweetId);
 
     /**
-     * Post a tweet
+     * Post a tweet calling https://api.twitter.com/1.1/statuses/update.json
      * @param text the tweet text
      * @return the created tweet
      */
