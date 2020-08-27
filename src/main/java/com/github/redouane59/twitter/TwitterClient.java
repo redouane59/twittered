@@ -27,6 +27,7 @@ import com.github.redouane59.twitter.dto.user.UserDTOv1;
 import com.github.redouane59.twitter.dto.user.UserDTOv2;
 import com.github.redouane59.twitter.helpers.*;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
+import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.function.Consumer;
@@ -405,10 +406,10 @@ public class TwitterClient implements ITwitterClient {
 
     @Override
     public void startFilteredStream(Consumer<ITweet> consumer){
-        String       url    = this.urlHelper.getFilteredStreamUrl();
-        // @todo to complete
-        throw new UnsupportedOperationException();
+        String      url    = this.urlHelper.getFilteredStreamUrl();
+        this.requestHelperV2.executeGetRequestWithConsumer(url, consumer);
     }
+
     @Override
     public List<StreamRule> retrieveFilteredStreamRules() {
         String       url    = this.urlHelper.getFilteredStreamRulesUrl();

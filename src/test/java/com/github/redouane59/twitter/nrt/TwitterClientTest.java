@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -291,41 +292,50 @@ public class TwitterClientTest {
 
     @Test
     public void testGetTweetType(){
-        assertEquals(TweetType.QUOTED, this.twitterClient.getTweet("1267115291991068673").getTweetType());
-        assertEquals(TweetType.REPLIED_TO, this.twitterClient.getTweet("1267132388632604673").getTweetType());
-        assertEquals(null, this.twitterClient.getTweet("1267010053040672768").getTweetType());
+        assertEquals(TweetType.QUOTED, twitterClient.getTweet("1267115291991068673").getTweetType());
+        assertEquals(TweetType.REPLIED_TO, twitterClient.getTweet("1267132388632604673").getTweetType());
+        assertEquals(null, twitterClient.getTweet("1267010053040672768").getTweetType());
     }
 
     @Test
     public void testGetTweetIdWithTwoTypes(){
-        assertEquals("1264255917043920904", this.twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.RETWEETED));
-        assertEquals("1263783602485157889", this.twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.QUOTED));
+        assertEquals("1264255917043920904", twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.RETWEETED));
+        assertEquals("1263783602485157889", twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.QUOTED));
     }
 
     @Test
     public void testHideAndUnideReply(){
         String tweetId = "1298226351653056514";
-        boolean reply = this.twitterClient.hideReply(tweetId, true);
+        boolean reply = twitterClient.hideReply(tweetId, true);
         assertTrue(reply);
-        reply = this.twitterClient.hideReply(tweetId, false);
+        reply = twitterClient.hideReply(tweetId, false);
         assertFalse(reply);
     }
 
     @Test
     public void testGetFilteredStreamRules(){
-        List<StreamRule> result = this.twitterClient.retrieveFilteredStreamRules();
+        List<StreamRule> result = twitterClient.retrieveFilteredStreamRules();
         assertTrue(result.size()>0);
+    }
+    
+    @Test
+    public void testStartFilteredStream(){
+        twitterClient.startFilteredStream(tweet -> threatTweet(tweet));
+    }
+
+    private void threatTweet(ITweet tweet){
+        System.out.println(tweet.getText());
     }
 
     @Test
     public void testAddAndDeleteFilteredStreamRules(){
         String ruleName = "test_rule";
-        StreamRule result = this.twitterClient.addFilteredStreamRule(ruleName, "1");
+        StreamRule result = twitterClient.addFilteredStreamRule(ruleName, "1");
         assertNotNull(result);
         assertNotNull(result.getId());
         assertEquals("test_rule",result.getValue());
         assertEquals("1",result.getTag());
-        StreamMeta streamMeta = this.twitterClient.deleteFilteredStreamRule(ruleName);
+        StreamMeta streamMeta = twitterClient.deleteFilteredStreamRule(ruleName);
         assertNotNull(streamMeta);
     }
 

@@ -1,9 +1,12 @@
 package com.github.redouane59.twitter.helpers;
 
 import com.github.redouane59.twitter.TwitterClient;
+import com.github.redouane59.twitter.dto.tweet.TweetDTOv2;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.ConnectionPool;
@@ -15,6 +18,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.internal.http2.Http2Stream;
+import okio.Buffer;
 
 @Slf4j
 @AllArgsConstructor
@@ -57,6 +61,28 @@ public class RequestHelperV2 extends AbstractRequestHelper {
             LOGGER.error(e.getMessage());
         }
         return Optional.ofNullable(result);
+    }
+
+    public void executeGetRequestWithConsumer(String url, Consumer consumer){
+        HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+        Request request = new Request.Builder()
+            .url(httpBuilder.build())
+            .get()
+            .headers(Headers.of("Authorization", "Bearer " + bearerToken))
+            .build();
+        try {
+            Response response = this.getHttpClient(url).newCall(request).execute();
+            Buffer buffer = new Buffer();
+            while (!response.body().source().exhausted()) {
+                response.body().source().read(buffer, 8192);
+                String content = new String(buffer.readByteArray(), "ASCII");
+                TweetDTOv2 tweet = TwitterClient.OBJECT_MAPPER.readValue(content, TweetDTOv2.class);
+                consumer.accept(tweet);
+            }
+        }
+        catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
     }
 
     public <T> Optional<T> executePostRequest(String url, String body, Class<T> classType) {
