@@ -403,10 +403,27 @@ public class TwitterClient implements ITwitterClient {
 
     @Override
     public List<StreamRule> retrieveFilteredStreamRules() {
-        String       url    = this.urlHelper.getRetrieveFilteredStreamRulesUrl();
+        String       url    = this.urlHelper.getFilteredStreamRulesUrl();
         StreamRulesDTO result = this.requestHelperV2.executeGetRequest(url, StreamRulesDTO.class).orElseThrow(NoSuchElementException::new);
         return result.getData();
     }
+
+    @Override
+    public StreamRule addFilteredStreamRule(String value, String tag){
+        String       url    = this.urlHelper.getFilteredStreamRulesUrl();
+        try {
+            StreamRule rule = StreamRule.builder().value(value).tag(tag).build();
+            String body = "{\"add\": ["+TwitterClient.OBJECT_MAPPER.writeValueAsString(rule)+"]}";
+            StreamRulesDTO result = this.requestHelperV2.executePostRequest(url, body, StreamRulesDTO.class).orElseThrow(NoSuchElementException::new);
+            if(result.getData()==null || result.getData().size()==0) throw new IllegalArgumentException();
+            return result.getData().get(0);
+        }
+        catch (JsonProcessingException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new IllegalArgumentException();
+        }
+    }
+
 
     @Override
     public List<TweetDTOv1> readTwitterDataFile(File file) throws IOException {

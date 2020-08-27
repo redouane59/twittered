@@ -268,7 +268,8 @@ public class URLHelper {
         return ROOT_URL_V2 + TWEETS + "/"+tweetId+"/hidden";
     }
 
-    public String getRetrieveFilteredStreamRulesUrl(){
+    public String getFilteredStreamRulesUrl(){
         return ROOT_URL_V2 + TWEETS + SEARCH + STREAM + "/rules";
     }
+
 }

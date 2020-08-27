@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 public interface ITwitterClient {
 
@@ -217,6 +218,14 @@ public interface ITwitterClient {
      * @return a list of tweets
      */
     List<ITweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate);
+
+    /**
+     * add a filtered stream rule calling https://api.twitter.com/2/tweets/search/stream/rules
+     * @param value value
+     * @param tag tag
+     * @return the created rules
+     */
+    StreamRule addFilteredStreamRule(String value, String tag);
 
     /**
      * Retrieve the filtered stream rules calling https://api.twitter.com/2/tweets/search/stream/rules

@@ -314,6 +314,15 @@ public class TwitterClientTest {
         assertTrue(result.size()>0);
     }
 
+    @Test
+    public void testAddAndDeleteFilteredStreamRules(){
+        StreamRule result = this.twitterClient.addFilteredStreamRule("test_rule", "1");
+        assertNotNull(result);
+        assertNotNull(result.getId());
+        assertEquals("test_rule",result.getValue());
+        assertEquals("1",result.getTag());
+    }
+
     /*
     @Test
     public void testSearchTweets30days(){

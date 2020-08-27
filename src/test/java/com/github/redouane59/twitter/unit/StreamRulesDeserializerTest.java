@@ -15,12 +15,12 @@ import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class FilteredStreamRulesTest {
+public class StreamRulesDeserializerTest {
 
     private File   rulesFile = new File(getClass().getClassLoader().getResource("tests/stream_rules_example.json").getFile());
     private StreamRulesDTO rules     = TwitterClient.OBJECT_MAPPER.readValue(rulesFile, StreamRulesDTO.class);
 
-    public FilteredStreamRulesTest() throws IOException {
+    public StreamRulesDeserializerTest() throws IOException {
     }
 
     @Test

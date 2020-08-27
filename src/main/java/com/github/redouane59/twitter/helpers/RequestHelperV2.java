@@ -56,6 +56,26 @@ public class RequestHelperV2 extends AbstractRequestHelper {
         return Optional.ofNullable(result);
     }
 
+    public <T> Optional<T> executePostRequest(String url, String body, Class<T> classType) {
+        T result = null;
+        try {
+            Request request = new Request.Builder()
+                .url(url)
+                .method("POST", RequestBody.create(MediaType.parse("application/json"), body))
+                .headers(Headers.of("Authorization", "Bearer " + bearerToken))
+                .build();
+            Response response = new OkHttpClient.Builder().build().newCall(request).execute();
+            if(response.code()!=200){
+                LOGGER.error("(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
+            }
+            String stringResponse = response.body().string();
+            result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
+        } catch(Exception e){
+            LOGGER.error(e.getMessage());
+        }
+        return Optional.ofNullable(result);
+    }
+
     public static <T> Optional<T> executePostRequestWithHeader(String url, Map<String, String> headersMap, String body, Class<T> classType) {
         T result = null;
         try {
