@@ -262,6 +262,8 @@ public class TwitterClientTest {
         String text = "API Test " + LocalDateTime.now() + " #TwitterAPI";
         ITweet result = twitterClient.postTweet(text);
         assertNotNull(result);
+        assertNotNull(result.getId());
+        assertEquals(text,result.getText());
     }
 
     @Test

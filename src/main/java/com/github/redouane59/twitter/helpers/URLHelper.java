@@ -272,4 +272,8 @@ public class URLHelper {
         return ROOT_URL_V2 + TWEETS + SEARCH + STREAM + "/rules";
     }
 
+    public String getFilteredStreamUrl(){
+        return ROOT_URL_V2 + TWEETS + SEARCH + STREAM;
+    }
+
 }

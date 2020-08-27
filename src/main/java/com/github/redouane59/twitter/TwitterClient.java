@@ -29,6 +29,7 @@ import com.github.redouane59.twitter.helpers.*;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import lombok.Getter;
@@ -402,6 +403,12 @@ public class TwitterClient implements ITwitterClient {
         return result;
     }
 
+    @Override
+    public void startFilteredStream(Consumer<ITweet> consumer){
+        String       url    = this.urlHelper.getFilteredStreamUrl();
+        // @todo to complete
+        throw new UnsupportedOperationException();
+    }
     @Override
     public List<StreamRule> retrieveFilteredStreamRules() {
         String       url    = this.urlHelper.getFilteredStreamRulesUrl();

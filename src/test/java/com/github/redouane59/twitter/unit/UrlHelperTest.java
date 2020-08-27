@@ -200,4 +200,9 @@ public class UrlHelperTest {
     public void testRetrieveFilteredStreamRulesUrl(){
         assertEquals("https://api.twitter.com/2/tweets/search/stream/rules", urlHelper.getFilteredStreamRulesUrl());
     }
+
+    @Test
+    public void testRetrieveFilteredStreamUrl(){
+        assertEquals("https://api.twitter.com/2/tweets/search/stream", urlHelper.getFilteredStreamUrl());
+    }
 }

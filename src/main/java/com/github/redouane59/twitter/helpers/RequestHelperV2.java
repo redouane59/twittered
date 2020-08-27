@@ -3,8 +3,10 @@ package com.github.redouane59.twitter.helpers;
 import com.github.redouane59.twitter.TwitterClient;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.ConnectionPool;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
@@ -12,6 +14,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.internal.http2.Http2Stream;
 
 @Slf4j
 @AllArgsConstructor

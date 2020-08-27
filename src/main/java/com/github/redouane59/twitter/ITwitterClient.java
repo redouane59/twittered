@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public interface ITwitterClient {
@@ -221,6 +222,12 @@ public interface ITwitterClient {
     List<ITweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate);
 
     /**
+     * To be implemented calling https://api.twitter.com/2/tweets/search/stream
+     * @param consumer
+     */
+    void startFilteredStream(Consumer<ITweet> consumer);
+
+    /**
      * add a filtered stream rule calling https://api.twitter.com/2/tweets/search/stream/rules
      * @param value value
      * @param tag tag
@@ -229,7 +236,7 @@ public interface ITwitterClient {
     StreamRule addFilteredStreamRule(String value, String tag);
 
     /**
-     * Delete a filtered stream rule
+     * Delete a filtered stream rule calling https://api.twitter.com/2/tweets/search/stream/rules
      * @param ruleValue the value of the rule to delete
      * @return a StreamMeta object resuming the operation
      */
