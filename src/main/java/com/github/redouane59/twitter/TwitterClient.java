@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.getrelationship.IdListDTO;
 import com.github.redouane59.twitter.dto.stream.StreamRulesDTO;
+import com.github.redouane59.twitter.dto.stream.StreamRulesDTO.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRulesDTO.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.HiddenResponseDTO.HiddenDataDTO;
 import com.github.redouane59.twitter.dto.tweet.TweetDTOv2.TweetData;
@@ -424,6 +425,13 @@ public class TwitterClient implements ITwitterClient {
         }
     }
 
+    @Override
+    public StreamMeta deleteFilteredStreamRule(String ruleValue){
+        String       url    = this.urlHelper.getFilteredStreamRulesUrl();
+        String body = "{\"delete\": {\"values\": [\""+ruleValue+"\"]}}";
+        StreamRulesDTO result = this.requestHelperV2.executePostRequest(url, body, StreamRulesDTO.class).orElseThrow(NoSuchElementException::new);
+        return result.getMeta();
+    }
 
     @Override
     public List<TweetDTOv1> readTwitterDataFile(File file) throws IOException {

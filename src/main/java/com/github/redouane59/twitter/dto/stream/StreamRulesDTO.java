@@ -37,6 +37,17 @@ public class StreamRulesDTO {
   @Setter
   public static class StreamMeta {
     private String sent;
+    private StreamSummary summary;
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Setter
+    public static class StreamSummary {
+      private int deleted;
+      @JsonProperty("not_deleted")
+      private int notDeleted;
+    }
   }
 
 

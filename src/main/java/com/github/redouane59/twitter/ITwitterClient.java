@@ -3,6 +3,7 @@ package com.github.redouane59.twitter;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.others.RateLimitStatusDTO;
 import com.github.redouane59.twitter.dto.others.RequestTokenDTO;
+import com.github.redouane59.twitter.dto.stream.StreamRulesDTO.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRulesDTO.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.ITweet;
 import com.github.redouane59.twitter.dto.tweet.TweetDTOv1;
@@ -228,6 +229,13 @@ public interface ITwitterClient {
     StreamRule addFilteredStreamRule(String value, String tag);
 
     /**
+     * Delete a filtered stream rule
+     * @param ruleValue the value of the rule to delete
+     * @return a StreamMeta object resuming the operation
+     */
+    StreamMeta deleteFilteredStreamRule(String ruleValue);
+
+    /**
      * Retrieve the filtered stream rules calling https://api.twitter.com/2/tweets/search/stream/rules
      * @return a filtered stream rules list
      */
@@ -252,5 +260,6 @@ public interface ITwitterClient {
      * @return and object containing the oauth token and the oauth token secret
      */
     RequestTokenDTO getOauth1Token();
+
 }
 
