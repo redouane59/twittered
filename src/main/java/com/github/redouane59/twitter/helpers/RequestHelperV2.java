@@ -75,7 +75,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
             Buffer buffer = new Buffer();
             while (!response.body().source().exhausted()) {
                 response.body().source().read(buffer, 8192);
-                String content = new String(buffer.readByteArray(), "ASCII");
+                String content = new String(buffer.readByteArray());
                 TweetDTOv2 tweet = TwitterClient.OBJECT_MAPPER.readValue(content, TweetDTOv2.class);
                 consumer.accept(tweet);
             }
