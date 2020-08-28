@@ -6,9 +6,12 @@ import com.github.redouane59.twitter.dto.tweet.TweetDTOv2;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
@@ -22,7 +25,9 @@ import okio.Buffer;
 @AllArgsConstructor
 public class RequestHelperV2 extends AbstractRequestHelper {
 
-  public String bearerToken;
+  public       String                      bearerToken;
+  public final CompletableFuture<Response> future = new CompletableFuture<>();
+
 
   public <T> Optional<T> getRequest(String url, Class<T> classType) {
     return this.getRequestWithParameters(url, null, classType);
@@ -61,25 +66,32 @@ public class RequestHelperV2 extends AbstractRequestHelper {
     return Optional.ofNullable(result);
   }
 
-  public void getRequestWithConsumer(String url, Consumer<ITweet> consumer) {
+  public void getAsyncRequest(String url, Consumer<ITweet> consumer) {
     HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
     Request request = new Request.Builder()
         .url(httpBuilder.build())
         .get()
         .headers(Headers.of("Authorization", "Bearer " + bearerToken))
         .build();
-    try {
-      Response response = this.getHttpClient(url).newCall(request).execute();
-      Buffer   buffer   = new Buffer();
-      while (!response.body().source().exhausted()) {
-        response.body().source().read(buffer, 8192);
-        String     content = new String(buffer.readByteArray());
-        TweetDTOv2 tweet   = TwitterClient.OBJECT_MAPPER.readValue(content, TweetDTOv2.class);
-        consumer.accept(tweet);
+
+    Call call = this.getHttpClient(url).newCall(request);
+    call.enqueue(new Callback() {
+      @Override
+      public void onFailure(final Call call, IOException e) {
+        LOGGER.error(e.getMessage(), e);
       }
-    } catch (IOException e) {
-      LOGGER.error(e.getMessage(), e);
-    }
+
+      @Override
+      public void onResponse(Call call, final Response response) throws IOException {
+        Buffer buffer = new Buffer();
+        while (!response.body().source().exhausted()) {
+          response.body().source().read(buffer, 8192);
+          String     content = new String(buffer.readByteArray());
+          TweetDTOv2 tweet   = TwitterClient.OBJECT_MAPPER.readValue(content, TweetDTOv2.class);
+          consumer.accept(tweet);
+        }
+      }
+    });
   }
 
   public <T> Optional<T> postRequest(String url, String body, Class<T> classType) {
@@ -90,11 +102,11 @@ public class RequestHelperV2 extends AbstractRequestHelper {
           .method("POST", RequestBody.create(MediaType.parse("application/json"), body))
           .headers(Headers.of("Authorization", "Bearer " + bearerToken))
           .build();
-      Response response = new OkHttpClient.Builder().build().newCall(request).execute();
-      if (response.code() != 200) {
-        LOGGER.error("(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
+      Response response       = new OkHttpClient.Builder().build().newCall(request).execute();
+      String   stringResponse = response.body().string();
+      if (response.code() < 200 || response.code() > 299) {
+        LOGGER.error("(POST) Error calling " + url + " " + stringResponse + " - " + response.code());
       }
-      String stringResponse = response.body().string();
       result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
     } catch (Exception e) {
       LOGGER.error(e.getMessage());
@@ -111,8 +123,8 @@ public class RequestHelperV2 extends AbstractRequestHelper {
           .headers(Headers.of(headersMap))
           .build();
       Response response = new OkHttpClient.Builder().build().newCall(request).execute();
-      if (response.code() != 200) {
-        LOGGER.error("(POST) ! not 200 calling " + url + " " + response.message() + " - " + response.code());
+      if (response.code() < 200 || response.code() > 299) {
+        LOGGER.error("(POST) Error calling " + url + " " + response.message() + " - " + response.code());
       }
       String stringResponse = response.body().string();
       result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);

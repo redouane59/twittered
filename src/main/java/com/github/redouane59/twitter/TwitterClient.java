@@ -433,7 +433,7 @@ public class TwitterClient implements ITwitterClient {
   @Override
   public void startFilteredStream(Consumer<ITweet> consumer) {
     String url = this.urlHelper.getFilteredStreamUrl();
-    this.requestHelperV2.getRequestWithConsumer(url, consumer);
+    this.requestHelperV2.getAsyncRequest(url, consumer);
   }
 
   @Override

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta.StreamMetaBuilder;
+import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta.StreamSummary.StreamSummaryBuilder;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule.StreamRuleBuilder;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRulesBuilder;
 import java.util.List;
@@ -42,11 +43,18 @@ public class StreamRules {
     private StreamSummary summary;
 
     @Value
+    @Builder
+    @JsonDeserialize(builder = StreamSummaryBuilder.class)
     public static class StreamSummary {
 
       private int deleted;
       @JsonProperty("not_deleted")
       private int notDeleted;
+
+      @JsonPOJOBuilder(withPrefix = "")
+      public static class StreamSummaryBuilder {
+
+      }
     }
 
     @JsonPOJOBuilder(withPrefix = "")

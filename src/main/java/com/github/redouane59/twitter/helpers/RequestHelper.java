@@ -35,7 +35,7 @@ public class RequestHelper extends AbstractRequestHelper {
       Response response = this.getHttpClient(url)
                               .newCall(signedRequest).execute();
       String stringResponse = response.body().string();
-      if (response.code() != 200) {
+      if (response.code() < 200 || response.code() > 299) {
         LOGGER.error("(POST) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
         if (response.code() == 429) {
           LOGGER.error("Reset your token");
@@ -63,7 +63,7 @@ public class RequestHelper extends AbstractRequestHelper {
       Response response = this.getHttpClient(url)
                               .newCall(signedRequest).execute();
       String stringResponse = response.body().string();
-      if (response.code() != 200) {
+      if (response.code() < 200 || response.code() > 299) {
         LOGGER.error("(POST) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
         if (response.code() == 429) {
           LOGGER.error("Reset your token");
