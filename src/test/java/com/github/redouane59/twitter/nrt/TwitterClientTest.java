@@ -5,11 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.others.RequestTokenDTO;
-import com.github.redouane59.twitter.dto.stream.StreamRulesDTO.StreamMeta;
-import com.github.redouane59.twitter.dto.stream.StreamRulesDTO.StreamRule;
+import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
+import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.ITweet;
 import com.github.redouane59.twitter.dto.tweet.TweetDTOv1;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
@@ -20,7 +21,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -33,8 +33,8 @@ public class TwitterClientTest {
     @BeforeAll
     public static void init() throws IOException {
         String credentialPath = "C:/Users/Perso/Documents/GitHub/twitter-credentials.json";
-        twitterClient             = new TwitterClient(TwitterClient.OBJECT_MAPPER
-                                                          .readValue(new File(credentialPath), TwitterCredentials.class));
+        twitterClient = new TwitterClient(TwitterClient.OBJECT_MAPPER
+                                              .readValue(new File(credentialPath), TwitterCredentials.class));
     }
 
     @Test
@@ -57,69 +57,69 @@ public class TwitterClientTest {
 
     @Test
     public void testFriendshipByIdYes() {
-        String userId1 = "92073489";
-        String userId2 = "723996356";
-        RelationType result = twitterClient.getRelationType(userId1, userId2);
+        String       userId1 = "92073489";
+        String       userId2 = "723996356";
+        RelationType result  = twitterClient.getRelationType(userId1, userId2);
         assertEquals(RelationType.FRIENDS, result);
     }
 
     @Test
     public void getUserByUserName() {
         String userName = "RedTheOne";
-        IUser result = twitterClient.getUserFromUserName(userName);
+        IUser  result   = twitterClient.getUserFromUserName(userName);
         assertEquals("92073489", result.getId());
         userName = "RedouaneBali";
-        result = twitterClient.getUserFromUserName(userName);
+        result   = twitterClient.getUserFromUserName(userName);
         assertEquals("RedouaneBali", result.getName());
     }
 
     @Test
-    public void getUsersByUserNames(){
+    public void getUsersByUserNames() {
         List<IUser> result = twitterClient.getUsersFromUserNames(List.of("Zidane", "Ronaldo", "RedTheOne"));
         assertEquals(3, result.size());
         assertEquals("92073489", result.get(2).getId());
     }
 
     @Test
-    public void getUsersByUserIds(){
-        List<IUser> result = twitterClient.getUsersFromUserIds(List.of("22848599","1976143068","92073489"));
+    public void getUsersByUserIds() {
+        List<IUser> result = twitterClient.getUsersFromUserIds(List.of("22848599", "1976143068", "92073489"));
         assertEquals(3, result.size());
         assertEquals("RedTheOne", result.get(2).getName());
     }
 
     @Test
     public void testFriendshipByIdNo() {
-        String userId1 = "92073489";
-        String userId2 = "1976143068";
-        RelationType result = twitterClient.getRelationType(userId1, userId2);
+        String       userId1 = "92073489";
+        String       userId2 = "1976143068";
+        RelationType result  = twitterClient.getRelationType(userId1, userId2);
         assertNotEquals(RelationType.FRIENDS, result);
     }
 
     @Test
     public void testGetUserInfoName() {
         String userId = "92073489";
-        IUser user = twitterClient.getUserFromUserId(userId);
+        IUser  user   = twitterClient.getUserFromUserId(userId);
         assertEquals("RedTheOne", user.getName());
     }
 
     @Test
     public void testGetUserInfoId() {
         String userId = "92073489";
-        IUser user = twitterClient.getUserFromUserId(userId);
+        IUser  user   = twitterClient.getUserFromUserId(userId);
         assertEquals(userId, user.getId());
     }
 
     @Test
     public void testGetUserInfoFavouritesDateOfCreation() {
         String userId = "92073489";
-        IUser user = twitterClient.getUserFromUserId(userId);
+        IUser  user   = twitterClient.getUserFromUserId(userId);
         assertNotNull(user.getDateOfCreation());
     }
 
     @Test
     public void testGetUserInfoStatusesCount() {
         String userId = "92073489";
-        IUser user = twitterClient.getUserFromUserId(userId);
+        IUser  user   = twitterClient.getUserFromUserId(userId);
 
         assertTrue(user.getTweetCount() > 0);
     }
@@ -127,7 +127,7 @@ public class TwitterClientTest {
     @Test
     public void testGetUserWithCache() {
         String userId = "92073489";
-        IUser user = twitterClient.getUserFromUserId(userId);
+        IUser  user   = twitterClient.getUserFromUserId(userId);
         assertEquals("RedTheOne", user.getName());
         user = twitterClient.getUserFromUserId(userId);
         assertEquals("RedTheOne", user.getName());
@@ -150,33 +150,33 @@ public class TwitterClientTest {
 
     @Test
     public void testRelationBetweenUsersIdFriends() {
-        String userId1 = "92073489";
-        String userId2 = "723996356";
-        RelationType result = twitterClient.getRelationType(userId1, userId2);
+        String       userId1 = "92073489";
+        String       userId2 = "723996356";
+        RelationType result  = twitterClient.getRelationType(userId1, userId2);
         assertEquals(RelationType.FRIENDS, result);
     }
 
     @Test
     public void testRelationBetweenUsersIdNone() {
-        String userId1 = "92073489";
-        String userId2 = "1976143068";
-        RelationType result = twitterClient.getRelationType(userId1, userId2);
+        String       userId1 = "92073489";
+        String       userId2 = "1976143068";
+        RelationType result  = twitterClient.getRelationType(userId1, userId2);
         assertEquals(RelationType.NONE, result);
     }
 
     @Test
     public void testRelationBetweenUsersIdFollowing() {
-        String userId1 = "92073489";
-        String userId2 = "126267113";
-        RelationType result = twitterClient.getRelationType(userId1, userId2);
+        String       userId1 = "92073489";
+        String       userId2 = "126267113";
+        RelationType result  = twitterClient.getRelationType(userId1, userId2);
         assertEquals(RelationType.FOLLOWING, result);
     }
 
     @Test
     public void testRelationBetweenUsersIdFollower() {
-        String userId1 = "92073489";
-        String userId2 = "1218125226095054848";
-        RelationType result = twitterClient.getRelationType(userId1, userId2);
+        String       userId1 = "92073489";
+        String       userId2 = "1218125226095054848";
+        RelationType result  = twitterClient.getRelationType(userId1, userId2);
         assertEquals(RelationType.FOLLOWER, result);
     }
 
@@ -188,7 +188,7 @@ public class TwitterClientTest {
 
     @Test
     public void testGetLastTweetByUserName() {
-        String userName = "RedTheOne";
+        String       userName = "RedTheOne";
         List<ITweet> response = twitterClient.getUserLastTweets(userName, 2);
         assertTrue(response.get(0).getLang().equals("fr")
                    || response.get(1).getLang().equals("fr"));
@@ -196,44 +196,44 @@ public class TwitterClientTest {
 
     @Test
     public void testGetLastTweetByUserId() {
-        String userId = "92073489";
+        String       userId   = "92073489";
         List<ITweet> response = twitterClient.getUserLastTweets(userId, 3);
         assertTrue(response.get(0).getLang().equals("fr")
                    || response.get(1).getLang().equals("fr"));
     }
 
     @Test
-    public void testGetTweetById(){
+    public void testGetTweetById() {
         String tweetId = "1224041905333379073";
-        ITweet tweet = twitterClient.getTweet(tweetId);
+        ITweet tweet   = twitterClient.getTweet(tweetId);
         assertNotNull(tweet);
     }
 
     @Test
-    public void testGetTweetsByIds(){
+    public void testGetTweetsByIds() {
         List<String> tweetIds = List.of("1294174710624849921,1294380029430960128,1294375095746666496");
-        List<ITweet> tweets = twitterClient.getTweets(tweetIds);
-        assertTrue(tweets.size()>0);
-        assertTrue(tweets.get(0).getText().length()>0);
-        assertTrue(tweets.get(1).getText().length()>0);
-        assertTrue(tweets.get(2).getText().length()>0);
+        List<ITweet> tweets   = twitterClient.getTweets(tweetIds);
+        assertTrue(tweets.size() > 0);
+        assertTrue(tweets.get(0).getText().length() > 0);
+        assertTrue(tweets.get(1).getText().length() > 0);
+        assertTrue(tweets.get(2).getText().length() > 0);
     }
 
     @Test
-    public void testGetOauth1Token(){
+    public void testGetOauth1Token() {
         TwitterClient.TWITTER_CREDENTIALS.setAccessToken("");
         TwitterClient.TWITTER_CREDENTIALS.setAccessTokenSecret("");
         RequestTokenDTO result = twitterClient.getOauth1Token();
-        assertTrue(result.getOauthToken().length()>1);
-        assertTrue(result.getOauthTokenSecret().length()>1);
+        assertTrue(result.getOauthToken().length() > 1);
+        assertTrue(result.getOauthTokenSecret().length() > 1);
     }
 
     @Test
     @Disabled
     public void testGetTweetDataFile() throws IOException {
-        File file = new File(this.getClass().getClassLoader().getResource("tweet.json").getFile());
+        File             file   = new File(this.getClass().getClassLoader().getResource("tweet.json").getFile());
         List<TweetDTOv1> result = twitterClient.readTwitterDataFile(file);
-        assertTrue(result.size()>10);
+        assertTrue(result.size() > 10);
         assertNotNull(result.get(0).getCreatedAt());
         assertNotNull(result.get(0).getId());
         assertNotNull(result.get(0).getText());
@@ -241,17 +241,17 @@ public class TwitterClientTest {
     }
 
     @Test
-    public void testFollowAndUnfollow(){
-        IUser user = twitterClient.getUserFromUserName("red1");
+    public void testFollowAndUnfollow() {
+        IUser user         = twitterClient.getUserFromUserName("red1");
         IUser followedUser = twitterClient.follow(user.getId());
-        assertEquals("red1",followedUser.getName());
+        assertEquals("red1", followedUser.getName());
         IUser unfollowedUser = twitterClient.unfollow(user.getId());
-        assertEquals("red1",unfollowedUser.getName());
-        assertEquals(RelationType.NONE, twitterClient.getRelationType("92073489","66533"));
+        assertEquals("red1", unfollowedUser.getName());
+        assertEquals(RelationType.NONE, twitterClient.getRelationType("92073489", "66533"));
     }
 
     @Test
-    public void testLikeTweet(){
+    public void testLikeTweet() {
         ITweet likedTweet = twitterClient.likeTweet("1107533");
         assertEquals("1107533", likedTweet.getId());
         ITweet unlikedTweet = twitterClient.unlikeTweet("1107533");
@@ -259,82 +259,82 @@ public class TwitterClientTest {
     }
 
     @Test
-    public void testPostTweet(){
-        String text = "API Test " + LocalDateTime.now() + " #TwitterAPI";
+    public void testPostTweet() {
+        String text   = "API Test " + LocalDateTime.now() + " #TwitterAPI";
         ITweet result = twitterClient.postTweet(text);
         assertNotNull(result);
         assertNotNull(result.getId());
-        assertEquals(text,result.getText());
+        assertEquals(text, result.getText());
     }
 
     @Test
-    public void testSearchTweets7days(){
+    public void testSearchTweets7days() {
         List<ITweet> result = twitterClient.searchForTweetsWithin7days("@RedTheOne -RT");
-        assertTrue(result.size()>10);
+        assertTrue(result.size() > 10);
         ITweet tweet = result.get(0);
         assertNotNull(tweet.getId());
         assertNotNull(tweet.getText());
         assertNotNull(tweet.getCreatedAt());
         assertNotNull(tweet.getAuthorId());
-        assertTrue(tweet.getRetweetCount()>=0);
-        assertTrue(tweet.getReplyCount()>=0);
-        assertTrue(tweet.getLikeCount()>=0);
+        assertTrue(tweet.getRetweetCount() >= 0);
+        assertTrue(tweet.getReplyCount() >= 0);
+        assertTrue(tweet.getLikeCount() >= 0);
         assertNotNull(tweet.getLang());
     }
 
     @Test
-    public void testGetFavorites(){
-        int count = 1500;
+    public void testGetFavorites() {
+        int          count     = 1500;
         List<ITweet> favorites = twitterClient.getFavorites("92073489", count);
         assertNotNull(favorites);
-        assertTrue(favorites.size()>count);
+        assertTrue(favorites.size() > count);
     }
 
     @Test
-    public void testGetTweetType(){
+    public void testGetTweetType() {
         assertEquals(TweetType.QUOTED, twitterClient.getTweet("1267115291991068673").getTweetType());
         assertEquals(TweetType.REPLIED_TO, twitterClient.getTweet("1267132388632604673").getTweetType());
         assertEquals(null, twitterClient.getTweet("1267010053040672768").getTweetType());
     }
 
     @Test
-    public void testGetTweetIdWithTwoTypes(){
+    public void testGetTweetIdWithTwoTypes() {
         assertEquals("1264255917043920904", twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.RETWEETED));
         assertEquals("1263783602485157889", twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.QUOTED));
     }
 
     @Test
-    public void testHideAndUnideReply(){
-        String tweetId = "1298226351653056514";
-        boolean reply = twitterClient.hideReply(tweetId, true);
+    public void testHideAndUnideReply() {
+        String  tweetId = "1298226351653056514";
+        boolean reply   = twitterClient.hideReply(tweetId, true);
         assertTrue(reply);
         reply = twitterClient.hideReply(tweetId, false);
         assertFalse(reply);
     }
 
     @Test
-    public void testGetFilteredStreamRules(){
+    public void testGetFilteredStreamRules() {
         List<StreamRule> result = twitterClient.retrieveFilteredStreamRules();
-        assertTrue(result.size()>0);
+        assertTrue(result.size() > 0);
     }
     
     @Test
-    public void testStartFilteredStream(){
+    public void testStartFilteredStream() {
         twitterClient.startFilteredStream(tweet -> threatTweet(tweet));
     }
 
-    private void threatTweet(ITweet tweet){
+    private void threatTweet(ITweet tweet) {
         System.out.println(tweet.getText());
     }
 
     @Test
-    public void testAddAndDeleteFilteredStreamRules(){
-        String ruleName = "test_rule";
-        StreamRule result = twitterClient.addFilteredStreamRule(ruleName, "1");
+    public void testAddAndDeleteFilteredStreamRules() {
+        String     ruleName = "test_rule";
+        StreamRule result   = twitterClient.addFilteredStreamRule(ruleName, "1");
         assertNotNull(result);
         assertNotNull(result.getId());
-        assertEquals("test_rule",result.getValue());
-        assertEquals("1",result.getTag());
+        assertEquals("test_rule", result.getValue());
+        assertEquals("1", result.getTag());
         StreamMeta streamMeta = twitterClient.deleteFilteredStreamRule(ruleName);
         assertNotNull(streamMeta);
     }
@@ -357,10 +357,10 @@ public class TwitterClientTest {
     } */
 
     @Test
-    public void testGetBearerToken(){
+    public void testGetBearerToken() {
         String token = twitterClient.getBearerToken();
         assertNotNull(token);
-        assertTrue(token.length()>50);
+        assertTrue(token.length() > 50);
     }
 
 }
