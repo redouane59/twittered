@@ -9,8 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class RequestTokenDTO {
-    @JsonProperty("oauth_token")
-    private String oauthToken;
-    @JsonProperty("oauth_token_secret")
-    private String oauthTokenSecret;
+
+  @JsonProperty("oauth_token")
+  private String oauthToken;
+  @JsonProperty("oauth_token_secret")
+  private String oauthTokenSecret;
 }

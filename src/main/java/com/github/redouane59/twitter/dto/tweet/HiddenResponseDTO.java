@@ -16,8 +16,9 @@ public class HiddenResponseDTO {
   @AllArgsConstructor
   @Setter
   @Getter
-  public static class HiddenDataDTO{
-      private boolean hidden;
+  public static class HiddenDataDTO {
+
+    private boolean hidden;
   }
 
 }

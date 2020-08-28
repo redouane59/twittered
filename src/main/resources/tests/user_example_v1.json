@@ -9,15 +9,17 @@
   "url": "https:\/\/t.co\/8IkCzCDr19",
   "entities": {
     "url": {
-      "urls": [{
-        "url": "https:\/\/t.co\/8IkCzCDr19",
-        "expanded_url": "https:\/\/developer.twitter.com",
-        "display_url": "developer.twitter.com",
-        "indices": [
-          0,
-          23
-        ]
-      }]
+      "urls": [
+        {
+          "url": "https:\/\/t.co\/8IkCzCDr19",
+          "expanded_url": "https:\/\/developer.twitter.com",
+          "display_url": "developer.twitter.com",
+          "indices": [
+            0,
+            23
+          ]
+        }
+      ]
     },
     "description": {
       "urls": []

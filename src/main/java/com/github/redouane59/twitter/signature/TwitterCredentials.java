@@ -1,9 +1,9 @@
 package com.github.redouane59.twitter.signature;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -12,8 +12,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class TwitterCredentials {
-    private String apiKey;
-    private String apiSecretKey;
-    private String accessToken;
-    private String accessTokenSecret;
+
+  private String apiKey;
+  private String apiSecretKey;
+  private String accessToken;
+  private String accessTokenSecret;
 }

@@ -3,11 +3,15 @@ package com.github.redouane59.twitter.dto.tweet;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.redouane59.twitter.helpers.ConverterHelper;
 import com.github.redouane59.twitter.dto.user.UserDTOv1;
-import lombok.*;
+import com.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -22,62 +26,67 @@ import lombok.extern.slf4j.Slf4j;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Slf4j
 public class TweetDTOv1 implements ITweet {
-    private String id;
-    private String lang;
-    @JsonProperty("retweet_count")
-    private int retweetCount;
-    @JsonProperty("favorite_count")
-    private int likeCount;
-    @JsonProperty("reply_count")
-    private int replyCount;
-    @JsonProperty("quote_count")
-    private int quoteCount;
-    @JsonAlias({"text","full_text"})
-    private String text;
-    @JsonProperty("created_at")
-    private String createdAt;
-    private UserDTOv1 user;
-    @JsonProperty("in_reply_to_status_id_str")
-    private String inReplyToStatusId;
-    @JsonProperty("in_reply_to_user_id_str")
-    private String inReplyToUserId;
-    @JsonProperty("is_quote_status")
-    private boolean isQuoteStatus;
 
-    public LocalDateTime getCreatedAt(){
-        return ConverterHelper.getDateFromTwitterString(this.createdAt);
-    }
+  private String    id;
+  private String    lang;
+  @JsonProperty("retweet_count")
+  private int       retweetCount;
+  @JsonProperty("favorite_count")
+  private int       likeCount;
+  @JsonProperty("reply_count")
+  private int       replyCount;
+  @JsonProperty("quote_count")
+  private int       quoteCount;
+  @JsonAlias({"text", "full_text"})
+  private String    text;
+  @JsonProperty("created_at")
+  private String    createdAt;
+  private UserDTOv1 user;
+  @JsonProperty("in_reply_to_status_id_str")
+  private String    inReplyToStatusId;
+  @JsonProperty("in_reply_to_user_id_str")
+  private String    inReplyToUserId;
+  @JsonProperty("is_quote_status")
+  private boolean   isQuoteStatus;
 
-    @Override
-    public List<ContextAnnotation> getContextAnnotations() {
-        LOGGER.error("not implemented");
-        return List.of();
-    }
+  public LocalDateTime getCreatedAt() {
+    return ConverterHelper.getDateFromTwitterString(this.createdAt);
+  }
 
-    @Override
-    public TweetType getTweetType() {
-        if(this.isQuoteStatus) return TweetType.QUOTED;
-        return null;
-    }
+  @Override
+  public List<ContextAnnotation> getContextAnnotations() {
+    LOGGER.error("not implemented");
+    return List.of();
+  }
 
-    @Override
-    public String getConversationId() {
-        return null;
+  @Override
+  public TweetType getTweetType() {
+    if (this.isQuoteStatus) {
+      return TweetType.QUOTED;
     }
+    return null;
+  }
 
-    @Override
-    public String getInReplyToStatusId(TweetType type) {
-        return this.getInReplyToStatusId();
-    }
+  @Override
+  public String getConversationId() {
+    return null;
+  }
 
-    @Override
-    public String getAuthorId() {
-        if(this.user==null) return null;
-        return this.user.getId();
-    }
+  @Override
+  public String getInReplyToStatusId(TweetType type) {
+    return this.getInReplyToStatusId();
+  }
 
-    public int hashCode() {
-        return this.id.hashCode();
+  @Override
+  public String getAuthorId() {
+    if (this.user == null) {
+      return null;
     }
+    return this.user.getId();
+  }
+
+  public int hashCode() {
+    return this.id.hashCode();
+  }
 
 }
