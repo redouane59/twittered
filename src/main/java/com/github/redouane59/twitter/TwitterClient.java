@@ -62,7 +62,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 @Getter
 @Setter
 @Slf4j
-public class TwitterClient implements ITwitterClient {
+public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitterClientArchive {
 
   public static        TwitterCredentials TWITTER_CREDENTIALS;
   public static final  ObjectMapper       OBJECT_MAPPER              = new ObjectMapper()
