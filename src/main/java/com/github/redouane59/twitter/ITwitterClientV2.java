@@ -9,63 +9,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public interface ITwitterClientV2 {
-
-  /**
-   * Get a list of the user followers calling https://api.twitter.com/1.1/followers
-   *
-   * @param userId the id of the targeted user
-   * @return a list of users who are following the targeted user
-   */
-  List<User> getFollowerUsers(String userId);
-
-  /**
-   * Get a list of the user followers ids calling https://api.twitter.com/1.1/followers
-   *
-   * @param userId the id of the targeted user
-   * @return a list of ids of users who are following the targeted user
-   */
-  List<String> getFollowerIds(String userId);
-
-  /**
-   * Get a list of the user followings calling https://api.twitter.com/1.1/friends
-   *
-   * @param userId the id of the targeted user
-   * @return a list of users that the targeted user is following
-   */
-  List<User> getFollowingUsers(String userId);
-
-  /**
-   * Get a list of the user followings ids calling https://api.twitter.com/1.1/friends
-   *
-   * @param userId the id of the targeted user
-   * @return a list of ids of users that the targeted user is following
-   */
-  List<String> getFollowingIds(String userId);
-
-  /**
-   * Like a tweet calling https://api.twitter.com/1.1/favorites/create.json
-   *
-   * @param tweetId the id of the tweet
-   * @return the liked tweet
-   */
-  Tweet likeTweet(String tweetId);
-
-  /**
-   * Unlike a tweet calling https://api.twitter.com/1.1/favorites/destroy.json
-   *
-   * @param tweetId the id of the tweet
-   * @return the unliked tweet
-   */
-  Tweet unlikeTweet(String tweetId);
-
-  /**
-   * Retweet a tweet
-   *
-   * @param tweetId the id of the tweet
-   * @return the retweeted tweet
-   */
-  Tweet retweetTweet(String tweetId);
-
+  
   /**
    * Retreive a user from his screen name calling https://api.twitter.com/2/users/
    *

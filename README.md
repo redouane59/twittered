@@ -74,9 +74,9 @@ See :
 ### Contribution
 If you want to contribute to the project, don't hesitate to submit pull requests.
 To add a new feature :
-- Create the interface method in the related interface (i.e [ITwitterClientV2.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/ITwitterClientV2.java))
+- Create the interface method in the related interface (e.g [ITwitterClientV2.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/ITwitterClientV2.java))
 - If needed, add the endpoint URL in [URLHelper.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/helpers/URLHelper.java)
-- Implement your method in the child class (i.e [TwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/TwitterClient.java))
+- Implement your method in the child class (e.g [TwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/TwitterClient.java))
 - Don't forget to add your unit tests in `src/test/java/com/github/redouane59/twitter/unit`
 
 /!\ [JDK 12](https://jdk.java.net/12/) is needed to run the project /!\
