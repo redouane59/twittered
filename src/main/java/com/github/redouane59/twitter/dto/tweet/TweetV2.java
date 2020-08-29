@@ -3,8 +3,8 @@ package com.github.redouane59.twitter.dto.tweet;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.redouane59.twitter.dto.user.IUser;
-import com.github.redouane59.twitter.dto.user.UserDTOv2;
+import com.github.redouane59.twitter.dto.user.User;
+import com.github.redouane59.twitter.dto.user.UserV2;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,14 +22,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TweetDTOv2 implements ITweet {
+public class TweetV2 implements Tweet {
 
   private TweetData data;
   private Includes  includes;
 
   @Getter
   @Setter
-  public static class TweetData implements ITweet {
+  public static class TweetData implements Tweet {
 
     private String                   id;
     @JsonProperty("created_at")
@@ -103,7 +103,7 @@ public class TweetDTOv2 implements ITweet {
     }
 
     @Override
-    public IUser getUser() {
+    public User getUser() {
       throw new UnsupportedOperationException();
     }
 
@@ -217,7 +217,7 @@ public class TweetDTOv2 implements ITweet {
   }
 
   @Override
-  public IUser getUser() {
+  public User getUser() {
     if (this.includes == null) {
       return null;
     }
@@ -266,7 +266,7 @@ public class TweetDTOv2 implements ITweet {
   @Setter
   private static class Includes {
 
-    private UserDTOv2.UserData[] users;
+    private UserV2.UserData[] users;
   }
 
   @Getter

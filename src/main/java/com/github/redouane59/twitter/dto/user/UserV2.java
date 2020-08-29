@@ -1,8 +1,8 @@
 package com.github.redouane59.twitter.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.redouane59.twitter.dto.tweet.ITweet;
-import com.github.redouane59.twitter.dto.tweet.TweetDTOv2;
+import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -21,14 +21,14 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @NoArgsConstructor
 @Slf4j
-public class UserDTOv2 implements IUser {
+public class UserV2 implements User {
 
   private UserData          data;
   private UserData.Includes includes;
 
   @Getter
   @Setter
-  public static class UserData implements IUser {
+  public static class UserData implements User {
 
     private String            id;
     @JsonProperty("created_at")
@@ -53,7 +53,7 @@ public class UserDTOv2 implements IUser {
     @Setter
     public static class Includes {
 
-      private TweetDTOv2.TweetData[] tweets;
+      private TweetV2.TweetData[] tweets;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class UserDTOv2 implements IUser {
     }
 
     @Override
-    public ITweet getPinnedTweet() {
+    public Tweet getPinnedTweet() {
       LOGGER.error("Enable to access the data from here");
       return null;
     }
@@ -139,7 +139,7 @@ public class UserDTOv2 implements IUser {
   }
 
   @Override
-  public ITweet getPinnedTweet() {
+  public Tweet getPinnedTweet() {
     if (this.includes.getTweets().length < 1) {
       LOGGER.error("No tweet found");
       return null;

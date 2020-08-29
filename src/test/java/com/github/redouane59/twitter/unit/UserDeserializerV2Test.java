@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.tweet.ITweet;
-import com.github.redouane59.twitter.dto.user.IUser;
-import com.github.redouane59.twitter.dto.user.UserDTOv2;
+import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.user.User;
+import com.github.redouane59.twitter.dto.user.UserV2;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +15,8 @@ import org.junit.jupiter.api.Test;
 
 public class UserDeserializerV2Test {
 
-  private File  userFile2 = new File(getClass().getClassLoader().getResource("tests/user_example_v2.json").getFile());
-  private IUser userV2    = TwitterClient.OBJECT_MAPPER.readValue(userFile2, UserDTOv2.class);
+  private File userFile2 = new File(getClass().getClassLoader().getResource("tests/user_example_v2.json").getFile());
+  private User userV2    = TwitterClient.OBJECT_MAPPER.readValue(userFile2, UserV2.class);
 
   public UserDeserializerV2Test() throws IOException {
   }
@@ -65,7 +65,7 @@ public class UserDeserializerV2Test {
 
   @Test
   public void testGetUserPinnedTweet() {
-    ITweet pinnedTweet = userV2.getPinnedTweet();
+    Tweet pinnedTweet = userV2.getPinnedTweet();
     assertNotNull(pinnedTweet);
     assertEquals("92073489", pinnedTweet.getAuthorId());
     assertEquals(ConverterHelper.getDateFromTwitterDateV2("2018-08-30T15:50:15.000Z"), pinnedTweet.getCreatedAt());

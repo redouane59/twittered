@@ -9,19 +9,19 @@ import com.github.redouane59.twitter.TwitterClient;
 import java.io.IOException;
 
 
-public class TweetDTOv1Deserializer extends StdDeserializer<TweetDTOv1> {
+public class TweetV1Deserializer extends StdDeserializer<TweetV1> {
 
-  public TweetDTOv1Deserializer() {
+  public TweetV1Deserializer() {
     this(null);
   }
 
-  public TweetDTOv1Deserializer(Class<?> vc) {
+  public TweetV1Deserializer(Class<?> vc) {
     super(vc);
   }
 
   @Override
-  public TweetDTOv1 deserialize(JsonParser jp, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+  public TweetV1 deserialize(JsonParser jp, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
     JsonNode node = jp.getCodec().readTree(jp);
-    return TwitterClient.OBJECT_MAPPER.readValue(node.get("tweet").toString(), TweetDTOv1.class);
+    return TwitterClient.OBJECT_MAPPER.readValue(node.get("tweet").toString(), TweetV1.class);
   }
 }
