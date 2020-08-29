@@ -10,7 +10,6 @@ import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
-import com.github.redouane59.twitter.dto.tweet.TweetV1;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.File;
@@ -120,18 +119,6 @@ public class ITwitterClientV2Test {
     assertTrue(tweets.get(0).getText().length() > 0);
     assertTrue(tweets.get(1).getText().length() > 0);
     assertTrue(tweets.get(2).getText().length() > 0);
-  }
-
-  @Test
-  @Disabled
-  public void testGetTweetDataFile() throws IOException {
-    File          file   = new File(this.getClass().getClassLoader().getResource("tweet.json").getFile());
-    List<TweetV1> result = twitterClient.readTwitterDataFile(file);
-    assertTrue(result.size() > 10);
-    assertNotNull(result.get(0).getCreatedAt());
-    assertNotNull(result.get(0).getId());
-    assertNotNull(result.get(0).getText());
-    assertNotNull(result.get(0).getInReplyToUserId());
   }
 
   @Test
