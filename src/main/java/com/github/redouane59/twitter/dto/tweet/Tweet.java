@@ -1,10 +1,10 @@
 package com.github.redouane59.twitter.dto.tweet;
 
-import com.github.redouane59.twitter.dto.user.IUser;
+import com.github.redouane59.twitter.dto.user.User;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface ITweet {
+public interface Tweet {
 
   /**
    * Get the id of the tweet
@@ -25,7 +25,7 @@ public interface ITweet {
    *
    * @return the author user object
    */
-  IUser getUser();
+  User getUser();
 
   /**
    * Get the id of the tweet author

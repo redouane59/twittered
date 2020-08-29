@@ -1,13 +1,13 @@
 package com.github.redouane59.twitter;
 
 import com.github.redouane59.RelationType;
-import com.github.redouane59.twitter.dto.others.RateLimitStatusDTO;
-import com.github.redouane59.twitter.dto.others.RequestTokenDTO;
+import com.github.redouane59.twitter.dto.others.RateLimitStatus;
+import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
-import com.github.redouane59.twitter.dto.tweet.ITweet;
-import com.github.redouane59.twitter.dto.tweet.TweetDTOv1;
-import com.github.redouane59.twitter.dto.user.IUser;
+import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetV1;
+import com.github.redouane59.twitter.dto.user.User;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -22,7 +22,7 @@ public interface ITwitterClient {
    * @param userId the id of the targeted user
    * @return a list of users who are following the targeted user
    */
-  List<IUser> getFollowerUsers(String userId);
+  List<User> getFollowerUsers(String userId);
 
   /**
    * Get a list of the user followers ids calling https://api.twitter.com/1.1/followers
@@ -38,7 +38,7 @@ public interface ITwitterClient {
    * @param userId the id of the targeted user
    * @return a list of users that the targeted user is following
    */
-  List<IUser> getFollowingUsers(String userId);
+  List<User> getFollowingUsers(String userId);
 
   /**
    * Get a list of the user followings ids calling https://api.twitter.com/1.1/friends
@@ -54,7 +54,7 @@ public interface ITwitterClient {
    * @param tweetId the id of the tweet
    * @return the liked tweet
    */
-  ITweet likeTweet(String tweetId);
+  Tweet likeTweet(String tweetId);
 
   /**
    * Unlike a tweet calling https://api.twitter.com/1.1/favorites/destroy.json
@@ -62,7 +62,7 @@ public interface ITwitterClient {
    * @param tweetId the id of the tweet
    * @return the unliked tweet
    */
-  ITweet unlikeTweet(String tweetId);
+  Tweet unlikeTweet(String tweetId);
 
   /**
    * Retweet a tweet
@@ -70,7 +70,7 @@ public interface ITwitterClient {
    * @param tweetId the id of the tweet
    * @return the retweeted tweet
    */
-  ITweet retweetTweet(String tweetId);
+  Tweet retweetTweet(String tweetId);
 
   /**
    * Post a tweet calling https://api.twitter.com/1.1/statuses/update.json
@@ -78,7 +78,7 @@ public interface ITwitterClient {
    * @param text the tweet text
    * @return the created tweet
    */
-  ITweet postTweet(String text);
+  Tweet postTweet(String text);
 
   /**
    * Get a list of ids of the users who retweeted a tweet calling https://api.twitter.com/1.1/statuses/retweeters/
@@ -104,7 +104,7 @@ public interface ITwitterClient {
    * @param userName the name of the targeted user
    * @return an user object related to the targeted user
    */
-  IUser getUserFromUserName(String userName);
+  User getUserFromUserName(String userName);
 
   /**
    * Retreive a user from his id calling https://api.twitter.com/2/users/
@@ -112,7 +112,7 @@ public interface ITwitterClient {
    * @param userId the id of the user
    * @return an user object related to the targeted user
    */
-  IUser getUserFromUserId(String userId);
+  User getUserFromUserId(String userId);
 
   /**
    * Retreive a list of users from their usernames calling https://api.twitter.com/2/users/
@@ -120,7 +120,7 @@ public interface ITwitterClient {
    * @param userNames the names of the targeted user
    * @return an list of user objects related to the targeted users
    */
-  List<IUser> getUsersFromUserNames(List<String> userNames);
+  List<User> getUsersFromUserNames(List<String> userNames);
 
   /**
    * Retreive a list of users from their ids calling https://api.twitter.com/2/users/
@@ -128,7 +128,7 @@ public interface ITwitterClient {
    * @param userIds the id of the user
    * @return an list of user object related to the targeted users
    */
-  List<IUser> getUsersFromUserIds(List<String> userIds);
+  List<User> getUsersFromUserIds(List<String> userIds);
 
   /**
    * Follow a user calling https://api.twitter.com/1.1/friendships/
@@ -136,7 +136,7 @@ public interface ITwitterClient {
    * @param userId the id of the user
    * @return the user
    */
-  IUser follow(String userId);
+  User follow(String userId);
 
   /**
    * Unfollow a user calling https://api.twitter.com/1.1/friendships/
@@ -144,7 +144,7 @@ public interface ITwitterClient {
    * @param userId the id of the user
    * @return the user
    */
-  IUser unfollow(String userId);
+  User unfollow(String userId);
 
   /**
    * Unfollow a user calling https://api.twitter.com/1.1/friendships/
@@ -152,14 +152,14 @@ public interface ITwitterClient {
    * @param userName the scree name of the user
    * @return the user
    */
-  IUser unfollowByName(String userName);
+  User unfollowByName(String userName);
 
   /**
    * Get the twitter rate limit status calling https://api.twitter.com/1.1/application/
    *
    * @return the twitter response
    */
-  RateLimitStatusDTO getRateLimitStatus();
+  RateLimitStatus getRateLimitStatus();
 
   /**
    * Get the last tweets of a user calling https://api.twitter.com/1.1/statuses/
@@ -168,7 +168,7 @@ public interface ITwitterClient {
    * @param count the number of tweets
    * @return a list of the user last tweets
    */
-  List<ITweet> getUserLastTweets(String userId, int count);
+  List<Tweet> getUserLastTweets(String userId, int count);
 
   /**
    * Get a tweet from its id calling https://api.twitter.com/2/tweets
@@ -176,7 +176,7 @@ public interface ITwitterClient {
    * @param tweetId id of the tweet
    * @return a tweet object
    */
-  ITweet getTweet(String tweetId);
+  Tweet getTweet(String tweetId);
 
   /**
    * Get a tweet list from their id calling https://api.twitter.com/2/tweets
@@ -184,7 +184,7 @@ public interface ITwitterClient {
    * @param tweetIds the ids of the tweets
    * @return a tweet object list
    */
-  List<ITweet> getTweets(List<String> tweetIds);
+  List<Tweet> getTweets(List<String> tweetIds);
 
   /**
    * Get the most recent Tweets liked calling https://api.twitter.com/1.1/favorites/list.json
@@ -193,7 +193,7 @@ public interface ITwitterClient {
    * @param count number of needed tweets
    * @return a list of liked tweets
    */
-  List<ITweet> getFavorites(String userId, int count);
+  List<Tweet> getFavorites(String userId, int count);
 
   /**
    * Hide/Unide a reply using https://api.twitter.com/labs/2/tweets/:id/hidden
@@ -212,7 +212,7 @@ public interface ITwitterClient {
    * @param toDate the end date
    * @return a list of tweets
    */
-  List<ITweet> searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate);
+  List<Tweet> searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate);
 
   /**
    * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
@@ -220,7 +220,7 @@ public interface ITwitterClient {
    * @param query the search query
    * @return a list of tweets
    */
-  List<ITweet> searchForTweetsWithin7days(String query);
+  List<Tweet> searchForTweetsWithin7days(String query);
 
   /**
    * Search tweets from last 30 days calling https://api.twitter.com/1.1/tweets/search/30day/dev.json Your development environment name should be
@@ -231,7 +231,7 @@ public interface ITwitterClient {
    * @param toDate the end date
    * @return a list of tweets
    */
-  List<ITweet> searchForTweetsWithin30days(String query, LocalDateTime fromDate, LocalDateTime toDate);
+  List<Tweet> searchForTweetsWithin30days(String query, LocalDateTime fromDate, LocalDateTime toDate);
 
   /**
    * Search historic tweets calling https://api.twitter.com/1.1/tweets/search/fullarchive/dev.json Your development environment name should be "dev".
@@ -242,12 +242,12 @@ public interface ITwitterClient {
    * @param toDate the end date
    * @return a list of tweets
    */
-  List<ITweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate);
+  List<Tweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate);
 
   /**
    * Stream using previous set up filters calling https://api.twitter.com/2/tweets/search/stream
    */
-  void startFilteredStream(Consumer<ITweet> consumer);
+  void startFilteredStream(Consumer<Tweet> consumer);
 
   /**
    * add a filtered stream rule calling https://api.twitter.com/2/tweets/search/stream/rules
@@ -280,7 +280,7 @@ public interface ITwitterClient {
    * @return the list of tweets
    * @throws IOException if excpetion when reading file
    */
-  List<TweetDTOv1> readTwitterDataFile(File file) throws IOException;
+  List<TweetV1> readTwitterDataFile(File file) throws IOException;
 
   /**
    * Get a bearer token (oAuth2) calling https://api.twitter.com/oauth2/token
@@ -294,7 +294,7 @@ public interface ITwitterClient {
    *
    * @return and object containing the oauth token and the oauth token secret
    */
-  RequestTokenDTO getOauth1Token();
+  RequestToken getOauth1Token();
 
 }
 

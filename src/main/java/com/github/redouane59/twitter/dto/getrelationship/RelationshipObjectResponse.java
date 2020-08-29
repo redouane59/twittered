@@ -6,20 +6,20 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RelationshipObjectResponseDTO {
+public class RelationshipObjectResponse {
 
-  private RelationshipDTO relationship;
+  private Relationship relationship;
 
   @Getter
   @Setter
-  public static class RelationshipDTO {
+  public static class Relationship {
 
-    private SourceDTO source;
-    private TargetDTO target;
+    private SourceUser source;
+    private TargetUser target;
 
     @Getter
     @Setter
-    public static class SourceDTO {
+    public static class SourceUser {
 
       @JsonProperty("can_dm")
       private boolean canDm;
@@ -53,7 +53,7 @@ public class RelationshipObjectResponseDTO {
 
     @Getter
     @Setter
-    public static class TargetDTO {
+    public static class TargetUser {
 
       @JsonProperty("followed_by")
       private boolean followedBy;

@@ -6,7 +6,6 @@ This project is a JAVA library which allows you to consume the Twitter API.
 
 [![Premium](https://img.shields.io/static/v1?label=Twitter%20API&message=Premium&color=794BC4&style=flat&logo=Twitter)](https://developer.twitter.com/en/docs/tweets/search/api-reference/premium-search)
 
-
 ## /!\ Development in progress... Any feedback is welcome :) /!\ 
 
 ### Configuration
@@ -16,7 +15,7 @@ In your pom.xml, add the following dependency :
 <dependency>
   <groupId>com.github.redouane59.twitter</groupId>
   <artifactId>twitter-client</artifactId>
-  <version>1.5</version>
+  <version>1.6</version>
 </dependency>
 ```
 In order to use your own developer credentials, you have several options :
@@ -64,8 +63,12 @@ page.
 ### Available methods
 See : 
 - [ITwitterClient.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/ITwitterClient.java)
-- [ITweet.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/dto/tweet/ITweet.java)
-- [IUser.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/dto/user/IUser.java)
+- [Tweet.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/dto/tweet/Tweet.java)
+- [User.java](https://github.com/redouane59/twitter-client/blob/master/src/main/java/com/github/redouane59/twitter/dto/user/User.java)
+
+### Code samples
+See : 
+- [ITwitterClientTest.java](https://github.com/redouane59/twitter-client/blob/master/src/test/java/com/github/redouane59/twitter/nrt/TwitterClientTest.java)
 
 ### Contribution
 If you want to contribute to the project, don't hesitate to submit pull requests.
@@ -85,4 +88,5 @@ To add a new feature :
 [@mmornati](https://github.com/mmornati)
 [@andypiper](https://github.com/andypiper)
 [@igorbrigadir](https://github.com/igorbrigadir)
+[@sparack](https://github.com/sparack)
 

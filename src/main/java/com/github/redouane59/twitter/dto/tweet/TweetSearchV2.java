@@ -9,10 +9,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TweetSearchV2DTO {
+public class TweetSearchV2 {
 
-  private List<TweetDTOv2.TweetData> data;
-  private Meta                       meta;
+  private List<TweetV2.TweetData> data;
+  private Meta                    meta;
 
   @Getter
   @Setter

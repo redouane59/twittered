@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.tweet.ContextAnnotation;
-import com.github.redouane59.twitter.dto.tweet.ITweet;
-import com.github.redouane59.twitter.dto.tweet.TweetDTOv2;
-import com.github.redouane59.twitter.dto.user.IUser;
+import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetV2;
+import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +16,8 @@ import org.junit.jupiter.api.Test;
 
 public class TweetDeserializerV2Test {
 
-  private File   tweetFile1 = new File(getClass().getClassLoader().getResource("tests/tweet_example_v2.json").getFile());
-  private ITweet tweetv2    = TwitterClient.OBJECT_MAPPER.readValue(tweetFile1, TweetDTOv2.class);
+  private File  tweetFile1 = new File(getClass().getClassLoader().getResource("tests/tweet_example_v2.json").getFile());
+  private Tweet tweetv2    = TwitterClient.OBJECT_MAPPER.readValue(tweetFile1, TweetV2.class);
 
   public TweetDeserializerV2Test() throws IOException {
   }
@@ -76,7 +76,7 @@ public class TweetDeserializerV2Test {
 
   @Test
   public void testUser() {
-    IUser user = tweetv2.getUser();
+    User user = tweetv2.getUser();
     assertNotNull(user);
     assertEquals("marcomornati", user.getName());
     assertEquals("9920272", user.getId());
