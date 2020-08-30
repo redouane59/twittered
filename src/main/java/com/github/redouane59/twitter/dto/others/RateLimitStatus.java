@@ -10,16 +10,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RateLimitStatusDTO {
+public class RateLimitStatus {
 
   @JsonProperty("rate_limit_context")
-  private RateLimitContextDTO   rateLimitContext;
+  private RateLimitContext      rateLimitContext;
   private Map<String, JsonNode> resources;
 
   @Getter
   @Setter
   @NoArgsConstructor
-  public static class RateLimitContextDTO {
+  public static class RateLimitContext {
 
     @JsonProperty("access_token")
     private String accessToken;

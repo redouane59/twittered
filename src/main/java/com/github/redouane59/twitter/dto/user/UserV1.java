@@ -2,7 +2,7 @@ package com.github.redouane59.twitter.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.redouane59.twitter.dto.tweet.ITweet;
+import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,37 +23,37 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @Builder
 @Slf4j
-public class UserDTOv1 implements IUser {
+public class UserV1 implements User {
 
-  private String       id;
+  private String      id;
   @JsonProperty("screen_name")
   @JsonAlias({"screen_name", "username"})
-  private String       name;
-  private List<ITweet> mostRecentTweet;
-  private String       description;
+  private String      name;
+  private List<Tweet> mostRecentTweet;
+  private String      description;
   @JsonAlias("protected")
-  private boolean      protectedAccount;
+  private boolean     protectedAccount;
   @JsonProperty("followers_count")
-  private int          followersCount;
+  private int         followersCount;
   @JsonProperty("friends_count")
   @JsonAlias({"friends_count", "followings_count"})
-  private int          followingCount;
-  private String       lang;
+  private int         followingCount;
+  private String      lang;
   @JsonProperty("tweetCount")
   @JsonAlias({"statuses_count", "tweets_count"})
-  private int          tweetCount;
+  private int         tweetCount;
   @JsonAlias("created_at")
-  private String       dateOfCreation;
-  private String       lastUpdate;
-  private String       location;
-  private boolean      following;
+  private String      dateOfCreation;
+  private String      lastUpdate;
+  private String      location;
+  private boolean     following;
 
   @Override
   public boolean equals(Object o) {
     if (o == null || this.getClass() != o.getClass()) {
       return false;
     }
-    UserDTOv1 otherUser = (UserDTOv1) o;
+    UserV1 otherUser = (UserV1) o;
     return (otherUser).getId().equals(this.getId());
   }
 
@@ -71,7 +71,7 @@ public class UserDTOv1 implements IUser {
   }
 
   @Override
-  public ITweet getPinnedTweet() {
+  public Tweet getPinnedTweet() {
     LOGGER.debug("UnsupportedOperation");
     return null;
   }

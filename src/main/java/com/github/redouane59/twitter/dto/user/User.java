@@ -1,9 +1,9 @@
 package com.github.redouane59.twitter.dto.user;
 
-import com.github.redouane59.twitter.dto.tweet.ITweet;
+import com.github.redouane59.twitter.dto.tweet.Tweet;
 import java.time.LocalDateTime;
 
-public interface IUser {
+public interface User {
 
   /**
    * Get the string id of the user
@@ -73,7 +73,7 @@ public interface IUser {
    *
    * @return the pinned tweet of the user
    */
-  ITweet getPinnedTweet();
+  Tweet getPinnedTweet();
 
   /**
    * Get the protection level of the user account

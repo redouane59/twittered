@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.tweet.ITweet;
-import com.github.redouane59.twitter.dto.tweet.TweetDTOv1;
+import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetV1;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 
 public class TweetDeserializerV1Test {
 
-  private File   tweetFile1 = new File(getClass().getClassLoader().getResource("tests/tweet_example_v1.json").getFile());
-  private ITweet tweetV1    = TwitterClient.OBJECT_MAPPER.readValue(tweetFile1, TweetDTOv1.class);
+  private File  tweetFile1 = new File(getClass().getClassLoader().getResource("tests/tweet_example_v1.json").getFile());
+  private Tweet tweetV1    = TwitterClient.OBJECT_MAPPER.readValue(tweetFile1, TweetV1.class);
 
   public TweetDeserializerV1Test() throws IOException {
   }

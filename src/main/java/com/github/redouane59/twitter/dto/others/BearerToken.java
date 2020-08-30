@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BearerTokenDTO {
+public class BearerToken {
 
   @JsonProperty("token_type")
   private String tokenType;

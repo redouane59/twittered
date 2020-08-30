@@ -8,15 +8,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class HiddenResponseDTO {
+public class HiddenResponse {
 
-  private HiddenDataDTO data;
+  private HiddenData data;
 
   @NoArgsConstructor
   @AllArgsConstructor
   @Setter
   @Getter
-  public static class HiddenDataDTO {
+  public static class HiddenData {
 
     private boolean hidden;
   }

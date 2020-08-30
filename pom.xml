@@ -5,12 +5,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.github.redouane59.twitter</groupId>
-  <artifactId>twitter-client</artifactId>
-  <version>1.5</version>
+  <artifactId>twittered</artifactId>
+  <version>1.6</version>
 
-  <name>twitter-client</name>
+  <name>twittered</name>
   <description>java client for twitter API</description>
-  <url>http://github.com/Redouane59/twitter-client</url>
+  <url>http://github.com/Redouane59/twittered</url>
 
   <licenses>
     <license>
@@ -29,10 +29,10 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/Redouane59/twitter-client.git</connection>
-    <developerConnection>scm:git:ssh://github.com:Redouane59/twitter-client.git
+    <connection>scm:git:git://github.com/Redouane59/twittered.git</connection>
+    <developerConnection>scm:git:ssh://github.com:Redouane59/twittered.git
     </developerConnection>
-    <url>http://github.com/Redouane59/twitter-client</url>
+    <url>http://github.com/Redouane59/twittered</url>
   </scm>
 
   <distributionManagement>
@@ -49,7 +49,7 @@
     <appengine.app.version>1</appengine.app.version>
     <appengine.target.version>1.9.71</appengine.target.version>
     <appengine-maven-plugin-version>1.3.2</appengine-maven-plugin-version>
-    <sonar.projectKey>redouane59_twitter-client</sonar.projectKey>
+    <sonar.projectKey>redouane59_twittered</sonar.projectKey>
     <sonar.organization>redouane59</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar.login>4a9a081c5fcd7861bf9fc84032a4bc9de08ae733</sonar.login>
