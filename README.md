@@ -69,7 +69,8 @@ See :
 
 ### Code samples
 See : 
-- [ITwitterClientTest.java](https://github.com/redouane59/twittered/blob/master/src/test/java/com/github/redouane59/twitter/nrt/TwitterClientTest.java)
+- [ITwitterClientV2Test.java](https://github.com/redouane59/twittered/blob/master/src/test/java/com/github/redouane59/twitter/nrt/ITwitterClientV2Test.java)
+- [ITwitterClientV1Test.java](https://github.com/redouane59/twittered/blob/master/src/test/java/com/github/redouane59/twitter/nrt/ITwitterClientV1Test.java)
 
 ### Contribution
 If you want to contribute to the project, don't hesitate to submit pull requests.
