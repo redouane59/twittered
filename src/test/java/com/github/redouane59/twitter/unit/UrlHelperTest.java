@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 
 public class UrlHelperTest {
 
-  private static String    ownerName = "RedTheOne";
-  private        URLHelper urlHelper = new URLHelper();
+  private URLHelper urlHelper = new URLHelper();
 
   @Test
   public void testUrlRetweetrs() {
