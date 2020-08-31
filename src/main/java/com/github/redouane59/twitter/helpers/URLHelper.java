@@ -284,6 +284,5 @@ public class URLHelper {
   public String getFilteredStreamUrl() {
     return ROOT_URL_V2 + TWEETS + SEARCH + STREAM;
   }
-
-
+  
 }

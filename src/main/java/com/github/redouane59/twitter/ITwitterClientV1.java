@@ -169,6 +169,7 @@ public interface ITwitterClientV1 {
    * @param toDate the end date
    * @return a list of tweets
    */
+  
   List<Tweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate);
 
   /**
