@@ -6,7 +6,6 @@ import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +24,7 @@ import okio.Buffer;
 @AllArgsConstructor
 public class RequestHelperV2 extends AbstractRequestHelper {
 
-  public       String                      bearerToken;
-  public final CompletableFuture<Response> future = new CompletableFuture<>();
-
+  public String bearerToken;
 
   public <T> Optional<T> getRequest(String url, Class<T> classType) {
     return this.getRequestWithParameters(url, null, classType);
@@ -47,10 +44,9 @@ public class RequestHelperV2 extends AbstractRequestHelper {
           .get()
           .headers(Headers.of("Authorization", "Bearer " + bearerToken))
           .build();
-      String newUrl = httpBuilder.build().url().toString();
-      Response response = this.getHttpClient(newUrl)
-                              .newCall(request).execute();
-      String stringResponse = response.body().string();
+      String   newUrl         = httpBuilder.build().url().toString();
+      Response response       = this.getHttpClient(newUrl).newCall(request).execute();
+      String   stringResponse = response.body().string();
       if (response.code() == 429) {
         this.wait(stringResponse, url);
         return this.getRequestWithParameters(url, parameters, classType);
