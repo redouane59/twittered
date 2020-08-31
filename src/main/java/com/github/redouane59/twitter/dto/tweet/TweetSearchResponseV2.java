@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TweetSearchV2 {
+public class TweetSearchResponseV2 {
 
   private List<TweetV2.TweetData> data;
   private Meta                    meta;

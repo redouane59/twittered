@@ -3,13 +3,14 @@ package com.github.redouane59.twitter;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.user.User;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Consumer;
 
 public interface ITwitterClientV2 {
-  
+
   /**
    * Retreive a user from his screen name calling https://api.twitter.com/2/users/
    *
@@ -84,6 +85,18 @@ public interface ITwitterClientV2 {
    * @return a list of tweets
    */
   List<Tweet> searchForTweetsWithin7days(String query);
+
+  /**
+   * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
+   *
+   * @param query the search query
+   * @param fromDate the start date
+   * @param toDate the end date
+   * @param maxResult maximum 100 (default 10)
+   * @param nextToken the next_token given by the API to start from an index
+   * @return a TweetSearchResponse containing a list of tweets and the next token
+   */
+  TweetSearchResponse searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate, int maxResult, String nextToken);
 
   /**
    * Stream using previous set up filters calling https://api.twitter.com/2/tweets/search/stream

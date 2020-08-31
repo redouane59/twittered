@@ -19,8 +19,9 @@ import com.github.redouane59.twitter.dto.tweet.HiddenResponse;
 import com.github.redouane59.twitter.dto.tweet.HiddenResponse.HiddenData;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetListV2;
-import com.github.redouane59.twitter.dto.tweet.TweetSearchV1;
-import com.github.redouane59.twitter.dto.tweet.TweetSearchV2;
+import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
+import com.github.redouane59.twitter.dto.tweet.TweetSearchResponseV1;
+import com.github.redouane59.twitter.dto.tweet.TweetSearchResponseV2;
 import com.github.redouane59.twitter.dto.tweet.TweetV1;
 import com.github.redouane59.twitter.dto.tweet.TweetV1Deserializer;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
@@ -361,8 +362,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String      next;
     List<Tweet> result = new ArrayList<>();
     do {
-      Optional<TweetSearchV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(
-          URLHelper.SEARCH_TWEET_7_DAYS_URL, parameters, TweetSearchV2.class);
+      Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(
+          URLHelper.SEARCH_TWEET_7_DAYS_URL, parameters, TweetSearchResponseV2.class);
       if (tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData() == null) {
         LOGGER.error("empty response on searchForTweetsWithin7days");
         break;
@@ -380,19 +381,44 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return this.searchForTweetsWithin7days(query, null, null);
   }
 
+  public TweetSearchResponse searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate, int maxResult, String nextToken) {
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put("query", query);
+    parameters.put("max_results", String.valueOf(maxResult));
+    if (fromDate != null) {
+      parameters.put("start_time", ConverterHelper.getStringFromDateV2(fromDate));
+    }
+    if (toDate != null) {
+      parameters.put("end_time", ConverterHelper.getStringFromDateV2(toDate));
+    }
+    if (nextToken != null) {
+      parameters.put("next_token", nextToken);
+    }
+    parameters.put("tweet.fields",
+                   "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id");
+    List<Tweet> result = new ArrayList<>();
+    Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(
+        URLHelper.SEARCH_TWEET_7_DAYS_URL, parameters, TweetSearchResponseV2.class);
+    if (tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData() == null) {
+      LOGGER.error("empty response on searchForTweetsWithin7days");
+    }
+    result.addAll(tweetSearchV2DTO.get().getData());
+    return new TweetSearchResponse(result, tweetSearchV2DTO.get().getMeta().getNextToken());
+  }
+
   @Override
   public List<Tweet> searchForTweetsWithin30days(String query, LocalDateTime fromDate, LocalDateTime toDate) {
     int                 count      = 100;
     Map<String, String> parameters = new HashMap<>();
     parameters.put("query", query);
-    parameters.put("maxResults", String.valueOf(count));
+    parameters.put("max_results", String.valueOf(count));
     parameters.put("fromDate", ConverterHelper.getStringFromDate(fromDate));
     parameters.put("toDate", ConverterHelper.getStringFromDate(toDate));
     String      next;
     List<Tweet> result = new ArrayList<>();
     do {
-      Optional<TweetSearchV1> tweetSearchV1DTO = this.requestHelperV2.getRequestWithParameters(
-          URLHelper.SEARCH_TWEET_30_DAYS_URL, parameters, TweetSearchV1.class);
+      Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.requestHelperV2.getRequestWithParameters(
+          URLHelper.SEARCH_TWEET_30_DAYS_URL, parameters, TweetSearchResponseV1.class);
       if (tweetSearchV1DTO.isEmpty()) {
         LOGGER.error("empty response on searchForTweetsWithin30days");
         break;
@@ -410,14 +436,14 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     int                 count      = 100;
     Map<String, String> parameters = new HashMap<>();
     parameters.put("query", query);
-    parameters.put("maxResults", String.valueOf(count));
+    parameters.put("max_results", String.valueOf(count));
     parameters.put("fromDate", ConverterHelper.getStringFromDate(fromDate));
     parameters.put("toDate", ConverterHelper.getStringFromDate(toDate));
     String      next;
     List<Tweet> result = new ArrayList<>();
     do {
-      Optional<TweetSearchV1> tweetSearchV1DTO = this.requestHelperV2.getRequestWithParameters(
-          URLHelper.SEARCH_TWEET_FULL_ARCHIVE_URL, parameters, TweetSearchV1.class);
+      Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.requestHelperV2.getRequestWithParameters(
+          URLHelper.SEARCH_TWEET_FULL_ARCHIVE_URL, parameters, TweetSearchResponseV1.class);
       if (tweetSearchV1DTO.isEmpty()) {
         LOGGER.error("empty response on searchForTweetsArchive");
         break;

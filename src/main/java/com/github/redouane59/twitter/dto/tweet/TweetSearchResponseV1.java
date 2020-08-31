@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TweetSearchV1 {
+public class TweetSearchResponseV1 {
 
   private List<TweetV1> results;
   private String        next;
