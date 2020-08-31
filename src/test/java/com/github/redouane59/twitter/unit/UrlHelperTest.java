@@ -199,6 +199,11 @@ public class UrlHelperTest {
   }
 
   @Test
+  public void testDeleteTweetUrl() {
+    assertEquals("https://api.twitter.com/1.1/statuses/destroy/240854986559455234.json", urlHelper.getdeleteTweetUrl("240854986559455234"));
+  }
+
+  @Test
   public void testHideReplyUrl() {
     assertEquals("https://api.twitter.com/2/tweets/1298226351653056514/hidden", urlHelper.getHideReplyUrl("1298226351653056514"));
   }
