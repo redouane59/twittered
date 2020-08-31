@@ -383,6 +383,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return this.searchForTweetsWithin7days(query, null, null);
   }
 
+  @Override
+  public TweetSearchResponse searchForTweetsWithin7days(String query, int maxResult, String nextToken) {
+    return this.searchForTweetsWithin7days(query, null, null, maxResult, nextToken);
+  }
+
+  @Override
   public TweetSearchResponse searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate, int maxResult, String nextToken) {
     Map<String, String> parameters = new HashMap<>();
     parameters.put("query", query);
