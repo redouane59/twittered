@@ -83,6 +83,9 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   private static final String             SOURCE                     = "source";
   private final static String             NULL_OR_ID_NOT_FOUND_ERROR = "response null or ids not found !";
   private static final String             NEXT_CURSOR                = "next_cursor";
+  private static final String
+                                          ALL_TWEET_FIELDS           =
+      "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id";
 
   public TwitterClient() {
     TWITTER_CREDENTIALS = getAuthentication();
@@ -357,8 +360,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (toDate != null) {
       parameters.put("end_time", ConverterHelper.getStringFromDateV2(toDate));
     }
-    parameters.put("tweet.fields",
-                   "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id");
+    parameters.put("tweet.fields", ALL_TWEET_FIELDS);
     String      next;
     List<Tweet> result = new ArrayList<>();
     do {
@@ -394,15 +396,14 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (nextToken != null) {
       parameters.put("next_token", nextToken);
     }
-    parameters.put("tweet.fields",
-                   "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id");
-    List<Tweet> result = new ArrayList<>();
+    parameters.put("tweet.fields", ALL_TWEET_FIELDS);
     Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(
         URLHelper.SEARCH_TWEET_7_DAYS_URL, parameters, TweetSearchResponseV2.class);
     if (tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData() == null) {
       LOGGER.error("empty response on searchForTweetsWithin7days");
+      return new TweetSearchResponse(new ArrayList<>(), null);
     }
-    result.addAll(tweetSearchV2DTO.get().getData());
+    List<Tweet> result = new ArrayList<>(tweetSearchV2DTO.get().getData());
     return new TweetSearchResponse(result, tweetSearchV2DTO.get().getMeta().getNextToken());
   }
 

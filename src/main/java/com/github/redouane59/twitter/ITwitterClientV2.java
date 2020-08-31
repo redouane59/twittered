@@ -94,7 +94,7 @@ public interface ITwitterClientV2 {
    * @param toDate the end date
    * @param maxResult maximum 100 (default 10)
    * @param nextToken the next_token given by the API to start from an index
-   * @return a TweetSearchResponse containing a list of tweets and the next token
+   * @return a TweetSearchResponse object containing a list of tweets and the next token
    */
   TweetSearchResponse searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate, int maxResult, String nextToken);
 
