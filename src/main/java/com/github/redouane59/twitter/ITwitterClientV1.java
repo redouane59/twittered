@@ -75,6 +75,14 @@ public interface ITwitterClientV1 {
   Tweet postTweet(String text);
 
   /**
+   * Delete a tweet calling https://api.twitter.com/1.1/statuses/destroy/:id.json
+   *
+   * @param tweetId the id of the tweet
+   * @return the deleted tweet
+   */
+  Tweet deleteTweet(String tweetId);
+
+  /**
    * Get a list of ids of the users who retweeted a tweet calling https://api.twitter.com/1.1/statuses/retweeters/
    *
    * @param tweetId the id of the tweet
@@ -162,7 +170,7 @@ public interface ITwitterClientV1 {
    * @return a list of tweets
    */
   List<Tweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate);
-  
+
   /**
    * Get token and secret token (oAuth1) calling https://api.twitter.com/oauth/request_token
    *

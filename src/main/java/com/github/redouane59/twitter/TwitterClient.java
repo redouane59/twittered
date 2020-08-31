@@ -305,6 +305,13 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
+  public Tweet deleteTweet(String tweetId) {
+    String              url        = this.getUrlHelper().getdeleteTweetUrl(tweetId);
+    Map<String, String> parameters = new HashMap<>();
+    return this.getRequestHelper().postRequest(url, parameters, TweetV1.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
   public Tweet getTweet(String tweetId) {
     String url = this.getUrlHelper().getTweetUrl(tweetId);
     return this.requestHelperV2.getRequest(url, TweetV2.class).orElseThrow(NoSuchElementException::new);

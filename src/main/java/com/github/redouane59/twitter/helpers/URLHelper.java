@@ -261,6 +261,10 @@ public class URLHelper {
     return ROOT_URL_V1 + STATUSES + "/update.json";
   }
 
+  public String getdeleteTweetUrl(String tweetId) {
+    return ROOT_URL_V1 + STATUSES + "/destroy/" + tweetId + ".json";
+  }
+
   public String getFavoriteTweetsUrl(String userId, String maxId) {
     if (maxId == null || maxId.length() == 0) {
       return "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id=" + userId;
@@ -280,5 +284,6 @@ public class URLHelper {
   public String getFilteredStreamUrl() {
     return ROOT_URL_V2 + TWEETS + SEARCH + STREAM;
   }
+
 
 }

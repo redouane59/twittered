@@ -152,12 +152,15 @@ public class ITwitterClientV1Test {
   }
 
   @Test
-  public void testPostTweet() {
+  public void testPostAndDeleteTweet() {
     String text   = "API Test " + LocalDateTime.now() + " #TwitterAPI";
     Tweet  result = twitterClient.postTweet(text);
     assertNotNull(result);
     assertNotNull(result.getId());
     assertEquals(text, result.getText());
+    Tweet result2 = twitterClient.deleteTweet(result.getId());
+    assertNotNull(result2);
+    assertEquals(result.getId(), result2.getId());
   }
 
   @Test
