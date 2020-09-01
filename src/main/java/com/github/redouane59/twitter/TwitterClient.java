@@ -293,7 +293,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public Tweet retweetTweet(String tweetId) {
-    throw new UnsupportedOperationException();
+    String url = this.getUrlHelper().getRetweetTweetUrl(tweetId);
+    return this.requestHelper.postRequest(url, new HashMap<>(), TweetV1.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override

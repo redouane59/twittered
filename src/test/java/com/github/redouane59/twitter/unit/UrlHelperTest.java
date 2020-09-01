@@ -160,6 +160,12 @@ public class UrlHelperTest {
   }
 
   @Test
+  public void testRetweetTweetUrl() {
+    String tweetId = "12345";
+    assertEquals("https://api.twitter.com/1.1/statuses/retweet/12345.json", urlHelper.getRetweetTweetUrl(tweetId));
+  }
+
+  @Test
   public void testTweetUrl() {
     assertEquals(
         "https://api.twitter.com/2/tweets/12345?expansions=author_id&tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",

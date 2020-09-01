@@ -152,15 +152,19 @@ public class ITwitterClientV1Test {
   }
 
   @Test
-  public void testPostAndDeleteTweet() {
-    String text   = "API Test " + LocalDateTime.now() + " #TwitterAPI";
-    Tweet  result = twitterClient.postTweet(text);
-    assertNotNull(result);
-    assertNotNull(result.getId());
-    assertEquals(text, result.getText());
-    Tweet result2 = twitterClient.deleteTweet(result.getId());
-    assertNotNull(result2);
-    assertEquals(result.getId(), result2.getId());
+  public void testPostAndRTandDeleteTweet() {
+    String text       = "API Test " + LocalDateTime.now() + " #TwitterAPI";
+    Tweet  resultPost = twitterClient.postTweet(text);
+    assertNotNull(resultPost);
+    assertNotNull(resultPost.getId());
+    assertEquals(text, resultPost.getText());
+    Tweet resultRT = twitterClient.retweetTweet(resultPost.getId());
+    assertNotNull(resultRT);
+    assertNotNull(resultRT.getId());
+    assertEquals(resultPost.getAuthorId(), resultRT.getAuthorId());
+    Tweet resultDelete = twitterClient.deleteTweet(resultPost.getId());
+    assertNotNull(resultDelete);
+    assertEquals(resultPost.getId(), resultDelete.getId());
   }
 
   @Test
