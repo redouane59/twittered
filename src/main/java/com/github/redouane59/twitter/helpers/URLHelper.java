@@ -257,6 +257,10 @@ public class URLHelper {
     return ROOT_URL_V1 + FAVORITES + DESTROY_JSON + ID + "=" + tweetId;
   }
 
+  public String getRetweetTweetUrl(final String tweetId) {
+    return ROOT_URL_V1 + STATUSES + "/retweet/" + tweetId + ".json";
+  }
+
   public String getPostTweetUrl() {
     return ROOT_URL_V1 + STATUSES + "/update.json";
   }
@@ -284,5 +288,5 @@ public class URLHelper {
   public String getFilteredStreamUrl() {
     return ROOT_URL_V2 + TWEETS + SEARCH + STREAM;
   }
-  
+
 }
