@@ -2,6 +2,7 @@ package com.github.redouane59.twitter.nrt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -9,6 +10,7 @@ import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
@@ -134,6 +136,17 @@ public class ITwitterClientV2Test {
     assertTrue(tweet.getReplyCount() >= 0);
     assertTrue(tweet.getLikeCount() >= 0);
     assertNotNull(tweet.getLang());
+  }
+
+  @Test
+  public void testSearchTweets7daysWithNexTokenAndCount() {
+    TweetSearchResponse result = twitterClient.searchForTweetsWithin7days("@RedTheOne -RT", null, null, 100, null);
+    assertEquals(100, result.getTweets().size());
+    assertNotNull(result.getNextToken());
+    TweetSearchResponse result2 = twitterClient.searchForTweetsWithin7days("@RedTheOne -RT", null, null, 100, result.getNextToken());
+    assertTrue(result2.getTweets().size() > 0);
+    assertNotEquals(result.getTweets().get(0).getId(), result2.getTweets().get(0).getId());
+    assertNotNull(result2.getNextToken());
   }
 
   @Test

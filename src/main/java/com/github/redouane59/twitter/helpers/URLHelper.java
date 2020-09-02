@@ -257,8 +257,16 @@ public class URLHelper {
     return ROOT_URL_V1 + FAVORITES + DESTROY_JSON + ID + "=" + tweetId;
   }
 
+  public String getRetweetTweetUrl(final String tweetId) {
+    return ROOT_URL_V1 + STATUSES + "/retweet/" + tweetId + ".json";
+  }
+
   public String getPostTweetUrl() {
     return ROOT_URL_V1 + STATUSES + "/update.json";
+  }
+
+  public String getdeleteTweetUrl(String tweetId) {
+    return ROOT_URL_V1 + STATUSES + "/destroy/" + tweetId + ".json";
   }
 
   public String getFavoriteTweetsUrl(String userId, String maxId) {
