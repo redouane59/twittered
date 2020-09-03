@@ -33,7 +33,7 @@ public class URLHelper {
   private static final String STREAM                  = "/stream";
   private static final String THIRTY_DAYS             = "/30day";
   private static final String FULL_ARCHIVE            = "/fullarchive";
-  private static final String DEV_ENV_NAME            = "/dev"; // @todo config
+  private static final String DEV_ENV_NAME            = "/30days"; // @todo config
   private static final String ACCOUNT_ACTIVITY        = "/account_activity/all";
   private static final String WEBHOOKS                = "/webhooks";
   private static final String USER_ID                 = "user_id";

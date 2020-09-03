@@ -106,14 +106,14 @@ public class UrlHelperTest {
   @Test
   public void testSearchTweetsUrl() {
     //https://api.twitter.com/1.1/tweets/search/30day/DevImproveMyTwitter.json
-    assertEquals("https://api.twitter.com/1.1/tweets/search/30day/dev.json",
+    assertEquals("https://api.twitter.com/1.1/tweets/search/30day/30days.json",
                  URLHelper.SEARCH_TWEET_30_DAYS_URL);
   }
 
   @Test
   public void testSearchTweetsUrlFull() {
     // /search/fullarchive/:label.json
-    assertEquals("https://api.twitter.com/1.1/tweets/search/fullarchive/dev.json",
+    assertEquals("https://api.twitter.com/1.1/tweets/search/fullarchive/30days.json",
                  URLHelper.SEARCH_TWEET_FULL_ARCHIVE_URL);
   }
 
@@ -141,7 +141,7 @@ public class UrlHelperTest {
   @Test
   public void testLiveEventUrl() {
     //https://api.twitter.com/1.1/account_activity/all/:env_name/webhooks.json
-    assertEquals("https://api.twitter.com/1.1/account_activity/all/dev/webhooks.json",
+    assertEquals("https://api.twitter.com/1.1/account_activity/all/30days/webhooks.json",
                  URLHelper.LIVE_EVENT_URL);
   }
 

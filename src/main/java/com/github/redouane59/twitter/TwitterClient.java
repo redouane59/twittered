@@ -426,7 +426,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     int                 count      = 100;
     Map<String, String> parameters = new HashMap<>();
     parameters.put("query", query);
-    parameters.put("max_results", String.valueOf(count));
+    parameters.put("maxResults", String.valueOf(count));
     parameters.put("fromDate", ConverterHelper.getStringFromDate(fromDate));
     parameters.put("toDate", ConverterHelper.getStringFromDate(toDate));
     String      next;
@@ -434,7 +434,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     do {
       Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.requestHelperV2.getRequestWithParameters(
           URLHelper.SEARCH_TWEET_30_DAYS_URL, parameters, TweetSearchResponseV1.class);
-      if (tweetSearchV1DTO.isEmpty()) {
+      if (tweetSearchV1DTO.isEmpty() || tweetSearchV1DTO.get().getResults() == null) {
         LOGGER.error("empty response on searchForTweetsWithin30days");
         break;
       }
