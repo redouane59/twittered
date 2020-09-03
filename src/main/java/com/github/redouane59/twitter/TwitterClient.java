@@ -375,7 +375,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(
           URLHelper.SEARCH_TWEET_7_DAYS_URL, parameters, TweetSearchResponseV2.class);
       if (tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData() == null) {
-        LOGGER.error("empty response on searchForTweetsWithin7days");
+        LOGGER.warn("empty response on searchForTweetsWithin7days");
         break;
       }
       result.addAll(tweetSearchV2DTO.get().getData());
@@ -414,7 +414,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(
         URLHelper.SEARCH_TWEET_7_DAYS_URL, parameters, TweetSearchResponseV2.class);
     if (tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData() == null) {
-      LOGGER.error("empty response on searchForTweetsWithin7days");
+      LOGGER.warn("empty response on searchForTweetsWithin7days");
       return new TweetSearchResponse(new ArrayList<>(), null);
     }
     List<Tweet> result = new ArrayList<>(tweetSearchV2DTO.get().getData());
@@ -422,7 +422,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public List<Tweet> searchForTweetsWithin30days(String query, LocalDateTime fromDate, LocalDateTime toDate) {
+  public List<Tweet> searchForTweetsWithin30days(String query, LocalDateTime fromDate, LocalDateTime toDate, String envName) {
     int                 count      = 100;
     Map<String, String> parameters = new HashMap<>();
     parameters.put("query", query);
@@ -433,9 +433,9 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     List<Tweet> result = new ArrayList<>();
     do {
       Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.requestHelperV2.getRequestWithParameters(
-          URLHelper.SEARCH_TWEET_30_DAYS_URL, parameters, TweetSearchResponseV1.class);
+          urlHelper.getSearchTweet30DaysUrl(envName), parameters, TweetSearchResponseV1.class);
       if (tweetSearchV1DTO.isEmpty() || tweetSearchV1DTO.get().getResults() == null) {
-        LOGGER.error("empty response on searchForTweetsWithin30days");
+        LOGGER.warn("empty response on searchForTweetsWithin30days");
         break;
       }
       result.addAll(tweetSearchV1DTO.get().getResults());
@@ -447,7 +447,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public List<Tweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate) {
+  public List<Tweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate, String envName) {
     int                 count      = 100;
     Map<String, String> parameters = new HashMap<>();
     parameters.put("query", query);
@@ -458,7 +458,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     List<Tweet> result = new ArrayList<>();
     do {
       Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.requestHelperV2.getRequestWithParameters(
-          URLHelper.SEARCH_TWEET_FULL_ARCHIVE_URL, parameters, TweetSearchResponseV1.class);
+          urlHelper.getSearchTweetFullArchiveUrl(envName), parameters, TweetSearchResponseV1.class);
       if (tweetSearchV1DTO.isEmpty()) {
         LOGGER.error("empty response on searchForTweetsArchive");
         break;

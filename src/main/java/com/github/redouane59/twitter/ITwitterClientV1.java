@@ -156,9 +156,10 @@ public interface ITwitterClientV1 {
    * @param query the search query
    * @param fromDate the start date
    * @param toDate the end date
+   * @param envName name of the premium environment. See https://developer.twitter.com/en/account/environments
    * @return a list of tweets
    */
-  List<Tweet> searchForTweetsWithin30days(String query, LocalDateTime fromDate, LocalDateTime toDate);
+  List<Tweet> searchForTweetsWithin30days(String query, LocalDateTime fromDate, LocalDateTime toDate, String envName);
 
   /**
    * Search historic tweets calling https://api.twitter.com/1.1/tweets/search/fullarchive/dev.json Your development environment name should be "dev".
@@ -167,10 +168,11 @@ public interface ITwitterClientV1 {
    * @param query the search query
    * @param fromDate the start date
    * @param toDate the end date
+   * @param envName name of the premium environment. See https://developer.twitter.com/en/account/environments
    * @return a list of tweets
    */
-  
-  List<Tweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate);
+
+  List<Tweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate, String envName);
 
   /**
    * Get token and secret token (oAuth1) calling https://api.twitter.com/oauth/request_token

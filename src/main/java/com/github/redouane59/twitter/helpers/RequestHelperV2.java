@@ -47,15 +47,14 @@ public class RequestHelperV2 extends AbstractRequestHelper {
       String   newUrl         = httpBuilder.build().url().toString();
       Response response       = this.getHttpClient(newUrl).newCall(request).execute();
       String   stringResponse = response.body().string();
-      if (response.code() < 200 || response.code() > 299) {
-        LOGGER.error("(POST) Error calling " + url + " " + stringResponse + " - " + response.code());
-      }
       if (response.code() == 429) {
         this.wait(stringResponse, url);
         return this.getRequestWithParameters(url, parameters, classType);
       } else if (response.code() == 401) {
         LOGGER.info("Error 401, user may be private");
         return Optional.empty();
+      } else if (response.code() < 200 || response.code() > 299) {
+        LOGGER.error("(POST) Error calling " + url + " " + stringResponse + " - " + response.code());
       }
       result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
     } catch (Exception e) {
