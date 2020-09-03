@@ -179,7 +179,7 @@ public class ITwitterClientV1Test {
   public void testSearchTweets30days() {
     List<Tweet>
         result =
-        twitterClient.searchForTweetsWithin30days("@RedTheOne -RT", LocalDateTime.of(2020, 9, 1, 0, 0), LocalDateTime.of(2020, 9, 3, 0, 0));
+        twitterClient.searchForTweetsWithin30days("@RedTheOne -RT", LocalDateTime.of(2020, 9, 1, 0, 0), LocalDateTime.of(2020, 9, 3, 0, 0), "30days");
     assertTrue(result.size() > 0);
   }
 

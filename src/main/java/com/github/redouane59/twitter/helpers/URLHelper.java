@@ -33,7 +33,6 @@ public class URLHelper {
   private static final String STREAM                  = "/stream";
   private static final String THIRTY_DAYS             = "/30day";
   private static final String FULL_ARCHIVE            = "/fullarchive";
-  private static final String DEV_ENV_NAME            = "/30days"; // @todo config
   private static final String ACCOUNT_ACTIVITY        = "/account_activity/all";
   private static final String WEBHOOKS                = "/webhooks";
   private static final String USER_ID                 = "user_id";
@@ -57,13 +56,22 @@ public class URLHelper {
   public static final  String LAST_TWEET_LIST_URL     = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
   public static final  String RATE_LIMIT_URL          = ROOT_URL_V1 + "/application/rate_limit_status.json";
   ;
-  public static final String SEARCH_TWEET_30_DAYS_URL      = ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + DEV_ENV_NAME + JSON;
-  public static final String SEARCH_TWEET_FULL_ARCHIVE_URL = ROOT_URL_V1 + TWEETS + SEARCH + FULL_ARCHIVE + DEV_ENV_NAME + JSON;
-  public static final String SEARCH_TWEET_STANDARD_URL     = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
-  public static final String LIVE_EVENT_URL                = ROOT_URL_V1 + ACCOUNT_ACTIVITY + DEV_ENV_NAME + WEBHOOKS + JSON;
-  public static final String SEARCH_TWEET_7_DAYS_URL       = ROOT_URL_V2 + TWEETS + SEARCH + "/recent";
-  public static final String GET_BEARER_TOKEN_URL          = "https://api.twitter.com/oauth2/token";
-  public static final String GET_OAUTH1_TOKEN_URL          = "https://api.twitter.com/oauth/request_token";
+  public static final String SEARCH_TWEET_STANDARD_URL = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
+  public static final String SEARCH_TWEET_7_DAYS_URL   = ROOT_URL_V2 + TWEETS + SEARCH + "/recent";
+  public static final String GET_BEARER_TOKEN_URL      = "https://api.twitter.com/oauth2/token";
+  public static final String GET_OAUTH1_TOKEN_URL      = "https://api.twitter.com/oauth/request_token";
+
+  public String getSearchTweet30DaysUrl(String envName) {
+    return ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + "/" + envName + JSON;
+  }
+
+  public String getSearchTweetFullArchiveUrl(String envName) {
+    return ROOT_URL_V1 + TWEETS + SEARCH + FULL_ARCHIVE + "/" + envName + JSON;
+  }
+
+  public String getLiveEventUrl(String envName) {
+    return ROOT_URL_V1 + ACCOUNT_ACTIVITY + "/" + envName + WEBHOOKS + JSON;
+  }
 
   public String getFollowUrl(String userId) {
     return ROOT_URL_V1 +
