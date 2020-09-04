@@ -199,8 +199,13 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testRetrieveFilteredStreamUrl() {
+  public void testFilteredStreamUrl() {
     assertEquals("https://api.twitter.com/2/tweets/search/stream", urlHelper.getFilteredStreamUrl());
+  }
+
+  @Test
+  public void testSampledStreamUrl() {
+    assertEquals("https://api.twitter.com/2/tweets/sample/stream", urlHelper.getSampledStreamUrl());
   }
 
   @Test

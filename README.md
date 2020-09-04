@@ -15,7 +15,7 @@ In your pom.xml, add the following dependency :
 <dependency>
   <groupId>com.github.redouane59.twitter</groupId>
   <artifactId>twittered</artifactId>
-  <version>1.7</version>
+  <version>1.8</version>
 </dependency>
 ```
 In order to use your own developer credentials, you have several options :
