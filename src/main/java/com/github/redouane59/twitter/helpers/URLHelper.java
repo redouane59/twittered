@@ -30,6 +30,7 @@ public class URLHelper {
   private static final String USERS                   = "/users";
   private static final String TWEETS                  = "/tweets";
   private static final String SEARCH                  = "/search";
+  private static final String SAMPLE                  = "/sample";
   private static final String STREAM                  = "/stream";
   private static final String THIRTY_DAYS             = "/30day";
   private static final String FULL_ARCHIVE            = "/fullarchive";
@@ -297,4 +298,7 @@ public class URLHelper {
     return ROOT_URL_V2 + TWEETS + SEARCH + STREAM;
   }
 
+  public String getSampledStreamUrl() {
+    return ROOT_URL_V2 + TWEETS + SAMPLE + STREAM;
+  }
 }

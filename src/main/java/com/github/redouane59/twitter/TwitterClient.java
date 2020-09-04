@@ -510,6 +510,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
+  public void startSampledStream(Consumer<Tweet> consumer) {
+    String url = this.urlHelper.getSampledStreamUrl();
+    this.requestHelperV2.getAsyncRequest(url, consumer);
+  }
+
+  @Override
   public List<TweetV1> readTwitterDataFile(File file) throws IOException {
     SimpleModule module = new SimpleModule();
     module.addDeserializer(TweetV1.class, new TweetV1Deserializer());
