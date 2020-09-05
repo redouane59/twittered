@@ -83,9 +83,12 @@ public class RequestHelperV2 extends AbstractRequestHelper {
         Buffer buffer = new Buffer();
         while (!response.body().source().exhausted()) {
           response.body().source().read(buffer, 8192);
-          String  content = new String(buffer.readByteArray());
-          TweetV2 tweet   = TwitterClient.OBJECT_MAPPER.readValue(content, TweetV2.class);
-          consumer.accept(tweet);
+          String content = new String(buffer.readByteArray());
+          try {
+            TweetV2 tweet = TwitterClient.OBJECT_MAPPER.readValue(content, TweetV2.class);
+            consumer.accept(tweet);
+          } catch (Exception e) {
+          }
         }
       }
     });
