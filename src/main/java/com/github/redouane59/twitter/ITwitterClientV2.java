@@ -145,5 +145,10 @@ public interface ITwitterClientV2 {
    */
   String getBearerToken();
 
+  /**
+   * Stream about 1% of all tweets calling https://api.twitter.com/2/tweets/sample/stream
+   */
+  void startSampledStream(Consumer<Tweet> consumer);
+
 }
 

@@ -104,20 +104,6 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testSearchTweetsUrl() {
-    //https://api.twitter.com/1.1/tweets/search/30day/DevImproveMyTwitter.json
-    assertEquals("https://api.twitter.com/1.1/tweets/search/30day/dev.json",
-                 URLHelper.SEARCH_TWEET_30_DAYS_URL);
-  }
-
-  @Test
-  public void testSearchTweetsUrlFull() {
-    // /search/fullarchive/:label.json
-    assertEquals("https://api.twitter.com/1.1/tweets/search/fullarchive/dev.json",
-                 URLHelper.SEARCH_TWEET_FULL_ARCHIVE_URL);
-  }
-
-  @Test
   public void testSearchTweetsUrlStandard() {
     https:
 //api.twitter.com/1.1/search/tweets.json
@@ -136,13 +122,6 @@ public class UrlHelperTest {
   public void testUnfollowByUserId() {
     assertEquals("https://api.twitter.com/1.1/friendships/destroy.json?user_id=12345",
                  urlHelper.getUnfollowUrl("12345"));
-  }
-
-  @Test
-  public void testLiveEventUrl() {
-    //https://api.twitter.com/1.1/account_activity/all/:env_name/webhooks.json
-    assertEquals("https://api.twitter.com/1.1/account_activity/all/dev/webhooks.json",
-                 URLHelper.LIVE_EVENT_URL);
   }
 
   @Test
@@ -220,7 +199,29 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testRetrieveFilteredStreamUrl() {
+  public void testFilteredStreamUrl() {
     assertEquals("https://api.twitter.com/2/tweets/search/stream", urlHelper.getFilteredStreamUrl());
   }
+
+  @Test
+  public void testSampledStreamUrl() {
+    assertEquals("https://api.twitter.com/2/tweets/sample/stream", urlHelper.getSampledStreamUrl());
+  }
+
+  @Test
+  public void testSearchFullArchiveUrl() {
+    assertEquals("https://api.twitter.com/1.1/tweets/search/fullarchive/dev.json", urlHelper.getSearchTweetFullArchiveUrl("dev"));
+  }
+
+  @Test
+  public void testSearch30daysUrl() {
+    assertEquals("https://api.twitter.com/1.1/tweets/search/30day/dev.json", urlHelper.getSearchTweet30DaysUrl("dev"));
+  }
+
+  @Test
+  public void testLiveEventUrl() {
+    assertEquals("https://api.twitter.com/1.1/account_activity/all/dev/webhooks.json",
+                 urlHelper.getLiveEventUrl("dev"));
+  }
+
 }

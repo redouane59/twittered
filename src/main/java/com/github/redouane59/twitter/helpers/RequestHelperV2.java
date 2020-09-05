@@ -53,8 +53,9 @@ public class RequestHelperV2 extends AbstractRequestHelper {
       } else if (response.code() == 401) {
         LOGGER.info("Error 401, user may be private");
         return Optional.empty();
+      } else if (response.code() < 200 || response.code() > 299) {
+        LOGGER.error("(POST) Error calling " + url + " " + stringResponse + " - " + response.code());
       }
-      LOGGER.info(stringResponse);
       result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
     } catch (Exception e) {
       LOGGER.error(e.getMessage());
