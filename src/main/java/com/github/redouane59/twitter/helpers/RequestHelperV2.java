@@ -44,9 +44,10 @@ public class RequestHelperV2 extends AbstractRequestHelper {
           .get()
           .headers(Headers.of("Authorization", "Bearer " + bearerToken))
           .build();
-      String   newUrl         = httpBuilder.build().url().toString();
-      Response response       = this.getHttpClient(newUrl).newCall(request).execute();
-      String   stringResponse = response.body().string();
+      String       newUrl         = httpBuilder.build().url().toString();
+      OkHttpClient client         = this.getHttpClient(newUrl);
+      Response     response       = client.newCall(request).execute();
+      String       stringResponse = response.body().string();
       if (response.code() == 429) {
         this.wait(stringResponse, url);
         return this.getRequestWithParameters(url, parameters, classType);
@@ -57,6 +58,9 @@ public class RequestHelperV2 extends AbstractRequestHelper {
         LOGGER.error("(POST) Error calling " + url + " " + stringResponse + " - " + response.code());
       }
       result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
+      client.dispatcher().executorService().shutdown();
+      client.connectionPool().evictAll();
+      client.cache().close();
     } catch (Exception e) {
       LOGGER.error(e.getMessage());
     }
