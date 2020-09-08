@@ -249,7 +249,7 @@ public class TweetV2 implements Tweet {
   @Override
   public TweetType getTweetType() {
     if (this.data == null || this.data.referencedTweets == null || this.data.referencedTweets.size() == 0) {
-      return null;
+      return TweetType.DEFAULT;
     }
     return this.data.getReferencedTweets().get(0).getType();
   }
