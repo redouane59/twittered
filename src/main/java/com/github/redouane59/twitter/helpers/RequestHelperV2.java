@@ -44,9 +44,9 @@ public class RequestHelperV2 extends AbstractRequestHelper {
           .get()
           .headers(Headers.of("Authorization", "Bearer " + bearerToken))
           .build();
-      String   newUrl         = httpBuilder.build().url().toString();
-      Response response       = this.getHttpClient(newUrl).newCall(request).execute();
-      String   stringResponse = response.body().string();
+      OkHttpClient client         = this.getHttpClient(httpBuilder.build().url().toString());
+      Response     response       = client.newCall(request).execute();
+      String       stringResponse = response.body().string();
       if (response.code() == 429) {
         this.wait(stringResponse, url);
         return this.getRequestWithParameters(url, parameters, classType);
@@ -122,12 +122,14 @@ public class RequestHelperV2 extends AbstractRequestHelper {
           .method("POST", RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), body))
           .headers(Headers.of(headersMap))
           .build();
-      Response response = new OkHttpClient.Builder().build().newCall(request).execute();
+      OkHttpClient client   = new OkHttpClient.Builder().build();
+      Response     response = client.newCall(request).execute();
       if (response.code() < 200 || response.code() > 299) {
         LOGGER.error("(POST) Error calling " + url + " " + response.message() + " - " + response.code());
       }
       String stringResponse = response.body().string();
       result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
+      client.connectionPool().evictAll();
     } catch (Exception e) {
       LOGGER.error(e.getMessage());
     }
