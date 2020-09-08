@@ -97,7 +97,7 @@ public class TweetV2 implements Tweet {
     @Override
     public TweetType getTweetType() {
       if (this.referencedTweets.size() == 0) {
-        return null;
+        return TweetType.DEFAULT;
       }
       return this.referencedTweets.get(0).getType();
     }
