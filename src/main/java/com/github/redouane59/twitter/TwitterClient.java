@@ -541,7 +541,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     params.put("Authorization", "Basic " + cryptedValue);
     params.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
     String body = "grant_type=client_credentials";
-    BearerToken result = this.requestHelperV2
+    BearerToken result = requestHelperV2
         .postRequestWithHeader(url, params, body, BearerToken.class).orElseThrow(NoSuchElementException::new);
     return result.getAccessToken();
   }
