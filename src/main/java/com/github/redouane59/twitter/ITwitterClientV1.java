@@ -191,7 +191,7 @@ public interface ITwitterClientV1 {
   /**
    * Get the mentions from timeline calling https://api.twitter.com/1.1/statuses/mentions_timeline.json
    *
-   * @param count the number of mentions to retrieve
+   * @param count Specifies the number of Tweets to try and retrieve, up to a maximum of 200.
    * @param maxId Returns results with an ID less than (that is, older than) or equal to the specified ID.
    * @return the list of related mentions
    */
