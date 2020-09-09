@@ -64,7 +64,35 @@ public class RequestHelper extends AbstractRequestHelper {
                               .newCall(signedRequest).execute();
       String stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
-        LOGGER.error("(POST) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
+        LOGGER.error("(PUT) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
+        if (response.code() == 429) {
+          LOGGER.error("Reset your token");
+        }
+      }
+      if (classType.equals(String.class)) { // dirty, to manage token oauth1
+        result = (T) stringResponse;
+      } else {
+        result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
+      }
+    } catch (Exception e) {
+      LOGGER.error(e.getMessage());
+    }
+    return Optional.ofNullable(result);
+  }
+
+  public <T> Optional<T> getRequest(String url, Class<T> classType) {
+    T result = null;
+    try {
+      Request request = new Request.Builder()
+          .url(url)
+          .get()
+          .build();
+      Request signedRequest = this.getSignedRequest(request);
+      Response response = this.getHttpClient(url)
+                              .newCall(signedRequest).execute();
+      String stringResponse = response.body().string();
+      if (response.code() < 200 || response.code() > 299) {
+        LOGGER.error("(GET) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
         if (response.code() == 429) {
           LOGGER.error("Reset your token");
         }

@@ -183,6 +183,17 @@ public class ITwitterClientV1Test {
     assertTrue(result.size() > 0);
   }
 
+  @Test
+  public void testGetMentionsTimeline() {
+    List<Tweet> result = twitterClient.getMentionsTimeline();
+    assertTrue(result.size() > 0);
+  }
+
+  @Test
+  public void testGetMentionsTimelineWithMaxId() {
+    List<Tweet> result = twitterClient.getMentionsTimeline(10, "1302072684629590016");
+    assertTrue(result.size() > 0);
+  }
         /*
 
     @Test

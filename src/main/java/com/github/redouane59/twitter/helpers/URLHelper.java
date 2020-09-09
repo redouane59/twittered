@@ -301,4 +301,14 @@ public class URLHelper {
   public String getSampledStreamUrl() {
     return ROOT_URL_V2 + TWEETS + SAMPLE + STREAM;
   }
+
+  public String getMentionsTimelinerl(int count) {
+    return ROOT_URL_V1 + STATUSES + "/mentions_timeline.json?include_entities=true&" + COUNT + "=" + count;
+  }
+
+  public String getMentionsTimelinerl(int count, String maxId) {
+    return ROOT_URL_V1 + STATUSES + "/mentions_timeline.json?include_entities=true&"
+           + COUNT + "=" + count
+           + "&max_id=" + maxId;
+  }
 }

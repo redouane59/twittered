@@ -224,4 +224,16 @@ public class UrlHelperTest {
                  urlHelper.getLiveEventUrl("dev"));
   }
 
+  @Test
+  public void testGetMentionsTimelineUrl() {
+    assertEquals("https://api.twitter.com/1.1/statuses/mentions_timeline.json?include_entities=true&count=200",
+                 urlHelper.getMentionsTimelinerl(200));
+  }
+
+  @Test
+  public void testGetMentionsTimelineUrlWithMaxId() {
+    assertEquals("https://api.twitter.com/1.1/statuses/mentions_timeline.json?include_entities=true&count=10&max_id=12345",
+                 urlHelper.getMentionsTimelinerl(10, "12345"));
+  }
+
 }

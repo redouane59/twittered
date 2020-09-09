@@ -516,6 +516,20 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
+  public List<Tweet> getMentionsTimeline() {
+    int    maxCount = 200;
+    String url      = this.urlHelper.getMentionsTimelinerl(maxCount);
+    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
+  }
+
+  @Override
+  public List<Tweet> getMentionsTimeline(int count, String maxId) {
+    String url = this.urlHelper.getMentionsTimelinerl(count, maxId);
+    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
+  }
+
+
+  @Override
   public List<TweetV1> readTwitterDataFile(File file) throws IOException {
     SimpleModule module = new SimpleModule();
     module.addDeserializer(TweetV1.class, new TweetV1Deserializer());
