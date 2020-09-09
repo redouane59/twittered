@@ -107,23 +107,7 @@ public class ITwitterClientV1Test {
     String tweetId = "1078358350000205824";
     assertTrue(twitterClient.getRetweetersId(tweetId).size() > 10);
   }
-
-  @Test
-  public void testGetLastTweetByUserName() {
-    String      userName = "RedTheOne";
-    List<Tweet> response = twitterClient.getUserLastTweets(userName, 2);
-    assertTrue(response.get(0).getLang().equals("fr")
-               || response.get(1).getLang().equals("fr"));
-  }
-
-  @Test
-  public void testGetLastTweetByUserId() {
-    String      userId   = "92073489";
-    List<Tweet> response = twitterClient.getUserLastTweets(userId, 3);
-    assertTrue(response.get(0).getLang().equals("fr")
-               || response.get(1).getLang().equals("fr"));
-  }
-
+  
   @Test
   public void testGetOauth1Token() {
     TwitterClient.TWITTER_CREDENTIALS.setAccessToken("");

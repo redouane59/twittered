@@ -153,7 +153,7 @@ public class ITwitterClientV2Test {
   public void testGetTweetType() {
     assertEquals(TweetType.QUOTED, twitterClient.getTweet("1267115291991068673").getTweetType());
     assertEquals(TweetType.REPLIED_TO, twitterClient.getTweet("1267132388632604673").getTweetType());
-    assertEquals(null, twitterClient.getTweet("1267010053040672768").getTweetType());
+    assertEquals(TweetType.DEFAULT, twitterClient.getTweet("1267010053040672768").getTweetType());
   }
 
   @Test

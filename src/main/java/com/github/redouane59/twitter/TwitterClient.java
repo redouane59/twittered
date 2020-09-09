@@ -266,13 +266,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public List<Tweet> getUserLastTweets(String userId, int count) {
-    String    url      = this.getUrlHelper().getUserTweetsUrl(userId, count);
-    TweetV1[] response = this.requestHelperV2.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new);
-    return List.of(response);
-  }
-
-  @Override
   public RateLimitStatus getRateLimitStatus() {
     String url = URLHelper.RATE_LIMIT_URL;
     return this.requestHelperV2.getRequest(url, RateLimitStatus.class).orElseThrow(NoSuchElementException::new);

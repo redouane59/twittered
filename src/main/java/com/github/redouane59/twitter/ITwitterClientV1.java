@@ -132,15 +132,6 @@ public interface ITwitterClientV1 {
   RateLimitStatus getRateLimitStatus();
 
   /**
-   * Get the last tweets of a user calling https://api.twitter.com/1.1/statuses/
-   *
-   * @param userId the id of the user
-   * @param count the number of tweets
-   * @return a list of the user last tweets
-   */
-  List<Tweet> getUserLastTweets(String userId, int count);
-
-  /**
    * Get the most recent Tweets liked calling https://api.twitter.com/1.1/favorites/list.json
    *
    * @param userId id of the user
