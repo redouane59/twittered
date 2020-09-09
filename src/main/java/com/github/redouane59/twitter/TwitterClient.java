@@ -518,13 +518,26 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public List<Tweet> getMentionsTimeline() {
     int    maxCount = 200;
-    String url      = this.urlHelper.getMentionsTimelinerl(maxCount);
+    String url      = this.urlHelper.getMentionsTimelineUrl(maxCount);
     return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
   }
 
   @Override
   public List<Tweet> getMentionsTimeline(int count, String maxId) {
-    String url = this.urlHelper.getMentionsTimelinerl(count, maxId);
+    String url = this.urlHelper.getMentionsTimelineUrl(count, maxId);
+    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
+  }
+
+  @Override
+  public List<Tweet> getUserTimeline(final String userId) {
+    int    maxCount = 200;
+    String url      = this.urlHelper.getUserTimelineUrl(userId, maxCount);
+    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
+  }
+
+  @Override
+  public List<Tweet> getUserTimeline(final String userId, final int count, final String maxId) {
+    String url = this.urlHelper.getUserTimelineUrl(userId, count, maxId);
     return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
   }
 

@@ -194,7 +194,21 @@ public class ITwitterClientV1Test {
     List<Tweet> result = twitterClient.getMentionsTimeline(10, "1302072684629590016");
     assertTrue(result.size() > 0);
   }
-        /*
+
+  @Test
+  public void testGetUserTimeline() {
+    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513");
+    assertTrue(result.size() > 0);
+  }
+
+  @Test
+  public void testGetUserTimelineWithMaxId() {
+    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 10, "1300007914674040832");
+    assertTrue(result.size() > 0);
+  }
+
+
+  /*
 
     @Test
     public void testSearchTweetsArchive(){
