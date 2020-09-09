@@ -8,7 +8,8 @@ public enum TweetType {
   @JsonProperty("quoted")
   QUOTED("quoted"),
   @JsonProperty("replied_to")
-  REPLIED_TO("replied_to");
+  REPLIED_TO("replied_to"),
+  DEFAULT("default");
 
   public final String label;
 
