@@ -224,4 +224,10 @@ public class UrlHelperTest {
                  urlHelper.getLiveEventUrl("dev"));
   }
 
+  @Test
+  public void testGetMentionsTimelineUrl() {
+    assertEquals("https://api.twitter.com/1.1/statuses/mentions_timeline.json?&mentions_timeline.json?include_entities=true&count=200",
+                 urlHelper.getMentionsTimelinerl(200));
+  }
+
 }
