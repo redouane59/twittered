@@ -80,8 +80,7 @@ public class RequestHelper extends AbstractRequestHelper {
     return Optional.ofNullable(result);
   }
 
-  public <T> Optional<T>
-  getRequest(String url, Class<T> classType) {
+  public <T> Optional<T> getRequest(String url, Class<T> classType) {
     T result = null;
     try {
       Request request = new Request.Builder()
