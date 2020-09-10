@@ -75,6 +75,17 @@ public interface ITwitterClientV1 {
   Tweet postTweet(String text);
 
   /**
+   * Post a tweet calling https://api.twitter.com/1.1/statuses/update.json
+   *
+   * @param text the tweet text
+   * @param inReplyToStatusId the id of the tweet to answer. Note: This parameter will be ignored unless the author of the Tweet this parameter
+   * references is mentioned within the status text. Therefore, you must include @username , where username is the author of the referenced Tweet,
+   * within the update.
+   * @return the created tweet
+   */
+  Tweet postTweet(String text, String inReplyToStatusId);
+
+  /**
    * Delete a tweet calling https://api.twitter.com/1.1/statuses/destroy/:id.json
    *
    * @param tweetId the id of the tweet
