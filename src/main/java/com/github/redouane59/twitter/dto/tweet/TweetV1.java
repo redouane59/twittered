@@ -64,7 +64,7 @@ public class TweetV1 implements Tweet {
     if (this.isQuoteStatus) {
       return TweetType.QUOTED;
     }
-    return null;
+    return TweetType.DEFAULT;
   }
 
   @Override

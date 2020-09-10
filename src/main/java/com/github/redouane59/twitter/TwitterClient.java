@@ -266,13 +266,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public List<Tweet> getUserLastTweets(String userId, int count) {
-    String    url      = this.getUrlHelper().getUserTweetsUrl(userId, count);
-    TweetV1[] response = this.requestHelperV2.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new);
-    return List.of(response);
-  }
-
-  @Override
   public RateLimitStatus getRateLimitStatus() {
     String url = URLHelper.RATE_LIMIT_URL;
     return this.requestHelperV2.getRequest(url, RateLimitStatus.class).orElseThrow(NoSuchElementException::new);
@@ -514,6 +507,33 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String url = this.urlHelper.getSampledStreamUrl();
     this.requestHelperV2.getAsyncRequest(url, consumer);
   }
+
+  @Override
+  public List<Tweet> getMentionsTimeline() {
+    int    maxCount = 200;
+    String url      = this.urlHelper.getMentionsTimelineUrl(maxCount);
+    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
+  }
+
+  @Override
+  public List<Tweet> getMentionsTimeline(int count, String maxId) {
+    String url = this.urlHelper.getMentionsTimelineUrl(count, maxId);
+    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
+  }
+
+  @Override
+  public List<Tweet> getUserTimeline(final String userId) {
+    int    maxCount = 200;
+    String url      = this.urlHelper.getUserTimelineUrl(userId, maxCount);
+    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
+  }
+
+  @Override
+  public List<Tweet> getUserTimeline(final String userId, final int count, final String maxId) {
+    String url = this.urlHelper.getUserTimelineUrl(userId, count, maxId);
+    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
+  }
+
 
   @Override
   public List<TweetV1> readTwitterDataFile(File file) throws IOException {

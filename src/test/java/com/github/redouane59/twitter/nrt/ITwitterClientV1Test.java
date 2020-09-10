@@ -107,23 +107,7 @@ public class ITwitterClientV1Test {
     String tweetId = "1078358350000205824";
     assertTrue(twitterClient.getRetweetersId(tweetId).size() > 10);
   }
-
-  @Test
-  public void testGetLastTweetByUserName() {
-    String      userName = "RedTheOne";
-    List<Tweet> response = twitterClient.getUserLastTweets(userName, 2);
-    assertTrue(response.get(0).getLang().equals("fr")
-               || response.get(1).getLang().equals("fr"));
-  }
-
-  @Test
-  public void testGetLastTweetByUserId() {
-    String      userId   = "92073489";
-    List<Tweet> response = twitterClient.getUserLastTweets(userId, 3);
-    assertTrue(response.get(0).getLang().equals("fr")
-               || response.get(1).getLang().equals("fr"));
-  }
-
+  
   @Test
   public void testGetOauth1Token() {
     TwitterClient.TWITTER_CREDENTIALS.setAccessToken("");
@@ -183,7 +167,32 @@ public class ITwitterClientV1Test {
     assertTrue(result.size() > 0);
   }
 
-        /*
+  @Test
+  public void testGetMentionsTimeline() {
+    List<Tweet> result = twitterClient.getMentionsTimeline();
+    assertTrue(result.size() > 0);
+  }
+
+  @Test
+  public void testGetMentionsTimelineWithMaxId() {
+    List<Tweet> result = twitterClient.getMentionsTimeline(10, "1302072684629590016");
+    assertTrue(result.size() > 0);
+  }
+
+  @Test
+  public void testGetUserTimeline() {
+    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513");
+    assertTrue(result.size() > 0);
+  }
+
+  @Test
+  public void testGetUserTimelineWithMaxId() {
+    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 10, "1300007914674040832");
+    assertTrue(result.size() > 0);
+  }
+
+
+  /*
 
     @Test
     public void testSearchTweetsArchive(){

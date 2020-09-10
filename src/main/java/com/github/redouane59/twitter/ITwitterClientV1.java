@@ -132,15 +132,6 @@ public interface ITwitterClientV1 {
   RateLimitStatus getRateLimitStatus();
 
   /**
-   * Get the last tweets of a user calling https://api.twitter.com/1.1/statuses/
-   *
-   * @param userId the id of the user
-   * @param count the number of tweets
-   * @return a list of the user last tweets
-   */
-  List<Tweet> getUserLastTweets(String userId, int count);
-
-  /**
    * Get the most recent Tweets liked calling https://api.twitter.com/1.1/favorites/list.json
    *
    * @param userId id of the user
@@ -180,6 +171,41 @@ public interface ITwitterClientV1 {
    * @return and object containing the oauth token and the oauth token secret
    */
   RequestToken getOauth1Token();
+
+  /**
+   * Get the last 200 mentions from timeline calling https://api.twitter.com/1.1/statuses/mentions_timeline.json
+   *
+   * @return the list of most recent 200 mentions
+   */
+  List<Tweet> getMentionsTimeline();
+
+  /**
+   * Get the mentions from timeline calling https://api.twitter.com/1.1/statuses/mentions_timeline.json
+   *
+   * @param count Specifies the number of Tweets to try and retrieve, up to a maximum of 200.
+   * @param maxId Returns results with an ID less than (that is, older than) or equal to the specified ID.
+   * @return the list of related mentions
+   */
+  List<Tweet> getMentionsTimeline(int count, String maxId);
+
+  /**
+   * Get the 200 most recent Tweets posted by the user calling https://api.twitter.com/1.1/statuses/user_timeline.json
+   *
+   * @param userId the id of the user
+   * @return a list of the 200 most recent Tweets posted by the user
+   */
+  List<Tweet> getUserTimeline(String userId);
+
+  /**
+   * Get the most recent Tweets posted by the user calling https://api.twitter.com/1.1/statuses/user_timeline.json
+   *
+   * @param userId the id of the user
+   * @param count Specifies the number of Tweets to try and retrieve, up to a maximum of 200 per distinct request
+   * @param maxId Returns results with an ID less than (that is, older than) or equal to the specified ID.
+   * @return a list of the most recent Tweets posted by the user
+   */
+  List<Tweet> getUserTimeline(String userId, int count, String maxId);
+
 
 }
 

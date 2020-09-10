@@ -301,4 +301,22 @@ public class URLHelper {
   public String getSampledStreamUrl() {
     return ROOT_URL_V2 + TWEETS + SAMPLE + STREAM;
   }
+
+  public String getMentionsTimelineUrl(int count) {
+    return ROOT_URL_V1 + STATUSES + "/mentions_timeline.json?include_entities=true&" + COUNT + "=" + count;
+  }
+
+  public String getMentionsTimelineUrl(int count, String maxId) {
+    return ROOT_URL_V1 + STATUSES + "/mentions_timeline.json?include_entities=true&"
+           + COUNT + "=" + count
+           + "&max_id=" + maxId;
+  }
+
+  public String getUserTimelineUrl(final String userId, final int count) {
+    return ROOT_URL_V1 + STATUSES + "/user_timeline.json?user_id=" + userId + "&" + COUNT + "=" + count;
+  }
+
+  public String getUserTimelineUrl(final String userId, final int count, final String maxId) {
+    return ROOT_URL_V1 + STATUSES + "/user_timeline.json?user_id=" + userId + "&" + COUNT + "=" + count + "&max_id=" + maxId;
+  }
 }
