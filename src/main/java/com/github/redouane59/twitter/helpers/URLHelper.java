@@ -295,7 +295,7 @@ public class URLHelper {
   }
 
   public String getFilteredStreamUrl() {
-    return ROOT_URL_V2 + TWEETS + SEARCH + STREAM;
+    return ROOT_URL_V2 + TWEETS + SEARCH + STREAM + "?" + ALL_TWEET_FIELDS + "&" + ALL_USER_FIELDS;
   }
 
   public String getSampledStreamUrl() {
