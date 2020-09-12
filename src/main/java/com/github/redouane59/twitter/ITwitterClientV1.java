@@ -185,6 +185,15 @@ public interface ITwitterClientV1 {
   RequestToken getOauth1Token(String oauthCallback);
 
   /**
+   * Convert the request token into a usable access token calling https://api.twitter.com/oauth/access_token
+   *
+   * @param requestToken the token and secret token
+   * @param pinCode the oauth verifier
+   * @return the access tokens
+   */
+  RequestToken getOAuth1AccessToken(RequestToken requestToken, String pinCode);
+
+  /**
    * Get the last 200 mentions from timeline calling https://api.twitter.com/1.1/statuses/mentions_timeline.json
    *
    * @return the list of most recent 200 mentions

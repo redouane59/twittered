@@ -57,10 +57,12 @@ public class URLHelper {
   public static final  String LAST_TWEET_LIST_URL     = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
   public static final  String RATE_LIMIT_URL          = ROOT_URL_V1 + "/application/rate_limit_status.json";
   ;
-  public static final String SEARCH_TWEET_STANDARD_URL = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
-  public static final String SEARCH_TWEET_7_DAYS_URL   = ROOT_URL_V2 + TWEETS + SEARCH + "/recent";
-  public static final String GET_BEARER_TOKEN_URL      = "https://api.twitter.com/oauth2/token";
-  public static final String GET_OAUTH1_TOKEN_URL      = "https://api.twitter.com/oauth/request_token";
+  public static final String SEARCH_TWEET_STANDARD_URL   = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
+  public static final String SEARCH_TWEET_7_DAYS_URL     = ROOT_URL_V2 + TWEETS + SEARCH + "/recent";
+  public static final String GET_BEARER_TOKEN_URL        = "https://api.twitter.com/oauth2/token";
+  public static final String GET_OAUTH1_TOKEN_URL        = "https://api.twitter.com/oauth/request_token";
+  public static final String GET_OAUTH1_ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
+
 
   public String getSearchTweet30DaysUrl(String envName) {
     return ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + "/" + envName + JSON;

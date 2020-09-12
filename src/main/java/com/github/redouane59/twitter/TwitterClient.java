@@ -597,6 +597,29 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return requestToken;
   }
 
+  @Override
+  public RequestToken getOAuth1AccessToken(RequestToken requestToken, String pinCode) {
+    String              url        = URLHelper.GET_OAUTH1_ACCESS_TOKEN_URL;
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put("oauth_verifier", pinCode);
+    String              stringResponse = this.requestHelper.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
+    List<NameValuePair> responseParams = null;
+    try {
+      responseParams = URLEncodedUtils.parse(new URI("twitter.com?" + stringResponse), StandardCharsets.UTF_8.name());
+    } catch (URISyntaxException e) {
+      LOGGER.error(e.getMessage());
+    }
+    RequestToken acessToken = new RequestToken();
+    for (NameValuePair param : responseParams) {
+      if (param.getName().equals("oauth_token")) {
+        acessToken.setOauthToken(param.getValue());
+      } else if (param.getName().equals("oauth_token_secret")) {
+        acessToken.setOauthTokenSecret(param.getValue());
+      }
+    }
+    return acessToken;
+  }
+
   public static TwitterCredentials getAuthentication() {
     String credentialPath = System.getProperty("twitter.credentials.file.path");
     try {
