@@ -10,57 +10,58 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class URLHelper {
 
-  private static final String ROOT_URL_V1             = "https://api.twitter.com/1.1";
-  private static final String ROOT_URL_V2             = "https://api.twitter.com/2";
-  private static final String ROOT_URL_LABS_V2        = "https://api.twitter.com/labs/2";
-  private static final String IDS_JSON                = "/ids.json?";
-  private static final String SCREEN_NAME             = "screen_name";
-  private static final String ID                      = "id";
-  private static final String COUNT                   = "count";
-  private static final String LIST_JSON               = "/list.json?";
-  private static final String SHOW_JSON               = "/show.json?";
-  private static final String CREATE_JSON             = "/create.json?";
-  private static final String DESTROY_JSON            = "/destroy.json?";
-  private static final String RETWEETERS              = "/retweeters";
-  private static final String FOLLOWERS               = "/followers";
-  private static final String FRIENDS                 = "/friends";
-  private static final String STATUSES                = "/statuses";
-  private static final String FRIENDSHIPS             = "/friendships";
-  private static final String FAVORITES               = "/favorites";
-  private static final String USERS                   = "/users";
-  private static final String TWEETS                  = "/tweets";
-  private static final String SEARCH                  = "/search";
-  private static final String SAMPLE                  = "/sample";
-  private static final String STREAM                  = "/stream";
-  private static final String THIRTY_DAYS             = "/30day";
-  private static final String FULL_ARCHIVE            = "/fullarchive";
-  private static final String ACCOUNT_ACTIVITY        = "/account_activity/all";
-  private static final String WEBHOOKS                = "/webhooks";
-  private static final String USER_ID                 = "user_id";
-  private static final String LOOKUP_JSON             = "/lookup.json?";
-  private static final String USER_TIMELINE           = "/user_timeline.json?";
-  private static final String JSON                    = ".json";
-  private static final String TRIM_USER               = "trim_user=true";
-  private static final String EXCLUDE_RTS             = "include_rts=false";
-  private static final String USER_FORMAT_DETAILED    = "user.format=detailed";
-  private static final String TWEET_FORMAT_DETAILED   = "tweet.format=detailed";
-  private static final String EXPANSIONS_RECENT_TWEET = "expansions=most_recent_tweet_id";
-  private static final int    MAX_COUNT               = 200;
-  private static final int    RETWEET_MAX_COUNT       = 100;
-  private static final int    MAX_LOOKUP              = 100;
+  private static final String ROOT_URL_V1                 = "https://api.twitter.com/1.1";
+  private static final String ROOT_URL_V2                 = "https://api.twitter.com/2";
+  private static final String ROOT_URL_LABS_V2            = "https://api.twitter.com/labs/2";
+  private static final String IDS_JSON                    = "/ids.json?";
+  private static final String SCREEN_NAME                 = "screen_name";
+  private static final String ID                          = "id";
+  private static final String COUNT                       = "count";
+  private static final String LIST_JSON                   = "/list.json?";
+  private static final String SHOW_JSON                   = "/show.json?";
+  private static final String CREATE_JSON                 = "/create.json?";
+  private static final String DESTROY_JSON                = "/destroy.json?";
+  private static final String RETWEETERS                  = "/retweeters";
+  private static final String FOLLOWERS                   = "/followers";
+  private static final String FRIENDS                     = "/friends";
+  private static final String STATUSES                    = "/statuses";
+  private static final String FRIENDSHIPS                 = "/friendships";
+  private static final String FAVORITES                   = "/favorites";
+  private static final String USERS                       = "/users";
+  private static final String TWEETS                      = "/tweets";
+  private static final String SEARCH                      = "/search";
+  private static final String SAMPLE                      = "/sample";
+  private static final String STREAM                      = "/stream";
+  private static final String THIRTY_DAYS                 = "/30day";
+  private static final String FULL_ARCHIVE                = "/fullarchive";
+  private static final String ACCOUNT_ACTIVITY            = "/account_activity/all";
+  private static final String WEBHOOKS                    = "/webhooks";
+  private static final String USER_ID                     = "user_id";
+  private static final String LOOKUP_JSON                 = "/lookup.json?";
+  private static final String USER_TIMELINE               = "/user_timeline.json?";
+  private static final String JSON                        = ".json";
+  private static final String TRIM_USER                   = "trim_user=true";
+  private static final String EXCLUDE_RTS                 = "include_rts=false";
+  private static final String USER_FORMAT_DETAILED        = "user.format=detailed";
+  private static final String TWEET_FORMAT_DETAILED       = "tweet.format=detailed";
+  private static final String EXPANSIONS_RECENT_TWEET     = "expansions=most_recent_tweet_id";
+  private static final int    MAX_COUNT                   = 200;
+  private static final int    RETWEET_MAX_COUNT           = 100;
+  private static final int    MAX_LOOKUP                  = 100;
   private static final String
-                              ALL_USER_FIELDS         =
+                              ALL_USER_FIELDS             =
       "user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
   private static final String
-                              ALL_TWEET_FIELDS        =
+                              ALL_TWEET_FIELDS            =
       "tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id";
-  public static final  String LAST_TWEET_LIST_URL     = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
-  public static final  String RATE_LIMIT_URL          = ROOT_URL_V1 + "/application/rate_limit_status.json";
-  ;
-  public static final String SEARCH_TWEET_STANDARD_URL = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
-  public static final String SEARCH_TWEET_7_DAYS_URL   = ROOT_URL_V2 + TWEETS + SEARCH + "/recent";
-  public static final String GET_BEARER_TOKEN_URL      = "https://api.twitter.com/oauth2/token";
-  public static final String GET_OAUTH1_TOKEN_URL      = "https://api.twitter.com/oauth/request_token";
+  public static final  String LAST_TWEET_LIST_URL         = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
+  public static final  String RATE_LIMIT_URL              = ROOT_URL_V1 + "/application/rate_limit_status.json";
+  public static final  String SEARCH_TWEET_STANDARD_URL   = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
+  public static final  String SEARCH_TWEET_7_DAYS_URL     = ROOT_URL_V2 + TWEETS + SEARCH + "/recent";
+  public static final  String GET_BEARER_TOKEN_URL        = "https://api.twitter.com/oauth2/token";
+  public static final  String GET_OAUTH1_TOKEN_URL        = "https://api.twitter.com/oauth/request_token";
+  public static final  String GET_OAUTH1_ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
+
 
   public String getSearchTweet30DaysUrl(String envName) {
     return ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + "/" + envName + JSON;
