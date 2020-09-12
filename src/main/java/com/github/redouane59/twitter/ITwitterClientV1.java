@@ -179,9 +179,10 @@ public interface ITwitterClientV1 {
   /**
    * Get token and secret token (oAuth1) calling https://api.twitter.com/oauth/request_token
    *
+   * @param oauthCallback the URL you wish your user to be redirected to when they complete the next step
    * @return and object containing the oauth token and the oauth token secret
    */
-  RequestToken getOauth1Token();
+  RequestToken getOauth1Token(String oauthCallback);
 
   /**
    * Get the last 200 mentions from timeline calling https://api.twitter.com/1.1/statuses/mentions_timeline.json

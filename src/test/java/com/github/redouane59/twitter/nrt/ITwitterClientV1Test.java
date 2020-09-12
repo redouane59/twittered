@@ -112,7 +112,7 @@ public class ITwitterClientV1Test {
   public void testGetOauth1Token() {
     TwitterClient.TWITTER_CREDENTIALS.setAccessToken("");
     TwitterClient.TWITTER_CREDENTIALS.setAccessTokenSecret("");
-    RequestToken result = twitterClient.getOauth1Token();
+    RequestToken result = twitterClient.getOauth1Token("http://twitter.com");
     assertTrue(result.getOauthToken().length() > 1);
     assertTrue(result.getOauthTokenSecret().length() > 1);
   }

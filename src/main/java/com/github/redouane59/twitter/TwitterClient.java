@@ -575,18 +575,19 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public RequestToken getOauth1Token() {
-    String url = URLHelper.GET_OAUTH1_TOKEN_URL;
-    String stringResponse = this.requestHelper.postRequest(url, new HashMap<>(), String.class)
-                                              .orElseThrow(NoSuchElementException::new);
-    List<NameValuePair> params = null;
+  public RequestToken getOauth1Token(String oauthCallback) {
+    String              url        = URLHelper.GET_OAUTH1_TOKEN_URL;
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put("oauth_callback", oauthCallback);
+    String              stringResponse = this.requestHelper.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
+    List<NameValuePair> responseParams = null;
     try {
-      params = URLEncodedUtils.parse(new URI("twitter.com?" + stringResponse), StandardCharsets.UTF_8.name());
+      responseParams = URLEncodedUtils.parse(new URI("twitter.com?" + stringResponse), StandardCharsets.UTF_8.name());
     } catch (URISyntaxException e) {
       LOGGER.error(e.getMessage());
     }
     RequestToken requestToken = new RequestToken();
-    for (NameValuePair param : params) {
+    for (NameValuePair param : responseParams) {
       if (param.getName().equals("oauth_token")) {
         requestToken.setOauthToken(param.getValue());
       } else if (param.getName().equals("oauth_token_secret")) {
