@@ -570,10 +570,17 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
+  public RequestToken getOauth1Token() {
+    return this.getOauth1Token(null);
+  }
+
+  @Override
   public RequestToken getOauth1Token(String oauthCallback) {
     String              url        = URLHelper.GET_OAUTH1_TOKEN_URL;
     Map<String, String> parameters = new HashMap<>();
-    parameters.put("oauth_callback", oauthCallback);
+    if (oauthCallback != null) {
+      parameters.put("oauth_callback", oauthCallback);
+    }
     String stringResponse = this.requestHelper.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
     return new RequestToken(stringResponse);
   }
