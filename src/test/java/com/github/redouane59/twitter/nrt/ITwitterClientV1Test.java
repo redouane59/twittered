@@ -107,14 +107,15 @@ public class ITwitterClientV1Test {
     String tweetId = "1078358350000205824";
     assertTrue(twitterClient.getRetweetersId(tweetId).size() > 10);
   }
-  
+
   @Test
   public void testGetOauth1Token() {
     TwitterClient.TWITTER_CREDENTIALS.setAccessToken("");
     TwitterClient.TWITTER_CREDENTIALS.setAccessTokenSecret("");
-    RequestToken result = twitterClient.getOauth1Token();
+    RequestToken result = twitterClient.getOauth1Token("oob");
     assertTrue(result.getOauthToken().length() > 1);
     assertTrue(result.getOauthTokenSecret().length() > 1);
+    //twitterClient.getOAuth1AccessToken(result, "12345");
   }
 
   @Test
@@ -142,6 +143,10 @@ public class ITwitterClientV1Test {
     assertNotNull(resultPost);
     assertNotNull(resultPost.getId());
     assertEquals(text, resultPost.getText());
+    Tweet resultPostAnswer = twitterClient.postTweet(text, resultPost.getId());
+    assertNotNull(resultPostAnswer);
+    assertNotNull(resultPostAnswer.getId());
+    assertEquals(resultPostAnswer.getInReplyToStatusId(), resultPost.getId());
     Tweet resultRT = twitterClient.retweetTweet(resultPost.getId());
     assertNotNull(resultRT);
     assertNotNull(resultRT.getId());
@@ -149,6 +154,9 @@ public class ITwitterClientV1Test {
     Tweet resultDelete = twitterClient.deleteTweet(resultPost.getId());
     assertNotNull(resultDelete);
     assertEquals(resultPost.getId(), resultDelete.getId());
+    Tweet resultDelete2 = twitterClient.deleteTweet(resultPostAnswer.getId());
+    assertNotNull(resultDelete2);
+    assertEquals(resultPostAnswer.getId(), resultDelete2.getId());
   }
 
   @Test

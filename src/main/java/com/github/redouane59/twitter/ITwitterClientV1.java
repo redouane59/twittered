@@ -75,6 +75,17 @@ public interface ITwitterClientV1 {
   Tweet postTweet(String text);
 
   /**
+   * Post a tweet calling https://api.twitter.com/1.1/statuses/update.json
+   *
+   * @param text the tweet text
+   * @param inReplyToStatusId the id of the tweet to answer. Note: This parameter will be ignored unless the author of the Tweet this parameter
+   * references is mentioned within the status text. Therefore, you must include @username , where username is the author of the referenced Tweet,
+   * within the update.
+   * @return the created tweet
+   */
+  Tweet postTweet(String text, String inReplyToStatusId);
+
+  /**
    * Delete a tweet calling https://api.twitter.com/1.1/statuses/destroy/:id.json
    *
    * @param tweetId the id of the tweet
@@ -171,6 +182,23 @@ public interface ITwitterClientV1 {
    * @return and object containing the oauth token and the oauth token secret
    */
   RequestToken getOauth1Token();
+
+  /**
+   * Get token and secret token (oAuth1) calling https://api.twitter.com/oauth/request_token
+   *
+   * @param oauthCallback the URL you wish your user to be redirected to when they complete the next step ("oob" to show the pincode)
+   * @return and object containing the oauth token and the oauth token secret
+   */
+  RequestToken getOauth1Token(String oauthCallback);
+
+  /**
+   * Convert the request token into a usable access token calling https://api.twitter.com/oauth/access_token
+   *
+   * @param requestToken the token and secret token
+   * @param pinCode the oauth verifier
+   * @return the access tokens
+   */
+  RequestToken getOAuth1AccessToken(RequestToken requestToken, String pinCode);
 
   /**
    * Get the last 200 mentions from timeline calling https://api.twitter.com/1.1/statuses/mentions_timeline.json

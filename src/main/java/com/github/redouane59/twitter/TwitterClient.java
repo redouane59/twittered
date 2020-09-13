@@ -38,10 +38,7 @@ import com.github.redouane59.twitter.helpers.URLHelper;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -57,8 +54,6 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
 
 @Getter
 @Setter
@@ -292,9 +287,17 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public Tweet postTweet(String text) {
+    return this.postTweet(text, null);
+  }
+
+  @Override
+  public Tweet postTweet(String text, String inReplyToStatusId) {
     String              url        = this.getUrlHelper().getPostTweetUrl();
     Map<String, String> parameters = new HashMap<>();
     parameters.put("status", text);
+    if (inReplyToStatusId != null) {
+      parameters.put("in_reply_to_status_id", inReplyToStatusId);
+    }
     return this.getRequestHelper().postRequest(url, parameters, TweetV1.class).orElseThrow(NoSuchElementException::new);
   }
 
@@ -568,24 +571,30 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public RequestToken getOauth1Token() {
-    String url = URLHelper.GET_OAUTH1_TOKEN_URL;
-    String stringResponse = this.requestHelper.postRequest(url, new HashMap<>(), String.class)
-                                              .orElseThrow(NoSuchElementException::new);
-    List<NameValuePair> params = null;
-    try {
-      params = URLEncodedUtils.parse(new URI("twitter.com?" + stringResponse), StandardCharsets.UTF_8.name());
-    } catch (URISyntaxException e) {
-      LOGGER.error(e.getMessage());
+    return this.getOauth1Token(null);
+  }
+
+  @Override
+  public RequestToken getOauth1Token(String oauthCallback) {
+    String              url        = URLHelper.GET_OAUTH1_TOKEN_URL;
+    Map<String, String> parameters = new HashMap<>();
+    if (oauthCallback != null) {
+      parameters.put("oauth_callback", oauthCallback);
     }
-    RequestToken requestToken = new RequestToken();
-    for (NameValuePair param : params) {
-      if (param.getName().equals("oauth_token")) {
-        requestToken.setOauthToken(param.getValue());
-      } else if (param.getName().equals("oauth_token_secret")) {
-        requestToken.setOauthTokenSecret(param.getValue());
-      }
-    }
+    String       stringResponse = this.requestHelper.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
+    RequestToken requestToken   = new RequestToken(stringResponse);
+    LOGGER.info("Open the following URL to grant access to your account:");
+    LOGGER.info("https://twitter.com/oauth/authenticate?oauth_token=" + requestToken.getOauthToken());
     return requestToken;
+  }
+
+  @Override
+  public RequestToken getOAuth1AccessToken(RequestToken requestToken, String pinCode) {
+    String              url        = URLHelper.GET_OAUTH1_ACCESS_TOKEN_URL;
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put("oauth_verifier", pinCode);
+    String stringResponse = this.requestHelper.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
+    return new RequestToken(stringResponse);
   }
 
   public static TwitterCredentials getAuthentication() {
