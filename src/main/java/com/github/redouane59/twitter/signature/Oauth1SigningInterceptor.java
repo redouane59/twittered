@@ -109,7 +109,7 @@ public final class Oauth1SigningInterceptor implements Interceptor {
         while (!body.exhausted()) {
           long keyEnd = body.indexOf((byte) '=');
           if (keyEnd == -1) {
-            throw new IllegalStateException("Key with no value: " + body.readUtf8());
+            break; //throw new IllegalStateException("Key with no value: " + body.readUtf8());
           }
           String key = body.readUtf8(keyEnd);
           body.skip(1); // Equals.
