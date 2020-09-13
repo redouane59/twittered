@@ -581,8 +581,11 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (oauthCallback != null) {
       parameters.put("oauth_callback", oauthCallback);
     }
-    String stringResponse = this.requestHelper.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
-    return new RequestToken(stringResponse);
+    String       stringResponse = this.requestHelper.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
+    RequestToken requestToken   = new RequestToken(stringResponse);
+    LOGGER.info("Open the following URL to grant access to your account:");
+    LOGGER.info("https://twitter.com/oauth/authenticate?oauth_token=" + requestToken.getOauthToken());
+    return requestToken;
   }
 
   @Override
