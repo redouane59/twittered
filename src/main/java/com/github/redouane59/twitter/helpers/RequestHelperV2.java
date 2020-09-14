@@ -24,7 +24,7 @@ import okio.Buffer;
 @AllArgsConstructor
 public class RequestHelperV2 extends AbstractRequestHelper {
 
-  public               String bearerToken;
+  private              String bearerToken;
   private static final String AUTHORIZATION = "Authorization";
   private static final String BEARER        = "Bearer ";
 
