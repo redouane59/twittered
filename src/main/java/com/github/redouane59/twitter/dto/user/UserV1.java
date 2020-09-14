@@ -14,7 +14,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @version current
+ * @version V1
  */
 
 @Getter
@@ -61,10 +61,6 @@ public class UserV1 implements User {
   public int hashCode() {
     return this.id.hashCode();
   }
-
-/*    public void setDateOfFollowNow(){
-        this.setDateOfFollow(new Date());
-    } */
 
   public LocalDateTime getDateOfCreation() {
     return ConverterHelper.getDateFromTwitterString(this.dateOfCreation);

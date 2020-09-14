@@ -45,6 +45,7 @@ public class URLHelper {
   private static final String USER_FORMAT_DETAILED        = "user.format=detailed";
   private static final String TWEET_FORMAT_DETAILED       = "tweet.format=detailed";
   private static final String EXPANSIONS_RECENT_TWEET     = "expansions=most_recent_tweet_id";
+  private static final String MAX_ID                      = "max_id";
   private static final int    MAX_COUNT                   = 200;
   private static final int    RETWEET_MAX_COUNT           = 100;
   private static final int    MAX_LOOKUP                  = 100;
@@ -237,16 +238,7 @@ public class URLHelper {
     result.delete(result.length() - 1, result.length());
     return result.toString();
   }
-
-  @Deprecated
-  public String getTweetInfoUrl(String tweetId) {
-    return ROOT_URL_V1 +
-           STATUSES +
-           SHOW_JSON +
-           ID + "=" +
-           tweetId;
-  }
-
+  
   public String getUserTweetsUrl(String userId, int count) {
     return ROOT_URL_V1 +
            STATUSES +
@@ -268,7 +260,7 @@ public class URLHelper {
   }
 
   public String getRetweetTweetUrl(final String tweetId) {
-    return ROOT_URL_V1 + STATUSES + "/retweet/" + tweetId + ".json";
+    return ROOT_URL_V1 + STATUSES + "/retweet/" + tweetId + JSON;
   }
 
   public String getPostTweetUrl() {
@@ -276,14 +268,14 @@ public class URLHelper {
   }
 
   public String getdeleteTweetUrl(String tweetId) {
-    return ROOT_URL_V1 + STATUSES + "/destroy/" + tweetId + ".json";
+    return ROOT_URL_V1 + STATUSES + "/destroy/" + tweetId + JSON;
   }
 
   public String getFavoriteTweetsUrl(String userId, String maxId) {
     if (maxId == null || maxId.length() == 0) {
       return "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id=" + userId;
     } else {
-      return "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id=" + userId + "&max_id=" + maxId;
+      return "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id=" + userId + "&" + MAX_ID + "=" + maxId;
     }
   }
 
@@ -310,7 +302,7 @@ public class URLHelper {
   public String getMentionsTimelineUrl(int count, String maxId) {
     return ROOT_URL_V1 + STATUSES + "/mentions_timeline.json?include_entities=true&"
            + COUNT + "=" + count
-           + "&max_id=" + maxId;
+           + "&" + MAX_ID + "=" + maxId;
   }
 
   public String getUserTimelineUrl(final String userId, final int count) {
@@ -318,6 +310,6 @@ public class URLHelper {
   }
 
   public String getUserTimelineUrl(final String userId, final int count, final String maxId) {
-    return ROOT_URL_V1 + STATUSES + "/user_timeline.json?user_id=" + userId + "&" + COUNT + "=" + count + "&max_id=" + maxId;
+    return ROOT_URL_V1 + STATUSES + "/user_timeline.json?user_id=" + userId + "&" + COUNT + "=" + count + "&" + MAX_ID + "=" + maxId;
   }
 }
