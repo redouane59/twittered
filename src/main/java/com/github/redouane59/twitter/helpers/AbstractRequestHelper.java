@@ -15,8 +15,7 @@ import okhttp3.OkHttpClient;
 public abstract class AbstractRequestHelper {
 
   private int sleepTime = 5;
-
-
+  
   public void wait(String response, String url) {
     LOGGER.info("\n" + response + "\nWaiting ... " + url); // do a wait and return this function recursively
     try {
