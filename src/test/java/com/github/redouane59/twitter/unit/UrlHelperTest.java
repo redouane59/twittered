@@ -80,12 +80,6 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testUrlGetTweetInfoById() {
-    assertEquals("https://api.twitter.com/1.1/statuses/show.json?id=12345",
-                 urlHelper.getTweetInfoUrl("12345"));
-  }
-
-  @Test
   public void testUrlGetRateLimitStatus() {
     assertEquals("https://api.twitter.com/1.1/application/rate_limit_status.json",
                  URLHelper.RATE_LIMIT_URL);

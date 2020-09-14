@@ -15,7 +15,7 @@ import okhttp3.OkHttpClient;
 public abstract class AbstractRequestHelper {
 
   private int sleepTime = 5;
-
+  
   public void wait(String response, String url) {
     LOGGER.info("\n" + response + "\nWaiting ... " + url); // do a wait and return this function recursively
     try {
@@ -43,6 +43,10 @@ public abstract class AbstractRequestHelper {
           .connectTimeout(60, TimeUnit.SECONDS)
           .build();
     }
+  }
+
+  public static void logApiError(String method, String url, String stringResponse, int code) {
+    LOGGER.error("(" + method + ") Error calling " + url + " " + stringResponse + " - " + code);
   }
 
   private int getCacheTimeoutFromUrl(String url, File configFile) {

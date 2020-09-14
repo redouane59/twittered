@@ -16,6 +16,8 @@ import okhttp3.Response;
 @Slf4j
 public class RequestHelper extends AbstractRequestHelper {
 
+  private static String tokenResetMessage = "reset your token";
+
   public <T> Optional<T> postRequest(String url, Map<String, String> parameters, Class<T> classType) {
     T result = null;
     try {
@@ -38,7 +40,7 @@ public class RequestHelper extends AbstractRequestHelper {
       if (response.code() < 200 || response.code() > 299) {
         LOGGER.error("(POST) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
         if (response.code() == 429) {
-          LOGGER.error("Reset your token");
+          LOGGER.error(tokenResetMessage);
         }
       }
       if (classType.equals(String.class)) { // dirty, to manage token oauth1
@@ -66,7 +68,7 @@ public class RequestHelper extends AbstractRequestHelper {
       if (response.code() < 200 || response.code() > 299) {
         LOGGER.error("(PUT) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
         if (response.code() == 429) {
-          LOGGER.error("Reset your token");
+          LOGGER.error(tokenResetMessage);
         }
       }
       if (classType.equals(String.class)) { // dirty, to manage token oauth1
@@ -94,7 +96,7 @@ public class RequestHelper extends AbstractRequestHelper {
       if (response.code() < 200 || response.code() > 299) {
         LOGGER.error("(GET) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
         if (response.code() == 429) {
-          LOGGER.error("Reset your token");
+          LOGGER.error(tokenResetMessage);
         }
       }
       if (classType.equals(String.class)) { // dirty, to manage token oauth1

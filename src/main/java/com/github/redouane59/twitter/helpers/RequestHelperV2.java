@@ -24,7 +24,9 @@ import okio.Buffer;
 @AllArgsConstructor
 public class RequestHelperV2 extends AbstractRequestHelper {
 
-  public String bearerToken;
+  public               String bearerToken;
+  private static final String AUTHORIZATION = "Authorization";
+  private static final String BEARER        = "Bearer ";
 
   public <T> Optional<T> getRequest(String url, Class<T> classType) {
     return this.getRequestWithParameters(url, null, classType);
@@ -42,7 +44,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
       Request request = new Request.Builder()
           .url(httpBuilder.build())
           .get()
-          .headers(Headers.of("Authorization", "Bearer " + bearerToken))
+          .headers(Headers.of(AUTHORIZATION, BEARER + bearerToken))
           .build();
       OkHttpClient client         = this.getHttpClient(httpBuilder.build().url().toString());
       Response     response       = client.newCall(request).execute();
@@ -54,7 +56,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
         LOGGER.info("Error 401, user may be private");
         return Optional.empty();
       } else if (response.code() < 200 || response.code() > 299) {
-        LOGGER.error("(POST) Error calling " + url + " " + stringResponse + " - " + response.code());
+        logApiError("POST", url, stringResponse, response.code());
       }
       result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
     } catch (Exception e) {
@@ -68,7 +70,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
     Request request = new Request.Builder()
         .url(httpBuilder.build())
         .get()
-        .headers(Headers.of("Authorization", "Bearer " + bearerToken))
+        .headers(Headers.of(AUTHORIZATION, BEARER + bearerToken))
         .build();
 
     Call call = this.getHttpClient(url).newCall(request);
@@ -80,14 +82,15 @@ public class RequestHelperV2 extends AbstractRequestHelper {
 
       @Override
       public void onResponse(Call call, final Response response) throws IOException {
-        Buffer buffer = new Buffer();
-        while (!response.body().source().exhausted()) {
-          response.body().source().read(buffer, 8192);
-          String content = new String(buffer.readByteArray());
-          try {
-            TweetV2 tweet = TwitterClient.OBJECT_MAPPER.readValue(content, TweetV2.class);
-            consumer.accept(tweet);
-          } catch (Exception e) {
+        try (Buffer buffer = new Buffer()) {
+          while (!response.body().source().exhausted()) {
+            response.body().source().read(buffer, 8192);
+            String content = new String(buffer.readByteArray());
+            try {
+              TweetV2 tweet = TwitterClient.OBJECT_MAPPER.readValue(content, TweetV2.class);
+              consumer.accept(tweet);
+            } catch (Exception e) {
+            }
           }
         }
       }
@@ -100,12 +103,12 @@ public class RequestHelperV2 extends AbstractRequestHelper {
       Request request = new Request.Builder()
           .url(url)
           .method("POST", RequestBody.create(MediaType.parse("application/json"), body))
-          .headers(Headers.of("Authorization", "Bearer " + bearerToken))
+          .headers(Headers.of(AUTHORIZATION, BEARER + bearerToken))
           .build();
       Response response       = new OkHttpClient.Builder().build().newCall(request).execute();
       String   stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
-        LOGGER.error("(POST) Error calling " + url + " " + stringResponse + " - " + response.code());
+        logApiError("POST", url, stringResponse, response.code());
       }
       result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
     } catch (Exception e) {
@@ -114,7 +117,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
     return Optional.ofNullable(result);
   }
 
-  public static <T> Optional<T> postRequestWithHeader(String url, Map<String, String> headersMap, String body, Class<T> classType) {
+  public <T> Optional<T> postRequestWithHeader(String url, Map<String, String> headersMap, String body, Class<T> classType) {
     T result = null;
     try {
       Request request = new Request.Builder()
@@ -122,12 +125,12 @@ public class RequestHelperV2 extends AbstractRequestHelper {
           .method("POST", RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), body))
           .headers(Headers.of(headersMap))
           .build();
-      OkHttpClient client   = new OkHttpClient.Builder().build();
-      Response     response = client.newCall(request).execute();
+      OkHttpClient client         = new OkHttpClient.Builder().build();
+      Response     response       = client.newCall(request).execute();
+      String       stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
-        LOGGER.error("(POST) Error calling " + url + " " + response.message() + " - " + response.code());
+        logApiError("POST", url, stringResponse, response.code());
       }
-      String stringResponse = response.body().string();
       result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
       client.connectionPool().evictAll();
     } catch (Exception e) {

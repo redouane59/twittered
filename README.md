@@ -6,7 +6,7 @@ This project is a JAVA library which allows you to consume the Twitter API.
 
 [![Premium](https://img.shields.io/static/v1?label=Twitter%20API&message=Premium&color=794BC4&style=flat&logo=Twitter)](https://developer.twitter.com/en/docs/tweets/search/api-reference/premium-search)
 
-## /!\ Development in progress... Any feedback is welcome :) /!\ 
+## /!\ Development in progress... Any [feedback](https://github.com/redouane59/twittered/issues/new/choose) is welcome :) /!\ 
 
 ### Configuration
 
