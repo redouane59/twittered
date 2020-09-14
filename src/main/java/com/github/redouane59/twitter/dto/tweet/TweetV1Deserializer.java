@@ -1,7 +1,6 @@
 package com.github.redouane59.twitter.dto.tweet;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -20,7 +19,7 @@ public class TweetV1Deserializer extends StdDeserializer<TweetV1> {
   }
 
   @Override
-  public TweetV1 deserialize(JsonParser jp, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+  public TweetV1 deserialize(JsonParser jp, DeserializationContext deserializationContext) throws IOException {
     JsonNode node = jp.getCodec().readTree(jp);
     return TwitterClient.OBJECT_MAPPER.readValue(node.get("tweet").toString(), TweetV1.class);
   }
