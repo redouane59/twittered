@@ -78,7 +78,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   private static final String             FOLLOWING                  = "following";
   private static final String             FOLLOWED_BY                = "followed_by";
   private static final String             SOURCE                     = "source";
-  private final static String             NULL_OR_ID_NOT_FOUND_ERROR = "response null or ids not found !";
+  private static final String             NULL_OR_ID_NOT_FOUND_ERROR = "response null or ids not found !";
   private static final String             NEXT_CURSOR                = "next_cursor";
   private static final String
                                           ALL_TWEET_FIELDS           =
@@ -345,7 +345,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     do {
       result = List.of(this.requestHelperV2.getRequest(this.getUrlHelper().getFavoriteTweetsUrl(userId, maxId), TweetV1[].class)
                                            .orElseThrow(NoSuchElementException::new));
-      if (result.size() == 0) {
+      if (result.isEmpty()) {
         break;
       }
       maxId = result.get(result.size() - 1).getId();
@@ -489,7 +489,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     try {
       String      body   = "{\"add\": [" + TwitterClient.OBJECT_MAPPER.writeValueAsString(rule) + "]}";
       StreamRules result = this.requestHelperV2.postRequest(url, body, StreamRules.class).orElseThrow(NoSuchElementException::new);
-      if (result.getData() == null || result.getData().size() == 0) {
+      if (result.getData() == null || result.getData().isEmpty()) {
         throw new IllegalArgumentException();
       }
       return result.getData().get(0);

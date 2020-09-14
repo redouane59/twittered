@@ -16,8 +16,6 @@ import okhttp3.Response;
 @Slf4j
 public class RequestHelper extends AbstractRequestHelper {
 
-  private static String tokenResetMessage = "reset your token";
-
   public <T> Optional<T> postRequest(String url, Map<String, String> parameters, Class<T> classType) {
     T result = null;
     try {
@@ -28,7 +26,7 @@ public class RequestHelper extends AbstractRequestHelper {
         }
       }
       String      json        = TwitterClient.OBJECT_MAPPER.writeValueAsString(parameters);
-      RequestBody requestBody = RequestBody.create(null, json);
+      RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), json);
       Request request = new Request.Builder()
           .url(httpBuilder.build())
           .post(requestBody)
@@ -38,10 +36,7 @@ public class RequestHelper extends AbstractRequestHelper {
                               .newCall(signedRequest).execute();
       String stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
-        LOGGER.error("(POST) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
-        if (response.code() == 429) {
-          LOGGER.error(tokenResetMessage);
-        }
+        logApiError("POST", url, stringResponse, response.code());
       }
       if (classType.equals(String.class)) { // dirty, to manage token oauth1
         result = (T) stringResponse;
@@ -49,7 +44,7 @@ public class RequestHelper extends AbstractRequestHelper {
         result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
       }
     } catch (Exception e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error(e.getMessage(), e);
     }
     return Optional.ofNullable(result);
   }
@@ -66,18 +61,11 @@ public class RequestHelper extends AbstractRequestHelper {
                               .newCall(signedRequest).execute();
       String stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
-        LOGGER.error("(PUT) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
-        if (response.code() == 429) {
-          LOGGER.error(tokenResetMessage);
-        }
+        logApiError("PUT", url, stringResponse, response.code());
       }
-      if (classType.equals(String.class)) { // dirty, to manage token oauth1
-        result = (T) stringResponse;
-      } else {
-        result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
-      }
+      result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
     } catch (Exception e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error(e.getMessage(), e);
     }
     return Optional.ofNullable(result);
   }
@@ -94,18 +82,11 @@ public class RequestHelper extends AbstractRequestHelper {
                               .newCall(signedRequest).execute();
       String stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
-        LOGGER.error("(GET) ! not success code 200 calling " + url + " " + stringResponse + " - " + response.code());
-        if (response.code() == 429) {
-          LOGGER.error(tokenResetMessage);
-        }
+        logApiError("GET", url, stringResponse, response.code());
       }
-      if (classType.equals(String.class)) { // dirty, to manage token oauth1
-        result = (T) stringResponse;
-      } else {
-        result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
-      }
+      result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
     } catch (Exception e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error(e.getMessage(), e);
     }
     return Optional.ofNullable(result);
   }

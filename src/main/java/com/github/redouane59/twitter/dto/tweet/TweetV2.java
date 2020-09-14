@@ -75,7 +75,7 @@ public class TweetV2 implements Tweet {
 
     @Override
     public String getInReplyToStatusId() {
-      if (this.referencedTweets == null || this.referencedTweets.size() == 0) {
+      if (this.referencedTweets == null || this.referencedTweets.isEmpty()) {
         return null;
       }
       return this.referencedTweets.get(0).getId();
@@ -83,7 +83,7 @@ public class TweetV2 implements Tweet {
 
     @Override
     public String getInReplyToStatusId(TweetType type) {
-      if (this.referencedTweets == null || this.referencedTweets.size() == 0) {
+      if (this.referencedTweets == null || this.referencedTweets.isEmpty()) {
         return null;
       }
       for (ReferencedTweetDTO referencedTweetDTO : this.referencedTweets) {
@@ -96,7 +96,7 @@ public class TweetV2 implements Tweet {
 
     @Override
     public TweetType getTweetType() {
-      if (this.referencedTweets == null || this.referencedTweets.size() == 0) {
+      if (this.referencedTweets == null || this.referencedTweets.isEmpty()) {
         return TweetType.DEFAULT;
       }
       return this.referencedTweets.get(0).getType();
@@ -117,15 +117,11 @@ public class TweetV2 implements Tweet {
       return ConverterHelper.getDateFromTwitterDateV2(this.createdAt);
     }
 
-    public int hashCode() {
-      return this.id.hashCode();
-    }
-
   }
 
   @Override
   public String getInReplyToStatusId() {
-    if (this.data == null || this.data.getReferencedTweets() == null || this.data.getReferencedTweets().size() == 0) {
+    if (this.data == null || this.data.getReferencedTweets() == null || this.data.getReferencedTweets().isEmpty()) {
       return null;
     }
     return this.data.getReferencedTweets().get(0).getId();
@@ -133,7 +129,7 @@ public class TweetV2 implements Tweet {
 
   @Override
   public String getInReplyToStatusId(TweetType type) {
-    if (this.data == null || this.data.getReferencedTweets() == null || this.data.getReferencedTweets().size() == 0) {
+    if (this.data == null || this.data.getReferencedTweets() == null || this.data.getReferencedTweets().isEmpty()) {
       return null;
     }
     for (ReferencedTweetDTO referencedTweetDTO : this.data.getReferencedTweets()) {
@@ -248,7 +244,7 @@ public class TweetV2 implements Tweet {
 
   @Override
   public TweetType getTweetType() {
-    if (this.data == null || this.data.referencedTweets == null || this.data.referencedTweets.size() == 0) {
+    if (this.data == null || this.data.referencedTweets == null || this.data.referencedTweets.isEmpty()) {
       return TweetType.DEFAULT;
     }
     return this.data.getReferencedTweets().get(0).getType();
@@ -281,13 +277,6 @@ public class TweetV2 implements Tweet {
     private int likeCount;
     @JsonProperty("quote_count")
     private int quoteCount;
-  }
-
-  public int hashCode() {
-    if (this.data == null) {
-      return -1;
-    }
-    return this.getData().getId().hashCode();
   }
 
 }
