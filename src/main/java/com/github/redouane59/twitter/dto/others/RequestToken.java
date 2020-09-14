@@ -28,7 +28,7 @@ public class RequestToken {
     try {
       responseParams = URLEncodedUtils.parse(new URI("twitter.com?" + stringResponse), StandardCharsets.UTF_8.name());
     } catch (URISyntaxException e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error(e.getMessage(), e);
     }
     for (NameValuePair param : responseParams) {
       if (param.getName().equals("oauth_token")) {

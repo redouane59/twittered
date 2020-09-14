@@ -32,7 +32,7 @@ public class ConverterHelper {
                       .atZone(ZoneId.systemDefault())
                       .toLocalDateTime();
     } catch (ParseException e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error(e.getMessage(), e);
     }
     return null;
   }

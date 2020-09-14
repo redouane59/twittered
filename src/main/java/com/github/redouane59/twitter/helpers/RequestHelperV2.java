@@ -60,7 +60,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
       }
       result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
     } catch (Exception e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error(e.getMessage(), e);
     }
     return Optional.ofNullable(result);
   }
@@ -112,12 +112,12 @@ public class RequestHelperV2 extends AbstractRequestHelper {
       }
       result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
     } catch (Exception e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error(e.getMessage(), e);
     }
     return Optional.ofNullable(result);
   }
 
-  public <T> Optional<T> postRequestWithHeader(String url, Map<String, String> headersMap, String body, Class<T> classType) {
+  public static <T> Optional<T> postRequestWithHeader(String url, Map<String, String> headersMap, String body, Class<T> classType) {
     T result = null;
     try {
       Request request = new Request.Builder()
@@ -134,7 +134,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
       result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
       client.connectionPool().evictAll();
     } catch (Exception e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error(e.getMessage(), e);
     }
     return Optional.ofNullable(result);
   }

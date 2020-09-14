@@ -124,7 +124,7 @@ public final class Oauth1SigningInterceptor implements Interceptor {
         }
       }
     } catch (Exception e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error(e.getMessage(), e);
     } finally {
       body.close();
     }
@@ -174,7 +174,7 @@ public final class Oauth1SigningInterceptor implements Interceptor {
                     .addHeader("Authorization", authorization)
                     .build();
     } catch (Exception e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error(e.getMessage(), e);
     } finally {
       base.close();
     }
