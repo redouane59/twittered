@@ -7,20 +7,20 @@ import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta.StreamMet
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta.StreamSummary.StreamSummaryBuilder;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule.StreamRuleBuilder;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRulesBuilder;
-import java.util.List;
-import lombok.Builder;
-import lombok.Value;
 
-@Value
-@Builder
+import java.util.List;
+
+
+@lombok.Value
+@lombok.Builder
 @JsonDeserialize(builder = StreamRulesBuilder.class)
 public class StreamRules {
 
   private List<StreamRule> data;
   private StreamMeta       meta;
 
-  @Value
-  @Builder
+  @lombok.Value
+  @lombok.Builder
   @JsonDeserialize(builder = StreamRuleBuilder.class)
   public static class StreamRule {
 
@@ -34,16 +34,16 @@ public class StreamRules {
     }
   }
 
-  @Value
-  @Builder
+  @lombok.Value
+  @lombok.Builder
   @JsonDeserialize(builder = StreamMetaBuilder.class)
   public static class StreamMeta {
 
     private String        sent;
     private StreamSummary summary;
 
-    @Value
-    @Builder
+    @lombok.Value
+    @lombok.Builder
     @JsonDeserialize(builder = StreamSummaryBuilder.class)
     public static class StreamSummary {
 

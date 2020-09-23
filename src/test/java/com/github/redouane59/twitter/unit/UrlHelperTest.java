@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.redouane59.twitter.helpers.URLHelper;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -149,7 +150,7 @@ public class UrlHelperTest {
   public void testUrlGetTweetsV2() {
     assertEquals(
         "https://api.twitter.com/2/tweets?ids=1294174710624849921,1294380029430960128,1294375095746666496&tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
-        urlHelper.getTweetListUrl(List.of("1294174710624849921,1294380029430960128,1294375095746666496")));
+        urlHelper.getTweetListUrl(Arrays.asList("1294174710624849921,1294380029430960128,1294375095746666496")));
   }
 
   @Test

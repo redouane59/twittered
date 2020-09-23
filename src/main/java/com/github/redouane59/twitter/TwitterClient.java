@@ -40,15 +40,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -103,7 +95,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     do {
       String           urlWithCursor  = url + "&" + CURSOR + "=" + cursor;
       Optional<IdList> idListResponse = this.requestHelperV2.getRequest(urlWithCursor, IdList.class);
-      if (idListResponse.isEmpty()) {
+      if (!idListResponse.isPresent()) {
         break;
       }
       result.addAll(idListResponse.get().getIds());
@@ -119,7 +111,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     do {
       String           urlWithCursor  = url + "&" + CURSOR + "=" + cursor;
       Optional<IdList> idListResponse = this.requestHelperV2.getRequest(urlWithCursor, IdList.class);
-      if (idListResponse.isEmpty()) {
+      if (!idListResponse.isPresent()) {
         break;
       }
       result.addAll(idListResponse.get().getIds());
@@ -136,7 +128,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     do {
       String             urlWithCursor = url + "&" + CURSOR + "=" + cursor;
       Optional<UserList> userListDTO   = this.requestHelperV2.getRequest(urlWithCursor, UserList.class);
-      if (userListDTO.isEmpty()) {
+      if (!userListDTO.isPresent()) {
         break;
       }
       result.addAll(userListDTO.get().getUsers());
@@ -343,7 +335,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     List<TweetV1> result;
     String        maxId          = null;
     do {
-      result = List.of(this.requestHelperV2.getRequest(this.getUrlHelper().getFavoriteTweetsUrl(userId, maxId), TweetV1[].class)
+      result = Arrays.asList(this.requestHelperV2.getRequest(this.getUrlHelper().getFavoriteTweetsUrl(userId, maxId), TweetV1[].class)
                                            .orElseThrow(NoSuchElementException::new));
       if (result.isEmpty()) {
         break;
@@ -372,7 +364,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     do {
       Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(
           URLHelper.SEARCH_TWEET_7_DAYS_URL, parameters, TweetSearchResponseV2.class);
-      if (tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData() == null) {
+      if (!tweetSearchV2DTO.isPresent() || tweetSearchV2DTO.get().getData() == null) {
         LOGGER.warn("empty response on searchForTweetsWithin7days");
         break;
       }
@@ -411,7 +403,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put("tweet.fields", ALL_TWEET_FIELDS);
     Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(
         URLHelper.SEARCH_TWEET_7_DAYS_URL, parameters, TweetSearchResponseV2.class);
-    if (tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData() == null) {
+    if (!tweetSearchV2DTO.isPresent() || tweetSearchV2DTO.get().getData() == null) {
       LOGGER.warn("empty response on searchForTweetsWithin7days");
       return new TweetSearchResponse(new ArrayList<>(), null);
     }
@@ -432,7 +424,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     do {
       Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.requestHelperV2.getRequestWithParameters(
           urlHelper.getSearchTweet30DaysUrl(envName), parameters, TweetSearchResponseV1.class);
-      if (tweetSearchV1DTO.isEmpty() || tweetSearchV1DTO.get().getResults() == null) {
+      if (!tweetSearchV1DTO.isPresent() || tweetSearchV1DTO.get().getResults() == null) {
         LOGGER.warn("empty response on searchForTweetsWithin30days");
         break;
       }
@@ -457,7 +449,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     do {
       Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.requestHelperV2.getRequestWithParameters(
           urlHelper.getSearchTweetFullArchiveUrl(envName), parameters, TweetSearchResponseV1.class);
-      if (tweetSearchV1DTO.isEmpty()) {
+      if (!tweetSearchV1DTO.isPresent()) {
         LOGGER.error("empty response on searchForTweetsArchive");
         break;
       }
@@ -517,26 +509,27 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public List<Tweet> getMentionsTimeline() {
     int    maxCount = 200;
     String url      = this.urlHelper.getMentionsTimelineUrl(maxCount);
-    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
+    return Arrays.asList(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
   }
 
   @Override
   public List<Tweet> getMentionsTimeline(int count, String maxId) {
     String url = this.urlHelper.getMentionsTimelineUrl(count, maxId);
-    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
+
+    return Arrays.asList(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
   }
 
   @Override
   public List<Tweet> getUserTimeline(final String userId) {
     int    maxCount = 200;
     String url      = this.urlHelper.getUserTimelineUrl(userId, maxCount);
-    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
+    return Arrays.asList(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
   }
 
   @Override
   public List<Tweet> getUserTimeline(final String userId, final int count, final String maxId) {
     String url = this.urlHelper.getUserTimelineUrl(userId, count, maxId);
-    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
+    return Arrays.asList(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
   }
 
 
@@ -551,7 +544,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (!file.exists()) {
       LOGGER.error("file not found at : " + file.toURI().toString());
     } else {
-      result = List.of(customObjectMapper.readValue(file, TweetV1[].class));
+      result = Arrays.asList(customObjectMapper.readValue(file, TweetV1[].class));
     }
     return result;
   }
