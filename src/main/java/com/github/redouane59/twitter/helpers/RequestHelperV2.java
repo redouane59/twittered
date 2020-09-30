@@ -6,7 +6,6 @@ import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -74,9 +73,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
         .headers(Headers.of(AUTHORIZATION, BEARER + bearerToken))
         .build();
 
-    Call call = new OkHttpClient.Builder().readTimeout(60, TimeUnit.SECONDS)
-                                          .connectTimeout(60, TimeUnit.SECONDS)
-                                          .build().newCall(request);
+    Call call = this.getHttpClient(url).newCall(request);
     call.enqueue(new Callback() {
       @Override
       public void onFailure(final Call call, IOException e) {
@@ -126,28 +123,6 @@ public class RequestHelperV2 extends AbstractRequestHelper {
       Request request = new Request.Builder()
           .url(url)
           .method("POST", RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), body))
-          .headers(Headers.of(headersMap))
-          .build();
-      OkHttpClient client         = new OkHttpClient.Builder().build();
-      Response     response       = client.newCall(request).execute();
-      String       stringResponse = response.body().string();
-      if (response.code() < 200 || response.code() > 299) {
-        logApiError("POST", url, stringResponse, response.code());
-      }
-      result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
-      client.connectionPool().evictAll();
-    } catch (Exception e) {
-      LOGGER.error(e.getMessage(), e);
-    }
-    return Optional.ofNullable(result);
-  }
-
-  public static <T> Optional<T> getRequestWithHeader(String url, Map<String, String> headersMap, Class<T> classType) {
-    T result = null;
-    try {
-      Request request = new Request.Builder()
-          .url(url)
-          .get()
           .headers(Headers.of(headersMap))
           .build();
       OkHttpClient client         = new OkHttpClient.Builder().build();
