@@ -238,7 +238,7 @@ public class URLHelper {
     result.delete(result.length() - 1, result.length());
     return result.toString();
   }
-  
+
   public String getUserTweetsUrl(String userId, int count) {
     return ROOT_URL_V1 +
            STATUSES +
@@ -292,7 +292,7 @@ public class URLHelper {
   }
 
   public String getSampledStreamUrl() {
-    return ROOT_URL_V2 + TWEETS + SAMPLE + STREAM;
+    return ROOT_URL_V2 + TWEETS + SAMPLE + STREAM + "?" + ALL_TWEET_FIELDS + "&" + ALL_USER_FIELDS;
   }
 
   public String getMentionsTimelineUrl(int count) {
