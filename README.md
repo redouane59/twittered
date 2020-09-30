@@ -80,7 +80,7 @@ To add a new feature :
 - Implement your method in the child class (e.g [TwitterClient.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/TwitterClient.java))
 - Don't forget to add your unit tests in `src/test/java/com/github/redouane59/twitter/unit`
 
-Code style is also available in `GoogleStyle.xml` file.
+Code style is also available in `.idea/codeStyles/GoogleStyle.xml` file.
 
 /!\ [JDK 12](https://jdk.java.net/12/) is needed to run the project /!\
 

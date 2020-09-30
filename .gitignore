@@ -1,4 +1,5 @@
-/.idea
+/.idea/libraries
+/.idea/*.xml
 /.target
 *.iml
 *.class
