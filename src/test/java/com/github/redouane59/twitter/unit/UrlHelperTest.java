@@ -80,12 +80,6 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testUrlGetTweetInfoById() {
-    assertEquals("https://api.twitter.com/1.1/statuses/show.json?id=12345",
-                 urlHelper.getTweetInfoUrl("12345"));
-  }
-
-  @Test
   public void testUrlGetRateLimitStatus() {
     assertEquals("https://api.twitter.com/1.1/application/rate_limit_status.json",
                  URLHelper.RATE_LIMIT_URL);
@@ -207,7 +201,9 @@ public class UrlHelperTest {
 
   @Test
   public void testSampledStreamUrl() {
-    assertEquals("https://api.twitter.com/2/tweets/sample/stream", urlHelper.getSampledStreamUrl());
+    assertEquals(
+        "https://api.twitter.com/2/tweets/sample/stream?tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        urlHelper.getSampledStreamUrl());
   }
 
   @Test

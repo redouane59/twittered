@@ -68,6 +68,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   private              RequestHelper      requestHelper;
   private              RequestHelperV2    requestHelperV2;
   private static final String             IDS                        = "ids";
+  private static final String             QUERY                      = "query";
+  private static final String             MAX_RESULTS                = "max_results";
   private static final String             USERS                      = "users";
   private static final String             CURSOR                     = "cursor";
   private static final String             NEXT                       = "next";
@@ -76,7 +78,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   private static final String             FOLLOWING                  = "following";
   private static final String             FOLLOWED_BY                = "followed_by";
   private static final String             SOURCE                     = "source";
-  private final static String             NULL_OR_ID_NOT_FOUND_ERROR = "response null or ids not found !";
+  private static final String             NULL_OR_ID_NOT_FOUND_ERROR = "response null or ids not found !";
   private static final String             NEXT_CURSOR                = "next_cursor";
   private static final String
                                           ALL_TWEET_FIELDS           =
@@ -343,7 +345,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     do {
       result = List.of(this.requestHelperV2.getRequest(this.getUrlHelper().getFavoriteTweetsUrl(userId, maxId), TweetV1[].class)
                                            .orElseThrow(NoSuchElementException::new));
-      if (result.size() == 0) {
+      if (result.isEmpty()) {
         break;
       }
       maxId = result.get(result.size() - 1).getId();
@@ -356,8 +358,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public List<Tweet> searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate) {
     int                 count      = 100;
     Map<String, String> parameters = new HashMap<>();
-    parameters.put("query", query);
-    parameters.put("max_results", String.valueOf(count));
+    parameters.put(QUERY, query);
+    parameters.put(MAX_RESULTS, String.valueOf(count));
     if (fromDate != null) {
       parameters.put("start_time", ConverterHelper.getStringFromDateV2(fromDate));
     }
@@ -395,8 +397,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public TweetSearchResponse searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate, int maxResult, String nextToken) {
     Map<String, String> parameters = new HashMap<>();
-    parameters.put("query", query);
-    parameters.put("max_results", String.valueOf(maxResult));
+    parameters.put(QUERY, query);
+    parameters.put(MAX_RESULTS, String.valueOf(maxResult));
     if (fromDate != null) {
       parameters.put("start_time", ConverterHelper.getStringFromDateV2(fromDate));
     }
@@ -421,7 +423,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public List<Tweet> searchForTweetsWithin30days(String query, LocalDateTime fromDate, LocalDateTime toDate, String envName) {
     int                 count      = 100;
     Map<String, String> parameters = new HashMap<>();
-    parameters.put("query", query);
+    parameters.put(QUERY, query);
     parameters.put("maxResults", String.valueOf(count));
     parameters.put("fromDate", ConverterHelper.getStringFromDate(fromDate));
     parameters.put("toDate", ConverterHelper.getStringFromDate(toDate));
@@ -446,8 +448,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public List<Tweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate, String envName) {
     int                 count      = 100;
     Map<String, String> parameters = new HashMap<>();
-    parameters.put("query", query);
-    parameters.put("max_results", String.valueOf(count));
+    parameters.put(QUERY, query);
+    parameters.put(MAX_RESULTS, String.valueOf(count));
     parameters.put("fromDate", ConverterHelper.getStringFromDate(fromDate));
     parameters.put("toDate", ConverterHelper.getStringFromDate(toDate));
     String      next;
@@ -487,7 +489,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     try {
       String      body   = "{\"add\": [" + TwitterClient.OBJECT_MAPPER.writeValueAsString(rule) + "]}";
       StreamRules result = this.requestHelperV2.postRequest(url, body, StreamRules.class).orElseThrow(NoSuchElementException::new);
-      if (result.getData() == null || result.getData().size() == 0) {
+      if (result.getData() == null || result.getData().isEmpty()) {
         throw new IllegalArgumentException();
       }
       return result.getData().get(0);

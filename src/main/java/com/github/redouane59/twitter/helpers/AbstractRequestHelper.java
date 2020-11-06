@@ -21,7 +21,7 @@ public abstract class AbstractRequestHelper {
     try {
       TimeUnit.MINUTES.sleep(sleepTime);
     } catch (InterruptedException e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error(e.getMessage(), e);
       Thread.currentThread().interrupt();
     }
   }
@@ -45,6 +45,10 @@ public abstract class AbstractRequestHelper {
     }
   }
 
+  public static void logApiError(String method, String url, String stringResponse, int code) {
+    LOGGER.error("(" + method + ") Error calling " + url + " " + stringResponse + " - " + code);
+  }
+
   private int getCacheTimeoutFromUrl(String url, File configFile) {
     int defaultCache = 48;
     try {
@@ -55,7 +59,7 @@ public abstract class AbstractRequestHelper {
         }
       }
     } catch (IOException e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error(e.getMessage(), e);
     }
     return defaultCache;
   }

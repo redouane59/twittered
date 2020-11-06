@@ -84,9 +84,4 @@ public class TweetV1 implements Tweet {
     }
     return this.user.getId();
   }
-
-  public int hashCode() {
-    return this.id.hashCode();
-  }
-
 }
