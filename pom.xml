@@ -6,7 +6,7 @@
 
   <groupId>com.github.redouane59.twitter</groupId>
   <artifactId>twittered</artifactId>
-  <version>1.11</version>
+  <version>1.12</version>
 
   <name>twittered</name>
   <description>java client for twitter API</description>
