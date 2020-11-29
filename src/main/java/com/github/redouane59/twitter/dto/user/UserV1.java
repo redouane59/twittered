@@ -50,10 +50,10 @@ public class UserV1 implements User {
 
   @Override
   public boolean equals(Object o) {
-    if (o == null || this.getClass() != o.getClass()) {
+    if (o == null || (this.getClass() != o.getClass() && !User.class.isAssignableFrom(o.getClass()))) {
       return false;
     }
-    UserV1 otherUser = (UserV1) o;
+    User otherUser = (User) o;
     return (otherUser).getId().equals(this.getId());
   }
 

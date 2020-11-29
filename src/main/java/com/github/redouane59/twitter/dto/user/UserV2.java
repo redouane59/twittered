@@ -85,11 +85,17 @@ public class UserV2 implements User {
 
   @Override
   public String getId() {
+    if (this.data == null) {
+      return null;
+    }
     return this.data.getId();
   }
 
   @Override
   public String getName() {
+    if (this.data == null) {
+      return null;
+    }
     return this.data.getName();
   }
 

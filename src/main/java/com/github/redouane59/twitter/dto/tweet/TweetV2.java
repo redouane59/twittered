@@ -98,8 +98,12 @@ public class TweetV2 implements Tweet {
     public TweetType getTweetType() {
       if (this.referencedTweets == null || this.referencedTweets.isEmpty()) {
         return TweetType.DEFAULT;
+      } else if (this.getReferencedTweets().size() > 1
+                 && (this.getReferencedTweets().get(0).getType().equals(TweetType.RETWEETED)
+                     || this.getReferencedTweets().get(1).getType().equals(TweetType.RETWEETED))) {
+        return TweetType.RETWEETED;
       }
-      return this.referencedTweets.get(0).getType();
+      return this.getReferencedTweets().get(0).getType();
     }
 
     @Override
@@ -246,6 +250,10 @@ public class TweetV2 implements Tweet {
   public TweetType getTweetType() {
     if (this.data == null || this.data.referencedTweets == null || this.data.referencedTweets.isEmpty()) {
       return TweetType.DEFAULT;
+    } else if (this.data.getReferencedTweets().size() > 1
+               && (this.data.getReferencedTweets().get(0).getType().equals(TweetType.RETWEETED)
+                   || this.data.getReferencedTweets().get(1).getType().equals(TweetType.RETWEETED))) {
+      return TweetType.RETWEETED;
     }
     return this.data.getReferencedTweets().get(0).getType();
   }

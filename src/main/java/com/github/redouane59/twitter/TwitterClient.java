@@ -373,7 +373,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(
           URLHelper.SEARCH_TWEET_7_DAYS_URL, parameters, TweetSearchResponseV2.class);
       if (tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData() == null) {
-        LOGGER.warn("empty response on searchForTweetsWithin7days");
         break;
       }
       result.addAll(tweetSearchV2DTO.get().getData());
@@ -412,7 +411,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(
         URLHelper.SEARCH_TWEET_7_DAYS_URL, parameters, TweetSearchResponseV2.class);
     if (tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData() == null) {
-      LOGGER.warn("empty response on searchForTweetsWithin7days");
       return new TweetSearchResponse(new ArrayList<>(), null);
     }
     List<Tweet> result = new ArrayList<>(tweetSearchV2DTO.get().getData());
@@ -433,7 +431,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.requestHelperV2.getRequestWithParameters(
           urlHelper.getSearchTweet30DaysUrl(envName), parameters, TweetSearchResponseV1.class);
       if (tweetSearchV1DTO.isEmpty() || tweetSearchV1DTO.get().getResults() == null) {
-        LOGGER.warn("empty response on searchForTweetsWithin30days");
         break;
       }
       result.addAll(tweetSearchV1DTO.get().getResults());
