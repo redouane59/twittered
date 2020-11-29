@@ -152,4 +152,13 @@ public class UserV2 implements User {
     }
     return this.includes.getTweets()[0];
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || (this.getClass() != o.getClass() && !User.class.isAssignableFrom(o.getClass()))) {
+      return false;
+    }
+    User otherUser = (User) o;
+    return (otherUser).getId().equals(this.getId());
+  }
 }
