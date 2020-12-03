@@ -35,6 +35,8 @@ public class UserV2 implements User {
     private String            createdAt;
     @JsonProperty("username")
     private String            name;
+    @JsonProperty("name")
+    private String            displayedName;
     private String            location;
     private String            url;
     private boolean           verified;
@@ -97,6 +99,14 @@ public class UserV2 implements User {
       return null;
     }
     return this.data.getName();
+  }
+
+  @Override
+  public String getDisplayedName() {
+    if (this.data == null) {
+      return null;
+    }
+    return this.data.getDisplayedName();
   }
 
   @Override

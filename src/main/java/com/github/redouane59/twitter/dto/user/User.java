@@ -20,6 +20,14 @@ public interface User {
   String getName();
 
   /**
+   * Get the name of the user they’ve defined it on their profile. Not necessarily a person’s name. Typically capped at 50 characters, but subject to
+   * change.
+   *
+   * @return the user name
+   */
+  String getDisplayedName();
+
+  /**
    * Get the location of the user
    *
    * @return the user location

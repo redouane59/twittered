@@ -27,8 +27,10 @@ public class UserV1 implements User {
 
   private String      id;
   @JsonProperty("screen_name")
-  @JsonAlias({"screen_name", "username"})
+  @JsonAlias("screen_name")
   private String      name;
+  @JsonAlias("name")
+  private String      displayedName;
   private List<Tweet> mostRecentTweet;
   private String      description;
   @JsonAlias("protected")
