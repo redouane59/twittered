@@ -30,6 +30,11 @@ public class UserDeserializerV1Test {
   }
 
   @Test
+  public void testGetUserDisplayedName() {
+    assertEquals("Twitter API", userV1.getDisplayedName());
+  }
+
+  @Test
   public void testGetUserLocationV1() {
     assertEquals("San Francisco, CA", userV1.getLocation());
   }
