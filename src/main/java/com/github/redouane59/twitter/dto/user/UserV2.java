@@ -35,6 +35,8 @@ public class UserV2 implements User {
     private String            createdAt;
     @JsonProperty("username")
     private String            name;
+    @JsonProperty("name")
+    private String            displayedName;
     private String            location;
     private String            url;
     private boolean           verified;
@@ -85,12 +87,26 @@ public class UserV2 implements User {
 
   @Override
   public String getId() {
+    if (this.data == null) {
+      return null;
+    }
     return this.data.getId();
   }
 
   @Override
   public String getName() {
+    if (this.data == null) {
+      return null;
+    }
     return this.data.getName();
+  }
+
+  @Override
+  public String getDisplayedName() {
+    if (this.data == null) {
+      return null;
+    }
+    return this.data.getDisplayedName();
   }
 
   @Override
@@ -145,5 +161,14 @@ public class UserV2 implements User {
       return null;
     }
     return this.includes.getTweets()[0];
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || (this.getClass() != o.getClass() && !User.class.isAssignableFrom(o.getClass()))) {
+      return false;
+    }
+    User otherUser = (User) o;
+    return (otherUser).getId().equals(this.getId());
   }
 }

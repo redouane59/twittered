@@ -32,6 +32,11 @@ public class UserDeserializerV2Test {
   }
 
   @Test
+  public void testGetUserDisplayedName() {
+    assertEquals("Red'1", userV2.getDisplayedName());
+  }
+
+  @Test
   public void testGetUserLocationV2() {
     assertEquals("Madrid, Spain", userV2.getLocation());
   }

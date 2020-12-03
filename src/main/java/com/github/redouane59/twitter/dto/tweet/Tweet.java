@@ -82,7 +82,7 @@ public interface Tweet {
    * @return the user id of the initial tweet
    */
   String getInReplyToUserId();
-
+  
   /**
    * Get the id of the tweet from whom the tweet is replying. Can be null if the tweet is not a reply.
    *
