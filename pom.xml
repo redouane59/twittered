@@ -169,7 +169,6 @@
       <artifactId>httpclient</artifactId>
       <version>4.3.6</version>
     </dependency>
-
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
