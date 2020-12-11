@@ -82,7 +82,7 @@ To add a new feature :
 
 Code style is also available in `.idea/codeStyles/GoogleStyle.xml` file.
 
-/!\ [JDK 12](https://jdk.java.net/12/) is needed to run the project /!\
+/!\ [JDK 15](https://jdk.java.net/15/) is needed to run the project /!\
 
 ### External Resources
 [Twitter Developers docs](https://developer.twitter.com/en/docs)
