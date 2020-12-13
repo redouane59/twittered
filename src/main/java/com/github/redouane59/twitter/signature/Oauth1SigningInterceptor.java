@@ -15,9 +15,9 @@ package com.github.redouane59.twitter.signature;
  * limitations under the License.
  */
 
-import com.google.common.escape.Escaper;
-import com.google.common.net.UrlEscapers;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.function.Function;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import lombok.extern.slf4j.Slf4j;
@@ -41,8 +42,7 @@ import okio.ByteString;
 @Slf4j
 public final class Oauth1SigningInterceptor implements Interceptor {
 
-  private static final Escaper ESCAPER_FORM                 = UrlEscapers.urlFormParameterEscaper();
-  private static final Escaper ESCAPER_PATH                 = UrlEscapers.urlPathSegmentEscaper();
+  private static final Function<String, String> ESCAPER_FORM= form -> URLEncoder.encode(form, StandardCharsets.UTF_8);
   private static final String  OAUTH_CONSUMER_KEY           = "oauth_consumer_key";
   private static final String  OAUTH_NONCE                  = "oauth_nonce";
   private static final String  OAUTH_SIGNATURE              = "oauth_signature";
@@ -81,8 +81,8 @@ public final class Oauth1SigningInterceptor implements Interceptor {
     String oauthNonce     = ByteString.of(nonce).base64().replaceAll("\\W", "");
     String oauthTimestamp = String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(0, 10);
 
-    String consumerKeyValue = ESCAPER_FORM.escape(consumerKey);
-    String accessTokenValue = ESCAPER_FORM.escape(accessToken);
+    String consumerKeyValue = ESCAPER_FORM.apply(consumerKey);
+    String accessTokenValue = ESCAPER_FORM.apply(accessToken);
 
     SortedMap<String, String> parameters = new TreeMap<>();
     parameters.put(OAUTH_CONSUMER_KEY, consumerKeyValue);
@@ -94,8 +94,8 @@ public final class Oauth1SigningInterceptor implements Interceptor {
 
     HttpUrl url = request.url();
     for (int i = 0; i < url.querySize(); i++) {
-      parameters.put(ESCAPER_FORM.escape(url.queryParameterName(i)),
-                     ESCAPER_FORM.escape(url.queryParameterValue(i)));
+      parameters.put(ESCAPER_FORM.apply(url.queryParameterName(i)),
+                     ESCAPER_FORM.apply(url.queryParameterValue(i)));
     }
 
     RequestBody requestBody = request.body();
@@ -134,22 +134,22 @@ public final class Oauth1SigningInterceptor implements Interceptor {
       String method = request.method();
       base.writeUtf8(method);
       base.writeByte('&');
-      base.writeUtf8(ESCAPER_FORM.escape(request.url().newBuilder().query(null).build().toString()));
+      base.writeUtf8(ESCAPER_FORM.apply(request.url().newBuilder().query(null).build().toString()));
       base.writeByte('&');
 
       boolean first = true;
       for (Map.Entry<String, String> entry : parameters.entrySet()) {
         if (!first) {
-          base.writeUtf8(ESCAPER_FORM.escape("&"));
+          base.writeUtf8(ESCAPER_FORM.apply("&"));
         }
         first = false;
-        base.writeUtf8(ESCAPER_FORM.escape(entry.getKey()));
-        base.writeUtf8(ESCAPER_FORM.escape("="));
-        base.writeUtf8(ESCAPER_FORM.escape(entry.getValue().replace("+", "%20")));
+        base.writeUtf8(ESCAPER_FORM.apply(entry.getKey()));
+        base.writeUtf8(ESCAPER_FORM.apply("="));
+        base.writeUtf8(ESCAPER_FORM.apply(entry.getValue().replace("+", "%20")));
       }
 
       String signingKey =
-          ESCAPER_FORM.escape(consumerSecret) + "&" + ESCAPER_FORM.escape(accessSecret);
+          ESCAPER_FORM.apply(consumerSecret) + "&" + ESCAPER_FORM.apply(accessSecret);
 
       SecretKeySpec keySpec = new SecretKeySpec(signingKey.getBytes(), "HmacSHA1");
       Mac           mac;
@@ -165,7 +165,7 @@ public final class Oauth1SigningInterceptor implements Interceptor {
       String authorization = "OAuth "
                              + OAUTH_CONSUMER_KEY + "=\"" + consumerKeyValue + "\", "
                              + OAUTH_NONCE + "=\"" + oauthNonce + "\", "
-                             + OAUTH_SIGNATURE + "=\"" + ESCAPER_FORM.escape(signature) + "\", "
+                             + OAUTH_SIGNATURE + "=\"" + ESCAPER_FORM.apply(signature) + "\", "
                              + OAUTH_SIGNATURE_METHOD + "=\"" + OAUTH_SIGNATURE_METHOD_VALUE + "\", "
                              + OAUTH_TIMESTAMP + "=\"" + oauthTimestamp + "\", "
                              + OAUTH_ACCESS_TOKEN + "=\"" + accessTokenValue + "\", "
