@@ -393,8 +393,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return this.searchForTweetsWithin7days(query, null, null, maxResult, nextToken);
   }
 
-  @Override
-  public TweetSearchResponse searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate, int maxResult, String nextToken) {
+  private TweetSearchResponse searchForTweets(String query,
+                                              LocalDateTime fromDate,
+                                              LocalDateTime toDate,
+                                              int maxResult,
+                                              String nextToken,
+                                              String searchUrl) {
     Map<String, String> parameters = new HashMap<>();
     parameters.put(QUERY, query);
     parameters.put(MAX_RESULTS, String.valueOf(maxResult));
@@ -409,12 +413,26 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     }
     parameters.put("tweet.fields", ALL_TWEET_FIELDS);
     Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(
-        URLHelper.SEARCH_TWEET_7_DAYS_URL, parameters, TweetSearchResponseV2.class);
+        searchUrl, parameters, TweetSearchResponseV2.class);
     if (tweetSearchV2DTO.isEmpty() || tweetSearchV2DTO.get().getData() == null) {
       return new TweetSearchResponse(new ArrayList<>(), null);
     }
     List<Tweet> result = new ArrayList<>(tweetSearchV2DTO.get().getData());
     return new TweetSearchResponse(result, tweetSearchV2DTO.get().getMeta().getNextToken());
+  }
+
+  @Override
+  public TweetSearchResponse searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate, int maxResult, String nextToken) {
+    return this.searchForTweets(query, fromDate, toDate, maxResult, nextToken, URLHelper.SEARCH_TWEET_7_DAYS_URL);
+  }
+
+  @Override
+  public TweetSearchResponse searchForTweetsFullArchive(final String query,
+                                                        final LocalDateTime fromDate,
+                                                        final LocalDateTime toDate,
+                                                        final int maxResult,
+                                                        final String nextToken) {
+    return this.searchForTweets(query, fromDate, toDate, maxResult, nextToken, URLHelper.SEARCH_TWEET_FULL_ARCHIVE_URL);
   }
 
   @Override
@@ -442,6 +460,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
+  @Deprecated
   public List<Tweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate, String envName) {
     int                 count      = 100;
     Map<String, String> parameters = new HashMap<>();
