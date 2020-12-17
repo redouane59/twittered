@@ -96,7 +96,6 @@ public interface ITwitterClientV2 {
    */
   TweetSearchResponse searchForTweetsWithin7days(String query, int maxResult, String nextToken);
 
-
   /**
    * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
    *
@@ -108,6 +107,19 @@ public interface ITwitterClientV2 {
    * @return a TweetSearchResponse object containing a list of tweets and the next token
    */
   TweetSearchResponse searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate, int maxResult, String nextToken);
+
+  /**
+   * Search archived tweets calling https://api.twitter.com/2/tweets/search/all
+   *
+   * @param query the search query
+   * @param fromDate the start date
+   * @param toDate the end date
+   * @param maxResult maximum 100 (default 10)
+   * @param nextToken the next_token given by the API to start from an index
+   * @return a TweetSearchResponse object containing a list of tweets and the next token
+   */
+  TweetSearchResponse searchForTweetsFullArchive(String query, LocalDateTime fromDate, LocalDateTime toDate, int maxResult, String nextToken);
+
 
   /**
    * Stream using previous set up filters calling https://api.twitter.com/2/tweets/search/stream

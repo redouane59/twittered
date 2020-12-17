@@ -167,6 +167,12 @@ public class UrlHelperTest {
   }
 
   @Test
+  public void testSearchFullArchiveUrl() {
+    assertEquals("https://api.twitter.com/2/tweets/search/all",
+                 URLHelper.SEARCH_TWEET_FULL_ARCHIVE_URL);
+  }
+
+  @Test
   public void testGetBearerTokenUrl() {
     assertEquals("https://api.twitter.com/oauth2/token",
                  URLHelper.GET_BEARER_TOKEN_URL);
@@ -207,7 +213,7 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testSearchFullArchiveUrl() {
+  public void testSearchFullArchiveUrlv1() {
     assertEquals("https://api.twitter.com/1.1/tweets/search/fullarchive/dev.json", urlHelper.getSearchTweetFullArchiveUrl("dev"));
   }
 
