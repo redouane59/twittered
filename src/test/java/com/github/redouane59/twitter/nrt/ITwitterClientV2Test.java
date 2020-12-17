@@ -13,6 +13,7 @@ import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
 import com.github.redouane59.twitter.dto.user.User;
+import com.github.redouane59.twitter.helpers.ConverterHelper;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class ITwitterClientV2Test {
 
   @BeforeAll
   public static void init() throws IOException {
-    String credentialPath = "C:/Users/Perso/Documents/GitHub/twitter-credentials.json";
+    String credentialPath = "C:/Users/Perso/Documents/GitHub/twitter-credentials - RBA.json";
     twitterClient = new TwitterClient(TwitterClient.OBJECT_MAPPER
                                           .readValue(new File(credentialPath), TwitterCredentials.class));
   }
@@ -147,6 +148,15 @@ public class ITwitterClientV2Test {
     assertTrue(result2.getTweets().size() > 0);
     assertNotEquals(result.getTweets().get(0).getId(), result2.getTweets().get(0).getId());
     assertNotNull(result2.getNextToken());
+  }
+
+  @Test
+  public void testSearchTweetsFullArchiveWithNexTokenAndCount() {
+    TweetSearchResponse
+        result =
+        twitterClient.searchForTweetsFullArchive("@TwitterSupport", ConverterHelper.dayBeforeNow(150), ConverterHelper.dayBeforeNow(1), 100, null);
+    assertTrue(result.getTweets().size() > 10);
+    assertNotNull(result.getNextToken());
   }
 
   @Test
