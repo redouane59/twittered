@@ -23,7 +23,7 @@ public class URLHelper {
   private static final String DESTROY_JSON                  = "/destroy.json?";
   private static final String RETWEETERS                    = "/retweeters";
   private static final String FOLLOWERS                     = "/followers";
-  private static final String FRIENDS                       = "/friends";
+  private static final String FOLLOWING                     = "/following";
   private static final String STATUSES                      = "/statuses";
   private static final String FRIENDSHIPS                   = "/friendships";
   private static final String FAVORITES                     = "/favorites";
@@ -49,10 +49,10 @@ public class URLHelper {
   private static final int    MAX_COUNT                     = 200;
   private static final int    RETWEET_MAX_COUNT             = 100;
   private static final int    MAX_LOOKUP                    = 100;
-  private static final String
+  public static final  String
                               ALL_USER_FIELDS               =
       "user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
-  private static final String
+  public static final  String
                               ALL_TWEET_FIELDS              =
       "tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id";
   public static final  String LAST_TWEET_LIST_URL           = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
@@ -122,40 +122,24 @@ public class URLHelper {
            RETWEET_MAX_COUNT;
   }
 
-  public String getFollowerIdsUrl(String userId) {
-    return ROOT_URL_V1 +
-           FOLLOWERS +
-           IDS_JSON +
-           USER_ID + "=" +
-           userId;
-  }
-
-  public String getFollowerUsersUrl(String userId) {
-    return ROOT_URL_V1 +
-           FOLLOWERS +
-           LIST_JSON +
-           USER_ID + "=" +
+  public String getFollowersUrl(String userId) {
+    return ROOT_URL_V2 +
+           USERS +
+           "/" +
            userId +
-           "&" + COUNT + "=" +
-           MAX_COUNT;
+           FOLLOWERS +
+           "?" +
+           ALL_USER_FIELDS;
   }
 
-  public String getFollowingIdsUrl(String userId) {
-    return ROOT_URL_V1 +
-           FRIENDS +
-           IDS_JSON +
-           USER_ID + "=" +
-           userId;
-  }
-
-  public String getFollowingUsersUrl(String userId) {
-    return ROOT_URL_V1 +
-           FRIENDS +
-           LIST_JSON +
-           USER_ID + "=" +
+  public String getFollowingUrl(String userId) {
+    return ROOT_URL_V2 +
+           USERS +
+           "/" +
            userId +
-           "&" + COUNT + "=" +
-           MAX_COUNT;
+           FOLLOWING +
+           "?" +
+           ALL_USER_FIELDS;
   }
 
   public String getUserUrl(String userId) {

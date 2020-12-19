@@ -9,39 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ITwitterClientV1 {
-
-  /**
-   * Get a list of the user followers calling https://api.twitter.com/1.1/followers
-   *
-   * @param userId the id of the targeted user
-   * @return a list of users who are following the targeted user
-   */
-  List<User> getFollowerUsers(String userId);
-
-  /**
-   * Get a list of the user followers ids calling https://api.twitter.com/1.1/followers
-   *
-   * @param userId the id of the targeted user
-   * @return a list of ids of users who are following the targeted user
-   */
-  List<String> getFollowerIds(String userId);
-
-  /**
-   * Get a list of the user followings calling https://api.twitter.com/1.1/friends
-   *
-   * @param userId the id of the targeted user
-   * @return a list of users that the targeted user is following
-   */
-  List<User> getFollowingUsers(String userId);
-
-  /**
-   * Get a list of the user followings ids calling https://api.twitter.com/1.1/friends
-   *
-   * @param userId the id of the targeted user
-   * @return a list of ids of users that the targeted user is following
-   */
-  List<String> getFollowingIds(String userId);
-
+  
   /**
    * Like a tweet calling https://api.twitter.com/1.1/favorites/create.json
    *
