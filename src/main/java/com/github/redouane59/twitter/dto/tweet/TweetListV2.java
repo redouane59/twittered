@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+// @todo mix with TweetSearchResponseV2 class ?
 public class TweetListV2 {
 
   private List<TweetData> data;

@@ -82,12 +82,6 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testGetUserTweetUrlById() {
-    assertEquals("https://api.twitter.com/1.1/statuses/user_timeline.json?user_id=12345&count=1&trim_user=true&include_rts=false",
-                 urlHelper.getUserTweetsUrl("12345", 1));
-  }
-
-  @Test
   public void testSearchTweetsUrlStandard() {
     https:
 //api.twitter.com/1.1/search/tweets.json
@@ -232,14 +226,14 @@ public class UrlHelperTest {
 
   @Test
   public void testGetUserTimelineUrl() {
-    assertEquals("https://api.twitter.com/1.1/statuses/user_timeline.json?user_id=99999&count=200",
-                 urlHelper.getUserTimelineUrl("99999", 200));
+    assertEquals("https://api.twitter.com/2/users/99999/tweets?max_results=200&" + URLHelper.ALL_TWEET_FIELDS,
+                 urlHelper.getUserTimelineUrl("99999", 200, null, null, null, null));
   }
 
   @Test
   public void testGetUserTimelineUrlWithMaxId() {
-    assertEquals("https://api.twitter.com/1.1/statuses/user_timeline.json?user_id=99999&count=10&max_id=12345",
-                 urlHelper.getUserTimelineUrl("99999", 10, "12345"));
+    assertEquals("https://api.twitter.com/2/users/99999/tweets?max_results=10&until_id=12345&" + URLHelper.ALL_TWEET_FIELDS,
+                 urlHelper.getUserTimelineUrl("99999", 200, null, null, null, null));
   }
 
 }

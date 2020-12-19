@@ -178,5 +178,16 @@ public interface ITwitterClientV2 {
    */
   void startSampledStream(Consumer<Tweet> consumer);
 
+  /**
+   * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets
+   *
+   * @return a list of the most recent Tweets posted by the user
+   */
+  List<Tweet> getUserTimeline(String userId, int nbTweets);
+
+  /**
+   * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets
+   */
+  List<Tweet> getUserTimeline(String userId, int nbTweets, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId);
 }
 

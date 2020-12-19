@@ -218,4 +218,12 @@ public class ITwitterClientV2Test {
     assertTrue(token.length() > 50);
   }
 
+  @Test
+  public void testGetUserTimeline() {
+    List<? extends Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 150);
+    assertEquals(result.size(), 150);
+    assertNotNull(result.get(0).getId());
+    assertNotNull(result.get(0).getText());
+  }
+
 }

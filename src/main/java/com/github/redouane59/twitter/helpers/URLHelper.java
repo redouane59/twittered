@@ -1,5 +1,6 @@
 package com.github.redouane59.twitter.helpers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -63,6 +64,7 @@ public class URLHelper {
   public static final  String GET_BEARER_TOKEN_URL          = "https://api.twitter.com/oauth2/token";
   public static final  String GET_OAUTH1_TOKEN_URL          = "https://api.twitter.com/oauth/request_token";
   public static final  String GET_OAUTH1_ACCESS_TOKEN_URL   = "https://api.twitter.com/oauth/access_token";
+  private static final String MAX_RESULTS                   = "max_results";
 
 
   public String getSearchTweet30DaysUrl(String envName) {
@@ -290,11 +292,21 @@ public class URLHelper {
            + "&" + MAX_ID + "=" + maxId;
   }
 
-  public String getUserTimelineUrl(final String userId, final int count) {
-    return ROOT_URL_V1 + STATUSES + "/user_timeline.json?user_id=" + userId + "&" + COUNT + "=" + count;
-  }
-
-  public String getUserTimelineUrl(final String userId, final int count, final String maxId) {
-    return ROOT_URL_V1 + STATUSES + "/user_timeline.json?user_id=" + userId + "&" + COUNT + "=" + count + "&" + MAX_ID + "=" + maxId;
+  public String getUserTimelineUrl(String userId, int maxResult, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {
+    String result = ROOT_URL_V2 + USERS + "/" + userId + TWEETS + "?" + MAX_RESULTS + "=" + maxResult;
+    if (startTime != null) {
+      result += "&start_time" + ConverterHelper.getStringFromDateV2(startTime);
+    }
+    if (endTime != null) {
+      result += "&end_time" + ConverterHelper.getStringFromDateV2(endTime);
+    }
+    if (sinceId != null) {
+      result += "&since_id" + sinceId;
+    }
+    if (untilId != null) {
+      result += "&until_id" + untilId;
+    }
+    result += "&" + ALL_TWEET_FIELDS;
+    return result;
   }
 }

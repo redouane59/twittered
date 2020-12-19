@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ITwitterClientV1 {
-  
+
   /**
    * Like a tweet calling https://api.twitter.com/1.1/favorites/create.json
    *
@@ -183,25 +183,6 @@ public interface ITwitterClientV1 {
    * @return the list of related mentions
    */
   List<Tweet> getMentionsTimeline(int count, String maxId);
-
-  /**
-   * Get the 200 most recent Tweets posted by the user calling https://api.twitter.com/1.1/statuses/user_timeline.json
-   *
-   * @param userId the id of the user
-   * @return a list of the 200 most recent Tweets posted by the user
-   */
-  List<Tweet> getUserTimeline(String userId);
-
-  /**
-   * Get the most recent Tweets posted by the user calling https://api.twitter.com/1.1/statuses/user_timeline.json
-   *
-   * @param userId the id of the user
-   * @param count Specifies the number of Tweets to try and retrieve, up to a maximum of 200 per distinct request
-   * @param maxId Returns results with an ID less than (that is, older than) or equal to the specified ID.
-   * @return a list of the most recent Tweets posted by the user
-   */
-  List<Tweet> getUserTimeline(String userId, int count, String maxId);
-
 
 }
 
