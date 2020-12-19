@@ -49,10 +49,10 @@ public class URLHelper {
   private static final int    MAX_COUNT                     = 200;
   private static final int    RETWEET_MAX_COUNT             = 100;
   private static final int    MAX_LOOKUP                    = 100;
-  private static final String
+  public static final  String
                               ALL_USER_FIELDS               =
       "user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
-  private static final String
+  public static final  String
                               ALL_TWEET_FIELDS              =
       "tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id";
   public static final  String LAST_TWEET_LIST_URL           = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
