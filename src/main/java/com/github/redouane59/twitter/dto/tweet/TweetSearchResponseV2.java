@@ -12,11 +12,11 @@ import lombok.Setter;
 public class TweetSearchResponseV2 {
 
   private List<TweetV2.TweetData> data;
-  private Meta                    meta;
+  private TweetMeta               meta;
 
   @Getter
   @Setter
-  public static class Meta {
+  public static class TweetMeta {
 
     @JsonProperty("newest_id")
     private String newestId;

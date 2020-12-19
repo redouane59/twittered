@@ -30,7 +30,7 @@ public class ITwitterClientV2Test {
 
   @BeforeAll
   public static void init() throws IOException {
-    String credentialPath = "C:/Users/Perso/Documents/GitHub/twitter-credentials - RBA.json";
+    String credentialPath = "C:/Users/Perso/Documents/GitHub/twitter-credentials.json";
     twitterClient = new TwitterClient(TwitterClient.OBJECT_MAPPER
                                           .readValue(new File(credentialPath), TwitterCredentials.class));
   }
@@ -112,6 +112,18 @@ public class ITwitterClientV2Test {
     String tweetId = "1224041905333379073";
     Tweet  tweet   = twitterClient.getTweet(tweetId);
     assertNotNull(tweet);
+  }
+
+  @Test
+  public void testGetFollowingById() {
+    List<User> followings = twitterClient.getFollowing("882266619115864066");
+    assertTrue(followings.size() > 200);
+  }
+
+  @Test
+  public void testGetFollowersById() {
+    List<User> followers = twitterClient.getFollowers("882266619115864066");
+    assertTrue(followers.size() > 500);
   }
 
   @Test

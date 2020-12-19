@@ -18,20 +18,14 @@ public class UrlHelperTest {
 
   @Test
   public void testUrlFollowersById() {
-    assertEquals("https://api.twitter.com/1.1/followers/ids.json?user_id=952253106",
-                 urlHelper.getFollowerIdsUrl("952253106"));
+    assertEquals("https://api.twitter.com/2/users/12345/followers",
+                 urlHelper.getFollowersUrl("12345"));
   }
 
   @Test
   public void testUrlFollowingsById() {
-    assertEquals("https://api.twitter.com/1.1/friends/ids.json?user_id=952253106",
-                 urlHelper.getFollowingIdsUrl("952253106"));
-  }
-
-  @Test
-  public void testUrlFollowingsUsersById() {
-    assertEquals("https://api.twitter.com/1.1/friends/list.json?user_id=952253106&count=200",
-                 urlHelper.getFollowingUsersUrl("952253106"));
+    assertEquals("https://api.twitter.com/2/users/12345/following",
+                 urlHelper.getFollowingUrl("12345"));
   }
 
   @Test
@@ -89,12 +83,6 @@ public class UrlHelperTest {
   public void testGetUserTweetUrlById() {
     assertEquals("https://api.twitter.com/1.1/statuses/user_timeline.json?user_id=12345&count=1&trim_user=true&include_rts=false",
                  urlHelper.getUserTweetsUrl("12345", 1));
-  }
-
-  @Test
-  public void testGetFollowersByIdUrl() {
-    assertEquals("https://api.twitter.com/1.1/followers/list.json?user_id=12345&count=200",
-                 urlHelper.getFollowerUsersUrl("12345"));
   }
 
   @Test

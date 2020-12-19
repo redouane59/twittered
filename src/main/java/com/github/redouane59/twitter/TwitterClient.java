@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.getrelationship.IdList;
 import com.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
-import com.github.redouane59.twitter.dto.getrelationship.UserList;
 import com.github.redouane59.twitter.dto.others.BearerToken;
 import com.github.redouane59.twitter.dto.others.RateLimitStatus;
 import com.github.redouane59.twitter.dto.others.RequestToken;
@@ -27,7 +26,7 @@ import com.github.redouane59.twitter.dto.tweet.TweetV1Deserializer;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.dto.tweet.TweetV2.TweetData;
 import com.github.redouane59.twitter.dto.user.User;
-import com.github.redouane59.twitter.dto.user.UserListv2;
+import com.github.redouane59.twitter.dto.user.UserListV2;
 import com.github.redouane59.twitter.dto.user.UserV1;
 import com.github.redouane59.twitter.dto.user.UserV2;
 import com.github.redouane59.twitter.dto.user.UserV2.UserData;
@@ -73,6 +72,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   private static final String             USERS                      = "users";
   private static final String             CURSOR                     = "cursor";
   private static final String             NEXT                       = "next";
+  private static final String             PAGINATION_TOKEN           = "pagination_token";
+  private static final String             NEXT_TOKEN                 = "next_token";
   private static final String             RETWEET_COUNT              = "retweet_count";
   private static final String             RELATIONSHIP               = "relationship";
   private static final String             FOLLOWING                  = "following";
@@ -131,62 +132,41 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   // can manage up to 200 results/call . Max 15 calls/15min ==> 3.000 results max./15min
   private List<User> getUsersInfoByRelation(String url) {
-    String     cursor = "-1";
+    String     token  = null;
     List<User> result = new ArrayList<>();
     do {
-      String             urlWithCursor = url + "&" + CURSOR + "=" + cursor;
-      Optional<UserList> userListDTO   = this.requestHelperV2.getRequest(urlWithCursor, UserList.class);
+      String urlWithCursor = url;
+      if (token != null) {
+        urlWithCursor = urlWithCursor + "?" + PAGINATION_TOKEN + "=" + token;
+      }
+      Optional<UserListV2> userListDTO = this.requestHelperV2.getRequest(urlWithCursor, UserListV2.class);
       if (userListDTO.isEmpty()) {
         break;
       }
-      result.addAll(userListDTO.get().getUsers());
-      cursor = userListDTO.get().getNextCursor();
+      result.addAll(userListDTO.get().getData());
+      token = userListDTO.get().getMeta().getNextToken();
     }
-    while (!cursor.equals("0"));
+    while (token != null);
     return result;
-  }
-
-  private List<String> getUserIdsByRelation(String userId, RelationType relationType) {
-    String url = null;
-    if (relationType == RelationType.FOLLOWER) {
-      url = this.urlHelper.getFollowerIdsUrl(userId);
-    } else if (relationType == RelationType.FOLLOWING) {
-      url = this.urlHelper.getFollowingIdsUrl(userId);
-    }
-    return this.getUserIdsByRelation(url);
   }
 
   private List<User> getUsersInfoByRelation(String userId, RelationType relationType) {
     String url = null;
     if (relationType == RelationType.FOLLOWER) {
-      url = this.urlHelper.getFollowerUsersUrl(userId);
+      url = this.urlHelper.getFollowersUrl(userId);
     } else if (relationType == RelationType.FOLLOWING) {
-      url = this.urlHelper.getFollowingUsersUrl(userId);
+      url = this.urlHelper.getFollowingUrl(userId);
     }
     return this.getUsersInfoByRelation(url);
   }
 
-  public Set<String> getUserFollowersIds(String userId) {
-    return this.getUserIdsByRelationSet(this.urlHelper.getFollowerIdsUrl(userId));
-  }
-
   @Override
-  public List<String> getFollowerIds(String userId) {
-    return this.getUserIdsByRelation(userId, RelationType.FOLLOWER);
-  }
-
-  @Override
-  public List<User> getFollowerUsers(String userId) {
+  public List<User> getFollowers(String userId) {
     return this.getUsersInfoByRelation(userId, RelationType.FOLLOWER);
   }
 
   @Override
-  public List<String> getFollowingIds(String userId) {
-    return this.getUserIdsByRelation(userId, RelationType.FOLLOWING);
-  }
-
-  @Override
-  public List<User> getFollowingUsers(String userId) {
+  public List<User> getFollowing(String userId) {
     return this.getUsersInfoByRelation(userId, RelationType.FOLLOWING);
   }
 
@@ -250,7 +230,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public List<User> getUsersFromUserNames(List<String> userNames) {
     String         url    = this.getUrlHelper().getUsersUrlbyNames(userNames);
-    List<UserData> result = this.requestHelperV2.getRequest(url, UserListv2.class).orElseThrow(NoSuchElementException::new).getData();
+    List<UserData> result = this.requestHelperV2.getRequest(url, UserListV2.class).orElseThrow(NoSuchElementException::new).getData();
     return result.stream().map(userData -> UserV2.builder().data(userData).build()).collect(Collectors.toList());
   }
 
@@ -258,7 +238,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public List<User> getUsersFromUserIds(List<String> userIds) {
     String         url    = this.getUrlHelper().getUsersUrlbyIds(userIds);
-    List<UserData> result = this.requestHelperV2.getRequest(url, UserListv2.class).orElseThrow(NoSuchElementException::new).getData();
+    List<UserData> result = this.requestHelperV2.getRequest(url, UserListV2.class).orElseThrow(NoSuchElementException::new).getData();
     return result.stream().map(userData -> UserV2.builder().data(userData).build()).collect(Collectors.toList());
   }
 
@@ -377,7 +357,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       }
       result.addAll(tweetSearchV2DTO.get().getData());
       next = tweetSearchV2DTO.get().getMeta().getNextToken();
-      parameters.put("next_token", next);
+      parameters.put(NEXT_TOKEN, next);
     }
     while (next != null);
     return result;
@@ -409,7 +389,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       parameters.put("end_time", ConverterHelper.getStringFromDateV2(toDate));
     }
     if (nextToken != null) {
-      parameters.put("next_token", nextToken);
+      parameters.put(NEXT_TOKEN, nextToken);
     }
     parameters.put("tweet.fields", ALL_TWEET_FIELDS);
     Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(

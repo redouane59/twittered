@@ -32,24 +32,6 @@ public class ITwitterClientV1Test {
   }
 
   @Test
-  public void testGetFollowingIdsById() {
-    List<String> followings = twitterClient.getFollowingIds("882266619115864066");
-    assertTrue(followings.size() > 200);
-  }
-
-  @Test
-  public void testGetFollowersIdsById() {
-    List<String> followers = twitterClient.getFollowerIds("882266619115864066");
-    assertTrue(followers.size() > 200);
-  }
-
-  @Test
-  public void testGetFollowersUsersById() {
-    List<User> followers = twitterClient.getFollowerUsers("882266619115864066");
-    assertTrue(followers.size() > 200);
-  }
-
-  @Test
   public void testFriendshipByIdYes() {
     String       userId1 = "92073489";
     String       userId2 = "723996356";
