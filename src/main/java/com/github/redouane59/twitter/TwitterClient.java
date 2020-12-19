@@ -137,7 +137,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     do {
       String urlWithCursor = url;
       if (token != null) {
-        urlWithCursor = urlWithCursor + "?" + PAGINATION_TOKEN + "=" + token;
+        urlWithCursor = urlWithCursor + "&" + PAGINATION_TOKEN + "=" + token;
       }
       Optional<UserListV2> userListDTO = this.requestHelperV2.getRequest(urlWithCursor, UserListV2.class);
       if (userListDTO.isEmpty()) {

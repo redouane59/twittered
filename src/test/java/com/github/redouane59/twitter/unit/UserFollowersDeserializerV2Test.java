@@ -18,11 +18,39 @@ public class UserFollowersDeserializerV2Test {
   }
 
   @Test
-  public void testGetUserIdV2() {
+  public void testGetUsers() {
     assertNotNull(users);
     assertEquals(100, users.getData().size());
+  }
+
+  @Test
+  public void testUserName() {
     assertEquals("samsamia13", users.getData().get(0).getName());
+  }
+
+  @Test
+  public void testUserId() {
     assertEquals("606255425", users.getData().get(0).getId());
+  }
+
+  @Test
+  public void testUserDescription() {
+    assertEquals("💉🩸 assistante du Ko .", users.getData().get(0).getDescription());
+  }
+
+  @Test
+  public void testUserLocation() {
+    assertEquals("Paris, France", users.getData().get(0).getLocation());
+  }
+
+  @Test
+  public void testUserFollowersCount() {
+    assertEquals(70, users.getData().get(0).getFollowersCount());
+  }
+
+  @Test
+  public void testUserFollowingCount() {
+    assertEquals(515, users.getData().get(0).getFollowingCount());
   }
 
 }

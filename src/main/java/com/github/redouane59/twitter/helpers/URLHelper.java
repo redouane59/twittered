@@ -127,7 +127,9 @@ public class URLHelper {
            USERS +
            "/" +
            userId +
-           FOLLOWERS;
+           FOLLOWERS +
+           "?" +
+           ALL_USER_FIELDS;
   }
 
   public String getFollowingUrl(String userId) {
@@ -135,7 +137,9 @@ public class URLHelper {
            USERS +
            "/" +
            userId +
-           FOLLOWING;
+           FOLLOWING +
+           "?" +
+           ALL_USER_FIELDS;
   }
 
   public String getUserUrl(String userId) {
