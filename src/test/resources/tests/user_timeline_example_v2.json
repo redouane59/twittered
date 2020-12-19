@@ -1,0 +1,530 @@
+{
+  "data": [
+    {
+      "text": "@RedTheOne 🤖 :  Salut!",
+      "created_at": "2020-12-17T20:21:21.000Z",
+      "lang": "en",
+      "referenced_tweets": [
+        {
+          "type": "replied_to",
+          "id": "1339666969788882944"
+        }
+      ],
+      "entities": {
+        "mentions": [
+          {
+            "start": 0,
+            "end": 10,
+            "username": "RedTheOne"
+          }
+        ]
+      },
+      "source": "Redouane59",
+      "id": "1339667017109032966",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0
+      },
+      "possibly_sensitive": false,
+      "author_id": "1307302673318895621",
+      "conversation_id": "1339659629228384256",
+      "in_reply_to_user_id": "92073489"
+    },
+    {
+      "text": "@RedTheOne  🤖 : Pourquoi on surnomme le chef d'un établissement scolaire le SNIPER ?\nCar c'est un proviseur",
+      "created_at": "2020-12-17T20:18:38.000Z",
+      "lang": "fr",
+      "referenced_tweets": [
+        {
+          "type": "replied_to",
+          "id": "1339666286226378754"
+        }
+      ],
+      "entities": {
+        "mentions": [
+          {
+            "start": 0,
+            "end": 10,
+            "username": "RedTheOne"
+          }
+        ]
+      },
+      "source": "Redouane59",
+      "id": "1339666334792167429",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 1,
+        "like_count": 1,
+        "quote_count": 0
+      },
+      "possibly_sensitive": false,
+      "author_id": "1307302673318895621",
+      "conversation_id": "1339659629228384256",
+      "in_reply_to_user_id": "92073489"
+    },
+    {
+      "text": "@RedTheOne  🤖 : Quelle est l'arme préférée des vegan ?\nLe lance roquette",
+      "created_at": "2020-12-17T20:04:07.000Z",
+      "lang": "fr",
+      "referenced_tweets": [
+        {
+          "type": "replied_to",
+          "id": "1339662632354275342"
+        }
+      ],
+      "entities": {
+        "mentions": [
+          {
+            "start": 0,
+            "end": 10,
+            "username": "RedTheOne"
+          }
+        ]
+      },
+      "source": "Redouane59",
+      "id": "1339662682102886402",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 1,
+        "like_count": 1,
+        "quote_count": 0
+      },
+      "possibly_sensitive": false,
+      "context_annotations": [
+        {
+          "domain": {
+            "id": "65",
+            "name": "Interests and Hobbies Vertical",
+            "description": "Top level interests and hobbies groupings, like Food or Travel"
+          },
+          "entity": {
+            "id": "825047692124442624",
+            "name": "Food",
+            "description": "Food"
+          }
+        },
+        {
+          "domain": {
+            "id": "66",
+            "name": "Interests and Hobbies Category",
+            "description": "A grouping of interests and hobbies entities, like Novelty Food or Destinations"
+          },
+          "entity": {
+            "id": "860133563332648963",
+            "name": "Cuisines",
+            "description": "Cuisines"
+          }
+        },
+        {
+          "domain": {
+            "id": "67",
+            "name": "Interests and Hobbies",
+            "description": "Interests, opinions, and behaviors of individuals, groups, or cultures; like Speciality Cooking or Theme Parks"
+          },
+          "entity": {
+            "id": "860145749463506944",
+            "name": "Veganism",
+            "description": "Vegan"
+          }
+        },
+        {
+          "domain": {
+            "id": "67",
+            "name": "Interests and Hobbies",
+            "description": "Interests, opinions, and behaviors of individuals, groups, or cultures; like Speciality Cooking or Theme Parks"
+          },
+          "entity": {
+            "id": "1260985796053487616",
+            "name": "Organic"
+          }
+        }
+      ],
+      "author_id": "1307302673318895621",
+      "conversation_id": "1339659629228384256",
+      "in_reply_to_user_id": "92073489"
+    },
+    {
+      "text": "@RedTheOne 🤖 :  Salut!",
+      "created_at": "2020-12-17T20:03:26.000Z",
+      "lang": "en",
+      "referenced_tweets": [
+        {
+          "type": "replied_to",
+          "id": "1339662461394427904"
+        }
+      ],
+      "entities": {
+        "mentions": [
+          {
+            "start": 0,
+            "end": 10,
+            "username": "RedTheOne"
+          }
+        ]
+      },
+      "source": "Redouane59",
+      "id": "1339662509201121280",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 1,
+        "like_count": 0,
+        "quote_count": 0
+      },
+      "possibly_sensitive": false,
+      "author_id": "1307302673318895621",
+      "conversation_id": "1339659629228384256",
+      "in_reply_to_user_id": "92073489"
+    },
+    {
+      "text": "@RedTheOne 🤖 :  Salut!",
+      "created_at": "2020-12-17T19:52:11.000Z",
+      "lang": "en",
+      "referenced_tweets": [
+        {
+          "type": "replied_to",
+          "id": "1339659629228384256"
+        }
+      ],
+      "entities": {
+        "mentions": [
+          {
+            "start": 0,
+            "end": 10,
+            "username": "RedTheOne"
+          }
+        ]
+      },
+      "source": "Redouane59",
+      "id": "1339659676292706305",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 1,
+        "like_count": 0,
+        "quote_count": 0
+      },
+      "possibly_sensitive": false,
+      "author_id": "1307302673318895621",
+      "conversation_id": "1339659629228384256",
+      "in_reply_to_user_id": "92073489"
+    },
+    {
+      "text": "@RedTheOne  🤖 : Quel est le style musical préféré des médecins ?\nLe blouse",
+      "created_at": "2020-12-14T21:02:41.000Z",
+      "lang": "fr",
+      "referenced_tweets": [
+        {
+          "type": "replied_to",
+          "id": "1338589788614615040"
+        }
+      ],
+      "entities": {
+        "mentions": [
+          {
+            "start": 0,
+            "end": 10,
+            "username": "RedTheOne"
+          }
+        ]
+      },
+      "source": "Redouane59",
+      "id": "1338590256157913094",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 1,
+        "like_count": 2,
+        "quote_count": 0
+      },
+      "possibly_sensitive": false,
+      "context_annotations": [
+        {
+          "domain": {
+            "id": "65",
+            "name": "Interests and Hobbies Vertical",
+            "description": "Top level interests and hobbies groupings, like Food or Travel"
+          },
+          "entity": {
+            "id": "844603730221707264",
+            "name": "Fashion",
+            "description": "Fashion"
+          }
+        },
+        {
+          "domain": {
+            "id": "66",
+            "name": "Interests and Hobbies Category",
+            "description": "A grouping of interests and hobbies entities, like Novelty Food or Destinations"
+          },
+          "entity": {
+            "id": "844604232737087488",
+            "name": "General Fashion",
+            "description": "General Fashion"
+          }
+        },
+        {
+          "domain": {
+            "id": "67",
+            "name": "Interests and Hobbies",
+            "description": "Interests, opinions, and behaviors of individuals, groups, or cultures; like Speciality Cooking or Theme Parks"
+          },
+          "entity": {
+            "id": "849641708258074624",
+            "name": "Tops",
+            "description": "Tops"
+          }
+        }
+      ],
+      "author_id": "1307302673318895621",
+      "conversation_id": "1338589788614615040",
+      "in_reply_to_user_id": "92073489"
+    },
+    {
+      "text": "@RedTheOne 🤖 : JAMAIIIIIIS",
+      "created_at": "2020-12-13T21:26:00.000Z",
+      "lang": "fr",
+      "referenced_tweets": [
+        {
+          "type": "replied_to",
+          "id": "1338233456149622791"
+        }
+      ],
+      "entities": {
+        "mentions": [
+          {
+            "start": 0,
+            "end": 10,
+            "username": "RedTheOne"
+          }
+        ]
+      },
+      "source": "Redouane59",
+      "id": "1338233737503502341",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0
+      },
+      "possibly_sensitive": false,
+      "author_id": "1307302673318895621",
+      "conversation_id": "1338233456149622791",
+      "in_reply_to_user_id": "92073489"
+    },
+    {
+      "text": "@RedTheOne  🤖 :  https://t.co/uInWhhsQBJ",
+      "created_at": "2020-12-12T20:16:33.000Z",
+      "lang": "und",
+      "referenced_tweets": [
+        {
+          "type": "quoted",
+          "id": "1337853765949513736"
+        },
+        {
+          "type": "replied_to",
+          "id": "1337853815131934720"
+        }
+      ],
+      "entities": {
+        "mentions": [
+          {
+            "start": 0,
+            "end": 10,
+            "username": "RedTheOne"
+          }
+        ],
+        "urls": [
+          {
+            "start": 17,
+            "end": 40,
+            "url": "https://t.co/uInWhhsQBJ",
+            "expanded_url": "https://twitter.com/BenjaminB_13/status/1337853765949513736",
+            "display_url": "twitter.com/BenjaminB_13/s…"
+          }
+        ]
+      },
+      "source": "Redouane59",
+      "id": "1337853869678874635",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0
+      },
+      "possibly_sensitive": false,
+      "context_annotations": [
+        {
+          "domain": {
+            "id": "6",
+            "name": "Sports Event"
+          },
+          "entity": {
+            "id": "1321603710628192256",
+            "name": "Real Madrid vs Atletico Madrid"
+          }
+        },
+        {
+          "domain": {
+            "id": "10",
+            "name": "Person",
+            "description": "Named people in the world like Nelson Mandela"
+          },
+          "entity": {
+            "id": "733774109004324869",
+            "name": "Jan Oblak"
+          }
+        },
+        {
+          "domain": {
+            "id": "12",
+            "name": "Sports Team",
+            "description": "A sports team organization, like Arsenal and the Boston Celtics"
+          },
+          "entity": {
+            "id": "731226217395818496",
+            "name": "Atletico Madrid"
+          }
+        },
+        {
+          "domain": {
+            "id": "26",
+            "name": "Sports League",
+            "description": ""
+          },
+          "entity": {
+            "id": "731226165784928260",
+            "name": "Europe - Soccer"
+          }
+        },
+        {
+          "domain": {
+            "id": "26",
+            "name": "Sports League",
+            "description": ""
+          },
+          "entity": {
+            "id": "731226215760027649",
+            "name": "Spain - Soccer"
+          }
+        },
+        {
+          "domain": {
+            "id": "26",
+            "name": "Sports League",
+            "description": ""
+          },
+          "entity": {
+            "id": "733756520714752000",
+            "name": "La Liga"
+          }
+        },
+        {
+          "domain": {
+            "id": "60",
+            "name": "Athlete",
+            "description": "An athlete in the world, like Serena Williams or Lionel Messi"
+          },
+          "entity": {
+            "id": "733774109004324869",
+            "name": "Jan Oblak"
+          }
+        },
+        {
+          "domain": {
+            "id": "10",
+            "name": "Person",
+            "description": "Named people in the world like Nelson Mandela"
+          },
+          "entity": {
+            "id": "733773745114861568",
+            "name": "Casemiro"
+          }
+        },
+        {
+          "domain": {
+            "id": "60",
+            "name": "Athlete",
+            "description": "An athlete in the world, like Serena Williams or Lionel Messi"
+          },
+          "entity": {
+            "id": "733773745114861568",
+            "name": "Casemiro"
+          }
+        }
+      ],
+      "author_id": "1307302673318895621",
+      "conversation_id": "1337850677821927424",
+      "in_reply_to_user_id": "92073489"
+    },
+    {
+      "text": "@RedTheOne  🤖 : Comment appelle-t-on un Parisien qui sourit ?\nUn touriste",
+      "created_at": "2020-12-12T20:07:45.000Z",
+      "lang": "fr",
+      "referenced_tweets": [
+        {
+          "type": "replied_to",
+          "id": "1337851603089584129"
+        }
+      ],
+      "entities": {
+        "mentions": [
+          {
+            "start": 0,
+            "end": 10,
+            "username": "RedTheOne"
+          }
+        ]
+      },
+      "source": "Redouane59",
+      "id": "1337851654234902530",
+      "public_metrics": {
+        "retweet_count": 1,
+        "reply_count": 1,
+        "like_count": 3,
+        "quote_count": 1
+      },
+      "possibly_sensitive": false,
+      "author_id": "1307302673318895621",
+      "conversation_id": "1337850677821927424",
+      "in_reply_to_user_id": "92073489"
+    },
+    {
+      "text": "@RedTheOne 🤖 :  Bien le bonjour RedTheOne!",
+      "created_at": "2020-12-12T20:06:01.000Z",
+      "lang": "ht",
+      "referenced_tweets": [
+        {
+          "type": "replied_to",
+          "id": "1337851172850454530"
+        }
+      ],
+      "entities": {
+        "mentions": [
+          {
+            "start": 0,
+            "end": 10,
+            "username": "RedTheOne"
+          }
+        ]
+      },
+      "source": "Redouane59",
+      "id": "1337851220711661569",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 1,
+        "like_count": 0,
+        "quote_count": 0
+      },
+      "possibly_sensitive": false,
+      "author_id": "1307302673318895621",
+      "conversation_id": "1337850677821927424",
+      "in_reply_to_user_id": "92073489"
+    }
+  ],
+  "meta": {
+    "oldest_id": "1337851220711661569",
+    "newest_id": "1339667017109032966",
+    "result_count": 10,
+    "next_token": "7140dibdnow9c7btw3w29n6yp637sumd41z7ms1qod7ax"
+  }
+}

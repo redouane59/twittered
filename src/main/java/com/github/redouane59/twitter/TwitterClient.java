@@ -17,7 +17,6 @@ import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.HiddenResponse;
 import com.github.redouane59.twitter.dto.tweet.HiddenResponse.HiddenData;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
-import com.github.redouane59.twitter.dto.tweet.TweetListV2;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponseV1;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponseV2;
@@ -42,12 +41,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -97,22 +94,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   private List<String> getUserIdsByRelation(String url) {
     String       cursor = "-1";
     List<String> result = new ArrayList<>();
-    do {
-      String           urlWithCursor  = url + "&" + CURSOR + "=" + cursor;
-      Optional<IdList> idListResponse = this.requestHelperV2.getRequest(urlWithCursor, IdList.class);
-      if (idListResponse.isEmpty()) {
-        break;
-      }
-      result.addAll(idListResponse.get().getIds());
-      cursor = idListResponse.get().getNextCursor();
-    }
-    while (!cursor.equals("0"));
-    return result;
-  }
-
-  private Set<String> getUserIdsByRelationSet(String url) {
-    String      cursor = "-1";
-    Set<String> result = new HashSet<>();
     do {
       String           urlWithCursor  = url + "&" + CURSOR + "=" + cursor;
       Optional<IdList> idListResponse = this.requestHelperV2.getRequest(urlWithCursor, IdList.class);
@@ -295,7 +276,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public List<Tweet> getTweets(List<String> tweetIds) {
     String          url    = this.getUrlHelper().getTweetListUrl(tweetIds);
-    List<TweetData> result = this.requestHelperV2.getRequest(url, TweetListV2.class).orElseThrow(NoSuchElementException::new).getData();
+    List<TweetData> result = this.requestHelperV2.getRequest(url, TweetSearchResponseV2.class).orElseThrow(NoSuchElementException::new).getData();
     return result.stream().map(tweetData -> TweetV2.builder().data(tweetData).build()).collect(Collectors.toList());
   }
 
@@ -519,16 +500,31 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public List<Tweet> getUserTimeline(final String userId) {
-    int    maxCount = 200;
-    String url      = this.urlHelper.getUserTimelineUrl(userId, maxCount);
-    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
+  public List<Tweet> getUserTimeline(final String userId, int nbTweets) {
+    return this.getUserTimeline(userId, nbTweets, null, null, null, null);
   }
 
   @Override
-  public List<Tweet> getUserTimeline(final String userId, final int count, final String maxId) {
-    String url = this.urlHelper.getUserTimelineUrl(userId, count, maxId);
-    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
+  public List<Tweet> getUserTimeline(String userId, int nbTweets, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {
+    String      token          = null;
+    List<Tweet> result         = new ArrayList<>();
+    int         apiResultLimit = 100;
+    int         missingTweets  = nbTweets;
+    do {
+      String url = this.urlHelper.getUserTimelineUrl(userId, Math.min(apiResultLimit, missingTweets), startTime, endTime, sinceId, untilId);
+      if (token != null) {
+        url = url + "&" + PAGINATION_TOKEN + "=" + token;
+      }
+      Optional<TweetSearchResponseV2> tweetListDTO = this.requestHelperV2.getRequest(url, TweetSearchResponseV2.class);
+      if (tweetListDTO.isEmpty() || tweetListDTO.get().getData() == null) {
+        break;
+      }
+      result.addAll(tweetListDTO.get().getData());
+      token = tweetListDTO.get().getMeta().getNextToken();
+      missingTweets -= apiResultLimit;
+    }
+    while (token != null && missingTweets > 0);
+    return result;
   }
 
 
