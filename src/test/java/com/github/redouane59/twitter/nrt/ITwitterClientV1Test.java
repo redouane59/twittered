@@ -169,13 +169,6 @@ public class ITwitterClientV1Test {
     assertTrue(result.size() > 0);
   }
 
-  @Test
-  public void testGetUserTimelineWithMaxId() {
-    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 10, null, null, null, null);
-    assertTrue(result.size() > 0);
-  }
-
-
   /*
 
     @Test

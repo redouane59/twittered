@@ -179,7 +179,7 @@ public interface ITwitterClientV2 {
   void startSampledStream(Consumer<Tweet> consumer);
 
   /**
-   * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets
+   * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets (time & tweet id arguments can be null)
    *
    * @return a list of the most recent Tweets posted by the user
    */
