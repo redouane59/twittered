@@ -226,4 +226,26 @@ public class ITwitterClientV2Test {
     assertNotNull(result.get(0).getText());
   }
 
+  @Test
+  public void testGetUserTimelineWithDates() {
+    List<? extends Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 20,
+                                                                 ConverterHelper.dayBeforeNow(5),
+                                                                 ConverterHelper.dayBeforeNow(1),
+                                                                 null, null);
+    assertEquals(result.size(), 20);
+    assertNotNull(result.get(0).getId());
+    assertNotNull(result.get(0).getText());
+  }
+
+  @Test
+  public void testGetUserTimelineWithIds() {
+    List<? extends Tweet> result = twitterClient.getUserTimeline("1307302673318895621", 10,
+                                                                 null, null,
+                                                                 "1339662509201121280",
+                                                                 "1339667017109032966");
+    assertEquals(result.size(), 2);
+    assertNotNull(result.get(0).getId());
+    assertNotNull(result.get(0).getText());
+  }
+
 }

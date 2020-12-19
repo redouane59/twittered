@@ -3,6 +3,7 @@ package com.github.redouane59.twitter.unit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.redouane59.twitter.helpers.URLHelper;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -231,9 +232,11 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testGetUserTimelineUrlWithMaxId() {
-    assertEquals("https://api.twitter.com/2/users/99999/tweets?max_results=10&until_id=12345&" + URLHelper.ALL_TWEET_FIELDS,
-                 urlHelper.getUserTimelineUrl("99999", 200, null, null, null, null));
+  public void testGetUserTimelineUrlWithDates() {
+    assertEquals(
+        "https://api.twitter.com/2/users/99999/tweets?max_results=100&start_time=2020-01-01T00:00:00.000Z&end_time=2020-02-01T00:00:00.000Z&"
+        + URLHelper.ALL_TWEET_FIELDS,
+        urlHelper.getUserTimelineUrl("99999", 100, LocalDateTime.of(2020, 1, 1, 0, 0), LocalDateTime.of(2020, 2, 1, 0, 0), null, null));
   }
 
 }

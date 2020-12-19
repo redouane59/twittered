@@ -295,16 +295,16 @@ public class URLHelper {
   public String getUserTimelineUrl(String userId, int maxResult, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {
     String result = ROOT_URL_V2 + USERS + "/" + userId + TWEETS + "?" + MAX_RESULTS + "=" + maxResult;
     if (startTime != null) {
-      result += "&start_time" + ConverterHelper.getStringFromDateV2(startTime);
+      result += "&start_time=" + ConverterHelper.getStringFromDateV2(startTime);
     }
     if (endTime != null) {
-      result += "&end_time" + ConverterHelper.getStringFromDateV2(endTime);
+      result += "&end_time=" + ConverterHelper.getStringFromDateV2(endTime);
     }
     if (sinceId != null) {
-      result += "&since_id" + sinceId;
+      result += "&since_id=" + sinceId;
     }
     if (untilId != null) {
-      result += "&until_id" + untilId;
+      result += "&until_id=" + untilId;
     }
     result += "&" + ALL_TWEET_FIELDS;
     return result;
