@@ -1,6 +1,36 @@
 {
   "data": {
+    "id": "1224044675406925824",
+    "public_metrics": {
+      "retweet_count": 0,
+      "reply_count": 2,
+      "like_count": 2,
+      "quote_count": 0
+    },
+    "source": "Twitter for Android",
+    "lang": "en",
+    "in_reply_to_user_id": "1120050519182016513",
     "author_id": "9920272",
+    "referenced_tweets": [
+      {
+        "type": "replied_to",
+        "id": "1224041905333379073"
+      }
+    ],
+    "entities": {
+      "mentions": [
+        {
+          "start": 0,
+          "end": 13,
+          "username": "RedouaneBali"
+        },
+        {
+          "start": 14,
+          "end": 25,
+          "username": "TwitterAPI"
+        }
+      ]
+    },
     "context_annotations": [
       {
         "domain": {
@@ -10,7 +40,7 @@
         },
         "entity": {
           "id": "848920371311001600",
-          "name": "Technology and computing",
+          "name": "Technology",
           "description": "Technology and computing"
         }
       },
@@ -27,60 +57,31 @@
         }
       }
     ],
-    "created_at": "2020-02-02T18:59:26.000Z",
-    "entities": {
-      "mentions": [
-        {
-          "start": 0,
-          "end": 13,
-          "username": "RedouaneBali"
-        },
-        {
-          "start": 14,
-          "end": 25,
-          "username": "TwitterAPI"
-        }
-      ]
-    },
-    "id": "1224044675406925824",
-    "in_reply_to_user_id": "1120050519182016513",
-    "lang": "en",
+    "text": "@RedouaneBali @TwitterAPI Try to use some function construct of the recebt Java version. It is a good train to improve your procedural code :)",
     "possibly_sensitive": false,
-    "public_metrics": {
-      "retweet_count": 0,
-      "reply_count": 2,
-      "like_count": 2,
-      "quote_count": 0
-    },
-    "referenced_tweets": [
-      {
-        "type": "replied_to",
-        "id": "1224041905333379073"
-      }
-    ],
-    "source": "Twitter for Android",
-    "conversation_id": "1293983173114830848",
-    "text": "@RedouaneBali @TwitterAPI Try to use some function construct of the recebt Java version. It is a good train to improve your procedural code :)"
+    "created_at": "2020-02-02T18:59:26.000Z",
+    "conversation_id": "1224041905333379073",
+    "reply_settings": "everyone"
   },
   "includes": {
     "users": [
       {
-        "created_at": "2007-11-03T17:51:40.000Z",
-        "description": "Developer for life and pleasure... Nevermind the languages and technologies.\nLoving photo and adventure... Or: make a trip to take photos.",
-        "id": "9920272",
-        "location": "Ronchin, France",
-        "name": "Marco Mornati",
-        "profile_image_url": "https://pbs.twimg.com/profile_images/1239881018208911360/c-eOyTZj_normal.jpg",
         "protected": false,
-        "public_metrics": {
-          "followers_count": 398,
-          "following_count": 768,
-          "tweet_count": 4349,
-          "listed_count": 29
-        },
-        "url": "https://t.co/6kr5iASFBT",
         "username": "marcomornati",
-        "verified": false
+        "name": "Marco Mornati",
+        "id": "9920272",
+        "public_metrics": {
+          "followers_count": 433,
+          "following_count": 834,
+          "tweet_count": 4760,
+          "listed_count": 26
+        },
+        "location": "Ronchin, France",
+        "description": "Developer for life and pleasure... Nevermind the languages and technologies.\nLoving photo and adventure... Or: make a trip to take photos.",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1282368652709371912/dSz2fszf_normal.jpg",
+        "verified": false,
+        "created_at": "2007-11-03T17:51:40.000Z",
+        "url": "https://t.co/VDTjQvcKXp"
       }
     ]
   }

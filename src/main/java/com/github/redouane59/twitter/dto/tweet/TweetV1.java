@@ -69,6 +69,13 @@ public class TweetV1 implements Tweet {
 
   @Override
   public String getConversationId() {
+    LOGGER.error("not implemented");
+    return null;
+  }
+
+  @Override
+  public ReplySettings getReplySettings() {
+    LOGGER.error("not implemented");
     return null;
   }
 

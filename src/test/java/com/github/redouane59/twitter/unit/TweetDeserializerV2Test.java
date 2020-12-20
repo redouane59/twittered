@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.tweet.ContextAnnotation;
+import com.github.redouane59.twitter.dto.tweet.ReplySettings;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.dto.user.User;
@@ -80,13 +81,13 @@ public class TweetDeserializerV2Test {
     assertNotNull(user);
     assertEquals("marcomornati", user.getName());
     assertEquals("9920272", user.getId());
-    assertEquals(398, user.getFollowersCount());
-    assertEquals(768, user.getFollowingCount());
+    assertEquals(433, user.getFollowersCount());
+    assertEquals(834, user.getFollowingCount());
   }
 
   @Test
   public void testConversationId() {
-    assertEquals("1293983173114830848", tweetv2.getConversationId());
+    assertEquals("1224041905333379073", tweetv2.getConversationId());
   }
 
   @Test
@@ -102,5 +103,10 @@ public class TweetDeserializerV2Test {
     assertEquals("848921413196984320", contextAnnotation2.getEntity().getId());
     assertEquals("Computer programming", contextAnnotation2.getEntity().getName());
     assertEquals("Computer programming", contextAnnotation2.getEntity().getDescription());
+  }
+
+  @Test
+  public void testReplySettings() {
+    assertEquals(ReplySettings.EVERYONE, tweetv2.getReplySettings());
   }
 }

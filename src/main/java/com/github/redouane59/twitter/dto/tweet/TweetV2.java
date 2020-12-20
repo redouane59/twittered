@@ -52,6 +52,8 @@ public class TweetV2 implements Tweet {
     private List<ContextAnnotation>  contextAnnotations;
     @JsonProperty("conversation_id")
     private String                   conversationId;
+    @JsonProperty("reply_settings")
+    private ReplySettings            replySettings;
 
     @Override
     public int getRetweetCount() {
@@ -174,6 +176,14 @@ public class TweetV2 implements Tweet {
       return null;
     }
     return this.data.getConversationId();
+  }
+
+  @Override
+  public ReplySettings getReplySettings() {
+    if (this.data == null) {
+      return null;
+    }
+    return this.data.getReplySettings();
   }
 
   @Override

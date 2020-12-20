@@ -56,7 +56,7 @@ public class URLHelper {
       "user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
   public static final  String
                               ALL_TWEET_FIELDS              =
-      "tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id";
+      "tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id,reply_settings";
   public static final  String LAST_TWEET_LIST_URL           = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
   public static final  String RATE_LIMIT_URL                = ROOT_URL_V1 + "/application/rate_limit_status.json";
   public static final  String SEARCH_TWEET_STANDARD_URL     = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
