@@ -1,0 +1,88 @@
+{
+  "data": {
+    "id": "1224044675406925824",
+    "public_metrics": {
+      "retweet_count": 0,
+      "reply_count": 2,
+      "like_count": 2,
+      "quote_count": 0
+    },
+    "source": "Twitter for Android",
+    "lang": "en",
+    "in_reply_to_user_id": "1120050519182016513",
+    "author_id": "9920272",
+    "referenced_tweets": [
+      {
+        "type": "replied_to",
+        "id": "1224041905333379073"
+      }
+    ],
+    "entities": {
+      "mentions": [
+        {
+          "start": 0,
+          "end": 13,
+          "username": "RedouaneBali"
+        },
+        {
+          "start": 14,
+          "end": 25,
+          "username": "TwitterAPI"
+        }
+      ]
+    },
+    "context_annotations": [
+      {
+        "domain": {
+          "id": "65",
+          "name": "Interests and Hobbies Vertical",
+          "description": "Top level interests and hobbies groupings, like Food or Travel"
+        },
+        "entity": {
+          "id": "848920371311001600",
+          "name": "Technology",
+          "description": "Technology and computing"
+        }
+      },
+      {
+        "domain": {
+          "id": "66",
+          "name": "Interests and Hobbies Category",
+          "description": "A grouping of interests and hobbies entities, like Novelty Food or Destinations"
+        },
+        "entity": {
+          "id": "848921413196984320",
+          "name": "Computer programming",
+          "description": "Computer programming"
+        }
+      }
+    ],
+    "text": "@RedouaneBali @TwitterAPI Try to use some function construct of the recebt Java version. It is a good train to improve your procedural code :)",
+    "possibly_sensitive": false,
+    "created_at": "2020-02-02T18:59:26.000Z",
+    "conversation_id": "1224041905333379073",
+    "reply_settings": "everyone"
+  },
+  "includes": {
+    "users": [
+      {
+        "protected": false,
+        "username": "marcomornati",
+        "name": "Marco Mornati",
+        "id": "9920272",
+        "public_metrics": {
+          "followers_count": 433,
+          "following_count": 834,
+          "tweet_count": 4760,
+          "listed_count": 26
+        },
+        "location": "Ronchin, France",
+        "description": "Developer for life and pleasure... Nevermind the languages and technologies.\nLoving photo and adventure... Or: make a trip to take photos.",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1282368652709371912/dSz2fszf_normal.jpg",
+        "verified": false,
+        "created_at": "2007-11-03T17:51:40.000Z",
+        "url": "https://t.co/VDTjQvcKXp"
+      }
+    ]
+  }
+}

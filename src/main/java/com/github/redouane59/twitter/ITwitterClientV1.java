@@ -11,38 +11,6 @@ import java.util.List;
 public interface ITwitterClientV1 {
 
   /**
-   * Get a list of the user followers calling https://api.twitter.com/1.1/followers
-   *
-   * @param userId the id of the targeted user
-   * @return a list of users who are following the targeted user
-   */
-  List<User> getFollowerUsers(String userId);
-
-  /**
-   * Get a list of the user followers ids calling https://api.twitter.com/1.1/followers
-   *
-   * @param userId the id of the targeted user
-   * @return a list of ids of users who are following the targeted user
-   */
-  List<String> getFollowerIds(String userId);
-
-  /**
-   * Get a list of the user followings calling https://api.twitter.com/1.1/friends
-   *
-   * @param userId the id of the targeted user
-   * @return a list of users that the targeted user is following
-   */
-  List<User> getFollowingUsers(String userId);
-
-  /**
-   * Get a list of the user followings ids calling https://api.twitter.com/1.1/friends
-   *
-   * @param userId the id of the targeted user
-   * @return a list of ids of users that the targeted user is following
-   */
-  List<String> getFollowingIds(String userId);
-
-  /**
    * Like a tweet calling https://api.twitter.com/1.1/favorites/create.json
    *
    * @param tweetId the id of the tweet
@@ -199,41 +167,6 @@ public interface ITwitterClientV1 {
    * @return the access tokens
    */
   RequestToken getOAuth1AccessToken(RequestToken requestToken, String pinCode);
-
-  /**
-   * Get the last 200 mentions from timeline calling https://api.twitter.com/1.1/statuses/mentions_timeline.json
-   *
-   * @return the list of most recent 200 mentions
-   */
-  List<Tweet> getMentionsTimeline();
-
-  /**
-   * Get the mentions from timeline calling https://api.twitter.com/1.1/statuses/mentions_timeline.json
-   *
-   * @param count Specifies the number of Tweets to try and retrieve, up to a maximum of 200.
-   * @param maxId Returns results with an ID less than (that is, older than) or equal to the specified ID.
-   * @return the list of related mentions
-   */
-  List<Tweet> getMentionsTimeline(int count, String maxId);
-
-  /**
-   * Get the 200 most recent Tweets posted by the user calling https://api.twitter.com/1.1/statuses/user_timeline.json
-   *
-   * @param userId the id of the user
-   * @return a list of the 200 most recent Tweets posted by the user
-   */
-  List<Tweet> getUserTimeline(String userId);
-
-  /**
-   * Get the most recent Tweets posted by the user calling https://api.twitter.com/1.1/statuses/user_timeline.json
-   *
-   * @param userId the id of the user
-   * @param count Specifies the number of Tweets to try and retrieve, up to a maximum of 200 per distinct request
-   * @param maxId Returns results with an ID less than (that is, older than) or equal to the specified ID.
-   * @return a list of the most recent Tweets posted by the user
-   */
-  List<Tweet> getUserTimeline(String userId, int count, String maxId);
-
-
+  
 }
 

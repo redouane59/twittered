@@ -3,6 +3,7 @@ package com.github.redouane59.twitter.unit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.redouane59.twitter.helpers.URLHelper;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -18,20 +19,16 @@ public class UrlHelperTest {
 
   @Test
   public void testUrlFollowersById() {
-    assertEquals("https://api.twitter.com/1.1/followers/ids.json?user_id=952253106",
-                 urlHelper.getFollowerIdsUrl("952253106"));
+    assertEquals(
+        "https://api.twitter.com/2/users/12345/followers?user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        urlHelper.getFollowersUrl("12345"));
   }
 
   @Test
   public void testUrlFollowingsById() {
-    assertEquals("https://api.twitter.com/1.1/friends/ids.json?user_id=952253106",
-                 urlHelper.getFollowingIdsUrl("952253106"));
-  }
-
-  @Test
-  public void testUrlFollowingsUsersById() {
-    assertEquals("https://api.twitter.com/1.1/friends/list.json?user_id=952253106&count=200",
-                 urlHelper.getFollowingUsersUrl("952253106"));
+    assertEquals(
+        "https://api.twitter.com/2/users/12345/following?user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        urlHelper.getFollowingUrl("12345"));
   }
 
   @Test
@@ -86,18 +83,6 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testGetUserTweetUrlById() {
-    assertEquals("https://api.twitter.com/1.1/statuses/user_timeline.json?user_id=12345&count=1&trim_user=true&include_rts=false",
-                 urlHelper.getUserTweetsUrl("12345", 1));
-  }
-
-  @Test
-  public void testGetFollowersByIdUrl() {
-    assertEquals("https://api.twitter.com/1.1/followers/list.json?user_id=12345&count=200",
-                 urlHelper.getFollowerUsersUrl("12345"));
-  }
-
-  @Test
   public void testSearchTweetsUrlStandard() {
     https:
 //api.twitter.com/1.1/search/tweets.json
@@ -141,14 +126,17 @@ public class UrlHelperTest {
   @Test
   public void testTweetUrl() {
     assertEquals(
-        "https://api.twitter.com/2/tweets/12345?expansions=author_id&tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        "https://api.twitter.com/2/tweets/12345?expansions=author_id&" + URLHelper.ALL_TWEET_FIELDS + "&" + URLHelper.ALL_USER_FIELDS,
         urlHelper.getTweetUrl("12345"));
   }
 
   @Test
   public void testUrlGetTweetsV2() {
     assertEquals(
-        "https://api.twitter.com/2/tweets?ids=1294174710624849921,1294380029430960128,1294375095746666496&tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        "https://api.twitter.com/2/tweets?ids=1294174710624849921,1294380029430960128,1294375095746666496&"
+        + URLHelper.ALL_TWEET_FIELDS
+        + "&"
+        + URLHelper.ALL_USER_FIELDS,
         urlHelper.getTweetListUrl(List.of("1294174710624849921,1294380029430960128,1294375095746666496")));
   }
 
@@ -201,14 +189,14 @@ public class UrlHelperTest {
   @Test
   public void testFilteredStreamUrl() {
     assertEquals(
-        "https://api.twitter.com/2/tweets/search/stream?tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        "https://api.twitter.com/2/tweets/search/stream?" + URLHelper.ALL_TWEET_FIELDS + "&" + URLHelper.ALL_USER_FIELDS,
         urlHelper.getFilteredStreamUrl());
   }
 
   @Test
   public void testSampledStreamUrl() {
     assertEquals(
-        "https://api.twitter.com/2/tweets/sample/stream?tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        "https://api.twitter.com/2/tweets/sample/stream?" + URLHelper.ALL_TWEET_FIELDS + "&" + URLHelper.ALL_USER_FIELDS,
         urlHelper.getSampledStreamUrl());
   }
 
@@ -229,27 +217,30 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testGetMentionsTimelineUrl() {
-    assertEquals("https://api.twitter.com/1.1/statuses/mentions_timeline.json?include_entities=true&count=200",
-                 urlHelper.getMentionsTimelineUrl(200));
-  }
-
-  @Test
-  public void testGetMentionsTimelineUrlWithMaxId() {
-    assertEquals("https://api.twitter.com/1.1/statuses/mentions_timeline.json?include_entities=true&count=10&max_id=12345",
-                 urlHelper.getMentionsTimelineUrl(10, "12345"));
-  }
-
-  @Test
   public void testGetUserTimelineUrl() {
-    assertEquals("https://api.twitter.com/1.1/statuses/user_timeline.json?user_id=99999&count=200",
-                 urlHelper.getUserTimelineUrl("99999", 200));
+    assertEquals("https://api.twitter.com/2/users/99999/tweets?max_results=200&" + URLHelper.ALL_TWEET_FIELDS,
+                 urlHelper.getUserTimelineUrl("99999", 200, null, null, null, null));
   }
 
   @Test
-  public void testGetUserTimelineUrlWithMaxId() {
-    assertEquals("https://api.twitter.com/1.1/statuses/user_timeline.json?user_id=99999&count=10&max_id=12345",
-                 urlHelper.getUserTimelineUrl("99999", 10, "12345"));
+  public void testGetUserTimelineUrlWithDates() {
+    assertEquals(
+        "https://api.twitter.com/2/users/99999/tweets?max_results=100&start_time=2020-01-01T00:00:00.000Z&end_time=2020-02-01T00:00:00.000Z&"
+        + URLHelper.ALL_TWEET_FIELDS,
+        urlHelper.getUserTimelineUrl("99999", 100, LocalDateTime.of(2020, 1, 1, 0, 0), LocalDateTime.of(2020, 2, 1, 0, 0), null, null));
   }
 
+  @Test
+  public void testGetUserMentionsUrl() {
+    assertEquals("https://api.twitter.com/2/users/99999/mentions?max_results=200&" + URLHelper.ALL_TWEET_FIELDS,
+                 urlHelper.getUserMentionsUrl("99999", 200, null, null, null, null));
+  }
+
+  @Test
+  public void testGetUserMentionsUrlWithDates() {
+    assertEquals(
+        "https://api.twitter.com/2/users/99999/mentions?max_results=100&start_time=2020-01-01T00:00:00.000Z&end_time=2020-02-01T00:00:00.000Z&"
+        + URLHelper.ALL_TWEET_FIELDS,
+        urlHelper.getUserMentionsUrl("99999", 100, LocalDateTime.of(2020, 1, 1, 0, 0), LocalDateTime.of(2020, 2, 1, 0, 0), null, null));
+  }
 }

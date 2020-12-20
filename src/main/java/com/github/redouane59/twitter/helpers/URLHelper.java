@@ -1,5 +1,6 @@
 package com.github.redouane59.twitter.helpers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,12 +24,13 @@ public class URLHelper {
   private static final String DESTROY_JSON                  = "/destroy.json?";
   private static final String RETWEETERS                    = "/retweeters";
   private static final String FOLLOWERS                     = "/followers";
-  private static final String FRIENDS                       = "/friends";
+  private static final String FOLLOWING                     = "/following";
   private static final String STATUSES                      = "/statuses";
   private static final String FRIENDSHIPS                   = "/friendships";
   private static final String FAVORITES                     = "/favorites";
   private static final String USERS                         = "/users";
   private static final String TWEETS                        = "/tweets";
+  private static final String MENTIONS                      = "/mentions";
   private static final String SEARCH                        = "/search";
   private static final String SAMPLE                        = "/sample";
   private static final String STREAM                        = "/stream";
@@ -49,12 +51,12 @@ public class URLHelper {
   private static final int    MAX_COUNT                     = 200;
   private static final int    RETWEET_MAX_COUNT             = 100;
   private static final int    MAX_LOOKUP                    = 100;
-  private static final String
+  public static final  String
                               ALL_USER_FIELDS               =
       "user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
-  private static final String
+  public static final  String
                               ALL_TWEET_FIELDS              =
-      "tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id";
+      "tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id,reply_settings";
   public static final  String LAST_TWEET_LIST_URL           = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
   public static final  String RATE_LIMIT_URL                = ROOT_URL_V1 + "/application/rate_limit_status.json";
   public static final  String SEARCH_TWEET_STANDARD_URL     = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
@@ -63,6 +65,7 @@ public class URLHelper {
   public static final  String GET_BEARER_TOKEN_URL          = "https://api.twitter.com/oauth2/token";
   public static final  String GET_OAUTH1_TOKEN_URL          = "https://api.twitter.com/oauth/request_token";
   public static final  String GET_OAUTH1_ACCESS_TOKEN_URL   = "https://api.twitter.com/oauth/access_token";
+  private static final String MAX_RESULTS                   = "max_results";
 
 
   public String getSearchTweet30DaysUrl(String envName) {
@@ -122,40 +125,24 @@ public class URLHelper {
            RETWEET_MAX_COUNT;
   }
 
-  public String getFollowerIdsUrl(String userId) {
-    return ROOT_URL_V1 +
-           FOLLOWERS +
-           IDS_JSON +
-           USER_ID + "=" +
-           userId;
-  }
-
-  public String getFollowerUsersUrl(String userId) {
-    return ROOT_URL_V1 +
-           FOLLOWERS +
-           LIST_JSON +
-           USER_ID + "=" +
+  public String getFollowersUrl(String userId) {
+    return ROOT_URL_V2 +
+           USERS +
+           "/" +
            userId +
-           "&" + COUNT + "=" +
-           MAX_COUNT;
+           FOLLOWERS +
+           "?" +
+           ALL_USER_FIELDS;
   }
 
-  public String getFollowingIdsUrl(String userId) {
-    return ROOT_URL_V1 +
-           FRIENDS +
-           IDS_JSON +
-           USER_ID + "=" +
-           userId;
-  }
-
-  public String getFollowingUsersUrl(String userId) {
-    return ROOT_URL_V1 +
-           FRIENDS +
-           LIST_JSON +
-           USER_ID + "=" +
+  public String getFollowingUrl(String userId) {
+    return ROOT_URL_V2 +
+           USERS +
+           "/" +
            userId +
-           "&" + COUNT + "=" +
-           MAX_COUNT;
+           FOLLOWING +
+           "?" +
+           ALL_USER_FIELDS;
   }
 
   public String getUserUrl(String userId) {
@@ -296,21 +283,39 @@ public class URLHelper {
     return ROOT_URL_V2 + TWEETS + SAMPLE + STREAM + "?" + ALL_TWEET_FIELDS + "&" + ALL_USER_FIELDS;
   }
 
-  public String getMentionsTimelineUrl(int count) {
-    return ROOT_URL_V1 + STATUSES + "/mentions_timeline.json?include_entities=true&" + COUNT + "=" + count;
+  public String getUserTimelineUrl(String userId, int maxResult, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {
+    String result = ROOT_URL_V2 + USERS + "/" + userId + TWEETS + "?" + MAX_RESULTS + "=" + maxResult;
+    if (startTime != null) {
+      result += "&start_time=" + ConverterHelper.getStringFromDateV2(startTime);
+    }
+    if (endTime != null) {
+      result += "&end_time=" + ConverterHelper.getStringFromDateV2(endTime);
+    }
+    if (sinceId != null) {
+      result += "&since_id=" + sinceId;
+    }
+    if (untilId != null) {
+      result += "&until_id=" + untilId;
+    }
+    result += "&" + ALL_TWEET_FIELDS;
+    return result;
   }
 
-  public String getMentionsTimelineUrl(int count, String maxId) {
-    return ROOT_URL_V1 + STATUSES + "/mentions_timeline.json?include_entities=true&"
-           + COUNT + "=" + count
-           + "&" + MAX_ID + "=" + maxId;
-  }
-
-  public String getUserTimelineUrl(final String userId, final int count) {
-    return ROOT_URL_V1 + STATUSES + "/user_timeline.json?user_id=" + userId + "&" + COUNT + "=" + count;
-  }
-
-  public String getUserTimelineUrl(final String userId, final int count, final String maxId) {
-    return ROOT_URL_V1 + STATUSES + "/user_timeline.json?user_id=" + userId + "&" + COUNT + "=" + count + "&" + MAX_ID + "=" + maxId;
+  public String getUserMentionsUrl(String userId, int maxResult, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {
+    String result = ROOT_URL_V2 + USERS + "/" + userId + MENTIONS + "?" + MAX_RESULTS + "=" + maxResult;
+    if (startTime != null) {
+      result += "&start_time=" + ConverterHelper.getStringFromDateV2(startTime);
+    }
+    if (endTime != null) {
+      result += "&end_time=" + ConverterHelper.getStringFromDateV2(endTime);
+    }
+    if (sinceId != null) {
+      result += "&since_id=" + sinceId;
+    }
+    if (untilId != null) {
+      result += "&until_id=" + untilId;
+    }
+    result += "&" + ALL_TWEET_FIELDS;
+    return result;
   }
 }

@@ -32,24 +32,6 @@ public class ITwitterClientV1Test {
   }
 
   @Test
-  public void testGetFollowingIdsById() {
-    List<String> followings = twitterClient.getFollowingIds("882266619115864066");
-    assertTrue(followings.size() > 200);
-  }
-
-  @Test
-  public void testGetFollowersIdsById() {
-    List<String> followers = twitterClient.getFollowerIds("882266619115864066");
-    assertTrue(followers.size() > 200);
-  }
-
-  @Test
-  public void testGetFollowersUsersById() {
-    List<User> followers = twitterClient.getFollowerUsers("882266619115864066");
-    assertTrue(followers.size() > 200);
-  }
-
-  @Test
   public void testFriendshipByIdYes() {
     String       userId1 = "92073489";
     String       userId2 = "723996356";
@@ -174,31 +156,6 @@ public class ITwitterClientV1Test {
         twitterClient.searchForTweetsWithin30days("@RedTheOne -RT", LocalDateTime.of(2020, 9, 1, 0, 0), LocalDateTime.of(2020, 9, 3, 0, 0), "30days");
     assertTrue(result.size() > 0);
   }
-
-  @Test
-  public void testGetMentionsTimeline() {
-    List<Tweet> result = twitterClient.getMentionsTimeline();
-    assertTrue(result.size() > 0);
-  }
-
-  @Test
-  public void testGetMentionsTimelineWithMaxId() {
-    List<Tweet> result = twitterClient.getMentionsTimeline(10, "1302072684629590016");
-    assertTrue(result.size() > 0);
-  }
-
-  @Test
-  public void testGetUserTimeline() {
-    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513");
-    assertTrue(result.size() > 0);
-  }
-
-  @Test
-  public void testGetUserTimelineWithMaxId() {
-    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 10, "1300007914674040832");
-    assertTrue(result.size() > 0);
-  }
-
 
   /*
 

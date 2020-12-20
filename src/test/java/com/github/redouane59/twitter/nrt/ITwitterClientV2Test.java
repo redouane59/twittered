@@ -30,7 +30,7 @@ public class ITwitterClientV2Test {
 
   @BeforeAll
   public static void init() throws IOException {
-    String credentialPath = "C:/Users/Perso/Documents/GitHub/twitter-credentials - RBA.json";
+    String credentialPath = "C:/Users/Perso/Documents/GitHub/twitter-credentials.json";
     twitterClient = new TwitterClient(TwitterClient.OBJECT_MAPPER
                                           .readValue(new File(credentialPath), TwitterCredentials.class));
   }
@@ -112,6 +112,18 @@ public class ITwitterClientV2Test {
     String tweetId = "1224041905333379073";
     Tweet  tweet   = twitterClient.getTweet(tweetId);
     assertNotNull(tweet);
+  }
+
+  @Test
+  public void testGetFollowingById() {
+    List<User> followings = twitterClient.getFollowing("882266619115864066");
+    assertTrue(followings.size() > 200);
+  }
+
+  @Test
+  public void testGetFollowersById() {
+    List<User> followers = twitterClient.getFollowers("882266619115864066");
+    assertTrue(followers.size() > 500);
   }
 
   @Test
@@ -204,6 +216,66 @@ public class ITwitterClientV2Test {
     String token = twitterClient.getBearerToken();
     assertNotNull(token);
     assertTrue(token.length() > 50);
+  }
+
+  @Test
+  public void testGetUserTimeline() {
+    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 150);
+    assertEquals(result.size(), 150);
+    assertNotNull(result.get(0).getId());
+    assertNotNull(result.get(0).getText());
+  }
+
+  @Test
+  public void testGetUserTimelineWithDates() {
+    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 20,
+                                                       ConverterHelper.dayBeforeNow(5),
+                                                       ConverterHelper.dayBeforeNow(1),
+                                                       null, null);
+    assertEquals(result.size(), 20);
+    assertNotNull(result.get(0).getId());
+    assertNotNull(result.get(0).getText());
+  }
+
+  @Test
+  public void testGetUserTimelineWithIds() {
+    List<Tweet> result = twitterClient.getUserTimeline("1307302673318895621", 10,
+                                                       null, null,
+                                                       "1339662509201121280",
+                                                       "1339667017109032966");
+    assertEquals(2, result.size());
+    assertNotNull(result.get(0).getId());
+    assertNotNull(result.get(0).getText());
+  }
+
+  @Test
+  public void testGetUserMentions() {
+    List<Tweet> result = twitterClient.getUserMentions("1120050519182016513", 150);
+    assertEquals(150, result.size());
+    assertNotNull(result.get(0).getId());
+    assertNotNull(result.get(0).getText());
+  }
+
+  @Test
+  public void testGetUserMentionsWithDates() {
+    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 5,
+                                                       ConverterHelper.dayBeforeNow(20),
+                                                       ConverterHelper.dayBeforeNow(1),
+                                                       null, null);
+    assertEquals(5, result.size());
+    assertNotNull(result.get(0).getId());
+    assertNotNull(result.get(0).getText());
+  }
+
+  @Test
+  public void testGetUserMentionsWithIds() {
+    List<Tweet> result = twitterClient.getUserTimeline("1307302673318895621", 10,
+                                                       null, null,
+                                                       "1339659629228384256",
+                                                       "1339993046377766912");
+    assertEquals(5, result.size());
+    assertNotNull(result.get(0).getId());
+    assertNotNull(result.get(0).getText());
   }
 
 }

@@ -44,6 +44,22 @@ public interface ITwitterClientV2 {
   List<User> getUsersFromUserIds(List<String> userIds);
 
   /**
+   * Get a list of the user followers calling https://api.twitter.com/2/users/:id/followers
+   *
+   * @param userId the id of the targeted user
+   * @return a list of users who are following the targeted user
+   */
+  List<User> getFollowers(String userId);
+
+  /**
+   * Get a list of the user following calling https://api.twitter.com/2/users/:id/following
+   *
+   * @param userId the id of the targeted user
+   * @return a list of users that the targeted user is following
+   */
+  List<User> getFollowing(String userId);
+
+  /**
    * Get a tweet from its id calling https://api.twitter.com/2/tweets
    *
    * @param tweetId id of the tweet
@@ -161,6 +177,30 @@ public interface ITwitterClientV2 {
    * Stream about 1% of all tweets calling https://api.twitter.com/2/tweets/sample/stream
    */
   void startSampledStream(Consumer<Tweet> consumer);
+
+  /**
+   * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets
+   *
+   * @return a list of the most recent Tweets posted by the user
+   */
+  List<Tweet> getUserTimeline(String userId, int nbTweets);
+
+  /**
+   * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets (time & tweet id arguments can be null)
+   */
+  List<Tweet> getUserTimeline(String userId, int nbTweets, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId);
+
+  /**
+   * Get the most recent mentions received posted by the user calling https://api.twitter.com/2/users/:id/mentions
+   *
+   * @return a list of the most recent Tweets posted by the user
+   */
+  List<Tweet> getUserMentions(String userId, int nbTweets);
+
+  /**
+   * Get the most recent mentions received by the user calling https://api.twitter.com/2/users/:id/mentions (time & tweet id arguments can be null)
+   */
+  List<Tweet> getUserMentions(String userId, int nbTweets, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId);
 
 }
 
