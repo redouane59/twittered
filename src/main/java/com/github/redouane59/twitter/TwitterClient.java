@@ -487,19 +487,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public List<Tweet> getMentionsTimeline() {
-    int    maxCount = 200;
-    String url      = this.urlHelper.getMentionsTimelineUrl(maxCount);
-    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
-  }
-
-  @Override
-  public List<Tweet> getMentionsTimeline(int count, String maxId) {
-    String url = this.urlHelper.getMentionsTimelineUrl(count, maxId);
-    return List.of(this.requestHelper.getRequest(url, TweetV1[].class).orElseThrow(NoSuchElementException::new));
-  }
-
-  @Override
   public List<Tweet> getUserTimeline(final String userId, int nbTweets) {
     return this.getUserTimeline(userId, nbTweets, null, null, null, null);
   }
@@ -527,6 +514,38 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return result;
   }
 
+  @Override
+  public List<Tweet> getUserMentions(final String userId, final int nbTweets) {
+    return this.getUserMentions(userId, nbTweets, null, null, null, null);
+  }
+
+  @Override
+  public List<Tweet> getUserMentions(final String userId,
+                                     final int nbTweets,
+                                     final LocalDateTime startTime,
+                                     final LocalDateTime endTime,
+                                     final String sinceId,
+                                     final String untilId) {
+    String      token          = null;
+    List<Tweet> result         = new ArrayList<>();
+    int         apiResultLimit = 100;
+    int         missingTweets  = nbTweets;
+    do {
+      String url = this.urlHelper.getUserMentionsUrl(userId, Math.min(apiResultLimit, missingTweets), startTime, endTime, sinceId, untilId);
+      if (token != null) {
+        url = url + "&" + PAGINATION_TOKEN + "=" + token;
+      }
+      Optional<TweetSearchResponseV2> tweetListDTO = this.requestHelperV2.getRequest(url, TweetSearchResponseV2.class);
+      if (tweetListDTO.isEmpty() || tweetListDTO.get().getData() == null) {
+        break;
+      }
+      result.addAll(tweetListDTO.get().getData());
+      token = tweetListDTO.get().getMeta().getNextToken();
+      missingTweets -= apiResultLimit;
+    }
+    while (token != null && missingTweets > 0);
+    return result;
+  }
 
   @Override
   public List<TweetV1> readTwitterDataFile(File file) throws IOException {
