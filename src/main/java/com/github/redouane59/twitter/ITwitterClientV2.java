@@ -191,8 +191,7 @@ public interface ITwitterClientV2 {
   List<Tweet> getUserTimeline(String userId, int nbTweets, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId);
 
   /**
-   * Get the most recent mentions received posted by the user calling https://api.twitter.com/2/users/:id/mentions (time & tweet id arguments can be
-   * null)
+   * Get the most recent mentions received posted by the user calling https://api.twitter.com/2/users/:id/mentions
    *
    * @return a list of the most recent Tweets posted by the user
    */
