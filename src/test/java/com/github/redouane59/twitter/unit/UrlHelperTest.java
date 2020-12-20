@@ -126,14 +126,17 @@ public class UrlHelperTest {
   @Test
   public void testTweetUrl() {
     assertEquals(
-        "https://api.twitter.com/2/tweets/12345?expansions=author_id&tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        "https://api.twitter.com/2/tweets/12345?expansions=author_id&" + URLHelper.ALL_TWEET_FIELDS + "&" + URLHelper.ALL_USER_FIELDS,
         urlHelper.getTweetUrl("12345"));
   }
 
   @Test
   public void testUrlGetTweetsV2() {
     assertEquals(
-        "https://api.twitter.com/2/tweets?ids=1294174710624849921,1294380029430960128,1294375095746666496&tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        "https://api.twitter.com/2/tweets?ids=1294174710624849921,1294380029430960128,1294375095746666496&"
+        + URLHelper.ALL_TWEET_FIELDS
+        + "&"
+        + URLHelper.ALL_USER_FIELDS,
         urlHelper.getTweetListUrl(List.of("1294174710624849921,1294380029430960128,1294375095746666496")));
   }
 
@@ -186,14 +189,14 @@ public class UrlHelperTest {
   @Test
   public void testFilteredStreamUrl() {
     assertEquals(
-        "https://api.twitter.com/2/tweets/search/stream?tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        "https://api.twitter.com/2/tweets/search/stream?" + URLHelper.ALL_TWEET_FIELDS + "&" + URLHelper.ALL_USER_FIELDS,
         urlHelper.getFilteredStreamUrl());
   }
 
   @Test
   public void testSampledStreamUrl() {
     assertEquals(
-        "https://api.twitter.com/2/tweets/sample/stream?tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        "https://api.twitter.com/2/tweets/sample/stream?" + URLHelper.ALL_TWEET_FIELDS + "&" + URLHelper.ALL_USER_FIELDS,
         urlHelper.getSampledStreamUrl());
   }
 
@@ -212,7 +215,7 @@ public class UrlHelperTest {
     assertEquals("https://api.twitter.com/1.1/account_activity/all/dev/webhooks.json",
                  urlHelper.getLiveEventUrl("dev"));
   }
-  
+
   @Test
   public void testGetUserTimelineUrl() {
     assertEquals("https://api.twitter.com/2/users/99999/tweets?max_results=200&" + URLHelper.ALL_TWEET_FIELDS,
