@@ -30,6 +30,7 @@ public class URLHelper {
   private static final String FAVORITES                     = "/favorites";
   private static final String USERS                         = "/users";
   private static final String TWEETS                        = "/tweets";
+  private static final String MENTIONS                      = "/mentions";
   private static final String SEARCH                        = "/search";
   private static final String SAMPLE                        = "/sample";
   private static final String STREAM                        = "/stream";
@@ -282,18 +283,26 @@ public class URLHelper {
     return ROOT_URL_V2 + TWEETS + SAMPLE + STREAM + "?" + ALL_TWEET_FIELDS + "&" + ALL_USER_FIELDS;
   }
 
-  public String getMentionsTimelineUrl(int count) {
-    return ROOT_URL_V1 + STATUSES + "/mentions_timeline.json?include_entities=true&" + COUNT + "=" + count;
-  }
-
-  public String getMentionsTimelineUrl(int count, String maxId) {
-    return ROOT_URL_V1 + STATUSES + "/mentions_timeline.json?include_entities=true&"
-           + COUNT + "=" + count
-           + "&" + MAX_ID + "=" + maxId;
-  }
-
   public String getUserTimelineUrl(String userId, int maxResult, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {
     String result = ROOT_URL_V2 + USERS + "/" + userId + TWEETS + "?" + MAX_RESULTS + "=" + maxResult;
+    if (startTime != null) {
+      result += "&start_time=" + ConverterHelper.getStringFromDateV2(startTime);
+    }
+    if (endTime != null) {
+      result += "&end_time=" + ConverterHelper.getStringFromDateV2(endTime);
+    }
+    if (sinceId != null) {
+      result += "&since_id=" + sinceId;
+    }
+    if (untilId != null) {
+      result += "&until_id=" + untilId;
+    }
+    result += "&" + ALL_TWEET_FIELDS;
+    return result;
+  }
+
+  public String getUserMentionsUrl(String userId, int maxResult, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {
+    String result = ROOT_URL_V2 + USERS + "/" + userId + MENTIONS + "?" + MAX_RESULTS + "=" + maxResult;
     if (startTime != null) {
       result += "&start_time=" + ConverterHelper.getStringFromDateV2(startTime);
     }

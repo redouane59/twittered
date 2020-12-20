@@ -212,19 +212,7 @@ public class UrlHelperTest {
     assertEquals("https://api.twitter.com/1.1/account_activity/all/dev/webhooks.json",
                  urlHelper.getLiveEventUrl("dev"));
   }
-
-  @Test
-  public void testGetMentionsTimelineUrl() {
-    assertEquals("https://api.twitter.com/1.1/statuses/mentions_timeline.json?include_entities=true&count=200",
-                 urlHelper.getMentionsTimelineUrl(200));
-  }
-
-  @Test
-  public void testGetMentionsTimelineUrlWithMaxId() {
-    assertEquals("https://api.twitter.com/1.1/statuses/mentions_timeline.json?include_entities=true&count=10&max_id=12345",
-                 urlHelper.getMentionsTimelineUrl(10, "12345"));
-  }
-
+  
   @Test
   public void testGetUserTimelineUrl() {
     assertEquals("https://api.twitter.com/2/users/99999/tweets?max_results=200&" + URLHelper.ALL_TWEET_FIELDS,
@@ -239,4 +227,17 @@ public class UrlHelperTest {
         urlHelper.getUserTimelineUrl("99999", 100, LocalDateTime.of(2020, 1, 1, 0, 0), LocalDateTime.of(2020, 2, 1, 0, 0), null, null));
   }
 
+  @Test
+  public void testGetUserMentionsUrl() {
+    assertEquals("https://api.twitter.com/2/users/99999/mentions?max_results=200&" + URLHelper.ALL_TWEET_FIELDS,
+                 urlHelper.getUserMentionsUrl("99999", 200, null, null, null, null));
+  }
+
+  @Test
+  public void testGetUserMentionsUrlWithDates() {
+    assertEquals(
+        "https://api.twitter.com/2/users/99999/mentions?max_results=100&start_time=2020-01-01T00:00:00.000Z&end_time=2020-02-01T00:00:00.000Z&"
+        + URLHelper.ALL_TWEET_FIELDS,
+        urlHelper.getUserMentionsUrl("99999", 100, LocalDateTime.of(2020, 1, 1, 0, 0), LocalDateTime.of(2020, 2, 1, 0, 0), null, null));
+  }
 }
