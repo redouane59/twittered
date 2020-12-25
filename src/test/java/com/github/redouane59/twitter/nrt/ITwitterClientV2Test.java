@@ -18,6 +18,7 @@ import com.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -47,14 +48,14 @@ public class ITwitterClientV2Test {
 
   @Test
   public void getUsersByUserNames() {
-    List<User> result = twitterClient.getUsersFromUserNames(List.of("Zidane", "Ronaldo", "RedTheOne"));
+    List<User> result = twitterClient.getUsersFromUserNames(Arrays.asList("Zidane", "Ronaldo", "RedTheOne"));
     assertEquals(3, result.size());
     assertEquals("92073489", result.get(2).getId());
   }
 
   @Test
   public void getUsersByUserIds() {
-    List<User> result = twitterClient.getUsersFromUserIds(List.of("22848599", "1976143068", "92073489"));
+    List<User> result = twitterClient.getUsersFromUserIds(Arrays.asList("22848599", "1976143068", "92073489"));
     assertEquals(3, result.size());
     assertEquals("RedTheOne", result.get(2).getName());
   }
@@ -128,7 +129,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetTweetsByIds() {
-    List<String> tweetIds = List.of("1294174710624849921,1294380029430960128,1294375095746666496");
+    List<String> tweetIds = Arrays.asList("1294174710624849921,1294380029430960128,1294375095746666496");
     List<Tweet>  tweets   = twitterClient.getTweets(tweetIds);
     assertTrue(tweets.size() > 0);
     assertTrue(tweets.get(0).getText().length() > 0);
