@@ -184,6 +184,6 @@ public interface ITwitterClientV1 {
   /**
    * Upload a media calling https://upload.twitter.com/1.1/media/upload.json
    */
-  UploadMediaResponse uploadMedia(File image, MediaCategory mediaCategory);
+  UploadMediaResponse uploadMedia(File media, MediaCategory mediaCategory);
 }
 
