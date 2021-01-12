@@ -318,4 +318,8 @@ public class URLHelper {
     result += "&" + ALL_TWEET_FIELDS;
     return result;
   }
+
+  public String getUploadMediaUrl(String mediaType, int totalBytes) {
+    return "https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes=" + totalBytes + "&media_type=" + mediaType;
+  }
 }

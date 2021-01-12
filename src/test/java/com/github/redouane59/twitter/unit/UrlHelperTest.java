@@ -243,4 +243,10 @@ public class UrlHelperTest {
         + URLHelper.ALL_TWEET_FIELDS,
         urlHelper.getUserMentionsUrl("99999", 100, LocalDateTime.of(2020, 1, 1, 0, 0), LocalDateTime.of(2020, 2, 1, 0, 0), null, null));
   }
+
+  @Test
+  public void testUploadMediaUrl() {
+    assertEquals("https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes=10240&media_type=image/jpeg",
+                 urlHelper.getUploadMediaUrl("image/jpeg", 10240));
+  }
 }

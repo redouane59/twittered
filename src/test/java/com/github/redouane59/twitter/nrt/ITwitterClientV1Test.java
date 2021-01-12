@@ -9,6 +9,7 @@ import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.File;
@@ -155,6 +156,13 @@ public class ITwitterClientV1Test {
         result =
         twitterClient.searchForTweetsWithin30days("@RedTheOne -RT", LocalDateTime.of(2020, 9, 1, 0, 0), LocalDateTime.of(2020, 9, 3, 0, 0), "30days");
     assertTrue(result.size() > 0);
+  }
+
+  @Test
+  public void testUploadMedia() {
+    UploadMediaResponse response = twitterClient.uploadMedia("blabla", "image/jpeg");
+    assertNotNull(response);
+    assertNotNull(response.getMediaId());
   }
 
   /*

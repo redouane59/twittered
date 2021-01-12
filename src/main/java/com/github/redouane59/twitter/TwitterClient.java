@@ -24,6 +24,7 @@ import com.github.redouane59.twitter.dto.tweet.TweetV1;
 import com.github.redouane59.twitter.dto.tweet.TweetV1Deserializer;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.dto.tweet.TweetV2.TweetData;
+import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.dto.user.UserListV2;
 import com.github.redouane59.twitter.dto.user.UserV1;
@@ -604,6 +605,14 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put("oauth_verifier", pinCode);
     String stringResponse = this.requestHelper.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
     return new RequestToken(stringResponse);
+  }
+
+  @Override
+  public UploadMediaResponse uploadMedia(final String media, final String mediaType) {
+    String              url        = urlHelper.getUploadMediaUrl(mediaType, 10240);
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put("media", media);
+    return this.getRequestHelper().postRequest(url, parameters, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
   public static TwitterCredentials getAuthentication() {
