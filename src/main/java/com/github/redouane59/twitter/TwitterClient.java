@@ -51,7 +51,6 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 
 @Getter
 @Setter
@@ -610,17 +609,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public UploadMediaResponse uploadMedia(File imageFile) {
-    try {
-      byte[] fileContent = FileUtils.readFileToByteArray(imageFile);
-      //   String encodedString = Base64.getEncoder().encodeToString(fileContent);
-      String url = urlHelper.getUploadMediaUrl();
-      //    Map<String, String> parameters    = new HashMap<>();
-      //   parameters.put("media", encodedString);
-      return this.getRequestHelper().uploadFile(url, imageFile, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
-    } catch (IOException e) {
-      LOGGER.error(e.getMessage(), e);
-    }
-    return null;
+    String url = urlHelper.getUploadMediaUrl();
+    return this.getRequestHelper().uploadMedia(url, imageFile, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
   public static TwitterCredentials getAuthentication() {

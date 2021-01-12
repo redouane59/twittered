@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -51,17 +50,15 @@ public class RequestHelper extends AbstractRequestHelper {
     return Optional.ofNullable(result);
   }
 
-  public <T> Optional<T> uploadFile(String url, File file, Class<T> classType) {
+  public <T> Optional<T> uploadMedia(String url, File file, Class<T> classType) {
     T result = null;
     try {
-      RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                                                           .addFormDataPart("", "/C:/Users/Perso/Pictures/griffe.jpeg",
-                                                                            RequestBody.create(MediaType.parse("application/octet-stream"),
-                                                                                               file))
-                                                           .build();
+      HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+      String          json        = TwitterClient.OBJECT_MAPPER.writeValueAsString(file);
+      RequestBody     requestBody = RequestBody.create(MediaType.parse("application/json"), json);
       Request request = new Request.Builder()
-          .url(url)
-          .method("POST", requestBody)
+          .url(httpBuilder.build())
+          .post(requestBody)
           .build();
       Request signedRequest = this.getSignedRequest(request);
       Response response = this.getHttpClient(url)

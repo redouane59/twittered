@@ -1,15 +1,18 @@
 package com.github.redouane59.twitter.dto.tweet;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Value;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@AllArgsConstructor
-@Value
+@Getter
+@Setter
+@NoArgsConstructor
 public class UploadMediaResponse {
 
-  @JsonProperty("media_id")
-  private long mediaId;
-  private long size;
+  @JsonProperty("media_id_string")
+  private String mediaId;
+  @JsonProperty("expires_after_secs")
+  private int    expiresAfterSecs;
 
 }
