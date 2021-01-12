@@ -14,5 +14,8 @@ public class UploadMediaResponse {
   private String mediaId;
   @JsonProperty("expires_after_secs")
   private int    expiresAfterSecs;
+  private int    size;
+  @JsonProperty("media_key")
+  private String mediaKey;
 
 }
