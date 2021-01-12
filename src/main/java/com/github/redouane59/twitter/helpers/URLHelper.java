@@ -320,6 +320,7 @@ public class URLHelper {
   }
 
   public String getUploadMediaUrl() {
-    return "https://upload.twitter.com/1.1/media/upload.json?command=INIT";
+    //return "https://upload.twitter.com/1.1/media/upload.json?command=INIT";
+    return "https://upload.twitter.com/1.1/media/upload.json?media_category=tweet_image";
   }
 }

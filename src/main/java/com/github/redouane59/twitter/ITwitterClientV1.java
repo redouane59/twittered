@@ -56,6 +56,11 @@ public interface ITwitterClientV1 {
   Tweet postTweet(String text, String inReplyToStatusId);
 
   /**
+   * Post a tweet calling with media https://api.twitter.com/1.1/statuses/update.json
+   */
+  Tweet postTweet(String text, String inReplyToStatusId, String mediaId);
+
+  /**
    * Delete a tweet calling https://api.twitter.com/1.1/statuses/destroy/:id.json
    *
    * @param tweetId the id of the tweet

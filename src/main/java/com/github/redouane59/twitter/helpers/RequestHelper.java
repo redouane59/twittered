@@ -68,7 +68,7 @@ public class RequestHelper extends AbstractRequestHelper {
 
       HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
       RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                                                           .addFormDataPart("", file.toString(),
+                                                           .addFormDataPart("media", file.toString(),
                                                                             RequestBody.create(MediaType.parse("application/octet-stream"),
                                                                                                file))
                                                            .build();
@@ -76,17 +76,13 @@ public class RequestHelper extends AbstractRequestHelper {
           .url(httpBuilder.build())
           .post(requestBody)
           .build();
-      
+
       Response response       = client.newCall(request).execute();
       String   stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
         logApiError("POST", url, stringResponse, response.code());
       }
-      if (classType.equals(String.class)) { // dirty, to manage token oauth1
-        result = (T) stringResponse;
-      } else {
-        result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
-      }
+      result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
     } catch (Exception e) {
       LOGGER.error(e.getMessage(), e);
     }

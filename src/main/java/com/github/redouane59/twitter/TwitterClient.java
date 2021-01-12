@@ -252,11 +252,19 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public Tweet postTweet(String text, String inReplyToStatusId) {
+    return this.postTweet(text, inReplyToStatusId, null);
+  }
+
+  @Override
+  public Tweet postTweet(String text, String inReplyToStatusId, String mediaId) {
     String              url        = this.getUrlHelper().getPostTweetUrl();
     Map<String, String> parameters = new HashMap<>();
     parameters.put("status", text);
     if (inReplyToStatusId != null) {
       parameters.put("in_reply_to_status_id", inReplyToStatusId);
+    }
+    if (mediaId != null) {
+      parameters.put("media_ids", mediaId);
     }
     return this.getRequestHelper().postRequest(url, parameters, TweetV1.class).orElseThrow(NoSuchElementException::new);
   }
