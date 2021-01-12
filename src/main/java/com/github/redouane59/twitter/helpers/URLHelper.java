@@ -319,7 +319,7 @@ public class URLHelper {
     return result;
   }
 
-  public String getUploadMediaUrl(String mediaType, int totalBytes) {
-    return "https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes=" + totalBytes + "&media_type=" + mediaType;
+  public String getUploadMediaUrl() {
+    return "https://upload.twitter.com/1.1/media/upload.json?command=INIT";
   }
 }

@@ -2,12 +2,14 @@ package com.github.redouane59.twitter.helpers;
 
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.signature.Oauth1SigningInterceptor;
+import java.io.File;
 import java.util.Map;
 import java.util.Optional;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -30,6 +32,36 @@ public class RequestHelper extends AbstractRequestHelper {
       Request request = new Request.Builder()
           .url(httpBuilder.build())
           .post(requestBody)
+          .build();
+      Request signedRequest = this.getSignedRequest(request);
+      Response response = this.getHttpClient(url)
+                              .newCall(signedRequest).execute();
+      String stringResponse = response.body().string();
+      if (response.code() < 200 || response.code() > 299) {
+        logApiError("POST", url, stringResponse, response.code());
+      }
+      if (classType.equals(String.class)) { // dirty, to manage token oauth1
+        result = (T) stringResponse;
+      } else {
+        result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
+      }
+    } catch (Exception e) {
+      LOGGER.error(e.getMessage(), e);
+    }
+    return Optional.ofNullable(result);
+  }
+
+  public <T> Optional<T> uploadFile(String url, File file, Class<T> classType) {
+    T result = null;
+    try {
+      RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                                                           .addFormDataPart("", "/C:/Users/Perso/Pictures/griffe.jpeg",
+                                                                            RequestBody.create(MediaType.parse("application/octet-stream"),
+                                                                                               file))
+                                                           .build();
+      Request request = new Request.Builder()
+          .url(url)
+          .method("POST", requestBody)
           .build();
       Request signedRequest = this.getSignedRequest(request);
       Response response = this.getHttpClient(url)

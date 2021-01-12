@@ -160,7 +160,7 @@ public class ITwitterClientV1Test {
 
   @Test
   public void testUploadMedia() {
-    UploadMediaResponse response = twitterClient.uploadMedia("blabla", "image/jpeg");
+    UploadMediaResponse response = twitterClient.uploadMedia(new File("C:\\Users\\Perso\\Pictures\\griffe.jpeg"));
     assertNotNull(response);
     assertNotNull(response.getMediaId());
   }

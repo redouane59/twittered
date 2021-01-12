@@ -6,6 +6,7 @@ import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import com.github.redouane59.twitter.dto.user.User;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -172,6 +173,6 @@ public interface ITwitterClientV1 {
   /**
    * Upload a media calling https://upload.twitter.com/1.1/media/upload.json
    */
-  UploadMediaResponse uploadMedia(String media, String mediaType);
+  UploadMediaResponse uploadMedia(File image);
 }
 

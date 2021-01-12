@@ -246,7 +246,7 @@ public class UrlHelperTest {
 
   @Test
   public void testUploadMediaUrl() {
-    assertEquals("https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes=10240&media_type=image/jpeg",
-                 urlHelper.getUploadMediaUrl("image/jpeg", 10240));
+    assertEquals("https://upload.twitter.com/1.1/media/upload.json?command=INIT",
+                 urlHelper.getUploadMediaUrl());
   }
 }
