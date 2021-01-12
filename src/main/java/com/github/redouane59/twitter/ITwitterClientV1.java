@@ -3,6 +3,7 @@ package com.github.redouane59.twitter;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.others.RateLimitStatus;
 import com.github.redouane59.twitter.dto.others.RequestToken;
+import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import com.github.redouane59.twitter.dto.user.User;
@@ -56,7 +57,12 @@ public interface ITwitterClientV1 {
   Tweet postTweet(String text, String inReplyToStatusId);
 
   /**
-   * Post a tweet calling with media https://api.twitter.com/1.1/statuses/update.json
+   * Post a tweet calling https://api.twitter.com/1.1/statuses/update.json
+   *
+   * @param text the tweet text
+   * @param inReplyToStatusId the id of the tweet to answer.
+   * @param mediaId the id of the media obtained calling the uploadMedia() method
+   * @return the created tweet
    */
   Tweet postTweet(String text, String inReplyToStatusId, String mediaId);
 
@@ -178,6 +184,6 @@ public interface ITwitterClientV1 {
   /**
    * Upload a media calling https://upload.twitter.com/1.1/media/upload.json
    */
-  UploadMediaResponse uploadMedia(File image);
+  UploadMediaResponse uploadMedia(File image, MediaCategory mediaCategory);
 }
 

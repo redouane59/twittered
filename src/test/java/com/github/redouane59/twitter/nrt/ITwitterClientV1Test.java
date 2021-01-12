@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.others.RequestToken;
+import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import com.github.redouane59.twitter.dto.user.User;
@@ -160,7 +161,7 @@ public class ITwitterClientV1Test {
 
   @Test
   public void testUploadMedia() {
-    UploadMediaResponse response = twitterClient.uploadMedia(new File("C:\\Users\\Perso\\Pictures\\bot.PNG"));
+    UploadMediaResponse response = twitterClient.uploadMedia(new File("C:\\Users\\Perso\\Pictures\\bot.PNG"), MediaCategory.TWEET_IMAGE);
     assertNotNull(response);
     assertNotNull(response.getMediaId());
     Tweet tweet = twitterClient.postTweet("Test", null, response.getMediaId());

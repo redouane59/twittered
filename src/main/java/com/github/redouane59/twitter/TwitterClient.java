@@ -16,6 +16,7 @@ import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.HiddenResponse;
 import com.github.redouane59.twitter.dto.tweet.HiddenResponse.HiddenData;
+import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponseV1;
@@ -616,8 +617,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public UploadMediaResponse uploadMedia(File imageFile) {
-    String url = urlHelper.getUploadMediaUrl();
+  public UploadMediaResponse uploadMedia(File imageFile, MediaCategory mediaCategory) {
+    String url = urlHelper.getUploadMediaUrl(mediaCategory);
     return this.getRequestHelper().uploadMedia(url, imageFile, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
   }
 

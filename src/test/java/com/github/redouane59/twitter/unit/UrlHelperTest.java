@@ -2,6 +2,7 @@ package com.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.helpers.URLHelper;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -246,7 +247,7 @@ public class UrlHelperTest {
 
   @Test
   public void testUploadMediaUrl() {
-    assertEquals("https://upload.twitter.com/1.1/media/upload.json?command=INIT",
-                 urlHelper.getUploadMediaUrl());
+    assertEquals("https://upload.twitter.com/1.1/media/upload.json?media_category=tweet_image",
+                 urlHelper.getUploadMediaUrl(MediaCategory.TWEET_IMAGE));
   }
 }
