@@ -3,8 +3,11 @@ package com.github.redouane59.twitter;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.others.RateLimitStatus;
 import com.github.redouane59.twitter.dto.others.RequestToken;
+import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import com.github.redouane59.twitter.dto.user.User;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -52,6 +55,16 @@ public interface ITwitterClientV1 {
    * @return the created tweet
    */
   Tweet postTweet(String text, String inReplyToStatusId);
+
+  /**
+   * Post a tweet calling https://api.twitter.com/1.1/statuses/update.json
+   *
+   * @param text the tweet text
+   * @param inReplyToStatusId the id of the tweet to answer.
+   * @param mediaId the id of the media obtained calling the uploadMedia() method
+   * @return the created tweet
+   */
+  Tweet postTweet(String text, String inReplyToStatusId, String mediaId);
 
   /**
    * Delete a tweet calling https://api.twitter.com/1.1/statuses/destroy/:id.json
@@ -167,6 +180,10 @@ public interface ITwitterClientV1 {
    * @return the access tokens
    */
   RequestToken getOAuth1AccessToken(RequestToken requestToken, String pinCode);
-  
+
+  /**
+   * Upload a media calling https://upload.twitter.com/1.1/media/upload.json
+   */
+  UploadMediaResponse uploadMedia(File media, MediaCategory mediaCategory);
 }
 

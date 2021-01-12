@@ -2,15 +2,20 @@ package com.github.redouane59.twitter.helpers;
 
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.signature.Oauth1SigningInterceptor;
+import java.io.File;
 import java.util.Map;
 import java.util.Optional;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import se.akerfeldt.okhttp.signpost.OkHttpOAuthConsumer;
+import se.akerfeldt.okhttp.signpost.SigningInterceptor;
 
 @NoArgsConstructor
 @Slf4j
@@ -43,6 +48,41 @@ public class RequestHelper extends AbstractRequestHelper {
       } else {
         result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
       }
+    } catch (Exception e) {
+      LOGGER.error(e.getMessage(), e);
+    }
+    return Optional.ofNullable(result);
+  }
+
+  public <T> Optional<T> uploadMedia(String url, File file, Class<T> classType) {
+    T result = null;
+    try {
+      OkHttpOAuthConsumer
+          consumer =
+          new OkHttpOAuthConsumer(TwitterClient.TWITTER_CREDENTIALS.getApiKey(), TwitterClient.TWITTER_CREDENTIALS.getApiSecretKey());
+      consumer.setTokenWithSecret(TwitterClient.TWITTER_CREDENTIALS.getAccessToken(), TwitterClient.TWITTER_CREDENTIALS.getAccessTokenSecret());
+
+      OkHttpClient client = new OkHttpClient.Builder()
+          .addInterceptor(new SigningInterceptor(consumer))
+          .build();
+
+      HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+      RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                                                           .addFormDataPart("media", file.toString(),
+                                                                            RequestBody.create(MediaType.parse("application/octet-stream"),
+                                                                                               file))
+                                                           .build();
+      Request request = new Request.Builder()
+          .url(httpBuilder.build())
+          .post(requestBody)
+          .build();
+
+      Response response       = client.newCall(request).execute();
+      String   stringResponse = response.body().string();
+      if (response.code() < 200 || response.code() > 299) {
+        logApiError("POST", url, stringResponse, response.code());
+      }
+      result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
     } catch (Exception e) {
       LOGGER.error(e.getMessage(), e);
     }
