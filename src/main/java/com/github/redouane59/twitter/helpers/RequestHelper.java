@@ -9,9 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import se.akerfeldt.okhttp.signpost.OkHttpOAuthConsumer;
+import se.akerfeldt.okhttp.signpost.SigningInterceptor;
 
 @NoArgsConstructor
 @Slf4j
@@ -53,17 +57,28 @@ public class RequestHelper extends AbstractRequestHelper {
   public <T> Optional<T> uploadMedia(String url, File file, Class<T> classType) {
     T result = null;
     try {
+      OkHttpOAuthConsumer
+          consumer =
+          new OkHttpOAuthConsumer(TwitterClient.TWITTER_CREDENTIALS.getApiKey(), TwitterClient.TWITTER_CREDENTIALS.getApiSecretKey());
+      consumer.setTokenWithSecret(TwitterClient.TWITTER_CREDENTIALS.getAccessToken(), TwitterClient.TWITTER_CREDENTIALS.getAccessTokenSecret());
+
+      OkHttpClient client = new OkHttpClient.Builder()
+          .addInterceptor(new SigningInterceptor(consumer))
+          .build();
+
       HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
-      String          json        = TwitterClient.OBJECT_MAPPER.writeValueAsString(file);
-      RequestBody     requestBody = RequestBody.create(MediaType.parse("application/json"), json);
+      RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                                                           .addFormDataPart("", file.toString(),
+                                                                            RequestBody.create(MediaType.parse("application/octet-stream"),
+                                                                                               file))
+                                                           .build();
       Request request = new Request.Builder()
           .url(httpBuilder.build())
           .post(requestBody)
           .build();
-      Request signedRequest = this.getSignedRequest(request);
-      Response response = this.getHttpClient(url)
-                              .newCall(signedRequest).execute();
-      String stringResponse = response.body().string();
+      
+      Response response       = client.newCall(request).execute();
+      String   stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
         logApiError("POST", url, stringResponse, response.code());
       }
