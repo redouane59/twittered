@@ -16,6 +16,7 @@ import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.HiddenResponse;
 import com.github.redouane59.twitter.dto.tweet.HiddenResponse.HiddenData;
+import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponseV1;
@@ -24,6 +25,7 @@ import com.github.redouane59.twitter.dto.tweet.TweetV1;
 import com.github.redouane59.twitter.dto.tweet.TweetV1Deserializer;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.dto.tweet.TweetV2.TweetData;
+import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.dto.user.UserListV2;
 import com.github.redouane59.twitter.dto.user.UserV1;
@@ -251,11 +253,19 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public Tweet postTweet(String text, String inReplyToStatusId) {
+    return this.postTweet(text, inReplyToStatusId, null);
+  }
+
+  @Override
+  public Tweet postTweet(String text, String inReplyToStatusId, String mediaId) {
     String              url        = this.getUrlHelper().getPostTweetUrl();
     Map<String, String> parameters = new HashMap<>();
     parameters.put("status", text);
     if (inReplyToStatusId != null) {
       parameters.put("in_reply_to_status_id", inReplyToStatusId);
+    }
+    if (mediaId != null) {
+      parameters.put("media_ids", mediaId);
     }
     return this.getRequestHelper().postRequest(url, parameters, TweetV1.class).orElseThrow(NoSuchElementException::new);
   }
@@ -604,6 +614,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put("oauth_verifier", pinCode);
     String stringResponse = this.requestHelper.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
     return new RequestToken(stringResponse);
+  }
+
+  @Override
+  public UploadMediaResponse uploadMedia(File imageFile, MediaCategory mediaCategory) {
+    String url = urlHelper.getUploadMediaUrl(mediaCategory);
+    return this.getRequestHelper().uploadMedia(url, imageFile, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
   public static TwitterCredentials getAuthentication() {

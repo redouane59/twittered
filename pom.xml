@@ -6,7 +6,7 @@
 
   <groupId>com.github.redouane59.twitter</groupId>
   <artifactId>twittered</artifactId>
-  <version>1.15</version>
+  <version>1.16</version>
 
   <name>twittered</name>
   <description>java client for twitter API</description>
@@ -186,6 +186,11 @@
       <artifactId>logback-classic</artifactId>
       <version>1.2.3</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>se.akerfeldt</groupId>
+      <artifactId>okhttp-signpost</artifactId>
+      <version>1.1.0</version>
     </dependency>
   </dependencies>
 </project>

@@ -20,6 +20,15 @@ In your pom.xml, add the following dependency and replace `VERSION` with the ver
   <version>VERSION</version>
 </dependency>
 ```
+
+For JDK8 compatible version, use : 
+```
+<dependency>
+    <groupId>com.github.redouane59.twitter</groupId>
+    <artifactId>twittered-jdk8</artifactId>
+    <version>1.15</version>
+</dependency>
+```
 In order to use your own developer credentials, you have several options :
 
 #### Using a json file

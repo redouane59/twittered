@@ -49,7 +49,7 @@ public interface Tweet {
   int getLikeCount();
 
   /**
-   * Get the number of likes of the tweet
+   * Get the number of replies of the tweet
    *
    * @return the number of the tweet replies
    */
@@ -58,12 +58,12 @@ public interface Tweet {
   /**
    * Get the number of quotes of the tweet
    *
-   * @return the number of the tweet quotdes
+   * @return the number of the tweet quotes
    */
   int getQuoteCount();
 
   /**
-   * The date of creation of the tweet
+   * Get the creation date of the tweet
    *
    * @return the tweet creation date
    */
