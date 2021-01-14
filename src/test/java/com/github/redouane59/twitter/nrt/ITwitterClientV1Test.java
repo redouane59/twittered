@@ -170,11 +170,11 @@ public class ITwitterClientV1Test {
   }
 
   @Test
-  @Disabled
-  public void testAnswerToSevralUsers() {
+  public void testAnswerToSeveralUsers() {
     Tweet tweet = twitterClient.postTweet(".", "1349823975002693634");
     assertNotNull(tweet);
     assertNotNull(tweet.getId());
+    twitterClient.deleteTweet(tweet.getId());
   }
 
   /*
