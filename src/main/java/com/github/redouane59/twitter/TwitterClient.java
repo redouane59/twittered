@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.redouane59.RelationType;
+import com.github.redouane59.twitter.dto.collections.CollectionsResponse;
+import com.github.redouane59.twitter.dto.collections.TimeLineOrder;
 import com.github.redouane59.twitter.dto.getrelationship.IdList;
 import com.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
 import com.github.redouane59.twitter.dto.others.BearerToken;
@@ -42,13 +44,16 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -620,6 +625,69 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public UploadMediaResponse uploadMedia(File imageFile, MediaCategory mediaCategory) {
     String url = urlHelper.getUploadMediaUrl(mediaCategory);
     return this.getRequestHelper().uploadMedia(url, imageFile, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public CollectionsResponse collectionsCreate(String name, String description, String collectionUrl, TimeLineOrder timeLineOrder) {
+    String              url        = this.getUrlHelper().getCollectionsCreateUrl();
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put("name", name);
+    parameters.put("description", description);
+    parameters.put("url", collectionUrl);
+    if (timeLineOrder != null) {
+      parameters.put("timeline_order", timeLineOrder.value());
+    }
+    return this.getRequestHelper().postRequest(url, parameters, CollectionsResponse.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public CollectionsResponse collectionsCurate(String collectionId, List<String> tweetIds) {
+    String url = this.getUrlHelper().getCollectionsCurateUrl();
+
+    // Can only curate 100 tweets at a time - so chunk if tweetIds is larger
+    AtomicInteger index = new AtomicInteger(0);
+    Stream<List<String>> chunked = tweetIds.stream()
+                                           .collect(Collectors.groupingBy(x -> index.getAndIncrement() / URLHelper.MAX_LOOKUP))
+                                           .entrySet().stream()
+                                           .sorted(Map.Entry.comparingByKey())
+                                           .map(Map.Entry::getValue);
+    return chunked
+        .map(
+            chunk -> {
+              String json = String.format("{\"id\": \"%s\",\"changes\": [", collectionId);
+              json += chunk
+                  .stream()
+                  .map(tweetId -> String.format("{ \"op\": \"add\", \"tweet_id\": \"%s\"}", tweetId))
+                  .collect(Collectors.joining(", "));
+              json += "]}";
+              return this.getRequestHelper().postRequestWithBodyJson(url, Collections.emptyMap(), json, CollectionsResponse.class)
+                         .orElseThrow(NoSuchElementException::new);
+            })
+        .filter(CollectionsResponse::hasErrors) // any errors? If so return first chunk of errors
+        .findFirst()
+        .orElse(new CollectionsResponse()); // success - no errors
+  }
+
+  @Override
+  public CollectionsResponse collectionsDestroy(String collectionId) {
+    String url = this.getUrlHelper().getCollectionsDestroyUrl(collectionId);
+    return this.getRequestHelper().postRequest(url, Collections.emptyMap(), CollectionsResponse.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public CollectionsResponse collectionsEntries(final String collectionId, int count, String maxPosition, String minPosition) {
+    String url = this.getUrlHelper().getCollectionsEntriesUrl(collectionId);
+    Map<String, String> parameters = new HashMap<>();
+    if (count > 0) {
+      parameters.put("count", Integer.toString(count));
+    }
+    if(maxPosition != null){
+      parameters.put("max_position", maxPosition);
+    }
+    if(minPosition != null){
+      parameters.put("min_position", minPosition);
+    }
+    return requestHelper.getRequestWithParameters(url, parameters, CollectionsResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
   public static TwitterCredentials getAuthentication() {

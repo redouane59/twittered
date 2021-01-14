@@ -49,9 +49,10 @@ public class URLHelper {
   private static final String TWEET_FORMAT_DETAILED         = "tweet.format=detailed";
   private static final String EXPANSIONS_RECENT_TWEET       = "expansions=most_recent_tweet_id";
   private static final String MAX_ID                        = "max_id";
+  private static final String COLLECTIONS                   = "/collections";
   private static final int    MAX_COUNT                     = 200;
   private static final int    RETWEET_MAX_COUNT             = 100;
-  private static final int    MAX_LOOKUP                    = 100;
+  public  static final int    MAX_LOOKUP                    = 100;
   public static final  String
                               ALL_USER_FIELDS               =
       "user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
@@ -322,5 +323,37 @@ public class URLHelper {
 
   public String getUploadMediaUrl(MediaCategory mediaCategory) {
     return "https://upload.twitter.com/1.1/media/upload.json?media_category=" + mediaCategory.label;
+  }
+
+  public String getCollectionsCreateUrl() {
+    return ROOT_URL_V1
+           + COLLECTIONS
+           + "/create.json";
+  }
+
+  public String getCollectionsCurateUrl() {
+    return ROOT_URL_V1
+           + COLLECTIONS
+           + "/entries/curate.json";
+  }
+
+  public String getCollectionsDestroyUrl(String collectionId) {
+    return ROOT_URL_V1 +
+           COLLECTIONS +
+           "/destroy.json" +
+           "?" +
+           ID +
+           "=" +
+           collectionId;
+  }
+
+  public String getCollectionsEntriesUrl(String collectionId) {
+    return ROOT_URL_V1 +
+           COLLECTIONS +
+           "/entries.json" +
+           "?" +
+           ID +
+           "=" +
+           collectionId;
   }
 }
