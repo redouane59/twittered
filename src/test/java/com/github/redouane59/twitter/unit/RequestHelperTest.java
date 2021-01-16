@@ -62,4 +62,18 @@ public class RequestHelperTest {
     assertTrue(result.isPresent());
     assertEquals(401, result.get().get("status"));
   }
+
+  @Test
+  public void testRequestWithBodyJsonV1() {
+    Optional<LinkedHashMap>
+        result =
+        twitterClient.getRequestHelper().postRequestWithBodyJson(twitterClient.getUrlHelper().getLikeUrl("12345"),
+                                                                 new HashMap<>(),
+                                                                 "{\"changes\": [{\"op\":\"add\",\"tweet_id\":\"390897780949925889\"}],\"id\": \"custom-1348265030006042629\"}",
+                                                                 LinkedHashMap.class);
+    assertTrue(result.isPresent());
+    ArrayList<LinkedHashMap> errors = (ArrayList) result.get().get("errors");
+    assertNotNull(errors);
+    assertEquals(89, errors.get(0).get("code"));
+  }
 }

@@ -1,6 +1,9 @@
 package com.github.redouane59.twitter;
 
 import com.github.redouane59.RelationType;
+import com.github.redouane59.twitter.dto.collections.CollectionsResponse;
+import com.github.redouane59.twitter.dto.collections.CollectionsResponse.Response.Position;
+import com.github.redouane59.twitter.dto.collections.TimeLineOrder;
 import com.github.redouane59.twitter.dto.others.RateLimitStatus;
 import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
@@ -185,5 +188,50 @@ public interface ITwitterClientV1 {
    * Upload a media calling https://upload.twitter.com/1.1/media/upload.json
    */
   UploadMediaResponse uploadMedia(File media, MediaCategory mediaCategory);
+
+  /**
+   * Creates a collection of tweets. See https://api.twitter.com/1.1/collections/create.json
+   *
+   * @param name required. Name of the collection - truncated by twitter to 25 characters
+   * @param description optional. Description for collection - truncated by twitter to 160 characters
+   * @param collectionUrl optional. A fully-qualified URL to associate with this collection.
+   * @param timeLineOrder optional. Order Tweets chronologically or in the order they are added to a Collection. Defaults to order tweets added to
+   * collection ({@link TimeLineOrder#CURATION_ORDER})
+   * @return CollectionCreateResponse - response from https://api.twitter.com/1.1/collections/create.json - including the collection identifier
+   * 'timeline_id'
+   */
+  CollectionsResponse collectionsCreate(String name, String description, String collectionUrl, TimeLineOrder timeLineOrder);
+
+  /**
+   * Adds tweets to an existing collection. See https://api.twitter.com/1.1/collections/create.json
+   *
+   * @param collectionId the id of the collection to add tweets to
+   * @param tweetIds Tweets to be added to collection.  > 100 will result in multiple calls to the collections/create.json endpoint
+   * @return an object indicating either no errors or listing the errors for each tweet that was rejected
+   */
+  CollectionsResponse collectionsCurate(String collectionId, List<String> tweetIds);
+
+  /**
+   * Gets tweets from an existing collection. See https://api.twitter.com/1.1/collections/entries.json
+   *
+   * To retrieve Tweets further back in time, use the value of min_position found in the current response as the max_position parameter in the
+   * next call to this endpoint.
+   *
+   * @param collectionId the id of the collection to retrieve tweets from
+   * @param count optional. Specifies the maximum number of results to include in the response 1-200.  {@link Position#getWasTruncated()} will
+   * indicate if more tweets in collection
+   * @param maxPosition optional. Returns results with a position value less than or equal to the specified position (tweetId in collection)
+   * @param minPosition optional. Returns results with a position greater than the specified position (tweetId in collection)
+   */
+  CollectionsResponse collectionsEntries(String collectionId, int count, String maxPosition, String minPosition);
+
+  /**
+   * Destroys a collection by id. See https://api.twitter.com/1.1/collections/destroy.json
+   *
+   * @param collectionId the identifier of the collection to destroy
+   * @return {@link CollectionsResponse#isDestroyed()}
+   */
+  CollectionsResponse collectionsDestroy(String collectionId);
+
 }
 
