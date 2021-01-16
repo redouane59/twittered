@@ -1,7 +1,6 @@
 package com.github.redouane59.twitter.helpers;
 
 import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.signature.Oauth1SigningInterceptor;
 import java.io.File;
 import java.util.Map;
 import java.util.Objects;
@@ -37,9 +36,8 @@ public class RequestHelper extends AbstractRequestHelper {
           .url(httpBuilder.build())
           .post(requestBody)
           .build();
-      Request signedRequest = this.getSignedRequest(request);
-      Response response = this.getHttpClient(url)
-                              .newCall(signedRequest).execute();
+      Response response = this.getHttpClient()
+                              .newCall(request).execute();
       String stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
         logApiError("POST", url, stringResponse, response.code());
@@ -63,14 +61,6 @@ public class RequestHelper extends AbstractRequestHelper {
   public <T> Optional<T> uploadMedia(String url, File file, Class<T> classType) {
     T result = null;
     try {
-      OkHttpOAuthConsumer
-          consumer =
-          new OkHttpOAuthConsumer(TwitterClient.TWITTER_CREDENTIALS.getApiKey(), TwitterClient.TWITTER_CREDENTIALS.getApiSecretKey());
-      consumer.setTokenWithSecret(TwitterClient.TWITTER_CREDENTIALS.getAccessToken(), TwitterClient.TWITTER_CREDENTIALS.getAccessTokenSecret());
-
-      OkHttpClient client = new OkHttpClient.Builder()
-          .addInterceptor(new SigningInterceptor(consumer))
-          .build();
 
       HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
       RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
@@ -83,7 +73,7 @@ public class RequestHelper extends AbstractRequestHelper {
           .post(requestBody)
           .build();
 
-      Response response       = client.newCall(request).execute();
+      Response response       = this.getHttpClient().newCall(request).execute();
       String   stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
         logApiError("POST", url, stringResponse, response.code());
@@ -102,9 +92,8 @@ public class RequestHelper extends AbstractRequestHelper {
           .url(url)
           .method("PUT", RequestBody.create(MediaType.parse("application/json"), body))
           .build();
-      Request signedRequest = this.getSignedRequest(request);
-      Response response = this.getHttpClient(url)
-                              .newCall(signedRequest).execute();
+      Response response = this.getHttpClient()
+                              .newCall(request).execute();
       String stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
         logApiError("PUT", url, stringResponse, response.code());
@@ -136,9 +125,8 @@ public class RequestHelper extends AbstractRequestHelper {
           .get()
           .build();
 
-      Request signedRequest = this.getSignedRequest(request);
-      Response response = this.getHttpClient(url)
-                              .newCall(signedRequest).execute();
+      Response response = this.getHttpClient()
+                              .newCall(request).execute();
       String stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
         logApiError("GET", url, stringResponse, response.code());
@@ -150,14 +138,15 @@ public class RequestHelper extends AbstractRequestHelper {
     return Optional.ofNullable(result);
   }
 
-  private Request getSignedRequest(Request request) {
-    Oauth1SigningInterceptor oauth = new Oauth1SigningInterceptor.Builder()
-        .consumerKey(TwitterClient.TWITTER_CREDENTIALS.getApiKey())
-        .consumerSecret(TwitterClient.TWITTER_CREDENTIALS.getApiSecretKey())
-        .accessToken(TwitterClient.TWITTER_CREDENTIALS.getAccessToken())
-        .accessSecret(TwitterClient.TWITTER_CREDENTIALS.getAccessTokenSecret())
+  private OkHttpClient getHttpClient() {
+    OkHttpOAuthConsumer
+        consumer =
+        new OkHttpOAuthConsumer(TwitterClient.TWITTER_CREDENTIALS.getApiKey(), TwitterClient.TWITTER_CREDENTIALS.getApiSecretKey());
+    consumer.setTokenWithSecret(TwitterClient.TWITTER_CREDENTIALS.getAccessToken(), TwitterClient.TWITTER_CREDENTIALS.getAccessTokenSecret());
+
+    return new OkHttpClient.Builder()
+        .addInterceptor(new SigningInterceptor(consumer))
         .build();
-    return oauth.signRequest(request);
   }
 
 }
