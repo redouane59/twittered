@@ -15,33 +15,11 @@ package com.github.redouane59.twitter.signature;
  * limitations under the License.
  */
 
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.sql.Timestamp;
-import java.time.Clock;
-import java.util.Map;
-import java.util.Random;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.function.Function;
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okio.Buffer;
-import okio.ByteString;
 
 @Slf4j
-public final class Oauth1SigningInterceptor implements Interceptor {
-
+public final class Oauth1SigningInterceptor /* implements Interceptor*/ {
+/*
   private static final Function<String, String> ESCAPER_FORM= form -> URLEncoder.encode(form, StandardCharsets.UTF_8);
   private static final String  OAUTH_CONSUMER_KEY           = "oauth_consumer_key";
   private static final String  OAUTH_NONCE                  = "oauth_nonce";
@@ -254,5 +232,5 @@ public final class Oauth1SigningInterceptor implements Interceptor {
       return new Oauth1SigningInterceptor(consumerKey, consumerSecret, accessToken, accessSecret, random,
                                           clock);
     }
-  }
+  } */
 }
