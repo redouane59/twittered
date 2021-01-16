@@ -36,7 +36,7 @@ public class RequestHelper extends AbstractRequestHelper {
           .url(httpBuilder.build())
           .post(requestBody)
           .build();
-      Response response = this.getSignedClient()
+      Response response = this.getHttpClient()
                               .newCall(request).execute();
       String stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
@@ -73,7 +73,7 @@ public class RequestHelper extends AbstractRequestHelper {
           .post(requestBody)
           .build();
 
-      Response response       = this.getSignedClient().newCall(request).execute();
+      Response response       = this.getHttpClient().newCall(request).execute();
       String   stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
         logApiError("POST", url, stringResponse, response.code());
@@ -92,7 +92,7 @@ public class RequestHelper extends AbstractRequestHelper {
           .url(url)
           .method("PUT", RequestBody.create(MediaType.parse("application/json"), body))
           .build();
-      Response response = this.getSignedClient()
+      Response response = this.getHttpClient()
                               .newCall(request).execute();
       String stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
@@ -125,7 +125,7 @@ public class RequestHelper extends AbstractRequestHelper {
           .get()
           .build();
 
-      Response response = this.getSignedClient()
+      Response response = this.getHttpClient()
                               .newCall(request).execute();
       String stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
@@ -138,7 +138,7 @@ public class RequestHelper extends AbstractRequestHelper {
     return Optional.ofNullable(result);
   }
 
-  private OkHttpClient getSignedClient() {
+  private OkHttpClient getHttpClient() {
     OkHttpOAuthConsumer
         consumer =
         new OkHttpOAuthConsumer(TwitterClient.TWITTER_CREDENTIALS.getApiKey(), TwitterClient.TWITTER_CREDENTIALS.getApiSecretKey());
