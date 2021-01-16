@@ -268,6 +268,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put("status", text);
     if (inReplyToStatusId != null) {
       parameters.put("in_reply_to_status_id", inReplyToStatusId);
+      parameters.put("auto_populate_reply_metadata", "true");
     }
     if (mediaId != null) {
       parameters.put("media_ids", mediaId);
