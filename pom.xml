@@ -5,13 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.github.redouane59.twitter</groupId>
-<<<<<<< HEAD
-  <artifactId>twittered</artifactId>
-  <version>1.16</version>
-=======
   <artifactId>twittered-jdk8</artifactId>
-  <version>1.15</version>
->>>>>>> 49801d6 (feat_downgrade_to_jdk8)
+  <version>1.16</version>
 
   <name>twittered</name>
   <description>java client for twitter API</description>
