@@ -1,0 +1,36 @@
+{
+  "objects": {},
+  "response": {
+    "timeline_id": "custom-1348368035900493824",
+    "errors": [
+      {
+        "reason": "duplicate",
+        "change": {
+          "op": "add",
+          "tweet_id": "390897780949925889"
+        }
+      },
+      {
+        "reason": "duplicate",
+        "change": {
+          "op": "add",
+          "tweet_id": "390853164611555329"
+        }
+      },
+      {
+        "reason": "duplicate",
+        "change": {
+          "op": "add",
+          "tweet_id": "390892747810295808"
+        }
+      },
+      {
+        "reason": "duplicate",
+        "change": {
+          "op": "add",
+          "tweet_id": "390898463090561024"
+        }
+      }
+    ]
+  }
+}

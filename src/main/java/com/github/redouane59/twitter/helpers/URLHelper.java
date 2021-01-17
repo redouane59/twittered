@@ -49,15 +49,17 @@ public class URLHelper {
   private static final String TWEET_FORMAT_DETAILED         = "tweet.format=detailed";
   private static final String EXPANSIONS_RECENT_TWEET       = "expansions=most_recent_tweet_id";
   private static final String MAX_ID                        = "max_id";
+  private static final String COLLECTIONS                   = "/collections";
   private static final int    MAX_COUNT                     = 200;
   private static final int    RETWEET_MAX_COUNT             = 100;
-  private static final int    MAX_LOOKUP                    = 100;
-  public static final  String
-                              ALL_USER_FIELDS               =
-      "user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
+  public static final  int    MAX_LOOKUP                    = 100;
+  public static final  String USER_FIELDS                   = "user.fields=";
+  public static final  String ALL_USER_FIELDS               =
+      "id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
+  public static final  String TWEET_FIELDS                  = "tweet.fields=";
   public static final  String
                               ALL_TWEET_FIELDS              =
-      "tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id,reply_settings";
+      "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id,reply_settings";
   public static final  String LAST_TWEET_LIST_URL           = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
   public static final  String RATE_LIMIT_URL                = ROOT_URL_V1 + "/application/rate_limit_status.json";
   public static final  String SEARCH_TWEET_STANDARD_URL     = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
@@ -133,6 +135,7 @@ public class URLHelper {
            userId +
            FOLLOWERS +
            "?" +
+           USER_FIELDS +
            ALL_USER_FIELDS;
   }
 
@@ -143,6 +146,7 @@ public class URLHelper {
            userId +
            FOLLOWING +
            "?" +
+           USER_FIELDS +
            ALL_USER_FIELDS;
   }
 
@@ -154,6 +158,7 @@ public class URLHelper {
            "?" +
            "expansions=pinned_tweet_id" +
            "&" +
+           USER_FIELDS +
            ALL_USER_FIELDS;
   }
 
@@ -165,6 +170,7 @@ public class URLHelper {
            "?" +
            "expansions=pinned_tweet_id" +
            "&" +
+           USER_FIELDS +
            ALL_USER_FIELDS;
   }
 
@@ -175,8 +181,10 @@ public class URLHelper {
            "?" +
            "expansions=author_id" +
            "&" +
+           TWEET_FIELDS +
            ALL_TWEET_FIELDS +
            "&" +
+           USER_FIELDS +
            ALL_USER_FIELDS;
   }
 
@@ -192,8 +200,10 @@ public class URLHelper {
     }
     result.delete(result.length() - 1, result.length());
     result.append("&");
+    result.append(TWEET_FIELDS);
     result.append(ALL_TWEET_FIELDS);
     result.append("&");
+    result.append(USER_FIELDS);
     result.append(ALL_USER_FIELDS);
     return result.toString();
   }
@@ -277,11 +287,11 @@ public class URLHelper {
   }
 
   public String getFilteredStreamUrl() {
-    return ROOT_URL_V2 + TWEETS + SEARCH + STREAM + "?" + ALL_TWEET_FIELDS + "&" + ALL_USER_FIELDS;
+    return ROOT_URL_V2 + TWEETS + SEARCH + STREAM + "?" + TWEET_FIELDS + ALL_TWEET_FIELDS + "&" + USER_FIELDS + ALL_USER_FIELDS;
   }
 
   public String getSampledStreamUrl() {
-    return ROOT_URL_V2 + TWEETS + SAMPLE + STREAM + "?" + ALL_TWEET_FIELDS + "&" + ALL_USER_FIELDS;
+    return ROOT_URL_V2 + TWEETS + SAMPLE + STREAM + "?" + TWEET_FIELDS + ALL_TWEET_FIELDS + "&" + USER_FIELDS + ALL_USER_FIELDS;
   }
 
   public String getUserTimelineUrl(String userId, int maxResult, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {
@@ -298,7 +308,7 @@ public class URLHelper {
     if (untilId != null) {
       result += "&until_id=" + untilId;
     }
-    result += "&" + ALL_TWEET_FIELDS;
+    result += "&" + TWEET_FIELDS + ALL_TWEET_FIELDS;
     return result;
   }
 
@@ -316,11 +326,43 @@ public class URLHelper {
     if (untilId != null) {
       result += "&until_id=" + untilId;
     }
-    result += "&" + ALL_TWEET_FIELDS;
+    result += "&" + TWEET_FIELDS + ALL_TWEET_FIELDS;
     return result;
   }
 
   public String getUploadMediaUrl(MediaCategory mediaCategory) {
     return "https://upload.twitter.com/1.1/media/upload.json?media_category=" + mediaCategory.label;
+  }
+
+  public String getCollectionsCreateUrl() {
+    return ROOT_URL_V1
+           + COLLECTIONS
+           + "/create.json";
+  }
+
+  public String getCollectionsCurateUrl() {
+    return ROOT_URL_V1
+           + COLLECTIONS
+           + "/entries/curate.json";
+  }
+
+  public String getCollectionsDestroyUrl(String collectionId) {
+    return ROOT_URL_V1 +
+           COLLECTIONS +
+           "/destroy.json" +
+           "?" +
+           ID +
+           "=" +
+           collectionId;
+  }
+
+  public String getCollectionsEntriesUrl(String collectionId) {
+    return ROOT_URL_V1 +
+           COLLECTIONS +
+           "/entries.json" +
+           "?" +
+           ID +
+           "=" +
+           collectionId;
   }
 }

@@ -167,6 +167,15 @@ public class ITwitterClientV1Test {
     Tweet tweet = twitterClient.postTweet("Test", null, response.getMediaId());
     assertNotNull(tweet);
     assertNotNull(tweet.getId());
+    twitterClient.deleteTweet(tweet.getId());
+  }
+
+  @Test
+  public void testAnswerToSeveralUsers() {
+    Tweet tweet = twitterClient.postTweet(".", "1341161857931874304");
+    assertNotNull(tweet);
+    assertNotNull(tweet.getId());
+    twitterClient.deleteTweet(tweet.getId());
   }
 
   /*

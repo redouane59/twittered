@@ -127,7 +127,12 @@ public class UrlHelperTest {
   @Test
   public void testTweetUrl() {
     assertEquals(
-        "https://api.twitter.com/2/tweets/12345?expansions=author_id&" + URLHelper.ALL_TWEET_FIELDS + "&" + URLHelper.ALL_USER_FIELDS,
+        "https://api.twitter.com/2/tweets/12345?expansions=author_id&"
+        + URLHelper.TWEET_FIELDS
+        + URLHelper.ALL_TWEET_FIELDS
+        + "&"
+        + URLHelper.USER_FIELDS
+        + URLHelper.ALL_USER_FIELDS,
         urlHelper.getTweetUrl("12345"));
   }
 
@@ -135,9 +140,9 @@ public class UrlHelperTest {
   public void testUrlGetTweetsV2() {
     assertEquals(
         "https://api.twitter.com/2/tweets?ids=1294174710624849921,1294380029430960128,1294375095746666496&"
-        + URLHelper.ALL_TWEET_FIELDS
+        + URLHelper.TWEET_FIELDS + URLHelper.ALL_TWEET_FIELDS
         + "&"
-        + URLHelper.ALL_USER_FIELDS,
+        + URLHelper.USER_FIELDS + URLHelper.ALL_USER_FIELDS,
         urlHelper.getTweetListUrl(List.of("1294174710624849921,1294380029430960128,1294375095746666496")));
   }
 
@@ -190,14 +195,24 @@ public class UrlHelperTest {
   @Test
   public void testFilteredStreamUrl() {
     assertEquals(
-        "https://api.twitter.com/2/tweets/search/stream?" + URLHelper.ALL_TWEET_FIELDS + "&" + URLHelper.ALL_USER_FIELDS,
+        "https://api.twitter.com/2/tweets/search/stream?"
+        + URLHelper.TWEET_FIELDS
+        + URLHelper.ALL_TWEET_FIELDS
+        + "&"
+        + URLHelper.USER_FIELDS
+        + URLHelper.ALL_USER_FIELDS,
         urlHelper.getFilteredStreamUrl());
   }
 
   @Test
   public void testSampledStreamUrl() {
     assertEquals(
-        "https://api.twitter.com/2/tweets/sample/stream?" + URLHelper.ALL_TWEET_FIELDS + "&" + URLHelper.ALL_USER_FIELDS,
+        "https://api.twitter.com/2/tweets/sample/stream?"
+        + URLHelper.TWEET_FIELDS
+        + URLHelper.ALL_TWEET_FIELDS
+        + "&"
+        + URLHelper.USER_FIELDS
+        + URLHelper.ALL_USER_FIELDS,
         urlHelper.getSampledStreamUrl());
   }
 
@@ -219,7 +234,7 @@ public class UrlHelperTest {
 
   @Test
   public void testGetUserTimelineUrl() {
-    assertEquals("https://api.twitter.com/2/users/99999/tweets?max_results=200&" + URLHelper.ALL_TWEET_FIELDS,
+    assertEquals("https://api.twitter.com/2/users/99999/tweets?max_results=200&" + URLHelper.TWEET_FIELDS + URLHelper.ALL_TWEET_FIELDS,
                  urlHelper.getUserTimelineUrl("99999", 200, null, null, null, null));
   }
 
@@ -227,13 +242,13 @@ public class UrlHelperTest {
   public void testGetUserTimelineUrlWithDates() {
     assertEquals(
         "https://api.twitter.com/2/users/99999/tweets?max_results=100&start_time=2020-01-01T00:00:00.000Z&end_time=2020-02-01T00:00:00.000Z&"
-        + URLHelper.ALL_TWEET_FIELDS,
+        + URLHelper.TWEET_FIELDS + URLHelper.ALL_TWEET_FIELDS,
         urlHelper.getUserTimelineUrl("99999", 100, LocalDateTime.of(2020, 1, 1, 0, 0), LocalDateTime.of(2020, 2, 1, 0, 0), null, null));
   }
 
   @Test
   public void testGetUserMentionsUrl() {
-    assertEquals("https://api.twitter.com/2/users/99999/mentions?max_results=200&" + URLHelper.ALL_TWEET_FIELDS,
+    assertEquals("https://api.twitter.com/2/users/99999/mentions?max_results=200&" + URLHelper.TWEET_FIELDS + URLHelper.ALL_TWEET_FIELDS,
                  urlHelper.getUserMentionsUrl("99999", 200, null, null, null, null));
   }
 
@@ -241,7 +256,7 @@ public class UrlHelperTest {
   public void testGetUserMentionsUrlWithDates() {
     assertEquals(
         "https://api.twitter.com/2/users/99999/mentions?max_results=100&start_time=2020-01-01T00:00:00.000Z&end_time=2020-02-01T00:00:00.000Z&"
-        + URLHelper.ALL_TWEET_FIELDS,
+        + URLHelper.TWEET_FIELDS + URLHelper.ALL_TWEET_FIELDS,
         urlHelper.getUserMentionsUrl("99999", 100, LocalDateTime.of(2020, 1, 1, 0, 0), LocalDateTime.of(2020, 2, 1, 0, 0), null, null));
   }
 

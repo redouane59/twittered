@@ -1,0 +1,84 @@
+{
+  "objects": {
+    "users": {
+      "1255057822959747073": {
+        "id": 1255057822959747073,
+        "id_str": "1255057822959747073",
+        "name": "Tim's Listening Party",
+        "screen_name": "LlSTENlNG_PARTY",
+        "location": "",
+        "description": "Updates and info about #TimsTwitterListeningParty",
+        "url": "https:\/\/t.co\/798q3za44i",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "url": "https:\/\/t.co\/798q3za44i",
+                "expanded_url": "https:\/\/timstwitterlisteningparty.com\/",
+                "display_url": "timstwitterlisteningparty.com",
+                "indices": [
+                  0,
+                  23
+                ]
+              }
+            ]
+          },
+          "description": {
+            "urls": []
+          }
+        },
+        "protected": false,
+        "followers_count": 47244,
+        "friends_count": 1,
+        "listed_count": 205,
+        "created_at": "Tue Apr 28 08:55:51 +0000 2020",
+        "favourites_count": 17471,
+        "utc_offset": null,
+        "time_zone": null,
+        "geo_enabled": false,
+        "verified": true,
+        "statuses_count": 16248,
+        "lang": null,
+        "contributors_enabled": false,
+        "is_translator": false,
+        "is_translation_enabled": false,
+        "profile_background_color": "F5F8FA",
+        "profile_background_image_url": null,
+        "profile_background_image_url_https": null,
+        "profile_background_tile": false,
+        "profile_image_url": "http:\/\/pbs.twimg.com\/profile_images\/1305818491614892032\/X3db_cyC_normal.jpg",
+        "profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/1305818491614892032\/X3db_cyC_normal.jpg",
+        "profile_banner_url": "https:\/\/pbs.twimg.com\/profile_banners\/1255057822959747073\/1588146894",
+        "profile_link_color": "1DA1F2",
+        "profile_sidebar_border_color": "C0DEED",
+        "profile_sidebar_fill_color": "DDEEF6",
+        "profile_text_color": "333333",
+        "profile_use_background_image": true,
+        "has_extended_profile": false,
+        "default_profile": true,
+        "default_profile_image": false,
+        "following": false,
+        "follow_request_sent": false,
+        "notifications": false,
+        "translator_type": "none"
+      }
+    },
+    "timelines": {
+      "custom-1349447047020212224": {
+        "name": "test",
+        "user_id": "1255057822959747073",
+        "collection_url": "https:\/\/twitter.com\/LlSTENlNG_PARTY\/timelines\/1349447047020212224",
+        "custom_timeline_url": "https:\/\/twitter.com\/LlSTENlNG_PARTY\/timelines\/1349447047020212224",
+        "description": "test-deleteme",
+        "url": "www.timstwitterlisteningparty.com",
+        "visibility": "public",
+        "timeline_order": "tweet_chron",
+        "collection_type": "user",
+        "custom_timeline_type": "user"
+      }
+    }
+  },
+  "response": {
+    "timeline_id": "custom-1349447047020212224"
+  }
+}
