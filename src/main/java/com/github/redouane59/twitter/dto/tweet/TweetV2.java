@@ -7,7 +7,6 @@ import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.dto.user.UserV2;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -252,7 +251,7 @@ public class TweetV2 implements Tweet {
 
   public List<ContextAnnotation> getContextAnnotations() {
     if (this.data == null) {
-      return new ArrayList<>();
+      return List.of();
     }
     return this.data.getContextAnnotations();
   }

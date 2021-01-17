@@ -19,8 +19,8 @@ public class StreamRules {
   private List<StreamRule> data;
   private StreamMeta       meta;
 
-  @lombok.Value
-  @lombok.Builder
+  @Value
+  @Builder
   @JsonDeserialize(builder = StreamRuleBuilder.class)
   public static class StreamRule {
 
@@ -34,16 +34,16 @@ public class StreamRules {
     }
   }
 
-  @lombok.Value
-  @lombok.Builder
+  @Value
+  @Builder
   @JsonDeserialize(builder = StreamMetaBuilder.class)
   public static class StreamMeta {
 
     private String        sent;
     private StreamSummary summary;
 
-    @lombok.Value
-    @lombok.Builder
+    @Value
+    @Builder
     @JsonDeserialize(builder = StreamSummaryBuilder.class)
     public static class StreamSummary {
 

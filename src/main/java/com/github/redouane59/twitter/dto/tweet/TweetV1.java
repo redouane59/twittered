@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.redouane59.twitter.dto.user.UserV1;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -57,7 +56,7 @@ public class TweetV1 implements Tweet {
   @Override
   public List<ContextAnnotation> getContextAnnotations() {
     LOGGER.error("not implemented");
-    return new ArrayList<>();
+    return List.of();
   }
 
   @Override
