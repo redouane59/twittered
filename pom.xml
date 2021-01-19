@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.github.redouane59.twitter</groupId>
-  <artifactId>twittered</artifactId>
+  <artifactId>twittered-jdk8</artifactId>
   <version>1.17</version>
 
   <name>twittered</name>
