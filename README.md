@@ -24,9 +24,9 @@ In your pom.xml, add the following dependency and replace `VERSION` with the ver
 For JDK8 compatible version, use : 
 ```
 <dependency>
-    <groupId>com.github.redouane59.twitter</groupId>
-    <artifactId>twittered-jdk8</artifactId>
-    <version>1.15</version>
+  <groupId>com.github.redouane59.twitter</groupId>
+  <artifactId>twittered-jdk8</artifactId>
+  <version>1.17</version>
 </dependency>
 ```
 In order to use your own developer credentials, you have several options :
