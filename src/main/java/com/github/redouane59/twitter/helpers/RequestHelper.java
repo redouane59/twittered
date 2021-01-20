@@ -5,7 +5,6 @@ import java.io.File;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
@@ -17,9 +16,21 @@ import okhttp3.Response;
 import se.akerfeldt.okhttp.signpost.OkHttpOAuthConsumer;
 import se.akerfeldt.okhttp.signpost.SigningInterceptor;
 
-@NoArgsConstructor
 @Slf4j
 public class RequestHelper extends AbstractRequestHelper {
+
+  private OkHttpClient httpClient;
+
+  public RequestHelper() {
+    OkHttpOAuthConsumer
+        consumer =
+        new OkHttpOAuthConsumer(TwitterClient.TWITTER_CREDENTIALS.getApiKey(), TwitterClient.TWITTER_CREDENTIALS.getApiSecretKey());
+    consumer.setTokenWithSecret(TwitterClient.TWITTER_CREDENTIALS.getAccessToken(), TwitterClient.TWITTER_CREDENTIALS.getAccessTokenSecret());
+
+    this.httpClient = new OkHttpClient.Builder()
+        .addInterceptor(new SigningInterceptor(consumer))
+        .build();
+  }
 
   public <T> Optional<T> postRequestWithBodyJson(String url, Map<String, String> parameters, String requestBodyJson, Class<T> classType) {
     T result = null;
@@ -36,8 +47,8 @@ public class RequestHelper extends AbstractRequestHelper {
           .url(httpBuilder.build())
           .post(requestBody)
           .build();
-      Response response = this.getHttpClient()
-                              .newCall(request).execute();
+      Response response = this.httpClient
+          .newCall(request).execute();
       String stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
         logApiError("POST", url, stringResponse, response.code());
@@ -73,7 +84,7 @@ public class RequestHelper extends AbstractRequestHelper {
           .post(requestBody)
           .build();
 
-      Response response       = this.getHttpClient().newCall(request).execute();
+      Response response       = this.httpClient.newCall(request).execute();
       String   stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
         logApiError("POST", url, stringResponse, response.code());
@@ -92,8 +103,8 @@ public class RequestHelper extends AbstractRequestHelper {
           .url(url)
           .method("PUT", RequestBody.create(MediaType.parse("application/json"), body))
           .build();
-      Response response = this.getHttpClient()
-                              .newCall(request).execute();
+      Response response = this.httpClient
+          .newCall(request).execute();
       String stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
         logApiError("PUT", url, stringResponse, response.code());
@@ -125,8 +136,8 @@ public class RequestHelper extends AbstractRequestHelper {
           .get()
           .build();
 
-      Response response = this.getHttpClient()
-                              .newCall(request).execute();
+      Response response = this.httpClient
+          .newCall(request).execute();
       String stringResponse = response.body().string();
       if (response.code() < 200 || response.code() > 299) {
         logApiError("GET", url, stringResponse, response.code());
@@ -136,17 +147,6 @@ public class RequestHelper extends AbstractRequestHelper {
       LOGGER.error(e.getMessage(), e);
     }
     return Optional.ofNullable(result);
-  }
-
-  private OkHttpClient getHttpClient() {
-    OkHttpOAuthConsumer
-        consumer =
-        new OkHttpOAuthConsumer(TwitterClient.TWITTER_CREDENTIALS.getApiKey(), TwitterClient.TWITTER_CREDENTIALS.getApiSecretKey());
-    consumer.setTokenWithSecret(TwitterClient.TWITTER_CREDENTIALS.getAccessToken(), TwitterClient.TWITTER_CREDENTIALS.getAccessTokenSecret());
-
-    return new OkHttpClient.Builder()
-        .addInterceptor(new SigningInterceptor(consumer))
-        .build();
   }
 
 }
