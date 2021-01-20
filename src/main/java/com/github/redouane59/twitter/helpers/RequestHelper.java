@@ -19,7 +19,7 @@ import se.akerfeldt.okhttp.signpost.SigningInterceptor;
 @Slf4j
 public class RequestHelper extends AbstractRequestHelper {
 
-  private OkHttpClient httpClient;
+  private final OkHttpClient httpClient;
 
   public RequestHelper() {
     OkHttpOAuthConsumer

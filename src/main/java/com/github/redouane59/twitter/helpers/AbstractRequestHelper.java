@@ -14,7 +14,11 @@ import okhttp3.OkHttpClient;
 @Getter
 public abstract class AbstractRequestHelper {
 
-  private int sleepTime = 5;
+  private       int          sleepTime  = 5;
+  private final OkHttpClient httpClient = new OkHttpClient.Builder()
+      .readTimeout(60, TimeUnit.SECONDS)
+      .connectTimeout(60, TimeUnit.SECONDS)
+      .build();
 
   public void wait(String response, String url) {
     LOGGER.info("\n" + response + "\nWaiting ... " + url); // do a wait and return this function recursively
@@ -38,10 +42,7 @@ public abstract class AbstractRequestHelper {
           .connectTimeout(60, TimeUnit.SECONDS)
           .build();
     } else {
-      return new OkHttpClient.Builder()
-          .readTimeout(60, TimeUnit.SECONDS)
-          .connectTimeout(60, TimeUnit.SECONDS)
-          .build();
+      return this.httpClient;
     }
   }
 
