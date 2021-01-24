@@ -6,6 +6,7 @@ import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.helpers.URLHelper;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -143,7 +144,7 @@ public class UrlHelperTest {
         + URLHelper.TWEET_FIELDS + URLHelper.ALL_TWEET_FIELDS
         + "&"
         + URLHelper.USER_FIELDS + URLHelper.ALL_USER_FIELDS,
-        urlHelper.getTweetListUrl(List.of("1294174710624849921,1294380029430960128,1294375095746666496")));
+        urlHelper.getTweetListUrl(Arrays.asList("1294174710624849921,1294380029430960128,1294375095746666496")));
   }
 
   @Test
@@ -196,6 +197,7 @@ public class UrlHelperTest {
   public void testFilteredStreamUrl() {
     assertEquals(
         "https://api.twitter.com/2/tweets/search/stream?"
+        + "expansions=author_id&"
         + URLHelper.TWEET_FIELDS
         + URLHelper.ALL_TWEET_FIELDS
         + "&"
@@ -208,6 +210,7 @@ public class UrlHelperTest {
   public void testSampledStreamUrl() {
     assertEquals(
         "https://api.twitter.com/2/tweets/sample/stream?"
+        + "expansions=author_id&"
         + URLHelper.TWEET_FIELDS
         + URLHelper.ALL_TWEET_FIELDS
         + "&"
