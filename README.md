@@ -21,14 +21,6 @@ In your pom.xml, add the following dependency and replace `VERSION` with the ver
 </dependency>
 ```
 
-For JDK8 compatible version, use : 
-```
-<dependency>
-  <groupId>com.github.redouane59.twitter</groupId>
-  <artifactId>twittered-jdk8</artifactId>
-  <version>1.17</version>
-</dependency>
-```
 In order to use your own developer credentials, you have several options :
 
 #### Using a json file
@@ -92,8 +84,6 @@ To add a new feature :
 - Don't forget to add your unit tests in `src/test/java/com/github/redouane59/twitter/unit`
 
 Code style is also available in `.idea/codeStyles/GoogleStyle.xml` file.
-
-/!\ [JDK 15](https://jdk.java.net/15/) is needed to run the project /!\
 
 ### External Resources
 [Twitter Developers docs](https://developer.twitter.com/en/docs)
