@@ -31,7 +31,7 @@ public class ITwitterClientV2Test {
 
   @BeforeAll
   public static void init() throws IOException {
-    String credentialPath = "C:/Users/Perso/Documents/GitHub/twitter-credentials - RTO.json";
+    String credentialPath = "C:/Users/Perso/Documents/GitHub/twitter-credentials.json";
     twitterClient = new TwitterClient(TwitterClient.OBJECT_MAPPER
                                           .readValue(new File(credentialPath), TwitterCredentials.class));
   }
