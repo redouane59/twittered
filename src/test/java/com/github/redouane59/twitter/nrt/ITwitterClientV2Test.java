@@ -213,6 +213,11 @@ public class ITwitterClientV2Test {
   }
 
   @Test
+  public void testStartStream() {
+    twitterClient.startFilteredStream(System.out::println);
+  }
+
+  @Test
   public void testGetBearerToken() {
     String token = twitterClient.getBearerToken();
     assertNotNull(token);
@@ -233,7 +238,7 @@ public class ITwitterClientV2Test {
                                                        ConverterHelper.dayBeforeNow(5),
                                                        ConverterHelper.dayBeforeNow(1),
                                                        null, null);
-    assertEquals(result.size(), 20);
+    assertEquals(20, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
   }

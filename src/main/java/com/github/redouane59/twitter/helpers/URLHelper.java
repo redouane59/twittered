@@ -48,6 +48,7 @@ public class URLHelper {
   private static final String USER_FORMAT_DETAILED          = "user.format=detailed";
   private static final String TWEET_FORMAT_DETAILED         = "tweet.format=detailed";
   private static final String EXPANSIONS_RECENT_TWEET       = "expansions=most_recent_tweet_id";
+  private static final String EXPANSIONS_AUTHOR_ID          = "expansions=author_id";
   private static final String MAX_ID                        = "max_id";
   private static final String COLLECTIONS                   = "/collections";
   private static final int    MAX_COUNT                     = 200;
@@ -287,11 +288,33 @@ public class URLHelper {
   }
 
   public String getFilteredStreamUrl() {
-    return ROOT_URL_V2 + TWEETS + SEARCH + STREAM + "?" + TWEET_FIELDS + ALL_TWEET_FIELDS + "&" + USER_FIELDS + ALL_USER_FIELDS;
+    return ROOT_URL_V2
+           + TWEETS
+           + SEARCH
+           + STREAM
+           + "?"
+           + EXPANSIONS_AUTHOR_ID
+           + "&"
+           + TWEET_FIELDS
+           + ALL_TWEET_FIELDS
+           + "&"
+           + USER_FIELDS
+           + ALL_USER_FIELDS;
   }
 
   public String getSampledStreamUrl() {
-    return ROOT_URL_V2 + TWEETS + SAMPLE + STREAM + "?" + TWEET_FIELDS + ALL_TWEET_FIELDS + "&" + USER_FIELDS + ALL_USER_FIELDS;
+    return ROOT_URL_V2
+           + TWEETS
+           + SAMPLE
+           + STREAM
+           + "?"
+           + EXPANSIONS_AUTHOR_ID
+           + "&"
+           + TWEET_FIELDS
+           + ALL_TWEET_FIELDS
+           + "&"
+           + USER_FIELDS
+           + ALL_USER_FIELDS;
   }
 
   public String getUserTimelineUrl(String userId, int maxResult, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {

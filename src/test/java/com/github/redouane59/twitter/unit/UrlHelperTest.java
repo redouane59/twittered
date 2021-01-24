@@ -197,6 +197,7 @@ public class UrlHelperTest {
   public void testFilteredStreamUrl() {
     assertEquals(
         "https://api.twitter.com/2/tweets/search/stream?"
+        + "expansions=author_id&"
         + URLHelper.TWEET_FIELDS
         + URLHelper.ALL_TWEET_FIELDS
         + "&"
@@ -209,6 +210,7 @@ public class UrlHelperTest {
   public void testSampledStreamUrl() {
     assertEquals(
         "https://api.twitter.com/2/tweets/sample/stream?"
+        + "expansions=author_id&"
         + URLHelper.TWEET_FIELDS
         + URLHelper.ALL_TWEET_FIELDS
         + "&"
