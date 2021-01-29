@@ -1,7 +1,5 @@
 package com.github.redouane59.twitter.helpers;
 
-import io.vavr.control.Option;
-import io.vavr.control.Try;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -70,12 +68,14 @@ public class ConverterHelper {
     final String     TWITTER = "EEE MMM dd HH:mm:ss Z yyyy";
     SimpleDateFormat sf      = new SimpleDateFormat(TWITTER, Locale.ENGLISH);
     sf.setLenient(true);
-    return Try.of(() -> sf.parse(date)).getOrNull().toInstant()
-              .atZone(ZoneId.systemDefault())
-              .toLocalDateTime();
+    try {
+	  return sf.parse(date).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+	} catch (ParseException e) {
+	  return null;
+	}
   }
 
   public static LocalDateTime getDateFromTwitterDateV2(String date) {
-    return Option.of(date).map(d -> LocalDateTime.parse(date, DateTimeFormatter.ofPattern(DATE_PATTERN_V2))).getOrNull();
+	return date!=null?LocalDateTime.parse(date, DateTimeFormatter.ofPattern(DATE_PATTERN_V2)):null;
   }
 }
