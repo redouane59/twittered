@@ -1,12 +1,19 @@
 package com.github.redouane59.twitter.helpers;
 
+import com.fasterxml.jackson.databind.MappingIterator;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.others.BearerToken;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
+import com.github.scribejava.core.model.OAuthAsyncRequestCallback;
+import com.github.scribejava.core.model.OAuthConstants;
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.model.Verb;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,16 +22,6 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okio.Buffer;
 
 @Slf4j
 public class RequestHelperV2 extends AbstractRequestHelper {
@@ -42,147 +39,65 @@ public class RequestHelperV2 extends AbstractRequestHelper {
   }
 
   public <T> Optional<T> getRequestWithParameters(String url, Map<String, String> parameters, Class<T> classType) {
-    T result = null;
-    try {
-      HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
-      if (parameters != null) {
-        for (Map.Entry<String, String> param : parameters.entrySet()) {
-          httpBuilder.addQueryParameter(param.getKey(), param.getValue());
-        }
-      }
-      Request request = new Request.Builder()
-          .url(httpBuilder.build())
-          .get()
-          .headers(Headers.of(AUTHORIZATION, BEARER + getBearerToken()))
-          .build();
-      OkHttpClient client         = this.getHttpClient(httpBuilder.build().url().toString());
-      Response     response       = client.newCall(request).execute();
-      String       stringResponse = response.body().string();
-      if (response.code() == 429) {
-        this.wait(stringResponse, url);
-        return this.getRequestWithParameters(url, parameters, classType);
-      } else if (response.code() == 401) {
-        LOGGER.info("Error 401, user may be private");
-        return Optional.empty();
-      } else if (response.code() < 200 || response.code() > 299) {
-        logApiError("POST", url, stringResponse, response.code());
-      }
-      result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
-    } catch (Exception e) {
-      LOGGER.error(e.getMessage(), e);
-    }
-    return Optional.ofNullable(result);
+    return makeRequest(Verb.GET, url, parameters, null, true, classType);
+  }
+  
+  public void getAsyncRequest(String url, Consumer<Tweet> consumer) {
+	  getAsyncRequest(url, consumer, TweetV2.class);
   }
 
-  public void getAsyncRequest(String url, Consumer<Tweet> consumer) {
-    HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
-    Request request = new Request.Builder()
-        .url(httpBuilder.build())
-        .get()
-        .headers(Headers.of(AUTHORIZATION, BEARER + getBearerToken()))
-        .build();
-    Call call = new OkHttpClient.Builder().readTimeout(60, TimeUnit.SECONDS)
-                                          .connectTimeout(60, TimeUnit.SECONDS)
-                                          .build().newCall(request);
-    call.enqueue(new Callback() {
-      @Override
-      public void onFailure(final Call call, IOException e) {
-        LOGGER.error(e.getMessage(), e);
-      }
-
-      @Override
-      public void onResponse(Call call, final Response response) throws IOException {
-        try (Buffer buffer = new Buffer()) {
-          while (!response.body().source().exhausted()) {
-            response.body().source().read(buffer, 8192);
-            String content = new String(buffer.readByteArray());
-            try {
-              TweetV2 tweet = TwitterClient.OBJECT_MAPPER.readValue(content, TweetV2.class);
-              consumer.accept(tweet);
-            } catch (Exception e) {
-            }
-          }
-        }
-      }
-    });
+  public <T> void getAsyncRequest(String url, final Consumer<T> consumer, final Class<? extends T> targetClass) {
+	OAuthRequest request = new OAuthRequest(Verb.GET, url);
+	signRequest(request);
+	getService().execute(request, new OAuthAsyncRequestCallback<Response>() {
+		
+		@Override
+		public void onThrowable(Throwable t) {
+			LOGGER.error(t.getMessage(), t);
+		}
+		
+		@Override
+		public void onCompleted(Response response) {
+			try {
+				InputStream is = response.getStream();
+				((MappingIterator<T>)TwitterClient.OBJECT_MAPPER.readerFor(targetClass)
+								.readValues(is)).forEachRemaining(consumer);
+			} catch (IOException e) {
+				onThrowable(e);
+			}
+		}
+	});
   }
 
   public <T> Optional<T> postRequest(String url, String body, Class<T> classType) {
-    T result = null;
-    try {
-      Request request = new Request.Builder()
-          .url(url)
-          .method("POST", RequestBody.create(MediaType.parse("application/json"), body))
-          .headers(Headers.of(AUTHORIZATION, BEARER + getBearerToken()))
-          .build();
-      Response response       = new OkHttpClient.Builder().build().newCall(request).execute();
-      String   stringResponse = response.body().string();
-      if (response.code() < 200 || response.code() > 299) {
-        logApiError("POST", url, stringResponse, response.code());
-      }
-      result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
-    } catch (Exception e) {
-      LOGGER.error(e.getMessage(), e);
-    }
-    return Optional.ofNullable(result);
+	return makeRequest(Verb.POST, url, null, body, true, classType);
   }
 
-  public static <T> Optional<T> postRequestWithHeader(String url, Map<String, String> headersMap, String body, Class<T> classType) {
-    T result = null;
-    try {
-      Request request = new Request.Builder()
-          .url(url)
-          .method("POST", RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), body))
-          .headers(Headers.of(headersMap))
-          .build();
-      OkHttpClient client         = new OkHttpClient.Builder().build();
-      Response     response       = client.newCall(request).execute();
-      String       stringResponse = response.body().string();
-      if (response.code() < 200 || response.code() > 299) {
-        logApiError("POST", url, stringResponse, response.code());
-      }
-      result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
-      client.connectionPool().evictAll();
-    } catch (Exception e) {
-      LOGGER.error(e.getMessage(), e);
-    }
-    return Optional.ofNullable(result);
+  public <T> Optional<T> postRequestWithHeader(String url, Map<String, String> headersMap, String body, Class<T> classType) {
+	return makeRequest(Verb.POST, url, headersMap, null, body, false, classType);
   }
 
-  public static <T> Optional<T> getRequestWithHeader(String url, Map<String, String> headersMap, Class<T> classType) {
-    T result = null;
-    try {
-      Request request = new Request.Builder()
-          .url(url)
-          .get()
-          .headers(Headers.of(headersMap))
-          .build();
-      OkHttpClient client         = new OkHttpClient.Builder().build();
-      Response     response       = client.newCall(request).execute();
-      String       stringResponse = response.body().string();
-      if (response.code() < 200 || response.code() > 299) {
-        logApiError("POST", url, stringResponse, response.code());
-      }
-      result = TwitterClient.OBJECT_MAPPER.readValue(stringResponse, classType);
-      client.connectionPool().evictAll();
-    } catch (Exception e) {
-      LOGGER.error(e.getMessage(), e);
-    }
-    return Optional.ofNullable(result);
+  public <T> Optional<T> getRequestWithHeader(String url, Map<String, String> headersMap, Class<T> classType) {
+	return makeRequest(Verb.GET, url, headersMap, null, null, false, classType);
+  }
+  
+  @Override
+  protected void signRequest(OAuthRequest request) {
+	  request.addHeader(OAuthConstants.HEADER, "Bearer " + getBearerToken());
   }
   
   public String getBearerToken() {
 	if(bearerToken==null) {
 	    String url = URLHelper.GET_BEARER_TOKEN_URL;
-	    String valueToCrypt = twitterCredentials.getApiKey()
-	                          + ":" + twitterCredentials.getApiSecretKey();
+	    String valueToCrypt = getTwitterCredentials().getApiKey()
+	                          + ":" + getTwitterCredentials().getApiSecretKey();
 	    String              cryptedValue = Base64.getEncoder().encodeToString(valueToCrypt.getBytes());
-	    Map<String, String> params       = new HashMap<>();
-	    params.put("Authorization", "Basic " + cryptedValue);
-	    params.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+	    Map<String, String> headers       = new HashMap<>();
+	    headers.put("Authorization", "Basic " + cryptedValue);
+	    headers.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 	    String body = "grant_type=client_credentials";
-	    BearerToken result = postRequestWithHeader(url, params, body, BearerToken.class).orElseThrow(NoSuchElementException::new);
-	    bearerToken = result.getAccessToken();
+	    Optional<BearerToken> result = makeRequest(Verb.POST, url, headers, null, body, false, BearerToken.class);
+	    return result.orElseThrow(NoSuchElementException::new).getAccessToken();
 	}
 	return bearerToken;
   }
