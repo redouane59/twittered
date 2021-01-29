@@ -28,9 +28,7 @@ public class ITwitterClientV1Test {
 
   @BeforeAll
   public static void init() throws IOException {
-    String credentialPath = "C:/Users/Perso/Documents/GitHub/twitter-credentials.json";
-    twitterClient = new TwitterClient(TwitterClient.OBJECT_MAPPER
-                                          .readValue(new File(credentialPath), TwitterCredentials.class));
+    twitterClient = new TwitterClient();
   }
 
   @Test
@@ -94,8 +92,8 @@ public class ITwitterClientV1Test {
 
   @Test
   public void testGetOauth1Token() {
-    TwitterClient.TWITTER_CREDENTIALS.setAccessToken("");
-    TwitterClient.TWITTER_CREDENTIALS.setAccessTokenSecret("");
+	twitterClient.getTwitterCredentials().setAccessToken("");
+	twitterClient.getTwitterCredentials().setAccessTokenSecret("");
     RequestToken result = twitterClient.getOauth1Token("oob");
     assertTrue(result.getOauthToken().length() > 1);
     assertTrue(result.getOauthTokenSecret().length() > 1);

@@ -1,14 +1,19 @@
 package com.github.redouane59.twitter.helpers;
 
 import com.github.redouane59.twitter.TwitterClient;
+import com.github.redouane59.twitter.dto.others.BearerToken;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
+import com.github.redouane59.twitter.signature.TwitterCredentials;
+
 import java.io.IOException;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -22,12 +27,15 @@ import okhttp3.Response;
 import okio.Buffer;
 
 @Slf4j
-@AllArgsConstructor
 public class RequestHelperV2 extends AbstractRequestHelper {
 
   private              String bearerToken;
   private static final String AUTHORIZATION = "Authorization";
   private static final String BEARER        = "Bearer ";
+  
+  public RequestHelperV2(TwitterCredentials twitterCredentials) {
+	  super(twitterCredentials);
+  }
 
   public <T> Optional<T> getRequest(String url, Class<T> classType) {
     return this.getRequestWithParameters(url, null, classType);
@@ -45,7 +53,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
       Request request = new Request.Builder()
           .url(httpBuilder.build())
           .get()
-          .headers(Headers.of(AUTHORIZATION, BEARER + bearerToken))
+          .headers(Headers.of(AUTHORIZATION, BEARER + getBearerToken()))
           .build();
       OkHttpClient client         = this.getHttpClient(httpBuilder.build().url().toString());
       Response     response       = client.newCall(request).execute();
@@ -71,7 +79,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
     Request request = new Request.Builder()
         .url(httpBuilder.build())
         .get()
-        .headers(Headers.of(AUTHORIZATION, BEARER + bearerToken))
+        .headers(Headers.of(AUTHORIZATION, BEARER + getBearerToken()))
         .build();
     Call call = new OkHttpClient.Builder().readTimeout(60, TimeUnit.SECONDS)
                                           .connectTimeout(60, TimeUnit.SECONDS)
@@ -105,7 +113,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
       Request request = new Request.Builder()
           .url(url)
           .method("POST", RequestBody.create(MediaType.parse("application/json"), body))
-          .headers(Headers.of(AUTHORIZATION, BEARER + bearerToken))
+          .headers(Headers.of(AUTHORIZATION, BEARER + getBearerToken()))
           .build();
       Response response       = new OkHttpClient.Builder().build().newCall(request).execute();
       String   stringResponse = response.body().string();
@@ -161,5 +169,21 @@ public class RequestHelperV2 extends AbstractRequestHelper {
       LOGGER.error(e.getMessage(), e);
     }
     return Optional.ofNullable(result);
+  }
+  
+  public String getBearerToken() {
+	if(bearerToken==null) {
+	    String url = URLHelper.GET_BEARER_TOKEN_URL;
+	    String valueToCrypt = twitterCredentials.getApiKey()
+	                          + ":" + twitterCredentials.getApiSecretKey();
+	    String              cryptedValue = Base64.getEncoder().encodeToString(valueToCrypt.getBytes());
+	    Map<String, String> params       = new HashMap<>();
+	    params.put("Authorization", "Basic " + cryptedValue);
+	    params.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+	    String body = "grant_type=client_credentials";
+	    BearerToken result = postRequestWithHeader(url, params, body, BearerToken.class).orElseThrow(NoSuchElementException::new);
+	    bearerToken = result.getAccessToken();
+	}
+	return bearerToken;
   }
 }

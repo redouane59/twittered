@@ -1,6 +1,8 @@
 package com.github.redouane59.twitter.helpers;
 
 import com.github.redouane59.twitter.TwitterClient;
+import com.github.redouane59.twitter.signature.TwitterCredentials;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -14,11 +16,16 @@ import okhttp3.OkHttpClient;
 @Getter
 public abstract class AbstractRequestHelper {
 
+  protected final TwitterCredentials twitterCredentials;
   private       int          sleepTime  = 5;
   private final OkHttpClient httpClient = new OkHttpClient.Builder()
       .readTimeout(60, TimeUnit.SECONDS)
       .connectTimeout(60, TimeUnit.SECONDS)
       .build();
+  
+  public AbstractRequestHelper(TwitterCredentials twitterCredentials) {
+	  this.twitterCredentials = twitterCredentials;
+  }
 
   public void wait(String response, String url) {
     LOGGER.info("\n" + response + "\nWaiting ... " + url); // do a wait and return this function recursively

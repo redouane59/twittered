@@ -1,7 +1,11 @@
 package com.github.redouane59.twitter.helpers;
 
 import com.github.redouane59.twitter.TwitterClient;
+import com.github.redouane59.twitter.signature.TwitterCredentials;
+
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,11 +25,12 @@ public class RequestHelper extends AbstractRequestHelper {
 
   private final OkHttpClient httpClient;
 
-  public RequestHelper() {
+  public RequestHelper(TwitterCredentials twitterCredentials) {
+	super(twitterCredentials);
     OkHttpOAuthConsumer
         consumer =
-        new OkHttpOAuthConsumer(TwitterClient.TWITTER_CREDENTIALS.getApiKey(), TwitterClient.TWITTER_CREDENTIALS.getApiSecretKey());
-    consumer.setTokenWithSecret(TwitterClient.TWITTER_CREDENTIALS.getAccessToken(), TwitterClient.TWITTER_CREDENTIALS.getAccessTokenSecret());
+        new OkHttpOAuthConsumer(twitterCredentials.getApiKey(), twitterCredentials.getApiSecretKey());
+    consumer.setTokenWithSecret(twitterCredentials.getAccessToken(), twitterCredentials.getAccessTokenSecret());
 
     this.httpClient = new OkHttpClient.Builder()
         .addInterceptor(new SigningInterceptor(consumer))
@@ -68,16 +73,25 @@ public class RequestHelper extends AbstractRequestHelper {
   public <T> Optional<T> postRequest(String url, Map<String, String> parameters, Class<T> classType) {
     return postRequestWithBodyJson(url, parameters, null, classType);
   }
-
+  
   public <T> Optional<T> uploadMedia(String url, File file, Class<T> classType) {
+	try {
+		return uploadMedia(url, file.getName(), Files.readAllBytes(file.toPath()), classType);
+	} catch (IOException e) {
+		LOGGER.error(e.getMessage(), e);
+		return Optional.empty();
+	}
+  }
+
+  public <T> Optional<T> uploadMedia(String url, String fileName, byte[] data, Class<T> classType) {
     T result = null;
     try {
 
       HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
       RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                                                           .addFormDataPart("media", file.toString(),
+                                                           .addFormDataPart("media", fileName,
                                                                             RequestBody.create(MediaType.parse("application/octet-stream"),
-                                                                                               file))
+                                                                                               data))
                                                            .build();
       Request request = new Request.Builder()
           .url(httpBuilder.build())
