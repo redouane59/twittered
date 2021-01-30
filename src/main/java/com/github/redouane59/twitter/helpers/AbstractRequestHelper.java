@@ -31,15 +31,16 @@ public abstract class AbstractRequestHelper {
   private final OAuth10aService service;
   
   public AbstractRequestHelper(TwitterCredentials twitterCredentials) {
-	  this.twitterCredentials = twitterCredentials;
-	  this.service = new ServiceBuilder(twitterCredentials.getApiKey())
-              .apiSecret(twitterCredentials.getApiSecretKey())
-              .build(TwitterApi.instance());
+	  this(twitterCredentials, new ServiceBuilder(twitterCredentials.getApiKey())
+			  .apiSecret(twitterCredentials.getApiSecretKey())
+			  .build(TwitterApi.instance()));
   }
   
-  protected OAuth1AccessToken getAccessToken() {
-	  return new OAuth1AccessToken(twitterCredentials.getAccessToken(), twitterCredentials.getAccessTokenSecret());
+  public AbstractRequestHelper(TwitterCredentials twitterCredentials, OAuth10aService service) {
+	  this.twitterCredentials = twitterCredentials;
+	  this.service = service;
   }
+  
   
   protected <T> T convert(String json, Class<? extends T> targetClass) throws JsonProcessingException {
 	  if(targetClass.isInstance(json)) {
@@ -93,7 +94,7 @@ public abstract class AbstractRequestHelper {
   public <T> Optional<T> makeRequest(OAuthRequest request, boolean signRequired, Class<T> classType) {
     T result = null;
     try {
-      if(signRequired) getService().signRequest(getAccessToken(), request);
+      if(signRequired) signRequest(request);
       Response response = getService().execute(request);
       String stringResponse = response.getBody();
       if(response.getCode() == 429) {

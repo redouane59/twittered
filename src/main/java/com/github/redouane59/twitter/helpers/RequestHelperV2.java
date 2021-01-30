@@ -11,6 +11,7 @@ import com.github.scribejava.core.model.OAuthConstants;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.OAuth10aService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,12 +27,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RequestHelperV2 extends AbstractRequestHelper {
 
-  private              String bearerToken;
-  private static final String AUTHORIZATION = "Authorization";
-  private static final String BEARER        = "Bearer ";
+  private String bearerToken;
   
   public RequestHelperV2(TwitterCredentials twitterCredentials) {
 	  super(twitterCredentials);
+  }
+  
+  public RequestHelperV2(TwitterCredentials twitterCredentials, OAuth10aService service) {
+	  super(twitterCredentials, service);
   }
 
   public <T> Optional<T> getRequest(String url, Class<T> classType) {

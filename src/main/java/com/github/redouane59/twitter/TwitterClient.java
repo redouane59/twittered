@@ -38,6 +38,12 @@ import com.github.redouane59.twitter.helpers.RequestHelper;
 import com.github.redouane59.twitter.helpers.RequestHelperV2;
 import com.github.redouane59.twitter.helpers.URLHelper;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
+import com.github.scribejava.apis.TwitterApi;
+import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.httpclient.HttpClient;
+import com.github.scribejava.core.httpclient.HttpClientConfig;
+import com.github.scribejava.core.oauth.OAuth10aService;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -95,9 +101,33 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   public TwitterClient(TwitterCredentials credentials) {
-    twitterCredentials = credentials;
-    requestHelper       = new RequestHelper(credentials);
-    requestHelperV2     = new RequestHelperV2(credentials);
+	this(credentials, new ServiceBuilder(credentials.getApiKey())
+					            .apiSecret(credentials.getApiSecretKey()));
+  }
+  
+  public TwitterClient(TwitterCredentials credentials, HttpClient httpClient) {
+	this(credentials, new ServiceBuilder(credentials.getApiKey())
+					            .apiSecret(credentials.getApiSecretKey())
+					            .httpClient(httpClient));
+  }
+  
+  public TwitterClient(TwitterCredentials credentials, HttpClient httpClient, HttpClientConfig config) {
+	this(credentials, new ServiceBuilder(credentials.getApiKey())
+					            .apiSecret(credentials.getApiSecretKey())
+					            .httpClient(httpClient)
+					            .httpClientConfig(config));
+  }
+  
+  public TwitterClient(TwitterCredentials credentials, ServiceBuilder serviceBuilder) {
+	this(credentials, serviceBuilder.apiKey(credentials.getApiKey())
+					                .apiSecret(credentials.getApiSecretKey())
+					                .build(TwitterApi.instance()));
+  }
+  
+  public TwitterClient(TwitterCredentials credentials, OAuth10aService service) {
+	twitterCredentials = credentials;
+    requestHelper       = new RequestHelper(credentials, service);
+    requestHelperV2     = new RequestHelperV2(credentials, service);
   }
 
   // can manage up to 5000 results / call . Max 15 calls / 15min ==> 75.000 results max. / 15min

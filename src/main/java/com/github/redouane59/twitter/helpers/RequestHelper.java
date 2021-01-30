@@ -11,14 +11,19 @@ import com.github.scribejava.core.httpclient.multipart.FileByteArrayBodyPartPayl
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.OAuth10aService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RequestHelper extends AbstractRequestHelper {
-
+	
   public RequestHelper(TwitterCredentials twitterCredentials) {
 	super(twitterCredentials);
+  }
+
+  public RequestHelper(TwitterCredentials twitterCredentials, OAuth10aService service) {
+	super(twitterCredentials, service);
   }
 
   public <T> Optional<T> postRequestWithBodyJson(String url, Map<String, String> parameters, String requestBodyJson, Class<T> classType) {
@@ -59,7 +64,7 @@ public class RequestHelper extends AbstractRequestHelper {
   
   @Override
   protected void signRequest(OAuthRequest request) {
-	 getService().signRequest(getAccessToken(), request);
+	 getService().signRequest(getTwitterCredentials().asAccessToken(), request);
   }
 
 }
