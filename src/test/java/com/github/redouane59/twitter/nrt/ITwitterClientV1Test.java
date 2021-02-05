@@ -13,8 +13,11 @@ import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
@@ -158,14 +161,23 @@ public class ITwitterClientV1Test {
   }
 
   @Test
-  public void testUploadMedia() {
-    UploadMediaResponse response = twitterClient.uploadMedia(new File("C:\\Users\\Perso\\Pictures\\bot.PNG"), MediaCategory.TWEET_IMAGE);
-    assertNotNull(response);
-    assertNotNull(response.getMediaId());
-    Tweet tweet = twitterClient.postTweet("Test", null, response.getMediaId());
-    assertNotNull(tweet);
-    assertNotNull(tweet.getId());
-    twitterClient.deleteTweet(tweet.getId());
+  public void testUploadMedia() throws Exception {
+	
+	try(InputStream is = ITwitterClientV1Test.class.getResourceAsStream("/twitter.png");
+	  ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
+	  byte[] buf = new byte[1024];
+	  int k;
+	  while((k = is.read(buf))>0) {
+	    baos.write(buf, 0, k);
+	  }
+	  UploadMediaResponse response = twitterClient.uploadMedia("twitter.png",  baos.toByteArray(), MediaCategory.TWEET_IMAGE);
+	  assertNotNull(response);
+	  assertNotNull(response.getMediaId());
+	  Tweet tweet = twitterClient.postTweet("Test", null, response.getMediaId());
+	  assertNotNull(tweet);
+	  assertNotNull(tweet.getId());
+	  twitterClient.deleteTweet(tweet.getId());
+	}
   }
 
   @Test

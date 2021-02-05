@@ -45,6 +45,7 @@ public class RequestHelper extends AbstractRequestHelper {
 
   public <T> Optional<T> uploadMedia(String url, String fileName, byte[] data, Class<T> classType) {
     OAuthRequest request = new OAuthRequest(Verb.POST, url);
+    request.initMultipartPayload();
     request.addBodyPartPayloadInMultipartPayload(new FileByteArrayBodyPartPayload("application/octet-stream", data, "media", fileName));
     return makeRequest(request, true, classType);
   }

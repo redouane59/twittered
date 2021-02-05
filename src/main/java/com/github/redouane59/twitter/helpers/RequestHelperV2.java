@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
@@ -45,14 +46,14 @@ public class RequestHelperV2 extends AbstractRequestHelper {
     return makeRequest(Verb.GET, url, parameters, null, true, classType);
   }
   
-  public void getAsyncRequest(String url, Consumer<Tweet> consumer) {
-	  getAsyncRequest(url, consumer, TweetV2.class);
+  public Future<Response> getAsyncRequest(String url, Consumer<Tweet> consumer) {
+	  return getAsyncRequest(url, consumer, TweetV2.class);
   }
 
-  public <T> void getAsyncRequest(String url, final Consumer<T> consumer, final Class<? extends T> targetClass) {
+  public <T> Future<Response> getAsyncRequest(String url, final Consumer<T> consumer, final Class<? extends T> targetClass) {
 	OAuthRequest request = new OAuthRequest(Verb.GET, url);
 	signRequest(request);
-	getService().execute(request, new OAuthAsyncRequestCallback<Response>() {
+	return getService().execute(request, new OAuthAsyncRequestCallback<Response>() {
 		
 		@Override
 		public void onThrowable(Throwable t) {
@@ -100,7 +101,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
 	    headers.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 	    String body = "grant_type=client_credentials";
 	    Optional<BearerToken> result = makeRequest(Verb.POST, url, headers, null, body, false, BearerToken.class);
-	    return result.orElseThrow(NoSuchElementException::new).getAccessToken();
+	    bearerToken = result.orElseThrow(NoSuchElementException::new).getAccessToken();
 	}
 	return bearerToken;
   }

@@ -42,6 +42,7 @@ import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.httpclient.HttpClient;
 import com.github.scribejava.core.httpclient.HttpClientConfig;
+import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
 import java.io.File;
@@ -60,6 +61,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -492,9 +494,9 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public void startFilteredStream(Consumer<Tweet> consumer) {
+  public Future<Response> startFilteredStream(Consumer<Tweet> consumer) {
     String url = this.urlHelper.getFilteredStreamUrl();
-    this.requestHelperV2.getAsyncRequest(url, consumer);
+    return this.requestHelperV2.getAsyncRequest(url, consumer);
   }
 
   @Override
@@ -530,9 +532,9 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public void startSampledStream(Consumer<Tweet> consumer) {
+  public Future<Response> startSampledStream(Consumer<Tweet> consumer) {
     String url = this.urlHelper.getSampledStreamUrl();
-    this.requestHelperV2.getAsyncRequest(url, consumer);
+    return this.requestHelperV2.getAsyncRequest(url, consumer);
   }
 
   @Override

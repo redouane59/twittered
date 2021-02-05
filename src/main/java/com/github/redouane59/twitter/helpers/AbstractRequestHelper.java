@@ -87,7 +87,11 @@ public abstract class AbstractRequestHelper {
       	  request.addQuerystringParameter(param.getKey(), param.getValue());
         }
       }
-    if(body!=null && verb.isPermitBody()) request.setPayload(body);
+    if(body!=null && verb.isPermitBody()) {
+    	request.setPayload(body);
+    	if(!request.getHeaders().containsKey("Content-Type"))
+    		request.addHeader("Content-Type", "application/json");
+    }
     return makeRequest(request, signRequired, classType);
   }
   
