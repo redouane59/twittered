@@ -12,10 +12,7 @@ import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import com.github.redouane59.twitter.dto.user.User;
-import com.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,11 +26,8 @@ public class ITwitterClientV1Test {
   private static TwitterClient twitterClient;
 
   @BeforeAll
-  public static void init() throws IOException {
-    twitterClient = new TwitterClient(TwitterClient.OBJECT_MAPPER
-                                          .readValue(new File("twitter-credentials.json"),
-                                                     TwitterCredentials.class)
-    );
+  public static void init() {
+    twitterClient = new TwitterClient();
   }
 
   @Test
