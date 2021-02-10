@@ -115,7 +115,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetTweetById() {
-    String tweetId = "1358782390089494531";
+    String tweetId = "1120050519182016513";
     Tweet  tweet   = twitterClient.getTweet(tweetId);
     assertNotNull(tweet);
   }
@@ -244,7 +244,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetUserTimelineWithDates() {
-    List<Tweet> result = twitterClient.getUserTimeline("1307302673318895621", 20,
+    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 20,
                                                        ConverterHelper.dayBeforeNow(5),
                                                        ConverterHelper.dayBeforeNow(1),
                                                        null, null);
