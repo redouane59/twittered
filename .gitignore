@@ -18,4 +18,3 @@ target/
 *.asc
 bundle.jar
 test-twitter-credentials.json
-
