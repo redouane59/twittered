@@ -14,11 +14,7 @@ import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
-import com.github.redouane59.twitter.signature.TwitterCredentials;
 import com.github.scribejava.core.model.Response;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +22,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -37,7 +32,7 @@ public class ITwitterClientV2Test {
   private static TwitterClient twitterClient;
 
   @BeforeAll
-  public static void init() throws IOException {
+  public static void init() {
     twitterClient = new TwitterClient();
   }
 
@@ -223,7 +218,7 @@ public class ITwitterClientV2Test {
     try {
       future.get(5, TimeUnit.SECONDS);
     } catch (TimeoutException exc) {
-    	//It's OK
+      //It's OK
     }
   }
 
