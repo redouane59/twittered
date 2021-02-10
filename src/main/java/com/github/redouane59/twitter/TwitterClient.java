@@ -643,6 +643,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String              url        = URLHelper.GET_OAUTH1_ACCESS_TOKEN_URL;
     Map<String, String> parameters = new HashMap<>();
     parameters.put("oauth_verifier", pinCode);
+    parameters.put("oauth_token", requestToken.getOauthToken());
     String stringResponse = this.requestHelper.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
     return new RequestToken(stringResponse);
   }
