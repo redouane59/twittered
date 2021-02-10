@@ -150,15 +150,10 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.squareup.okhttp3</groupId>
-      <artifactId>okhttp</artifactId>
-      <version>4.8.1</version>
-    </dependency>
-    <dependency>
-      <groupId>io.vavr</groupId>
-      <artifactId>vavr</artifactId>
-      <version>0.10.3</version>
-    </dependency>
+      <groupId>com.github.scribejava</groupId>
+      <artifactId>scribejava-apis</artifactId>
+      <version>8.1.0</version>
+	</dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -186,11 +181,6 @@
       <artifactId>logback-classic</artifactId>
       <version>1.2.3</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>se.akerfeldt</groupId>
-      <artifactId>okhttp-signpost</artifactId>
-      <version>1.1.0</version>
     </dependency>
   </dependencies>
 </project>

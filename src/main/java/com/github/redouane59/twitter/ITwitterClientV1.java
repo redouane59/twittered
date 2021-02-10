@@ -183,6 +183,11 @@ public interface ITwitterClientV1 {
    * @return the access tokens
    */
   RequestToken getOAuth1AccessToken(RequestToken requestToken, String pinCode);
+  
+  /**
+   * Upload a media calling https://upload.twitter.com/1.1/media/upload.json
+   */
+  UploadMediaResponse uploadMedia(String mediaName, byte[] data, MediaCategory mediaCategory);
 
   /**
    * Upload a media calling https://upload.twitter.com/1.1/media/upload.json
