@@ -10,7 +10,6 @@ import com.github.redouane59.twitter.dto.collections.CollectionsResponse;
 import com.github.redouane59.twitter.dto.collections.TimeLineOrder;
 import com.github.redouane59.twitter.dto.getrelationship.IdList;
 import com.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
-import com.github.redouane59.twitter.dto.others.BearerToken;
 import com.github.redouane59.twitter.dto.others.RateLimitStatus;
 import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.stream.StreamRules;
@@ -44,17 +43,14 @@ import com.github.scribejava.core.httpclient.HttpClient;
 import com.github.scribejava.core.httpclient.HttpClientConfig;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.oauth.OAuth10aService;
-
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -75,27 +71,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitterClientArchive {
 
-  public static final  ObjectMapper       OBJECT_MAPPER              = new ObjectMapper()
+  public static final  ObjectMapper       OBJECT_MAPPER                        = new ObjectMapper()
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
       .setSerializationInclusion(JsonInclude.Include.NON_NULL);
-  private              URLHelper          urlHelper                  = new URLHelper();
+  private              URLHelper          urlHelper                            = new URLHelper();
   private              RequestHelper      requestHelper;
   private              RequestHelperV2    requestHelperV2;
-  private			   TwitterCredentials twitterCredentials;
-  private static final String             IDS                        = "ids";
-  private static final String             QUERY                      = "query";
-  private static final String             MAX_RESULTS                = "max_results";
-  private static final String             USERS                      = "users";
-  private static final String             CURSOR                     = "cursor";
-  private static final String             NEXT                       = "next";
-  private static final String             PAGINATION_TOKEN           = "pagination_token";
-  private static final String             NEXT_TOKEN                 = "next_token";
-  private static final String             RETWEET_COUNT              = "retweet_count";
-  private static final String             RELATIONSHIP               = "relationship";
-  private static final String             FOLLOWING                  = "following";
-  private static final String             FOLLOWED_BY                = "followed_by";
-  private static final String             SOURCE                     = "source";
-  private static final String             NULL_OR_ID_NOT_FOUND_ERROR = "response null or ids not found !";
+  private              TwitterCredentials twitterCredentials;
+  private static final String             IDS                                  = "ids";
+  private static final String             QUERY                                = "query";
+  private static final String             MAX_RESULTS                          = "max_results";
+  private static final String             USERS                                = "users";
+  private static final String             CURSOR                               = "cursor";
+  private static final String             NEXT                                 = "next";
+  private static final String             PAGINATION_TOKEN                     = "pagination_token";
+  private static final String             NEXT_TOKEN                           = "next_token";
+  private static final String             RETWEET_COUNT                        = "retweet_count";
+  private static final String             RELATIONSHIP                         = "relationship";
+  private static final String             FOLLOWING                            = "following";
+  private static final String             FOLLOWED_BY                          = "followed_by";
+  private static final String             SOURCE                               = "source";
+  private static final String             NULL_OR_ID_NOT_FOUND_ERROR           = "response null or ids not found !";
   private static final String[]           DEFAULT_VALID_CREDENTIALS_FILE_NAMES = {"test-twitter-credentials.json", "twitter-credentials.json"};
 
   public TwitterClient() {
@@ -103,33 +99,33 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   public TwitterClient(TwitterCredentials credentials) {
-	this(credentials, new ServiceBuilder(credentials.getApiKey())
-					            .apiSecret(credentials.getApiSecretKey()));
+    this(credentials, new ServiceBuilder(credentials.getApiKey())
+        .apiSecret(credentials.getApiSecretKey()));
   }
-  
+
   public TwitterClient(TwitterCredentials credentials, HttpClient httpClient) {
-	this(credentials, new ServiceBuilder(credentials.getApiKey())
-					            .apiSecret(credentials.getApiSecretKey())
-					            .httpClient(httpClient));
+    this(credentials, new ServiceBuilder(credentials.getApiKey())
+        .apiSecret(credentials.getApiSecretKey())
+        .httpClient(httpClient));
   }
-  
+
   public TwitterClient(TwitterCredentials credentials, HttpClient httpClient, HttpClientConfig config) {
-	this(credentials, new ServiceBuilder(credentials.getApiKey())
-					            .apiSecret(credentials.getApiSecretKey())
-					            .httpClient(httpClient)
-					            .httpClientConfig(config));
+    this(credentials, new ServiceBuilder(credentials.getApiKey())
+        .apiSecret(credentials.getApiSecretKey())
+        .httpClient(httpClient)
+        .httpClientConfig(config));
   }
-  
+
   public TwitterClient(TwitterCredentials credentials, ServiceBuilder serviceBuilder) {
-	this(credentials, serviceBuilder.apiKey(credentials.getApiKey())
-					                .apiSecret(credentials.getApiSecretKey())
-					                .build(TwitterApi.instance()));
+    this(credentials, serviceBuilder.apiKey(credentials.getApiKey())
+                                    .apiSecret(credentials.getApiSecretKey())
+                                    .build(TwitterApi.instance()));
   }
-  
+
   public TwitterClient(TwitterCredentials credentials, OAuth10aService service) {
-	twitterCredentials = credentials;
-    requestHelper       = new RequestHelper(credentials, service);
-    requestHelperV2     = new RequestHelperV2(credentials, service);
+    twitterCredentials = credentials;
+    requestHelper      = new RequestHelper(credentials, service);
+    requestHelperV2    = new RequestHelperV2(credentials, service);
   }
 
   // can manage up to 5000 results / call . Max 15 calls / 15min ==> 75.000 results max. / 15min
@@ -313,7 +309,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public Tweet deleteTweet(String tweetId) {
-    String              url        = this.getUrlHelper().getdeleteTweetUrl(tweetId);
+    String              url        = this.getUrlHelper().getDeleteTweetUrl(tweetId);
     Map<String, String> parameters = new HashMap<>();
     return this.getRequestHelper().postRequest(url, parameters, TweetV1.class).orElseThrow(NoSuchElementException::new);
   }
@@ -647,7 +643,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String stringResponse = this.requestHelper.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
     return new RequestToken(stringResponse);
   }
-  
+
   @Override
   public UploadMediaResponse uploadMedia(String mediaName, byte[] data, MediaCategory mediaCategory) {
     String url = urlHelper.getUploadMediaUrl(mediaCategory);
@@ -725,27 +721,33 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   public static TwitterCredentials getAuthentication() {
     String credentialPath = System.getProperty("twitter.credentials.file.path");
-    if(credentialPath!=null) return getAuthentication(new File(credentialPath));
-    else return getAuthentication(Paths.get(""));
+    if (credentialPath != null) {
+      return getAuthentication(new File(credentialPath));
+    } else {
+      return getAuthentication(Paths.get(""));
+    }
   }
-  
+
   public static TwitterCredentials getAuthentication(final Path pathToScan, final String... validNames) {
-	  if(pathToScan.toFile().isFile()) return getAuthentication(pathToScan.toFile());
-	  else {
-		  String[] namesToCheck = validNames!=null && validNames.length>0?validNames:DEFAULT_VALID_CREDENTIALS_FILE_NAMES;
-		  for(Path currentPath = pathToScan; currentPath!=null; currentPath = currentPath.getParent()) {
-			for (String name : namesToCheck) {
-				Path file = currentPath.resolve(name);
-				if(Files.isRegularFile(file)) return getAuthentication(file.toFile());
-			}
-		  }
-	  }
-	  return null;
+    if (pathToScan.toFile().isFile()) {
+      return getAuthentication(pathToScan.toFile());
+    } else {
+      String[] namesToCheck = validNames != null && validNames.length > 0 ? validNames : DEFAULT_VALID_CREDENTIALS_FILE_NAMES;
+      for (Path currentPath = pathToScan; currentPath != null; currentPath = currentPath.getParent()) {
+        for (String name : namesToCheck) {
+          Path file = currentPath.resolve(name);
+          if (Files.isRegularFile(file)) {
+            return getAuthentication(file.toFile());
+          }
+        }
+      }
+    }
+    return null;
   }
-    
+
   public static TwitterCredentials getAuthentication(File twitterCredentialsFile) {
     try {
-      TwitterCredentials twitterCredentials     = TwitterClient.OBJECT_MAPPER.readValue(twitterCredentialsFile, TwitterCredentials.class);
+      TwitterCredentials twitterCredentials = TwitterClient.OBJECT_MAPPER.readValue(twitterCredentialsFile, TwitterCredentials.class);
       if (twitterCredentials.getAccessToken() == null) {
         LOGGER.error("Access token is null in twitter-credentials.json");
       }
