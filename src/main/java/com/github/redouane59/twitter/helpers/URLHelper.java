@@ -267,16 +267,18 @@ public class URLHelper {
     return ROOT_URL_V1 + STATUSES + "/update.json";
   }
 
-  public String getdeleteTweetUrl(String tweetId) {
+  public String getDeleteTweetUrl(String tweetId) {
     return ROOT_URL_V1 + STATUSES + "/destroy/" + tweetId + JSON;
   }
 
   public String getFavoriteTweetsUrl(String userId, String maxId) {
+    String result;
     if (maxId == null || maxId.length() == 0) {
-      return "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id=" + userId;
+      result = "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id=" + userId;
     } else {
-      return "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id=" + userId + "&" + MAX_ID + "=" + maxId;
+      result = "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id=" + userId + "&" + MAX_ID + "=" + maxId;
     }
+    return result.concat("&tweet_mode=extended");
   }
 
   public String getHideReplyUrl(final String tweetId) {
