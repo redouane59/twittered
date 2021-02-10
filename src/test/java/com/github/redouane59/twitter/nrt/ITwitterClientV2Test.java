@@ -214,7 +214,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testStartStream() {
-    twitterClient.startFilteredStream(System.out::println);
+    twitterClient.startFilteredStream(System.out::println, System.err::println);
   }
 
   @Test

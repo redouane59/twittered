@@ -2,6 +2,7 @@ package com.github.redouane59.twitter.helpers;
 
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetError;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import java.io.IOException;
 import java.util.Map;
@@ -66,7 +67,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
     return Optional.ofNullable(result);
   }
 
-  public void getAsyncRequest(String url, Consumer<Tweet> consumer) {
+  public void getAsyncRequest(String url, Consumer<Tweet> consumer, Consumer<TweetError> errorConsumer ) {
     HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
     Request request = new Request.Builder()
         .url(httpBuilder.build())
@@ -89,8 +90,14 @@ public class RequestHelperV2 extends AbstractRequestHelper {
             response.body().source().read(buffer, 8192);
             String content = new String(buffer.readByteArray());
             try {
-              TweetV2 tweet = TwitterClient.OBJECT_MAPPER.readValue(content, TweetV2.class);
-              consumer.accept(tweet);
+              if (response.code() >= 400 ) {
+                TweetError error = TwitterClient.OBJECT_MAPPER.readValue(content, TweetError.class);
+                if (errorConsumer != null) errorConsumer.accept(error);
+              } else {
+                TweetV2 tweet = TwitterClient.OBJECT_MAPPER.readValue(content, TweetV2.class);
+                if (consumer != null) consumer.accept(tweet);
+              }
+              
             } catch (Exception e) {
             }
           }

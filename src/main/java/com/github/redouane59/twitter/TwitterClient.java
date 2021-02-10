@@ -20,6 +20,7 @@ import com.github.redouane59.twitter.dto.tweet.HiddenResponse;
 import com.github.redouane59.twitter.dto.tweet.HiddenResponse.HiddenData;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetError;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponseV1;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponseV2;
@@ -460,9 +461,9 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public void startFilteredStream(Consumer<Tweet> consumer) {
+  public void startFilteredStream(Consumer<Tweet> consumer, Consumer<TweetError> errorConsumer) {
     String url = this.urlHelper.getFilteredStreamUrl();
-    this.requestHelperV2.getAsyncRequest(url, consumer);
+    this.requestHelperV2.getAsyncRequest(url, consumer, errorConsumer);
   }
 
   @Override
@@ -498,9 +499,9 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public void startSampledStream(Consumer<Tweet> consumer) {
+  public void startSampledStream(Consumer<Tweet> consumer, Consumer<TweetError> errorConsumer) {
     String url = this.urlHelper.getSampledStreamUrl();
-    this.requestHelperV2.getAsyncRequest(url, consumer);
+    this.requestHelperV2.getAsyncRequest(url, consumer, errorConsumer);
   }
 
   @Override
