@@ -1,15 +1,15 @@
 package com.github.redouane59.twitter.helpers;
 
-import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.github.redouane59.twitter.dto.tweet.MediaCategory;
+
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter
-@Slf4j
 public class URLHelper {
 
   private static final String ROOT_URL_V1                   = "https://api.twitter.com/1.1";

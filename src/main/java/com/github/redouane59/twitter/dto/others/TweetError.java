@@ -1,12 +1,16 @@
-package com.github.redouane59.twitter.dto.tweet;
+package com.github.redouane59.twitter.dto.others;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class TweetError {
     
     @JsonProperty("title")

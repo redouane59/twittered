@@ -17,3 +17,5 @@ target/
 /okhttpCache/*
 *.asc
 bundle.jar
+.vscode
+
