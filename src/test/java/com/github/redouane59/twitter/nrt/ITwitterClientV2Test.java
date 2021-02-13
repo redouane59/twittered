@@ -6,12 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
+import com.github.redouane59.twitter.dto.user.FollowResponse;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import com.github.scribejava.core.model.Response;
@@ -287,6 +289,18 @@ public class ITwitterClientV2Test {
     assertEquals(5, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
+  }
+
+
+  @Test
+  public void testFollowAndUnfollow() {
+    User           user           = twitterClient.getUserFromUserName("red1");
+    FollowResponse followResponse = twitterClient.follow("1307302673318895621", user.getId());
+    assertTrue(followResponse.getData().isFollowing());
+    assertFalse(followResponse.getData().isPending_follow());
+    FollowResponse unfollowResponse = twitterClient.unfollow("1307302673318895621", user.getId());
+    assertFalse(unfollowResponse.getData().isFollowing());
+    assertEquals(RelationType.NONE, twitterClient.getRelationType("92073489", "66533"));
   }
 
 }

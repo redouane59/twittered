@@ -27,9 +27,10 @@ import com.github.redouane59.twitter.dto.tweet.TweetV1Deserializer;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.dto.tweet.TweetV2.TweetData;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
+import com.github.redouane59.twitter.dto.user.FollowBody;
+import com.github.redouane59.twitter.dto.user.FollowResponse;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.dto.user.UserListV2;
-import com.github.redouane59.twitter.dto.user.UserV1;
 import com.github.redouane59.twitter.dto.user.UserV2;
 import com.github.redouane59.twitter.dto.user.UserV2.UserData;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
@@ -42,6 +43,7 @@ import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.httpclient.HttpClient;
 import com.github.scribejava.core.httpclient.HttpClientConfig;
 import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 import java.io.File;
 import java.io.IOException;
@@ -64,6 +66,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Getter
@@ -209,18 +212,21 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return this.getUserIdsByRelation(url);
   }
 
+  @SneakyThrows
   @Override
-  public User follow(String userId) {
-    String url = this.urlHelper.getFollowUrl(userId);
+  public FollowResponse follow(String sourceUserId, String targetUserId) {
+    String url  = this.urlHelper.getFollowUrl(sourceUserId);
+    String body = OBJECT_MAPPER.writeValueAsString(new FollowBody(targetUserId));
     return this.requestHelper
-        .postRequest(url, new HashMap<>(), UserV1.class).orElseThrow(NoSuchElementException::new);
+        .postRequestWithBodyJson(url, new HashMap<>(), body, FollowResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
-  public User unfollow(String sourceUserId, String targetUserId) {
+  public FollowResponse unfollow(String sourceUserId, String targetUserId) {
     String url = this.urlHelper.getUnfollowUrl(sourceUserId, targetUserId);
     return this.requestHelper
-        .postRequest(url, new HashMap<>(), UserV1.class).orElseThrow(NoSuchElementException::new);
+        .makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, FollowResponse.class).orElseThrow(NoSuchElementException::new);
+
   }
 
   @Override
