@@ -6,12 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.github.redouane59.twitter.IAPIEventListener;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
+import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import com.github.scribejava.core.model.Response;
@@ -34,6 +36,30 @@ public class ITwitterClientV2Test {
   @BeforeAll
   public static void init() {
     twitterClient = new TwitterClient();
+    twitterClient.setAPIListener(new IAPIEventListener(){
+
+      @Override
+      public void onError(int httpCode, String json) {
+      }
+
+      @Override
+      public void onStreamError(int httpCode, String json) {
+      }
+
+      @Override
+      public void onTweetStreamed(TweetV2 tweet) {
+      }
+
+      @Override
+      public void onUnknownDataStreamed(String json) {
+      }
+
+      @Override
+      public void onStreamEnded(Exception e) {
+      }
+      
+    });
+    
   }
 
   @Test
@@ -213,12 +239,14 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-    Future<Response> future = twitterClient.startFilteredStream(System.out::println);
+  public void testStartStream() throws InterruptedException, ExecutionException {
+    Future<Response> future = twitterClient.startFilteredStream();
     try {
       future.get(5, TimeUnit.SECONDS);
     } catch (TimeoutException exc) {
       //It's OK
-    }
+    };
+
   }
 
   @Test

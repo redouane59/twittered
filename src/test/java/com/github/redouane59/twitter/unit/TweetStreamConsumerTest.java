@@ -20,21 +20,21 @@ public class TweetStreamConsumerTest {
     @Test
     void consumeMultipleTweet() throws Exception {
         // Consumes a Json in 2 passes to simulate two different buffers.
-        TweetStreamConsumer consumer = new TweetStreamConsumer();
+        TweetStreamConsumer consumer = new TweetStreamConsumer(null);
         File file = new File(getClass().getClassLoader().getResource("tests/multiple_tweet_stream_example_part1.data").getFile());
         
         String content = Files.readString( file.toPath() );
         
         // Simulate part of a buffer
-        assertFalse( consumer.consume( content.substring(0,20) ) );
+        assertFalse( consumer.consumeBuffer( content.substring(0,20) ) );
         // Simulate part of an other buffer, including 2 tweets & 1 empty line
-        assertTrue( consumer.consume( content.substring(20, 6000) ) );
+        assertTrue( consumer.consumeBuffer( content.substring(20, 6000) ) );
         
         String[] tweets = consumer.getJsonTweets();
         assertEquals(1, tweets.length );
 
         // Simulate end of buffer
-        assertTrue( consumer.consume( content.substring(6000) ) );
+        assertTrue( consumer.consumeBuffer( content.substring(6000) ) );
         tweets = consumer.getJsonTweets();
         assertEquals(2, tweets.length );
 

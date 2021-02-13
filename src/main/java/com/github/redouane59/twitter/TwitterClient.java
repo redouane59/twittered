@@ -1,5 +1,24 @@
 package com.github.redouane59.twitter;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -12,7 +31,6 @@ import com.github.redouane59.twitter.dto.getrelationship.IdList;
 import com.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
 import com.github.redouane59.twitter.dto.others.RateLimitStatus;
 import com.github.redouane59.twitter.dto.others.RequestToken;
-import com.github.redouane59.twitter.dto.others.TweetError;
 import com.github.redouane59.twitter.dto.stream.StreamRules;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
@@ -44,25 +62,7 @@ import com.github.scribejava.core.httpclient.HttpClient;
 import com.github.scribejava.core.httpclient.HttpClientConfig;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.oauth.OAuth10aService;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -127,6 +127,11 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     twitterCredentials = credentials;
     requestHelper      = new RequestHelper(credentials, service);
     requestHelperV2    = new RequestHelperV2(credentials, service);
+  }
+
+  public void setAPIListener(IAPIEventListener listener) {
+    requestHelper.setErrorListener(listener);
+    requestHelperV2.setErrorListener(listener);
   }
 
   // can manage up to 5000 results / call . Max 15 calls / 15min ==> 75.000 results max. / 15min
@@ -490,10 +495,10 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return result;
   }
 
-  @Override
-  public Future<Response> startFilteredStream(Consumer<Tweet> consumer) {
+  // @Override
+  public Future<Response> startFilteredStream() {
     String url = this.urlHelper.getFilteredStreamUrl();
-    return this.requestHelperV2.getAsyncRequest(url, consumer);
+    return this.requestHelperV2.getAsyncRequest(url);
   }
 
   @Override
@@ -521,17 +526,17 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public StreamMeta deleteFilteredStreamRule(String ruleValue) {
+  public StreamMeta deleteFilteredStreamRule(String ruleId) {
     String      url    = this.urlHelper.getFilteredStreamRulesUrl();
-    String      body   = "{\"delete\": {\"values\": [\"" + ruleValue + "\"]}}";
+    String      body   = "{\"delete\": {\"ids\": [\"" + ruleId + "\"]}}";
     StreamRules result = this.requestHelperV2.postRequest(url, body, StreamRules.class).orElseThrow(NoSuchElementException::new);
     return result.getMeta();
   }
 
   @Override
-  public Future<Response> startSampledStream(Consumer<Tweet> consumer) {
+  public Future<Response> startSampledStream() {
     String url = this.urlHelper.getSampledStreamUrl();
-    return this.requestHelperV2.getAsyncRequest(url, consumer);
+    return this.requestHelperV2.getAsyncRequest(url);
   }
 
   @Override

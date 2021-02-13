@@ -1,11 +1,16 @@
 package com.github.redouane59.twitter.helpers;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.github.redouane59.twitter.TwitterClient;
+import com.github.redouane59.twitter.dto.tweet.TweetV2;
+import com.github.scribejava.core.model.Response;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,9 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 public class TweetStreamConsumer {
 
   private StringBuilder buffer;
-
-  public TweetStreamConsumer() {
+  private AbstractRequestHelper helper;
+  public TweetStreamConsumer(AbstractRequestHelper helper) {
     this.buffer = new StringBuilder();
+    this.helper = helper;
   }
 
   /**
@@ -29,7 +35,7 @@ public class TweetStreamConsumer {
    * @param data
    * @return true if at least one tweet is complete, false otherwise
    */
-  public boolean consume(String data) {
+  public boolean consumeBuffer(String data) {
 
     // Ignoring Heartbeat or empty line.
     if (data.trim().isEmpty()) return false;
@@ -43,6 +49,36 @@ public class TweetStreamConsumer {
 
     // If we detect a \r\n in the buffer, then at least a tweet is complete
     return (this.buffer.indexOf("\r\n") != -1);
+  }
+
+  /**
+   * Consumes a stream.
+   * As we read the data based on \r\n , we don't expect having a partial tweet
+   * so, we don't use internal StringBuilder to rebuild a tweet.
+   * @param response
+   */
+  public <T> void consumeStream(final Response response, final Class<? extends T> clazz) {
+    if (helper.listener == null) throw new IllegalAccessError("Missing listener");
+
+    BufferedReader reader = new BufferedReader(new InputStreamReader(response.getStream(), StandardCharsets.UTF_8));
+    while ( true ) {
+      try {
+        String s = reader.readLine();
+        if (response.getCode() == 200) {
+              if (clazz == TweetV2.class) {
+                helper.listener.onTweetStreamed( (TweetV2) TwitterClient.OBJECT_MAPPER.readValue(s, clazz) );
+              } else {
+                helper.listener.onUnknownDataStreamed( s );
+              }
+        } else {
+          helper.notifyError(response.getCode(), s );
+          break;
+        }
+      } catch(IOException e) {
+        helper.listener.onStreamEnded( e );
+      }
+      
+    }
   }
 
   /**
@@ -78,7 +114,7 @@ public class TweetStreamConsumer {
     this.buffer = new StringBuilder();
     // If not complete, reconsume the last buffer
     if (!complete) {
-      this.consume(lastJSON);
+      this.consumeBuffer(lastJSON);
       result.remove(result.size() - 1);
     }
     return result.stream().toArray(String[]::new);

@@ -180,7 +180,7 @@ public class URLHelper {
            "/tweets/" +
            tweetId +
            "?" +
-           "expansions=author_id" +
+           EXPANSIONS_AUTHOR_ID +
            "&" +
            TWEET_FIELDS +
            ALL_TWEET_FIELDS +

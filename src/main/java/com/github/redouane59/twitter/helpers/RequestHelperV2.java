@@ -1,9 +1,13 @@
 package com.github.redouane59.twitter.helpers;
 
-import com.fasterxml.jackson.databind.MappingIterator;
-import com.github.redouane59.twitter.TwitterClient;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.concurrent.Future;
+
 import com.github.redouane59.twitter.dto.others.BearerToken;
-import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 import com.github.scribejava.core.model.OAuthAsyncRequestCallback;
@@ -13,29 +17,19 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RequestHelperV2 extends AbstractRequestHelper {
 
   private String bearerToken;
-  
+
   public RequestHelperV2(TwitterCredentials twitterCredentials) {
-	  super(twitterCredentials);
+    super(twitterCredentials);
   }
-  
+
   public RequestHelperV2(TwitterCredentials twitterCredentials, OAuth10aService service) {
-	  super(twitterCredentials, service);
+    super(twitterCredentials, service);
   }
 
   public <T> Optional<T> getRequest(String url, Class<T> classType) {
@@ -45,32 +39,30 @@ public class RequestHelperV2 extends AbstractRequestHelper {
   public <T> Optional<T> getRequestWithParameters(String url, Map<String, String> parameters, Class<T> classType) {
     return makeRequest(Verb.GET, url, parameters, null, true, classType);
   }
-  
-  public Future<Response> getAsyncRequest(String url, Consumer<Tweet> consumer) {
-	  return getAsyncRequest(url, consumer, TweetV2.class);
+
+  public Future<Response> getAsyncRequest(String url ) {
+    return getAsyncRequest(url, TweetV2.class);
   }
 
-  public <T> Future<Response> getAsyncRequest(String url, final Consumer<T> consumer, final Class<? extends T> targetClass) {
-	OAuthRequest request = new OAuthRequest(Verb.GET, url);
-	signRequest(request);
-	return getService().execute(request, new OAuthAsyncRequestCallback<Response>() {
-		
-		@Override
-		public void onThrowable(Throwable t) {
-			LOGGER.error(t.getMessage(), t);
-		}
-		
-		@Override
-		public void onCompleted(Response response) {
-			try {
-				InputStream is = response.getStream();
-				((MappingIterator<T>)TwitterClient.OBJECT_MAPPER.readerFor(targetClass)
-								.readValues(is)).forEachRemaining(consumer);
-			} catch (IOException e) {
-				onThrowable(e);
-			}
-		}
-	});
+  public <T> Future<Response> getAsyncRequest(String url, final Class<? extends T> targetClass) {
+    OAuthRequest request = new OAuthRequest(Verb.GET, url);
+    signRequest(request);
+    return getService().execute(request, new OAuthAsyncRequestCallback<Response>() {
+
+      @Override
+      public void onThrowable(Throwable t) {
+        LOGGER.error(t.getMessage(), t);
+      }
+
+      @Override
+      public void onCompleted(Response response) {
+        try {
+          tweetStreamConsumer.consumeStream( response, targetClass );
+        } catch (Exception e) {
+          onThrowable(e);
+        }
+		  }
+	  });
   }
 
   public <T> Optional<T> postRequest(String url, String body, Class<T> classType) {

@@ -1,23 +1,20 @@
 package com.github.redouane59.twitter.helpers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.signature.TwitterCredentials;
-import com.github.scribejava.apis.TwitterApi;
-import com.github.scribejava.core.builder.ServiceBuilder;
-import com.github.scribejava.core.model.OAuth1AccessToken;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Response;
-import com.github.scribejava.core.model.Verb;
-import com.github.scribejava.core.oauth.OAuth10aService;
-import com.github.scribejava.core.oauth.OAuthService;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.redouane59.twitter.IAPIEventListener;
+import com.github.redouane59.twitter.TwitterClient;
+import com.github.redouane59.twitter.signature.TwitterCredentials;
+import com.github.scribejava.apis.TwitterApi;
+import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.OAuth10aService;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +26,8 @@ public abstract class AbstractRequestHelper {
 
   private final TwitterCredentials twitterCredentials;
   private final OAuth10aService service;
+  protected IAPIEventListener listener = null;
+  protected final TweetStreamConsumer tweetStreamConsumer;
   
   public AbstractRequestHelper(TwitterCredentials twitterCredentials) {
 	  this(twitterCredentials, new ServiceBuilder(twitterCredentials.getApiKey())
@@ -39,8 +38,8 @@ public abstract class AbstractRequestHelper {
   public AbstractRequestHelper(TwitterCredentials twitterCredentials, OAuth10aService service) {
 	  this.twitterCredentials = twitterCredentials;
 	  this.service = service;
+    this.tweetStreamConsumer = new TweetStreamConsumer(this);
   }
-  
   
   protected <T> T convert(String json, Class<? extends T> targetClass) throws JsonProcessingException {
 	  if(targetClass.isInstance(json)) {
@@ -52,6 +51,10 @@ public abstract class AbstractRequestHelper {
 
   public static void logApiError(String method, String url, String stringResponse, int code) {
     LOGGER.error("(" + method + ") Error calling " + url + " " + stringResponse + " - " + code);
+  }
+
+  public void setErrorListener(IAPIEventListener listener) {
+    this.listener = listener;
   }
 
   private int getCacheTimeoutFromUrl(String url, File configFile) {
@@ -106,15 +109,16 @@ public abstract class AbstractRequestHelper {
     	  String retryAfterStr = response.getHeader("Retry-After");
     	  if(retryAfterStr!=null) {
     		  try {
-				retryAfter = Integer.parseInt(retryAfterStr);
-			} catch (NumberFormatException e) {
-				LOGGER.error("Using default retry after because header format is invalid: "+retryAfterStr, e);
-			}
+            retryAfter = Integer.parseInt(retryAfterStr);
+          } catch (NumberFormatException e) {
+            LOGGER.error("Using default retry after because header format is invalid: "+retryAfterStr, e);
+          }
     	  }
     	  Thread.sleep(1000L*retryAfter);
     	  return makeRequest(request, false, classType); //We have already signed if it was requested
       }
       else if (response.getCode() < 200 || response.getCode() > 299) {
+        notifyError(response.getCode(), stringResponse);
         logApiError(request.getVerb().name(), request.getUrl(), stringResponse, response.getCode());
       }
       result = convert(stringResponse, classType);
@@ -122,5 +126,17 @@ public abstract class AbstractRequestHelper {
       LOGGER.error(e.getMessage(), e);
     }
     return Optional.ofNullable(result);
+  }
+
+  protected void notifyError(int errorCode, String json) {
+    if (this.listener != null) {
+      this.listener.onError(errorCode, json);
+    }
+  }
+
+  protected void notifyStreamError(int errorCode, String json) {
+    if (this.listener != null) {
+      this.listener.onError(errorCode, json);
+    }
   }
 }
