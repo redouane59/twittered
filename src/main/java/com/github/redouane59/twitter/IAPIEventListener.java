@@ -1,6 +1,6 @@
 package com.github.redouane59.twitter;
 
-import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.others.TweetError;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 
 public interface IAPIEventListener {
@@ -12,14 +12,14 @@ public interface IAPIEventListener {
    * @param httpCode
    * @param json
    */
-  void onError( int httpCode, String json);
+  void onError( int httpCode, TweetError error);
 
   /**
    * Triggered when a problem from the API occurs on the stream
    * @param httpCode
    * @param json
    */
-  void onStreamError( int httpCode, String json);
+  void onStreamError( int httpCode, TweetError error);
 
   /**
    * Triggered when a tweet is received

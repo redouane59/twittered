@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.IAPIEventListener;
 import com.github.redouane59.twitter.TwitterClient;
+import com.github.redouane59.twitter.dto.others.TweetError;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
@@ -42,11 +43,11 @@ public class ITwitterClientV2Test {
     twitterClient.setAPIListener(new IAPIEventListener(){
 
       @Override
-      public void onError(int httpCode, String json) {
+      public void onError(int httpCode, TweetError error) {
       }
 
       @Override
-      public void onStreamError(int httpCode, String json) {
+      public void onStreamError(int httpCode, TweetError error) {
       }
 
       @Override

@@ -8,6 +8,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.redouane59.twitter.IAPIEventListener;
 import com.github.redouane59.twitter.TwitterClient;
+import com.github.redouane59.twitter.dto.others.TweetError;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -128,15 +129,15 @@ public abstract class AbstractRequestHelper {
     return Optional.ofNullable(result);
   }
 
-  protected void notifyError(int errorCode, String json) {
+  protected void notifyError(int errorCode, String json) throws JsonProcessingException {
     if (this.listener != null) {
-      this.listener.onError(errorCode, json);
+      this.listener.onError(errorCode, convert(json, TweetError.class) );
     }
   }
 
-  protected void notifyStreamError(int errorCode, String json) {
+  protected void notifyStreamError(int errorCode, String json) throws JsonProcessingException {
     if (this.listener != null) {
-      this.listener.onError(errorCode, json);
+      this.listener.onError(errorCode, convert(json, TweetError.class));
     }
   }
 }

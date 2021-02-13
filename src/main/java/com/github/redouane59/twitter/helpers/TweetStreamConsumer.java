@@ -74,7 +74,7 @@ public class TweetStreamConsumer {
                 helper.listener.onUnknownDataStreamed( s );
               }
         } else {
-          helper.notifyError(response.getCode(), s );
+          helper.notifyStreamError(response.getCode(), s );
           break;
         }
       } catch(IOException e) {
