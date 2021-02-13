@@ -29,13 +29,13 @@ public abstract class AbstractRequestHelper {
   protected IAPIEventListener listener = null;
   protected final TweetStreamConsumer tweetStreamConsumer;
   
-  public AbstractRequestHelper(TwitterCredentials twitterCredentials) {
+  protected AbstractRequestHelper(TwitterCredentials twitterCredentials) {
 	  this(twitterCredentials, new ServiceBuilder(twitterCredentials.getApiKey())
 			  .apiSecret(twitterCredentials.getApiSecretKey())
 			  .build(TwitterApi.instance()));
   }
   
-  public AbstractRequestHelper(TwitterCredentials twitterCredentials, OAuth10aService service) {
+  protected AbstractRequestHelper(TwitterCredentials twitterCredentials, OAuth10aService service) {
 	  this.twitterCredentials = twitterCredentials;
 	  this.service = service;
     this.tweetStreamConsumer = new TweetStreamConsumer(this);
