@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 public class ITwitterClientV2Test {
 
   private static TwitterClient twitterClient;
+  private        String        userId = "1307302673318895621";
 
   @BeforeAll
   public static void init() {
@@ -252,7 +253,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetUserTimelineWithIds() {
-    List<Tweet> result = twitterClient.getUserTimeline("1307302673318895621", 10,
+    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 10,
                                                        null, null,
                                                        "1339662509201121280",
                                                        "1339667017109032966");
@@ -282,7 +283,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetUserMentionsWithIds() {
-    List<Tweet> result = twitterClient.getUserTimeline("1307302673318895621", 10,
+    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 10,
                                                        null, null,
                                                        "1339659629228384256",
                                                        "1339993046377766912");
@@ -295,10 +296,10 @@ public class ITwitterClientV2Test {
   @Test
   public void testFollowAndUnfollow() {
     User           user           = twitterClient.getUserFromUserName("red1");
-    FollowResponse followResponse = twitterClient.follow("1307302673318895621", user.getId());
+    FollowResponse followResponse = twitterClient.follow(this.userId, user.getId());
     assertTrue(followResponse.getData().isFollowing());
     assertFalse(followResponse.getData().isPending_follow());
-    FollowResponse unfollowResponse = twitterClient.unfollow("1307302673318895621", user.getId());
+    FollowResponse unfollowResponse = twitterClient.unfollow(this.userId, user.getId());
     assertFalse(unfollowResponse.getData().isFollowing());
     assertEquals(RelationType.NONE, twitterClient.getRelationType("92073489", "66533"));
   }
