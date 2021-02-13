@@ -85,27 +85,19 @@ public class URLHelper {
   }
 
   public String getFollowUrl(String userId) {
-    return ROOT_URL_V1 +
-           FRIENDSHIPS +
-           CREATE_JSON +
-           USER_ID + "=" +
-           userId;
+    return ROOT_URL_V2 +
+           USERS +
+           "/" + userId +
+           FOLLOWING;
   }
 
-  public String getUnfollowUrl(String userId) {
-    return ROOT_URL_V1 +
-           FRIENDSHIPS +
-           DESTROY_JSON +
-           USER_ID + "=" +
-           userId;
-  }
-
-  public String getUnfollowByUsernameUrl(String userName) {
-    return ROOT_URL_V1 +
-           FRIENDSHIPS +
-           DESTROY_JSON +
-           SCREEN_NAME + "=" +
-           userName;
+  public String getUnfollowUrl(String sourceUserId, String targetUserId) {
+    // https://api.twitter.com/2/users/12345/following/67890
+    return ROOT_URL_V2 +
+           USERS +
+           "/" + sourceUserId +
+           FOLLOWING
+           + "/" + targetUserId;
   }
 
   public String getFriendshipUrl(String sourceId, String targetId) {

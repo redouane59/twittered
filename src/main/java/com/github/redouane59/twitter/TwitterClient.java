@@ -217,15 +217,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public User unfollow(String userId) {
-    String url = this.urlHelper.getUnfollowUrl(userId);
-    return this.requestHelper
-        .postRequest(url, new HashMap<>(), UserV1.class).orElseThrow(NoSuchElementException::new);
-  }
-
-  @Override
-  public User unfollowByName(String userName) {
-    String url = this.urlHelper.getUnfollowByUsernameUrl(userName);
+  public User unfollow(String sourceUserId, String targetUserId) {
+    String url = this.urlHelper.getUnfollowUrl(sourceUserId, targetUserId);
     return this.requestHelper
         .postRequest(url, new HashMap<>(), UserV1.class).orElseThrow(NoSuchElementException::new);
   }
