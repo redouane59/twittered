@@ -11,7 +11,6 @@ import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
-import com.github.redouane59.twitter.dto.user.User;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -97,16 +96,6 @@ public class ITwitterClientV1Test {
     assertTrue(result.getOauthToken().length() > 1);
     assertTrue(result.getOauthTokenSecret().length() > 1);
     //twitterClient.getOAuth1AccessToken(result, "12345");
-  }
-
-  @Test
-  public void testFollowAndUnfollow() {
-    User user         = twitterClient.getUserFromUserName("red1");
-    User followedUser = twitterClient.follow(user.getId());
-    assertEquals("red1", followedUser.getName());
-    User unfollowedUser = twitterClient.unfollow(user.getId());
-    assertEquals("red1", unfollowedUser.getName());
-    assertEquals(RelationType.NONE, twitterClient.getRelationType("92073489", "66533"));
   }
 
   @Test

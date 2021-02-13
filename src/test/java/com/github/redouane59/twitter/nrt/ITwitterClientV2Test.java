@@ -6,12 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
+import com.github.redouane59.twitter.dto.user.FollowResponse;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import com.github.scribejava.core.model.Response;
@@ -30,6 +32,7 @@ import org.junit.jupiter.api.Test;
 public class ITwitterClientV2Test {
 
   private static TwitterClient twitterClient;
+  private        String        userId = "1307302673318895621";
 
   @BeforeAll
   public static void init() {
@@ -250,7 +253,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetUserTimelineWithIds() {
-    List<Tweet> result = twitterClient.getUserTimeline("1307302673318895621", 10,
+    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 10,
                                                        null, null,
                                                        "1339662509201121280",
                                                        "1339667017109032966");
@@ -280,13 +283,25 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetUserMentionsWithIds() {
-    List<Tweet> result = twitterClient.getUserTimeline("1307302673318895621", 10,
+    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 10,
                                                        null, null,
                                                        "1339659629228384256",
                                                        "1339993046377766912");
     assertEquals(5, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
+  }
+
+
+  @Test
+  public void testFollowAndUnfollow() {
+    User           user           = twitterClient.getUserFromUserName("red1");
+    FollowResponse followResponse = twitterClient.follow(this.userId, user.getId());
+    assertTrue(followResponse.getData().isFollowing());
+    assertFalse(followResponse.getData().isPending_follow());
+    FollowResponse unfollowResponse = twitterClient.unfollow(this.userId, user.getId());
+    assertFalse(unfollowResponse.getData().isFollowing());
+    assertEquals(RelationType.NONE, twitterClient.getRelationType("92073489", "66533"));
   }
 
 }
