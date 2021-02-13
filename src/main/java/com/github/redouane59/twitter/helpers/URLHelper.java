@@ -92,7 +92,6 @@ public class URLHelper {
   }
 
   public String getUnfollowUrl(String sourceUserId, String targetUserId) {
-    // https://api.twitter.com/2/users/12345/following/67890
     return ROOT_URL_V2 +
            USERS +
            "/" + sourceUserId +
