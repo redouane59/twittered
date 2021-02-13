@@ -162,6 +162,13 @@ public interface ITwitterClientV2 {
   StreamMeta deleteFilteredStreamRule(String ruleValue);
 
   /**
+   * Delete a filtered stream from its rule tag calling https://api.twitter.com/2/tweets/search/stream/rules
+   * @param ruleTag the tag name specified when using addFilteredStreamRule
+   * @return a StreamMeta object resuming the operation
+   */
+  StreamMeta deleteFilteredStreamRuletag(String ruleTag);
+
+  /**
    * Retrieve the filtered stream rules calling https://api.twitter.com/2/tweets/search/stream/rules
    *
    * @return a filtered stream rules list

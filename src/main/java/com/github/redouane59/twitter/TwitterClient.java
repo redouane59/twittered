@@ -525,9 +525,17 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public StreamMeta deleteFilteredStreamRule(String ruleId) {
+  public StreamMeta deleteFilteredStreamRule(String ruleValue) {
     String      url    = this.urlHelper.getFilteredStreamRulesUrl();
-    String      body   = "{\"delete\": {\"ids\": [\"" + ruleId + "\"]}}";
+    String      body   = "{\"delete\": {\"values\": [\"" + ruleValue + "\"]}}";
+    StreamRules result = this.requestHelperV2.postRequest(url, body, StreamRules.class).orElseThrow(NoSuchElementException::new);
+    return result.getMeta();
+  }
+
+  @Override
+  public StreamMeta deleteFilteredStreamRuletag(String ruleTag) {
+    String      url    = this.urlHelper.getFilteredStreamRulesUrl();
+    String      body   = "{\"delete\": {\"ids\": [\"" + ruleTag + "\"]}}";
     StreamRules result = this.requestHelperV2.postRequest(url, body, StreamRules.class).orElseThrow(NoSuchElementException::new);
     return result.getMeta();
   }
