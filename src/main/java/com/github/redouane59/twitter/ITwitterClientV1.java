@@ -96,7 +96,7 @@ public interface ITwitterClientV1 {
   RelationType getRelationType(String userId1, String userId2);
 
   /**
-   * Follow a user calling https://api.twitter.com/1.1/friendships/
+   * Follow a user calling https://api.twitter.com/2/users/:source_user_id/following
    *
    * @param userId the id of the user
    * @return the user
@@ -104,20 +104,13 @@ public interface ITwitterClientV1 {
   User follow(String userId);
 
   /**
-   * Unfollow a user calling https://api.twitter.com/1.1/friendships/
+   * Unfollow a user calling https://api.twitter.com/2/users/:source_user_id/following/:target_user_id
    *
-   * @param userId the id of the user
+   * @param sourceUserId The user ID who you would like to initiate the unfollow on behalf of. It must match the username of the authenticating user.
+   * @param targetUserId The user ID of the user that you would like the source_user_id to unfollow.
    * @return the user
    */
-  User unfollow(String userId);
-
-  /**
-   * Unfollow a user calling https://api.twitter.com/1.1/friendships/
-   *
-   * @param userName the scree name of the user
-   * @return the user
-   */
-  User unfollowByName(String userName);
+  User unfollow(String sourceUserId, String targetUserId);
 
   /**
    * Get the twitter rate limit status calling https://api.twitter.com/1.1/application/
@@ -183,7 +176,7 @@ public interface ITwitterClientV1 {
    * @return the access tokens
    */
   RequestToken getOAuth1AccessToken(RequestToken requestToken, String pinCode);
-  
+
   /**
    * Upload a media calling https://upload.twitter.com/1.1/media/upload.json
    */
@@ -219,8 +212,8 @@ public interface ITwitterClientV1 {
   /**
    * Gets tweets from an existing collection. See https://api.twitter.com/1.1/collections/entries.json
    *
-   * To retrieve Tweets further back in time, use the value of min_position found in the current response as the max_position parameter in the
-   * next call to this endpoint.
+   * To retrieve Tweets further back in time, use the value of min_position found in the current response as the max_position parameter in the next
+   * call to this endpoint.
    *
    * @param collectionId the id of the collection to retrieve tweets from
    * @param count optional. Specifies the maximum number of results to include in the response 1-200.  {@link Position#getWasTruncated()} will
