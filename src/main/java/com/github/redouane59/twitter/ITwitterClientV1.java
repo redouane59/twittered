@@ -9,7 +9,7 @@ import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
-import com.github.redouane59.twitter.dto.user.User;
+import com.github.redouane59.twitter.dto.user.FollowResponse;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -98,10 +98,11 @@ public interface ITwitterClientV1 {
   /**
    * Follow a user calling https://api.twitter.com/2/users/:source_user_id/following
    *
-   * @param userId the id of the user
-   * @return the user
+   * @param sourceUserId The user ID who you would like to initiate the follow on behalf of. It must match the username of the authenticating user.
+   * @param targetUserId The user ID of the user that you would like the source_user_id to follow.
+   * @return the follow information
    */
-  User follow(String userId);
+  FollowResponse follow(String sourceUserId, String targetUserId);
 
   /**
    * Unfollow a user calling https://api.twitter.com/2/users/:source_user_id/following/:target_user_id
@@ -110,7 +111,7 @@ public interface ITwitterClientV1 {
    * @param targetUserId The user ID of the user that you would like the source_user_id to unfollow.
    * @return the user
    */
-  User unfollow(String sourceUserId, String targetUserId);
+  FollowResponse unfollow(String sourceUserId, String targetUserId);
 
   /**
    * Get the twitter rate limit status calling https://api.twitter.com/1.1/application/
