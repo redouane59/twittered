@@ -47,7 +47,7 @@ public class UrlHelperTest {
 
   @Test
   public void testUrlFollowById() {
-    assertEquals("https://api.twitter.com/1.1/friendships/create.json?user_id=12345",
+    assertEquals("https://api.twitter.com/2/users/12345/following",
                  urlHelper.getFollowUrl("12345"));
   }
 
@@ -93,16 +93,9 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testUnfollowByUsernameUrl() {
-    //https://api.twitter.com/1.1/friendships/destroy.json?user_id=2244994945
-    assertEquals("https://api.twitter.com/1.1/friendships/destroy.json?screen_name=Red",
-                 urlHelper.getUnfollowByUsernameUrl("Red"));
-  }
-
-  @Test
   public void testUnfollowByUserId() {
-    assertEquals("https://api.twitter.com/1.1/friendships/destroy.json?user_id=12345",
-                 urlHelper.getUnfollowUrl("12345"));
+    assertEquals("https://api.twitter.com/2/users/12345/following/67890",
+                 urlHelper.getUnfollowUrl("12345", "67890"));
   }
 
   @Test
