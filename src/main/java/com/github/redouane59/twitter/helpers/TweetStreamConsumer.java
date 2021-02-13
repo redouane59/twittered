@@ -64,6 +64,9 @@ public class TweetStreamConsumer {
     while ( true ) {
       try {
         String s = reader.readLine();
+        // Avoid empty line (heartbeat)
+        if (s.trim().isEmpty()) continue;
+        
         if (response.getCode() == 200) {
               if (clazz == TweetV2.class) {
                 helper.listener.onTweetStreamed( (TweetV2) TwitterClient.OBJECT_MAPPER.readValue(s, clazz) );
