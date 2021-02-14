@@ -6,7 +6,7 @@
 
   <groupId>com.github.redouane59.twitter</groupId>
   <artifactId>twittered</artifactId>
-  <version>1.18</version>
+  <version>1.19</version>
 
   <name>twittered</name>
   <description>java client for twitter API</description>
@@ -153,7 +153,7 @@
       <groupId>com.github.scribejava</groupId>
       <artifactId>scribejava-apis</artifactId>
       <version>8.1.0</version>
-	</dependency>
+    </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
