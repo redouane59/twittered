@@ -12,16 +12,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TweetError {
-    
-    @JsonProperty("title")
-    private String title;
 
-    @JsonProperty("detail")
-    private String detail;
+  @JsonProperty("title")
+  private String title;
 
-    @JsonProperty("connection_issue")
-    private String connectionIssue;
+  @JsonProperty("detail")
+  private String detail;
 
-    @JsonProperty("type")
-    private String type;
+  @JsonProperty("connection_issue")
+  private String connectionIssue;
+
+  @JsonProperty("type")
+  private String type;
 }

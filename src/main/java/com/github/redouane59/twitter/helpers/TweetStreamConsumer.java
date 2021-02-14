@@ -23,6 +23,7 @@ public class TweetStreamConsumer {
 
   private StringBuilder buffer;
   private AbstractRequestHelper helper;
+
   public TweetStreamConsumer(AbstractRequestHelper helper) {
     this.buffer = new StringBuilder();
     this.helper = helper;
@@ -38,7 +39,8 @@ public class TweetStreamConsumer {
   public boolean consumeBuffer(String data) {
 
     // Ignoring Heartbeat or empty line.
-    if (data.trim().isEmpty()) return false;
+    if (data.trim().isEmpty())
+      return false;
 
     // Check if the buffer is empty and we receive a valid json data
     if (this.buffer.isEmpty() && (!data.trim().startsWith("{"))) {
@@ -52,38 +54,39 @@ public class TweetStreamConsumer {
   }
 
   /**
-   * Consumes a stream.
-   * As we read the data based on \r\n , we don't expect having a partial tweet
-   * so, we don't use internal StringBuilder to rebuild a tweet.
+   * Consumes a stream. As we read the data based on \r\n , we don't expect having
+   * a partial tweet so, we don't use internal StringBuilder to rebuild a tweet.
+   * 
    * @param response
    */
   public <T> void consumeStream(final Response response, final Class<? extends T> clazz) {
-    if (helper.listener == null) throw new IllegalAccessError("Missing listener");
+    if (helper.listener == null)
+      throw new IllegalAccessError("Missing listener");
 
     BufferedReader reader = new BufferedReader(new InputStreamReader(response.getStream(), StandardCharsets.UTF_8));
     String line;
     try {
-      while ( (line = reader.readLine()) != null ) {
+      while ((line = reader.readLine()) != null) {
         // Avoid empty line (heartbeat)
-        if (line.trim().isEmpty()) continue;
-        
+        if (line.trim().isEmpty())
+          continue;
+
         if (response.getCode() == 200) {
-              if (clazz == TweetV2.class) {
-                helper.listener.onTweetStreamed( (TweetV2) TwitterClient.OBJECT_MAPPER.readValue(line, clazz) );
-              } else {
-                helper.listener.onUnknownDataStreamed( line );
-              }
+          if (clazz == TweetV2.class) {
+            helper.listener.onTweetStreamed((TweetV2) TwitterClient.OBJECT_MAPPER.readValue(line, clazz));
+          } else {
+            helper.listener.onUnknownDataStreamed(line);
+          }
         } else {
-          helper.notifyStreamError(response.getCode(), line );
+          helper.notifyStreamError(response.getCode(), line);
           break;
         }
       }
-      
-    } catch(IOException e) {
-      helper.listener.onStreamEnded( e );
+
+    } catch (IOException e) {
+      helper.listener.onStreamEnded(e);
     }
-      
-    
+
   }
 
   /**
