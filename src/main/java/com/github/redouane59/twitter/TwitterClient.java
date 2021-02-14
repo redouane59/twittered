@@ -494,7 +494,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return result;
   }
 
-  // @Override
+  @Override
   public Future<Response> startFilteredStream() {
     String url = this.urlHelper.getFilteredStreamUrl();
     return this.requestHelperV2.getAsyncRequest(url);
