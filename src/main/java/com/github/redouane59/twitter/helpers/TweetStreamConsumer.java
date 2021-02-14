@@ -61,27 +61,29 @@ public class TweetStreamConsumer {
     if (helper.listener == null) throw new IllegalAccessError("Missing listener");
 
     BufferedReader reader = new BufferedReader(new InputStreamReader(response.getStream(), StandardCharsets.UTF_8));
-    while ( true ) {
-      try {
-        String s = reader.readLine();
+    String line;
+    try {
+      while ( (line = reader.readLine()) != null ) {
         // Avoid empty line (heartbeat)
-        if (s.trim().isEmpty()) continue;
+        if (line.trim().isEmpty()) continue;
         
         if (response.getCode() == 200) {
               if (clazz == TweetV2.class) {
-                helper.listener.onTweetStreamed( (TweetV2) TwitterClient.OBJECT_MAPPER.readValue(s, clazz) );
+                helper.listener.onTweetStreamed( (TweetV2) TwitterClient.OBJECT_MAPPER.readValue(line, clazz) );
               } else {
-                helper.listener.onUnknownDataStreamed( s );
+                helper.listener.onUnknownDataStreamed( line );
               }
         } else {
-          helper.notifyStreamError(response.getCode(), s );
+          helper.notifyStreamError(response.getCode(), line );
           break;
         }
-      } catch(IOException e) {
-        helper.listener.onStreamEnded( e );
       }
       
+    } catch(IOException e) {
+      helper.listener.onStreamEnded( e );
     }
+      
+    
   }
 
   /**
