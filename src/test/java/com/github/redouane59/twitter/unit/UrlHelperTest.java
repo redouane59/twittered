@@ -121,7 +121,7 @@ public class UrlHelperTest {
   @Test
   public void testTweetUrl() {
     assertEquals(
-        "https://api.twitter.com/2/tweets/12345?expansions=author_id&"
+        "https://api.twitter.com/2/tweets/12345?expansions=author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id&"
         + URLHelper.TWEET_FIELDS
         + URLHelper.ALL_TWEET_FIELDS
         + "&"

@@ -28,6 +28,9 @@ public class UserV2 implements User {
 
   @Getter
   @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @Builder
   public static class UserData implements User {
 
     private String            id;

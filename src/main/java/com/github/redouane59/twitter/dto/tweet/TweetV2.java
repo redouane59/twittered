@@ -30,6 +30,9 @@ public class TweetV2 implements Tweet {
 
   @Getter
   @Setter
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
   public static class TweetData implements Tweet {
 
     private String                   id;
@@ -279,9 +282,13 @@ public class TweetV2 implements Tweet {
 
   @Getter
   @Setter
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
   public static class Includes {
 
-    private UserV2.UserData[] users;
+    private UserV2.UserData[]   users;
+    private TweetV2.TweetData[] tweets;
   }
 
   @Getter
