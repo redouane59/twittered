@@ -311,7 +311,13 @@ public class ITwitterClientV2Test {
     TweetV2 tweet   = (TweetV2) twitterClient.getTweet(tweetId);
     assertNotNull(tweet);
     assertEquals(3, tweet.getIncludes().getUsers().length);
+    assertEquals("RedouaneBali", tweet.getIncludes().getUsers()[0].getName());
+    assertEquals("TwitterDev", tweet.getIncludes().getUsers()[1].getName());
+    assertEquals("jessicagarson", tweet.getIncludes().getUsers()[2].getName());
     assertEquals(1, tweet.getIncludes().getTweets().length);
+    assertEquals("2244994945", tweet.getIncludes().getTweets()[0].getAuthorId());
+    assertEquals("1341761599976181763", tweet.getIncludes().getTweets()[0].getId());
+    assertNotNull(tweet.getIncludes().getTweets()[0].getEntities());
   }
 
 }
