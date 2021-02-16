@@ -43,11 +43,11 @@ public class ITwitterClientV2Test {
     twitterClient.setAPIListener(new IAPIEventListener() {
 
       @Override
-      public void onError(int httpCode, TweetError error) {
+      public void onError(int httpCode, String error) {
       }
 
       @Override
-      public void onStreamError(int httpCode, TweetError error) {
+      public void onStreamError(int httpCode, String error) {
       }
 
       @Override

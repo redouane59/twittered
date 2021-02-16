@@ -9,7 +9,6 @@ import java.util.Optional;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 import com.github.scribejava.core.httpclient.multipart.FileByteArrayBodyPartPayload;
 import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
