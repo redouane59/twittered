@@ -6,20 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.github.redouane59.RelationType;
-import com.github.redouane59.twitter.IAPIEventListener;
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.others.TweetError;
-import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
-import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
-import com.github.redouane59.twitter.dto.tweet.Tweet;
-import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
-import com.github.redouane59.twitter.dto.tweet.TweetType;
-import com.github.redouane59.twitter.dto.user.FollowResponse;
-import com.github.redouane59.twitter.dto.tweet.TweetV2;
-import com.github.redouane59.twitter.dto.user.User;
-import com.github.redouane59.twitter.helpers.ConverterHelper;
-import com.github.scribejava.core.model.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +13,19 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import com.github.redouane59.RelationType;
+import com.github.redouane59.twitter.TwitterClient;
+import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
+import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
+import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
+import com.github.redouane59.twitter.dto.tweet.TweetType;
+import com.github.redouane59.twitter.dto.user.FollowResponse;
+import com.github.redouane59.twitter.dto.user.User;
+import com.github.redouane59.twitter.helpers.ConverterHelper;
+import com.github.scribejava.core.model.Response;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -40,30 +39,6 @@ public class ITwitterClientV2Test {
   @BeforeAll
   public static void init() {
     twitterClient = new TwitterClient();
-    twitterClient.setAPIListener(new IAPIEventListener() {
-
-      @Override
-      public void onError(int httpCode, String error) {
-      }
-
-      @Override
-      public void onStreamError(int httpCode, String error) {
-      }
-
-      @Override
-      public void onTweetStreamed(TweetV2 tweet) {
-      }
-
-      @Override
-      public void onUnknownDataStreamed(String json) {
-      }
-
-      @Override
-      public void onStreamEnded(Exception e) {
-      }
-
-    });
-
   }
 
   @Test
@@ -245,7 +220,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testStartStream() throws InterruptedException, ExecutionException {
-    Future<Response> future = twitterClient.startFilteredStream();
+    Future<Response> future = twitterClient.startFilteredStream(System.out::println);
     try {
       future.get(5, TimeUnit.SECONDS);
     } catch (TimeoutException exc) {

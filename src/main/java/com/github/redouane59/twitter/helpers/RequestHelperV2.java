@@ -6,8 +6,11 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
+import com.github.redouane59.twitter.IAPIEventListener;
 import com.github.redouane59.twitter.dto.others.BearerToken;
+import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 import com.github.scribejava.core.model.OAuthAsyncRequestCallback;
@@ -40,11 +43,40 @@ public class RequestHelperV2 extends AbstractRequestHelper {
     return makeRequest(Verb.GET, url, parameters, null, true, classType);
   }
 
-  public Future<Response> getAsyncRequest(String url ) {
-    return getAsyncRequest(url, TweetV2.class);
+  public Future<Response> getAsyncRequest(String url, Consumer<Tweet> consumer ) {
+    // All the stream are handled internally with an IAPIEventListener.
+    IAPIEventListener listener = new IAPIEventListener() {
+
+      @Override
+      public void onStreamError(int httpCode, String error) {
+        //
+       }
+
+      @Override
+      public void onTweetStreamed(Tweet tweet) {
+        consumer.accept( tweet);
+      }
+
+      @Override
+      public void onUnknownDataStreamed(String json) {
+        //
+      }
+
+      @Override
+      public void onStreamEnded(Exception e) {
+        //
+      }
+      
+    };
+
+    return getAsyncRequest(url, listener, TweetV2.class);
   }
 
-  public <T> Future<Response> getAsyncRequest(String url, final Class<? extends T> targetClass) {
+  public Future<Response> getAsyncRequest(String url, IAPIEventListener listener ) {
+    return getAsyncRequest(url, listener, TweetV2.class);
+  }
+
+  public <T> Future<Response> getAsyncRequest(String url,IAPIEventListener listener, final Class<? extends T> targetClass) {
     OAuthRequest request = new OAuthRequest(Verb.GET, url);
     signRequest(request);
     return getService().execute(request, new OAuthAsyncRequestCallback<Response>() {
@@ -57,7 +89,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
       @Override
       public void onCompleted(Response response) {
         try {
-          tweetStreamConsumer.consumeStream( response, targetClass );
+          tweetStreamConsumer.consumeStream( listener, response, targetClass );
         } catch (Exception e) {
           onThrowable(e);
         }

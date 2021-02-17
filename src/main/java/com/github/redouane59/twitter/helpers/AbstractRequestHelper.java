@@ -38,7 +38,7 @@ public abstract class AbstractRequestHelper {
   protected AbstractRequestHelper(TwitterCredentials twitterCredentials, OAuth10aService service) {
 	  this.twitterCredentials = twitterCredentials;
 	  this.service = service;
-    this.tweetStreamConsumer = new TweetStreamConsumer(this);
+    this.tweetStreamConsumer = new TweetStreamConsumer();
   }
   
   protected <T> T convert(String json, Class<? extends T> targetClass) throws JsonProcessingException {
@@ -51,10 +51,6 @@ public abstract class AbstractRequestHelper {
 
   public static void logApiError(String method, String url, String stringResponse, int code) {
     LOGGER.error("(" + method + ") Error calling " + url + " " + stringResponse + " - " + code);
-  }
-
-  public void setErrorListener(IAPIEventListener listener) {
-    this.listener = listener;
   }
 
   private int getCacheTimeoutFromUrl(String url, File configFile) {
@@ -118,7 +114,6 @@ public abstract class AbstractRequestHelper {
     	  return makeRequest(request, false, classType); //We have already signed if it was requested
       }
       else if (response.getCode() < 200 || response.getCode() > 299) {
-        notifyError(response.getCode(), stringResponse);
         logApiError(request.getVerb().name(), request.getUrl(), stringResponse, response.getCode());
       }
       result = convert(stringResponse, classType);
@@ -128,15 +123,4 @@ public abstract class AbstractRequestHelper {
     return Optional.ofNullable(result);
   }
 
-  protected void notifyError(int errorCode, String json) throws JsonProcessingException {
-    if (this.listener != null) {
-      this.listener.onError(errorCode, json );
-    }
-  }
-
-  protected void notifyStreamError(int errorCode, String json) throws JsonProcessingException {
-    if (this.listener != null) {
-      this.listener.onError(errorCode, json);
-    }
-  }
 }

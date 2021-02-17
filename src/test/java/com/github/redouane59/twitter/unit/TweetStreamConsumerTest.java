@@ -20,7 +20,7 @@ public class TweetStreamConsumerTest {
     @Test
     void consumeMultipleTweet() throws Exception {
         // Consumes a Json in 2 passes to simulate two different buffers.
-        TweetStreamConsumer consumer = new TweetStreamConsumer(null);
+        TweetStreamConsumer consumer = new TweetStreamConsumer();
         File file = new File(getClass().getClassLoader().getResource("tests/multiple_tweet_stream_example_part1.data").getFile());
         
         String content = Files.readString( file.toPath() );

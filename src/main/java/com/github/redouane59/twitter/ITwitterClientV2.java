@@ -3,6 +3,7 @@ package com.github.redouane59.twitter;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
@@ -142,7 +143,20 @@ public interface ITwitterClientV2 {
   /**
    * Stream using previous set up filters calling https://api.twitter.com/2/tweets/search/stream
    */
-  Future<Response> startFilteredStream();
+  Future<Response> startFilteredStream(IAPIEventListener listener);
+
+  /**
+   * Stream using previous set up filters calling https://api.twitter.com/2/tweets/search/stream
+   */
+  Future<Response> startFilteredStream(Consumer<Tweet> tweet);
+
+  /**
+   * Stops the filtered stream with the result of the startFilteredStream.
+   * It'll close the socket opened.
+   * @param response
+   * @return
+   */
+  boolean stopFilteredStream(Future<Response> response);
 
   /**
    * add a filtered stream rule calling https://api.twitter.com/2/tweets/search/stream/rules
@@ -185,7 +199,14 @@ public interface ITwitterClientV2 {
   /**
    * Stream about 1% of all tweets calling https://api.twitter.com/2/tweets/sample/stream
    */
-  Future<Response> startSampledStream();
+  Future<Response> startSampledStream(Consumer<Tweet> consumer);
+
+  /**
+   * Stream about 1% of all tweets calling https://api.twitter.com/2/tweets/sample/stream
+   * @param listener
+   * @return
+   */
+  Future<Response> startSampledStream(IAPIEventListener listener);
 
   /**
    * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets

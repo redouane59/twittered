@@ -1,17 +1,8 @@
 package com.github.redouane59.twitter;
 
-import com.github.redouane59.twitter.dto.tweet.TweetV2;
+import com.github.redouane59.twitter.dto.tweet.Tweet;
 
 public interface IAPIEventListener {
-
-  /**
-   * Triggered where an error from an API is received an httpcode different from
-   * 200 is considered as an error.
-   * 
-   * @param httpCode
-   * @param json
-   */
-  void onError(int httpCode, String error);
 
   /**
    * Triggered when a problem from the API occurs on the stream
@@ -26,7 +17,7 @@ public interface IAPIEventListener {
    * 
    * @param tweet
    */
-  void onTweetStreamed(TweetV2 tweet);
+  void onTweetStreamed(Tweet tweet);
 
   /**
    * This event happens if we receive something different from a Tweet.class

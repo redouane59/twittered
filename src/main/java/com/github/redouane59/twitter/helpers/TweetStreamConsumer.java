@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.redouane59.twitter.IAPIEventListener;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.scribejava.core.model.Response;
@@ -22,11 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 public class TweetStreamConsumer {
 
   private StringBuilder buffer;
-  private AbstractRequestHelper helper;
 
-  public TweetStreamConsumer(AbstractRequestHelper helper) {
+  public TweetStreamConsumer() {
     this.buffer = new StringBuilder();
-    this.helper = helper;
   }
 
   /**
@@ -59,35 +59,54 @@ public class TweetStreamConsumer {
    * 
    * @param response
    */
-  public <T> void consumeStream(final Response response, final Class<? extends T> clazz) {
-    if (helper.listener == null)
+  public <T> void consumeStream(IAPIEventListener listener, final Response response, final Class<? extends T> clazz) {
+    if (listener == null)
       throw new IllegalAccessError("Missing listener");
 
-    BufferedReader reader = new BufferedReader(new InputStreamReader(response.getStream(), StandardCharsets.UTF_8));
-    String line;
-    try {
-      while ((line = reader.readLine()) != null) {
-        // Avoid empty line (heartbeat)
-        if (line.trim().isEmpty())
-          continue;
+    // Make Use of a Thread as the reader is blocking
+    new Thread(() -> {
+      String line;
+      try (BufferedReader reader = new BufferedReader(
+          new InputStreamReader(response.getStream(), StandardCharsets.UTF_8));) {
+        while ((line = reader.readLine()) != null) {
+          // Avoid empty line (heartbeat)
+          if (line.trim().isEmpty())
+            continue;
 
-        if (response.getCode() == 200) {
-          if (clazz == TweetV2.class) {
-            helper.listener.onTweetStreamed((TweetV2) TwitterClient.OBJECT_MAPPER.readValue(line, clazz));
-          } else {
-            helper.listener.onUnknownDataStreamed(line);
-          }
-        } else {
-          helper.notifyStreamError(response.getCode(), line);
-          break;
+          if (!handleData(listener, response, clazz, line)) break;
         }
-      }
 
-    } catch (IOException e) {
-      helper.listener.onStreamEnded(e);
-    }
+      } catch (IOException e) {
+        listener.onStreamEnded(e);
+      }
+    }).start();
 
   }
+
+  /**
+   * Returns true if the data received are not in error depending on the response.code
+   * @param <T>
+   * @param listener
+   * @param response
+   * @param clazz
+   * @param line
+   * @return
+   * @throws JsonProcessingException
+   */
+  private <T> boolean handleData(IAPIEventListener listener, final Response response, final Class<? extends T> clazz, String line) throws JsonProcessingException {
+    if (response.getCode() == 200) {
+      if (clazz == TweetV2.class) {
+        listener.onTweetStreamed((TweetV2) TwitterClient.OBJECT_MAPPER.readValue(line, clazz));
+      } else {
+        listener.onUnknownDataStreamed(line);
+      }
+      return true;
+    } else {
+      listener.onStreamError(response.getCode(), line);
+      return false;
+    }
+  }
+
 
   /**
    * Check if the string supplied is valid
