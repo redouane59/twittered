@@ -171,7 +171,7 @@ public class URLHelper {
            "/tweets/" +
            tweetId +
            "?" +
-           EXPANSIONS_AUTHOR_ID +
+           "expansions=author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id" +
            "&" +
            TWEET_FIELDS +
            ALL_TWEET_FIELDS +

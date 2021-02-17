@@ -21,6 +21,7 @@ import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
+import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.dto.user.FollowResponse;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
@@ -298,6 +299,21 @@ public class ITwitterClientV2Test {
     FollowResponse unfollowResponse = twitterClient.unfollow(this.userId, user.getId());
     assertFalse(unfollowResponse.getData().isFollowing());
     assertEquals(RelationType.NONE, twitterClient.getRelationType("92073489", "66533"));
+  }
+
+  @Test
+  public void testGetTweetByIdWithExpansions() {
+    String  tweetId = "1361010662714007557";
+    TweetV2 tweet   = (TweetV2) twitterClient.getTweet(tweetId);
+    assertNotNull(tweet);
+    assertEquals(3, tweet.getIncludes().getUsers().length);
+    assertEquals("RedouaneBali", tweet.getIncludes().getUsers()[0].getName());
+    assertEquals("TwitterDev", tweet.getIncludes().getUsers()[1].getName());
+    assertEquals("jessicagarson", tweet.getIncludes().getUsers()[2].getName());
+    assertEquals(1, tweet.getIncludes().getTweets().length);
+    assertEquals("2244994945", tweet.getIncludes().getTweets()[0].getAuthorId());
+    assertEquals("1341761599976181763", tweet.getIncludes().getTweets()[0].getId());
+    assertNotNull(tweet.getIncludes().getTweets()[0].getEntities());
   }
 
 }

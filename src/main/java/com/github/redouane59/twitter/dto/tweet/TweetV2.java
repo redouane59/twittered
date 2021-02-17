@@ -35,6 +35,9 @@ public class TweetV2 implements Tweet {
 
   @Getter
   @Setter
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
   public static class TweetData implements Tweet {
 
     private String                   id;
@@ -276,7 +279,7 @@ public class TweetV2 implements Tweet {
 
   @Getter
   @Setter
-  private static class ReferencedTweetDTO {
+  public static class ReferencedTweetDTO {
 
     private TweetType type;
     private String    id;
@@ -284,15 +287,19 @@ public class TweetV2 implements Tweet {
 
   @Getter
   @Setter
-  private static class Includes {
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class Includes {
 
-    private UserV2.UserData[] users;
+    private UserV2.UserData[]   users;
+    private TweetV2.TweetData[] tweets;
   }
 
 
   @Getter
   @Setter
-  private static class TweetPublicMetricsDTO {
+  public static class TweetPublicMetricsDTO {
 
     @JsonProperty("retweet_count")
     private int retweetCount;
