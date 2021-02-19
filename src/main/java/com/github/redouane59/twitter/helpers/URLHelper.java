@@ -47,7 +47,6 @@ public class URLHelper {
   private static final String EXCLUDE_RTS                   = "include_rts=false";
   private static final String USER_FORMAT_DETAILED          = "user.format=detailed";
   private static final String TWEET_FORMAT_DETAILED         = "tweet.format=detailed";
-  private static final String EXPANSIONS_RECENT_TWEET       = "expansions=most_recent_tweet_id";
   private static final String EXPANSIONS_AUTHOR_ID          = "expansions=author_id";
   private static final String MAX_ID                        = "max_id";
   private static final String COLLECTIONS                   = "/collections";
@@ -61,6 +60,10 @@ public class URLHelper {
   public static final  String
                               ALL_TWEET_FIELDS              =
       "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id,reply_settings";
+  public static final  String EXPANSION                     = "expansions=";
+  public static final  String
+                              ALL_EXPANSIONS                =
+      "expansions=author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id";
   public static final  String LAST_TWEET_LIST_URL           = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
   public static final  String RATE_LIMIT_URL                = ROOT_URL_V1 + "/application/rate_limit_status.json";
   public static final  String SEARCH_TWEET_STANDARD_URL     = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
@@ -171,7 +174,8 @@ public class URLHelper {
            "/tweets/" +
            tweetId +
            "?" +
-           "expansions=author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id" +
+           EXPANSION +
+           ALL_EXPANSIONS +
            "&" +
            TWEET_FIELDS +
            ALL_TWEET_FIELDS +
