@@ -174,4 +174,12 @@ public class UserV2 implements User {
     User otherUser = (User) o;
     return (otherUser).getId().equals(this.getId());
   }
+
+  @Override
+  public int hashCode() {
+    int result = 17;
+    result = 31 * result + this.getId().hashCode();
+    result = 31 * result + this.getName().hashCode();
+    return result;
+  }
 }
