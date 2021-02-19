@@ -12,6 +12,7 @@ import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.user.FollowResponse;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.scribejava.core.model.Response;
+
 public interface ITwitterClientV2 {
 
   /**
@@ -151,10 +152,8 @@ public interface ITwitterClientV2 {
   Future<Response> startFilteredStream(Consumer<Tweet> tweet);
 
   /**
-   * Stops the filtered stream with the result of the startFilteredStream.
-   * It'll close the socket opened.
-   * @param response
-   * @return
+   * Stops the filtered stream with the result of the startFilteredStream. It'll close the socket opened.
+   * @param response Future<Response> given by startFilteredStream
    */
   boolean stopFilteredStream(Future<Response> response);
 
@@ -177,6 +176,7 @@ public interface ITwitterClientV2 {
 
   /**
    * Delete a filtered stream from its rule tag calling https://api.twitter.com/2/tweets/search/stream/rules
+   *
    * @param ruleTag the tag name specified when using addFilteredStreamRule
    * @return a StreamMeta object resuming the operation
    */
@@ -203,8 +203,6 @@ public interface ITwitterClientV2 {
 
   /**
    * Stream about 1% of all tweets calling https://api.twitter.com/2/tweets/sample/stream
-   * @param listener
-   * @return
    */
   Future<Response> startSampledStream(IAPIEventListener listener);
 
@@ -249,6 +247,6 @@ public interface ITwitterClientV2 {
    * @return the follow information
    */
   FollowResponse unfollow(String sourceUserId, String targetUserId);
-  
+
 }
 

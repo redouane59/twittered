@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.redouane59.twitter.IAPIEventListener;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
 import com.github.scribejava.apis.TwitterApi;
@@ -26,7 +25,6 @@ public abstract class AbstractRequestHelper {
 
   private final TwitterCredentials twitterCredentials;
   private final OAuth10aService service;
-  protected IAPIEventListener listener = null;
   protected final TweetStreamConsumer tweetStreamConsumer;
   
   protected AbstractRequestHelper(TwitterCredentials twitterCredentials) {

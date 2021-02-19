@@ -35,7 +35,8 @@ import org.junit.jupiter.api.Test;
 public class ITwitterClientV2Test {
 
   private static TwitterClient twitterClient;
-  private String userId = "1307302673318895621";
+  private        String        userId = "1307302673318895621";
+
 
   @BeforeAll
   public static void init() {
@@ -45,10 +46,10 @@ public class ITwitterClientV2Test {
   @Test
   public void getUserByUserName() {
     String userName = "RedTheOne";
-    User result = twitterClient.getUserFromUserName(userName);
+    User   result   = twitterClient.getUserFromUserName(userName);
     assertEquals("92073489", result.getId());
     userName = "RedouaneBali";
-    result = twitterClient.getUserFromUserName(userName);
+    result   = twitterClient.getUserFromUserName(userName);
     assertEquals("RedouaneBali", result.getName());
   }
 
@@ -69,35 +70,35 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetUserInfoName() {
     String userId = "92073489";
-    User user = twitterClient.getUserFromUserId(userId);
+    User   user   = twitterClient.getUserFromUserId(userId);
     assertEquals("RedTheOne", user.getName());
   }
 
   @Test
   public void testGetUserInfoId() {
     String userId = "92073489";
-    User user = twitterClient.getUserFromUserId(userId);
+    User   user   = twitterClient.getUserFromUserId(userId);
     assertEquals(userId, user.getId());
   }
 
   @Test
   public void testGetUserInfoFavouritesDateOfCreation() {
     String userId = "92073489";
-    User user = twitterClient.getUserFromUserId(userId);
+    User   user   = twitterClient.getUserFromUserId(userId);
     assertNotNull(user.getDateOfCreation());
   }
 
   @Test
   public void testGetUserInfoStatusesCount() {
     String userId = "92073489";
-    User user = twitterClient.getUserFromUserId(userId);
+    User   user   = twitterClient.getUserFromUserId(userId);
     assertTrue(user.getTweetCount() > 0);
   }
 
   @Test
   public void testGetUserWithCache() {
     String userId = "92073489";
-    User user = twitterClient.getUserFromUserId(userId);
+    User   user   = twitterClient.getUserFromUserId(userId);
     assertEquals("RedTheOne", user.getName());
     user = twitterClient.getUserFromUserId(userId);
     assertEquals("RedTheOne", user.getName());
@@ -116,7 +117,7 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetTweetById() {
     String tweetId = "1224041905333379073";
-    Tweet tweet = twitterClient.getTweet(tweetId);
+    Tweet  tweet   = twitterClient.getTweet(tweetId);
     assertNotNull(tweet);
   }
 
@@ -135,7 +136,7 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetTweetsByIds() {
     List<String> tweetIds = Arrays.asList("1294174710624849921,1294380029430960128,1294375095746666496");
-    List<Tweet> tweets = twitterClient.getTweets(tweetIds);
+    List<Tweet>  tweets   = twitterClient.getTweets(tweetIds);
     assertTrue(tweets.size() > 0);
     assertTrue(tweets.get(0).getText().length() > 0);
     assertTrue(tweets.get(1).getText().length() > 0);
@@ -163,7 +164,7 @@ public class ITwitterClientV2Test {
     assertEquals(100, result.getTweets().size());
     assertNotNull(result.getNextToken());
     TweetSearchResponse result2 = twitterClient.searchForTweetsWithin7days("@RedTheOne -RT", null, null, 100,
-        result.getNextToken());
+                                                                           result.getNextToken());
     assertTrue(result2.getTweets().size() > 0);
     assertNotEquals(result.getTweets().get(0).getId(), result2.getTweets().get(0).getId());
     assertNotNull(result2.getNextToken());
@@ -172,7 +173,10 @@ public class ITwitterClientV2Test {
   @Test
   public void testSearchTweetsFullArchiveWithNexTokenAndCount() {
     TweetSearchResponse result = twitterClient.searchForTweetsFullArchive("@TwitterSupport",
-        ConverterHelper.dayBeforeNow(150), ConverterHelper.dayBeforeNow(1), 100, null);
+                                                                          ConverterHelper.dayBeforeNow(150),
+                                                                          ConverterHelper.dayBeforeNow(1),
+                                                                          100,
+                                                                          null);
     assertTrue(result.getTweets().size() > 10);
     assertNotNull(result.getNextToken());
   }
@@ -187,15 +191,15 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetTweetIdWithTwoTypes() {
     assertEquals("1264255917043920904",
-        twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.RETWEETED));
+                 twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.RETWEETED));
     assertEquals("1263783602485157889",
-        twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.QUOTED));
+                 twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.QUOTED));
   }
 
   @Test
   public void testHideAndUnideReply() {
-    String tweetId = "1298226351653056514";
-    boolean reply = twitterClient.hideReply(tweetId, true);
+    String  tweetId = "1298226351653056514";
+    boolean reply   = twitterClient.hideReply(tweetId, true);
     assertTrue(reply);
     reply = twitterClient.hideReply(tweetId, false);
     assertFalse(reply);
@@ -209,8 +213,8 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testAddAndDeleteFilteredStreamRules() {
-    String ruleName = "test_rule";
-    StreamRule result = twitterClient.addFilteredStreamRule(ruleName, "1");
+    String     ruleName = "test_rule";
+    StreamRule result   = twitterClient.addFilteredStreamRule(ruleName, "1");
     assertNotNull(result);
     assertNotNull(result.getId());
     assertEquals("test_rule", result.getValue());
@@ -249,7 +253,7 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetUserTimelineWithDates() {
     List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 20, ConverterHelper.dayBeforeNow(5),
-        ConverterHelper.dayBeforeNow(1), null, null);
+                                                       ConverterHelper.dayBeforeNow(1), null, null);
     assertEquals(20, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
@@ -258,7 +262,7 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetUserTimelineWithIds() {
     List<Tweet> result = twitterClient.getUserTimeline(this.userId, 10, null, null, "1339662509201121280",
-        "1339667017109032966");
+                                                       "1339667017109032966");
     assertEquals(2, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
@@ -275,7 +279,7 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetUserMentionsWithDates() {
     List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 5, ConverterHelper.dayBeforeNow(20),
-        ConverterHelper.dayBeforeNow(1), null, null);
+                                                       ConverterHelper.dayBeforeNow(1), null, null);
     assertEquals(5, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
@@ -284,7 +288,7 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetUserMentionsWithIds() {
     List<Tweet> result = twitterClient.getUserTimeline(this.userId, 10, null, null, "1339659629228384256",
-        "1339993046377766912");
+                                                       "1339993046377766912");
     assertEquals(5, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
@@ -292,7 +296,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testFollowAndUnfollow() {
-    User user = twitterClient.getUserFromUserName("red1");
+    User           user           = twitterClient.getUserFromUserName("red1");
     FollowResponse followResponse = twitterClient.follow(this.userId, user.getId());
     assertTrue(followResponse.getData().isFollowing());
     assertFalse(followResponse.getData().isPending_follow());

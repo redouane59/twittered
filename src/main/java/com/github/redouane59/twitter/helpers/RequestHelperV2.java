@@ -43,18 +43,18 @@ public class RequestHelperV2 extends AbstractRequestHelper {
     return makeRequest(Verb.GET, url, parameters, null, true, classType);
   }
 
-  public Future<Response> getAsyncRequest(String url, Consumer<Tweet> consumer ) {
+  public Future<Response> getAsyncRequest(String url, Consumer<Tweet> consumer) {
     // All the stream are handled internally with an IAPIEventListener.
     IAPIEventListener listener = new IAPIEventListener() {
 
       @Override
       public void onStreamError(int httpCode, String error) {
         //
-       }
+      }
 
       @Override
       public void onTweetStreamed(Tweet tweet) {
-        consumer.accept( tweet);
+        consumer.accept(tweet);
       }
 
       @Override
@@ -66,17 +66,17 @@ public class RequestHelperV2 extends AbstractRequestHelper {
       public void onStreamEnded(Exception e) {
         //
       }
-      
+
     };
 
     return getAsyncRequest(url, listener, TweetV2.class);
   }
 
-  public Future<Response> getAsyncRequest(String url, IAPIEventListener listener ) {
+  public Future<Response> getAsyncRequest(String url, IAPIEventListener listener) {
     return getAsyncRequest(url, listener, TweetV2.class);
   }
 
-  public <T> Future<Response> getAsyncRequest(String url,IAPIEventListener listener, final Class<? extends T> targetClass) {
+  public <T> Future<Response> getAsyncRequest(String url, IAPIEventListener listener, final Class<? extends T> targetClass) {
     OAuthRequest request = new OAuthRequest(Verb.GET, url);
     signRequest(request);
     return getService().execute(request, new OAuthAsyncRequestCallback<Response>() {
@@ -89,44 +89,44 @@ public class RequestHelperV2 extends AbstractRequestHelper {
       @Override
       public void onCompleted(Response response) {
         try {
-          tweetStreamConsumer.consumeStream( listener, response, targetClass );
+          tweetStreamConsumer.consumeStream(listener, response, targetClass);
         } catch (Exception e) {
           onThrowable(e);
         }
-		  }
-	  });
+      }
+    });
   }
 
   public <T> Optional<T> postRequest(String url, String body, Class<T> classType) {
-	return makeRequest(Verb.POST, url, null, body, true, classType);
+    return makeRequest(Verb.POST, url, null, body, true, classType);
   }
 
   public <T> Optional<T> postRequestWithHeader(String url, Map<String, String> headersMap, String body, Class<T> classType) {
-	return makeRequest(Verb.POST, url, headersMap, null, body, false, classType);
+    return makeRequest(Verb.POST, url, headersMap, null, body, false, classType);
   }
 
   public <T> Optional<T> getRequestWithHeader(String url, Map<String, String> headersMap, Class<T> classType) {
-	return makeRequest(Verb.GET, url, headersMap, null, null, false, classType);
+    return makeRequest(Verb.GET, url, headersMap, null, null, false, classType);
   }
-  
+
   @Override
   protected void signRequest(OAuthRequest request) {
-	  request.addHeader(OAuthConstants.HEADER, "Bearer " + getBearerToken());
+    request.addHeader(OAuthConstants.HEADER, "Bearer " + getBearerToken());
   }
-  
+
   public String getBearerToken() {
-	if(bearerToken==null) {
-	    String url = URLHelper.GET_BEARER_TOKEN_URL;
-	    String valueToCrypt = getTwitterCredentials().getApiKey()
-	                          + ":" + getTwitterCredentials().getApiSecretKey();
-	    String              cryptedValue = Base64.getEncoder().encodeToString(valueToCrypt.getBytes());
-	    Map<String, String> headers       = new HashMap<>();
-	    headers.put("Authorization", "Basic " + cryptedValue);
-	    headers.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-	    String body = "grant_type=client_credentials";
-	    Optional<BearerToken> result = makeRequest(Verb.POST, url, headers, null, body, false, BearerToken.class);
-	    bearerToken = result.orElseThrow(NoSuchElementException::new).getAccessToken();
-	}
-	return bearerToken;
+    if (bearerToken == null) {
+      String url = URLHelper.GET_BEARER_TOKEN_URL;
+      String valueToCrypt = getTwitterCredentials().getApiKey()
+                            + ":" + getTwitterCredentials().getApiSecretKey();
+      String              cryptedValue = Base64.getEncoder().encodeToString(valueToCrypt.getBytes());
+      Map<String, String> headers      = new HashMap<>();
+      headers.put("Authorization", "Basic " + cryptedValue);
+      headers.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+      String                body   = "grant_type=client_credentials";
+      Optional<BearerToken> result = makeRequest(Verb.POST, url, headers, null, body, false, BearerToken.class);
+      bearerToken = result.orElseThrow(NoSuchElementException::new).getAccessToken();
+    }
+    return bearerToken;
   }
 }
