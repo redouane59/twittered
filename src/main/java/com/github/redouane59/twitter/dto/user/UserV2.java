@@ -177,9 +177,6 @@ public class UserV2 implements User {
 
   @Override
   public int hashCode() {
-    int result = 17;
-    result = 31 * result + this.getId().hashCode();
-    result = 31 * result + this.getName().hashCode();
-    return result;
+    return this.getId().hashCode();
   }
 }
