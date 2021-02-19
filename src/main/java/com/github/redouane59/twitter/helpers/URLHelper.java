@@ -63,7 +63,7 @@ public class URLHelper {
   public static final  String EXPANSION                     = "expansions=";
   public static final  String
                               ALL_EXPANSIONS                =
-      "expansions=author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id";
+      "author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id";
   public static final  String LAST_TWEET_LIST_URL           = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
   public static final  String RATE_LIMIT_URL                = ROOT_URL_V1 + "/application/rate_limit_status.json";
   public static final  String SEARCH_TWEET_STANDARD_URL     = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
