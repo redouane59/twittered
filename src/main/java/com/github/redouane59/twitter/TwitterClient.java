@@ -504,6 +504,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return true;
     } catch (IOException | InterruptedException | ExecutionException e) {
       LOGGER.error("Couldn't stopFilteredstream ", e);
+      Thread.currentThread().interrupt();
     }
     return false;
   }

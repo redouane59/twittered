@@ -67,11 +67,7 @@ public class TweetStreamConsumer {
           new InputStreamReader(response.getStream(), StandardCharsets.UTF_8));) {
         while ((line = reader.readLine()) != null) {
           // Avoid empty line (heartbeat)
-          if (line.trim().isEmpty()) {
-            continue;
-          }
-
-          if (!handleData(listener, response, clazz, line)) {
+          if (!line.trim().isEmpty() && (!handleData(listener, response, clazz, line))) {
             break;
           }
         }
