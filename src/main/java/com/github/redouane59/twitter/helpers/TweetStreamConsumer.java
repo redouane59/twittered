@@ -22,11 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TweetStreamConsumer {
 
-  private StringBuilder buffer;
-
-  public TweetStreamConsumer() {
-    this.buffer = new StringBuilder();
-  }
+  private StringBuilder buffer = new StringBuilder();
 
   /**
    * Consumes the data from the buffers received from twitter A tweet can be sent in multiple chunks, or having in one chunk multiple tweet.
