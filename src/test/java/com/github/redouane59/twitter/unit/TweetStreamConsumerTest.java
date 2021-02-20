@@ -5,13 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
-import java.nio.file.Files;
-
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.helpers.TweetStreamConsumer;
-
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
 
 public class TweetStreamConsumerTest {
@@ -23,7 +22,7 @@ public class TweetStreamConsumerTest {
     TweetStreamConsumer consumer = new TweetStreamConsumer();
     File                file     = new File(getClass().getClassLoader().getResource("tests/multiple_tweet_stream_example_part1.data").getFile());
 
-    String content = Files.readString(file.toPath());
+    String content = new String(Files.readAllBytes(Paths.get(file.getPath())));
 
     // Simulate part of a buffer
     assertFalse(consumer.consumeBuffer(content.substring(0, 20)));
