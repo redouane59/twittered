@@ -1,14 +1,17 @@
 package com.github.redouane59.twitter.dto.tweet;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.github.redouane59.twitter.dto.user.User;
-import com.github.redouane59.twitter.dto.user.UserV2;
-import com.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.github.redouane59.twitter.dto.stream.StreamRules;
+import com.github.redouane59.twitter.dto.user.User;
+import com.github.redouane59.twitter.dto.user.UserV2;
+import com.github.redouane59.twitter.helpers.ConverterHelper;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,9 +30,14 @@ public class TweetV2 implements Tweet {
 
   private TweetData data;
   private Includes  includes;
+  @JsonProperty("matching_rules")
+  private StreamRules.StreamRule[] matchingRules;
 
   @Getter
   @Setter
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
   public static class TweetData implements Tweet {
 
     private String                   id;
@@ -279,10 +287,15 @@ public class TweetV2 implements Tweet {
 
   @Getter
   @Setter
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
   public static class Includes {
 
-    private UserV2.UserData[] users;
+    private UserV2.UserData[]   users;
+    private TweetV2.TweetData[] tweets;
   }
+
 
   @Getter
   @Setter

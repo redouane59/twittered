@@ -17,4 +17,10 @@ target/
 /okhttpCache/*
 *.asc
 bundle.jar
-test-twitter-credentials.json
+test-twitter-credentials.json 
+
+/.vscode
+/.settings
+.classpath
+.factorypath
+.project

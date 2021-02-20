@@ -1,0 +1,82 @@
+{
+    "data": {
+        "context_annotations": [
+            {
+                "domain": {
+                    "id": "123",
+                    "name": "Ongoing News Story",
+                    "description": "Ongoing News Stories like 'Brexit'"
+                },
+                "entity": {
+                    "id": "1220701888179359745",
+                    "name": "COVID-19"
+                }
+            }
+        ],
+        "conversation_id": "1359517868925280258",
+        "id": "1359517868925280258",
+        "text": "Prochain défi, pouvoir choisir son vaccin. Les soignants ne le peuvent pas et ça rouspète. Normal, Ils sont exposés et on leur impose le moins protecteur car le moins cher, (AstraZeneca). Ça promet des absents malades &amp; du nosocomial. Irresponsable &amp; dangereux pour tous. #COVID19 https://t.co/FcxreY6TDX",
+        "possibly_sensitive": false,
+        "entities": {
+            "urls": [
+                {
+                    "start": 289,
+                    "end": 312,
+                    "url": "https://t.co/FcxreY6TDX",
+                    "expanded_url": "https://twitter.com/VillageFederal/status/1359517868925280258/photo/1",
+                    "display_url": "pic.twitter.com/FcxreY6TDX"
+                }
+            ],
+            "hashtags": [
+                {
+                    "start": 280,
+                    "end": 288,
+                    "tag": "COVID19"
+                }
+            ]
+        },
+        "author_id": "126115852",
+        "created_at": "2021-02-10T15:01:33.000Z",
+        "source": "Twitter Web App",
+        "lang": "fr",
+        "reply_settings": "everyone",
+        "public_metrics": {
+            "retweet_count": 0,
+            "reply_count": 0,
+            "like_count": 0,
+            "quote_count": 0
+        },
+        "attachments": {
+            "media_keys": [
+                "3_1359517038289510400"
+            ]
+        }
+    },
+    "includes": {
+        "users": [
+            {
+                "name": "Le Village Fédéral",
+                "url": "http://t.co/WkSnjPrNLc",
+                "verified": false,
+                "profile_image_url": "https://pbs.twimg.com/profile_images/1126063941304705025/wnLhsOxX_normal.png",
+                "protected": false,
+                "username": "VillageFederal",
+                "created_at": "2010-03-24T21:59:34.000Z",
+                "id": "126115852",
+                "public_metrics": {
+                    "followers_count": 1542,
+                    "following_count": 980,
+                    "tweet_count": 59341,
+                    "listed_count": 100
+                },
+                "description": "Agrégateur de Consciences. Alerte, Solidarité et Droits Humains."
+            }
+        ]
+    },
+    "matching_rules": [
+        {
+            "id": 1359517181646635008,
+            "tag": "test"
+        }
+    ]
+}

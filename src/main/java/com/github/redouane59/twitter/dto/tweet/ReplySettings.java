@@ -9,7 +9,9 @@ public enum ReplySettings {
   @JsonProperty("mentionedUsers")
   MENTIONED_USERS("mentionedUsers"),
   @JsonProperty("following")
-  FOLLOWING("following");
+  FOLLOWING("following"),
+  @JsonProperty("other")
+  OTHER("other");
 
   public final String label;
 

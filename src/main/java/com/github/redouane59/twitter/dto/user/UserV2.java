@@ -28,6 +28,9 @@ public class UserV2 implements User {
 
   @Getter
   @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @Builder
   public static class UserData implements User {
 
     private String            id;
@@ -170,5 +173,10 @@ public class UserV2 implements User {
     }
     User otherUser = (User) o;
     return (otherUser).getId().equals(this.getId());
+  }
+
+  @Override
+  public int hashCode() {
+    return this.getId().hashCode();
   }
 }

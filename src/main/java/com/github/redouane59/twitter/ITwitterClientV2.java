@@ -1,5 +1,10 @@
 package com.github.redouane59.twitter;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.concurrent.Future;
+import java.util.function.Consumer;
+
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
@@ -7,10 +12,6 @@ import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.user.FollowResponse;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.scribejava.core.model.Response;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.concurrent.Future;
-import java.util.function.Consumer;
 
 public interface ITwitterClientV2 {
 
@@ -143,7 +144,18 @@ public interface ITwitterClientV2 {
   /**
    * Stream using previous set up filters calling https://api.twitter.com/2/tweets/search/stream
    */
-  Future<Response> startFilteredStream(Consumer<Tweet> consumer);
+  Future<Response> startFilteredStream(IAPIEventListener listener);
+
+  /**
+   * Stream using previous set up filters calling https://api.twitter.com/2/tweets/search/stream
+   */
+  Future<Response> startFilteredStream(Consumer<Tweet> tweet);
+
+  /**
+   * Stops the filtered stream with the result of the startFilteredStream. It'll close the socket opened.
+   * @param response Future<Response> given by startFilteredStream
+   */
+  boolean stopFilteredStream(Future<Response> response);
 
   /**
    * add a filtered stream rule calling https://api.twitter.com/2/tweets/search/stream/rules
@@ -163,6 +175,14 @@ public interface ITwitterClientV2 {
   StreamMeta deleteFilteredStreamRule(String ruleValue);
 
   /**
+   * Delete a filtered stream from its rule tag calling https://api.twitter.com/2/tweets/search/stream/rules
+   *
+   * @param ruleTag the tag name specified when using addFilteredStreamRule
+   * @return a StreamMeta object resuming the operation
+   */
+  StreamMeta deleteFilteredStreamRuletag(String ruleTag);
+
+  /**
    * Retrieve the filtered stream rules calling https://api.twitter.com/2/tweets/search/stream/rules
    *
    * @return a filtered stream rules list
@@ -180,6 +200,11 @@ public interface ITwitterClientV2 {
    * Stream about 1% of all tweets calling https://api.twitter.com/2/tweets/sample/stream
    */
   Future<Response> startSampledStream(Consumer<Tweet> consumer);
+
+  /**
+   * Stream about 1% of all tweets calling https://api.twitter.com/2/tweets/sample/stream
+   */
+  Future<Response> startSampledStream(IAPIEventListener listener);
 
   /**
    * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets
@@ -222,6 +247,6 @@ public interface ITwitterClientV2 {
    * @return the follow information
    */
   FollowResponse unfollow(String sourceUserId, String targetUserId);
-  
+
 }
 

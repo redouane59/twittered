@@ -6,17 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.github.redouane59.RelationType;
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
-import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
-import com.github.redouane59.twitter.dto.tweet.Tweet;
-import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
-import com.github.redouane59.twitter.dto.tweet.TweetType;
-import com.github.redouane59.twitter.dto.user.FollowResponse;
-import com.github.redouane59.twitter.dto.user.User;
-import com.github.redouane59.twitter.helpers.ConverterHelper;
-import com.github.scribejava.core.model.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +13,20 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import com.github.redouane59.RelationType;
+import com.github.redouane59.twitter.TwitterClient;
+import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
+import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
+import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
+import com.github.redouane59.twitter.dto.tweet.TweetType;
+import com.github.redouane59.twitter.dto.tweet.TweetV2;
+import com.github.redouane59.twitter.dto.user.FollowResponse;
+import com.github.redouane59.twitter.dto.user.User;
+import com.github.redouane59.twitter.helpers.ConverterHelper;
+import com.github.scribejava.core.model.Response;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -33,6 +36,7 @@ public class ITwitterClientV2Test {
 
   private static TwitterClient twitterClient;
   private        String        userId = "1307302673318895621";
+
 
   @BeforeAll
   public static void init() {
@@ -110,7 +114,6 @@ public class ITwitterClientV2Test {
     assertEquals("Soltana", result.get(1).getName());
   }
 
-
   @Test
   public void testGetTweetById() {
     String tweetId = "1224041905333379073";
@@ -160,7 +163,8 @@ public class ITwitterClientV2Test {
     TweetSearchResponse result = twitterClient.searchForTweetsWithin7days("@RedTheOne -RT", null, null, 100, null);
     assertEquals(100, result.getTweets().size());
     assertNotNull(result.getNextToken());
-    TweetSearchResponse result2 = twitterClient.searchForTweetsWithin7days("@RedTheOne -RT", null, null, 100, result.getNextToken());
+    TweetSearchResponse result2 = twitterClient.searchForTweetsWithin7days("@RedTheOne -RT", null, null, 100,
+                                                                           result.getNextToken());
     assertTrue(result2.getTweets().size() > 0);
     assertNotEquals(result.getTweets().get(0).getId(), result2.getTweets().get(0).getId());
     assertNotNull(result2.getNextToken());
@@ -168,9 +172,11 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testSearchTweetsFullArchiveWithNexTokenAndCount() {
-    TweetSearchResponse
-        result =
-        twitterClient.searchForTweetsFullArchive("@TwitterSupport", ConverterHelper.dayBeforeNow(150), ConverterHelper.dayBeforeNow(1), 100, null);
+    TweetSearchResponse result = twitterClient.searchForTweetsFullArchive("@TwitterSupport",
+                                                                          ConverterHelper.dayBeforeNow(150),
+                                                                          ConverterHelper.dayBeforeNow(1),
+                                                                          100,
+                                                                          null);
     assertTrue(result.getTweets().size() > 10);
     assertNotNull(result.getNextToken());
   }
@@ -184,8 +190,10 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetTweetIdWithTwoTypes() {
-    assertEquals("1264255917043920904", twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.RETWEETED));
-    assertEquals("1263783602485157889", twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.QUOTED));
+    assertEquals("1264255917043920904",
+                 twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.RETWEETED));
+    assertEquals("1263783602485157889",
+                 twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.QUOTED));
   }
 
   @Test
@@ -221,8 +229,10 @@ public class ITwitterClientV2Test {
     try {
       future.get(5, TimeUnit.SECONDS);
     } catch (TimeoutException exc) {
-      //It's OK
+      // It's OK
     }
+    ;
+
   }
 
   @Test
@@ -242,10 +252,8 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetUserTimelineWithDates() {
-    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 20,
-                                                       ConverterHelper.dayBeforeNow(5),
-                                                       ConverterHelper.dayBeforeNow(1),
-                                                       null, null);
+    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 20, ConverterHelper.dayBeforeNow(5),
+                                                       ConverterHelper.dayBeforeNow(1), null, null);
     assertEquals(20, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
@@ -253,9 +261,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetUserTimelineWithIds() {
-    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 10,
-                                                       null, null,
-                                                       "1339662509201121280",
+    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 10, null, null, "1339662509201121280",
                                                        "1339667017109032966");
     assertEquals(2, result.size());
     assertNotNull(result.get(0).getId());
@@ -272,10 +278,8 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetUserMentionsWithDates() {
-    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 5,
-                                                       ConverterHelper.dayBeforeNow(20),
-                                                       ConverterHelper.dayBeforeNow(1),
-                                                       null, null);
+    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 5, ConverterHelper.dayBeforeNow(20),
+                                                       ConverterHelper.dayBeforeNow(1), null, null);
     assertEquals(5, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
@@ -283,15 +287,12 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetUserMentionsWithIds() {
-    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 10,
-                                                       null, null,
-                                                       "1339659629228384256",
+    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 10, null, null, "1339659629228384256",
                                                        "1339993046377766912");
     assertEquals(5, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
   }
-
 
   @Test
   public void testFollowAndUnfollow() {
@@ -302,6 +303,21 @@ public class ITwitterClientV2Test {
     FollowResponse unfollowResponse = twitterClient.unfollow(this.userId, user.getId());
     assertFalse(unfollowResponse.getData().isFollowing());
     assertEquals(RelationType.NONE, twitterClient.getRelationType("92073489", "66533"));
+  }
+
+  @Test
+  public void testGetTweetByIdWithExpansions() {
+    String  tweetId = "1361010662714007557";
+    TweetV2 tweet   = (TweetV2) twitterClient.getTweet(tweetId);
+    assertNotNull(tweet);
+    assertEquals(3, tweet.getIncludes().getUsers().length);
+    assertEquals("RedouaneBali", tweet.getIncludes().getUsers()[0].getName());
+    assertEquals("TwitterDev", tweet.getIncludes().getUsers()[1].getName());
+    assertEquals("jessicagarson", tweet.getIncludes().getUsers()[2].getName());
+    assertEquals(1, tweet.getIncludes().getTweets().length);
+    assertEquals("2244994945", tweet.getIncludes().getTweets()[0].getAuthorId());
+    assertEquals("1341761599976181763", tweet.getIncludes().getTweets()[0].getId());
+    assertNotNull(tweet.getIncludes().getTweets()[0].getEntities());
   }
 
 }
