@@ -123,5 +123,14 @@ public interface Tweet {
    * Get the reply settings of the tweet
    */
   ReplySettings getReplySettings();
-  
+
+  /**
+   * Get the geolocalisation of the tweet
+   */
+  Geo getGeo();
+
+  /**
+   * Get the attachments of the tweet
+   */
+  Attachments getAttachments();
 }
