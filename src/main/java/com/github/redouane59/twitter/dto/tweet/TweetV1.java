@@ -81,6 +81,18 @@ public class TweetV1 implements Tweet {
   }
 
   @Override
+  public Geo getGeo() {
+    LOGGER.error("not implemented");
+    return new Geo();
+  }
+
+  @Override
+  public Attachments getAttachments() {
+    LOGGER.error("not implemented");
+    return new Attachments();
+  }
+
+  @Override
   public String getInReplyToStatusId(TweetType type) {
     return this.getInReplyToStatusId();
   }

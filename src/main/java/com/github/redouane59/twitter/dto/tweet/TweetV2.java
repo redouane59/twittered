@@ -1,9 +1,5 @@
 package com.github.redouane59.twitter.dto.tweet;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -11,7 +7,9 @@ import com.github.redouane59.twitter.dto.stream.StreamRules;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.dto.user.UserV2;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
-
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,8 +26,8 @@ import lombok.Setter;
 @Builder
 public class TweetV2 implements Tweet {
 
-  private TweetData data;
-  private Includes  includes;
+  private TweetData                data;
+  private Includes                 includes;
   @JsonProperty("matching_rules")
   private StreamRules.StreamRule[] matchingRules;
 
@@ -63,6 +61,8 @@ public class TweetV2 implements Tweet {
     private String                   conversationId;
     @JsonProperty("reply_settings")
     private ReplySettings            replySettings;
+    private Geo                      geo;
+    private Attachments              attachments;
 
     @Override
     public int getRetweetCount() {
@@ -193,6 +193,22 @@ public class TweetV2 implements Tweet {
       return null;
     }
     return this.data.getReplySettings();
+  }
+
+  @Override
+  public Geo getGeo() {
+    if (this.data == null) {
+      return null;
+    }
+    return this.data.getGeo();
+  }
+
+  @Override
+  public Attachments getAttachments() {
+    if (this.data == null) {
+      return null;
+    }
+    return this.data.getAttachments();
   }
 
   @Override

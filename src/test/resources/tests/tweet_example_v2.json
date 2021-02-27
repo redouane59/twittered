@@ -8,6 +8,11 @@
       "quote_count": 0
     },
     "source": "Twitter for Android",
+    "attachments": {
+      "media_keys": [
+        "3_1365362339449561088"
+      ]
+    },
     "lang": "en",
     "in_reply_to_user_id": "1120050519182016513",
     "author_id": "9920272",
@@ -61,7 +66,17 @@
     "possibly_sensitive": false,
     "created_at": "2020-02-02T18:59:26.000Z",
     "conversation_id": "1224041905333379073",
-    "reply_settings": "everyone"
+    "reply_settings": "everyone",
+    "geo": {
+      "coordinates": {
+        "type": "Point",
+        "coordinates": [
+          -73.99960455,
+          40.74168819
+        ]
+      },
+      "place_id": "01a9a39529b27f36"
+    }
   },
   "includes": {
     "users": [

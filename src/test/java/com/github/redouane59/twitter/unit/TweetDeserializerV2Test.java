@@ -109,4 +109,20 @@ public class TweetDeserializerV2Test {
   public void testReplySettings() {
     assertEquals(ReplySettings.EVERYONE, tweetv2.getReplySettings());
   }
+
+  @Test
+  public void testGeo() {
+    assertNotNull(tweetv2.getGeo());
+    assertEquals("01a9a39529b27f36", tweetv2.getGeo().getPlaceId());
+    assertEquals("Point", tweetv2.getGeo().getCoordinates().getType());
+    assertEquals(-73.99960455, tweetv2.getGeo().getCoordinates().getCoordinates()[0]);
+    assertEquals(40.74168819, tweetv2.getGeo().getCoordinates().getCoordinates()[1]);
+  }
+
+  @Test
+  public void testMedia() {
+    assertNotNull(tweetv2.getAttachments());
+    assertNotNull(tweetv2.getAttachments().getMediaKeys());
+    assertEquals("3_1365362339449561088", tweetv2.getAttachments().getMediaKeys()[0]);
+  }
 }
