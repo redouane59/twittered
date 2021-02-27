@@ -1,10 +1,8 @@
 package com.github.redouane59.twitter.helpers;
 
+import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import com.github.redouane59.twitter.dto.tweet.MediaCategory;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -47,7 +45,6 @@ public class URLHelper {
   private static final String EXCLUDE_RTS                   = "include_rts=false";
   private static final String USER_FORMAT_DETAILED          = "user.format=detailed";
   private static final String TWEET_FORMAT_DETAILED         = "tweet.format=detailed";
-  private static final String EXPANSIONS_AUTHOR_ID          = "expansions=author_id";
   private static final String MAX_ID                        = "max_id";
   private static final String COLLECTIONS                   = "/collections";
   private static final int    MAX_COUNT                     = 200;
@@ -290,7 +287,8 @@ public class URLHelper {
            + SEARCH
            + STREAM
            + "?"
-           + EXPANSIONS_AUTHOR_ID
+           + EXPANSION
+           + ALL_EXPANSIONS
            + "&"
            + TWEET_FIELDS
            + ALL_TWEET_FIELDS
@@ -305,7 +303,8 @@ public class URLHelper {
            + SAMPLE
            + STREAM
            + "?"
-           + EXPANSIONS_AUTHOR_ID
+           + EXPANSION
+           + ALL_EXPANSIONS
            + "&"
            + TWEET_FIELDS
            + ALL_TWEET_FIELDS
