@@ -5,21 +5,21 @@ package com.github.redouane59.twitter.dto.collections;
  */
 public enum TimeLineOrder {
 
-    // oldest tweet first
-    CHRONOLOGICAL("tweet_chron"),
-    // order tweets are added to the collection (default)
-    CURATION_ORDER("curation_reverse_chron"),
-    // most recent tweet first
-    CHRONOLOGICAL_REVERSE("tweet_reverse_chron ");
+  // oldest tweet first
+  CHRONOLOGICAL("tweet_chron"),
+  // order tweets are added to the collection (default)
+  CURATION_ORDER("curation_reverse_chron"),
+  // most recent tweet first
+  CHRONOLOGICAL_REVERSE("tweet_reverse_chron");
 
-    private final String value;
+  private final String value;
 
-    TimeLineOrder(String value) {
-        this.value = value;
-    }
+  TimeLineOrder(String value) {
+    this.value = value;
+  }
 
-    public String value() {
-        return value;
-    }
+  public String value() {
+    return value;
+  }
 
 }
