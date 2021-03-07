@@ -63,7 +63,7 @@ public interface ITwitterClientV1 {
    *
    * @param text the tweet text
    * @param inReplyToStatusId the id of the tweet to answer.
-   * @param mediaIds the id of the media obtained calling the uploadMedia() method, separated by commas
+   * @param mediaIds the ids of the media obtained calling the uploadMedia() method, separated by commas
    * @return the created tweet
    */
   Tweet postTweet(String text, String inReplyToStatusId, String mediaIds);
