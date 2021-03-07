@@ -1,26 +1,5 @@
 package com.github.redouane59.twitter;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -66,7 +45,26 @@ import com.github.scribejava.core.httpclient.HttpClientConfig;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
-
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -291,7 +289,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public Tweet postTweet(String text, String inReplyToStatusId, String mediaId) {
+  public Tweet postTweet(String text, String inReplyToStatusId, String mediaIds) {
     String              url        = this.getUrlHelper().getPostTweetUrl();
     Map<String, String> parameters = new HashMap<>();
     parameters.put("status", text);
@@ -299,8 +297,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       parameters.put("in_reply_to_status_id", inReplyToStatusId);
       parameters.put("auto_populate_reply_metadata", "true");
     }
-    if (mediaId != null) {
-      parameters.put("media_ids", mediaId);
+    if (mediaIds != null) {
+      parameters.put("media_ids", mediaIds);
     }
     return this.getRequestHelper().postRequest(url, parameters, TweetV1.class).orElseThrow(NoSuchElementException::new);
   }
