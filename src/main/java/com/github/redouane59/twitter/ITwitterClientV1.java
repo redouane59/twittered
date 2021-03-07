@@ -63,10 +63,10 @@ public interface ITwitterClientV1 {
    *
    * @param text the tweet text
    * @param inReplyToStatusId the id of the tweet to answer.
-   * @param mediaId the id of the media obtained calling the uploadMedia() method
+   * @param mediaIds the ids of the media obtained calling the uploadMedia() method, separated by commas
    * @return the created tweet
    */
-  Tweet postTweet(String text, String inReplyToStatusId, String mediaId);
+  Tweet postTweet(String text, String inReplyToStatusId, String mediaIds);
 
   /**
    * Delete a tweet calling https://api.twitter.com/1.1/statuses/destroy/:id.json
@@ -93,7 +93,7 @@ public interface ITwitterClientV1 {
    * following the other, FOLLOWER if user2 follows user1, FOLLOWING if user1 follows user2
    */
   RelationType getRelationType(String userId1, String userId2);
-  
+
   /**
    * Get the twitter rate limit status calling https://api.twitter.com/1.1/application/
    *
