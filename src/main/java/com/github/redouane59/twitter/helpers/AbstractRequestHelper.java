@@ -1,10 +1,5 @@
 package com.github.redouane59.twitter.helpers;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Optional;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
@@ -14,7 +9,10 @@ import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
-
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -88,9 +86,9 @@ public abstract class AbstractRequestHelper {
     }
     if (body != null && verb.isPermitBody()) {
       request.setPayload(body);
-        if (!request.getHeaders().containsKey("Content-Type")) {
-            request.addHeader("Content-Type", "application/json");
-        }
+      if (!request.getHeaders().containsKey("Content-Type")) {
+        request.addHeader("Content-Type", "application/json");
+      }
     }
     return makeRequest(request, signRequired, classType);
   }
@@ -98,9 +96,9 @@ public abstract class AbstractRequestHelper {
   public <T> Optional<T> makeRequest(OAuthRequest request, boolean signRequired, Class<T> classType) {
     T result = null;
     try {
-        if (signRequired) {
-            signRequest(request);
-        }
+      if (signRequired) {
+        signRequest(request);
+      }
       Response response       = getService().execute(request);
       String   stringResponse = response.getBody();
       if (response.getCode() == 429) {
@@ -125,4 +123,9 @@ public abstract class AbstractRequestHelper {
     return Optional.ofNullable(result);
   }
 
+  public abstract <T> Optional<T> getRequest(String url, Class<T> classType);
+
+  public abstract <T> Optional<T> getRequestWithParameters(String url, Map<String, String> parameters, Class<T> classType);
+
+  public abstract <T> Optional<T> postRequest(String url, Map<String, String> parameters, Class<T> classType);
 }
