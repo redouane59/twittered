@@ -796,8 +796,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return null;
     }
   }
-
-
+  
   private AbstractRequestHelper getRequestHelper() {
     if (this.requestHelperV1.getTwitterCredentials().getAccessToken() != null
         && this.requestHelperV1.getTwitterCredentials().getAccessTokenSecret() != null) {
