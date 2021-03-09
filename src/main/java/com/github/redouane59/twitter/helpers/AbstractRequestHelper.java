@@ -127,5 +127,4 @@ public abstract class AbstractRequestHelper {
 
   public abstract <T> Optional<T> getRequestWithParameters(String url, Map<String, String> parameters, Class<T> classType);
 
-  public abstract <T> Optional<T> postRequest(String url, Map<String, String> parameters, Class<T> classType);
 }
