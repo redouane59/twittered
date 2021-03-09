@@ -167,7 +167,7 @@ public class ITwitterClientV1Test {
 
   @Test
   public void testAnswerToSeveralUsers() {
-    Tweet tweet = twitterClient.postTweet(".", "1341161857931874304");
+    Tweet tweet = twitterClient.postTweet(".", "1369395732415922182");
     assertNotNull(tweet);
     assertNotNull(tweet.getId());
     twitterClient.deleteTweet(tweet.getId());

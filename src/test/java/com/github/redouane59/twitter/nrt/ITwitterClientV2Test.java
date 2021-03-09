@@ -6,14 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
@@ -26,7 +18,13 @@ import com.github.redouane59.twitter.dto.user.FollowResponse;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import com.github.scribejava.core.model.Response;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -198,7 +196,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testHideAndUnideReply() {
-    String  tweetId = "1298226351653056514";
+    String  tweetId = "1355818194754281472";
     boolean reply   = twitterClient.hideReply(tweetId, true);
     assertTrue(reply);
     reply = twitterClient.hideReply(tweetId, false);
@@ -252,7 +250,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetUserTimelineWithDates() {
-    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 20, ConverterHelper.dayBeforeNow(5),
+    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 20, ConverterHelper.dayBeforeNow(5),
                                                        ConverterHelper.dayBeforeNow(1), null, null);
     assertEquals(20, result.size());
     assertNotNull(result.get(0).getId());
@@ -261,9 +259,9 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetUserTimelineWithIds() {
-    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 10, null, null, "1339662509201121280",
-                                                       "1339667017109032966");
-    assertEquals(2, result.size());
+    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 10, null, null, "1368841795061350402",
+                                                       "1369395486743011338");
+    assertTrue(result.size() > 0);
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
   }

@@ -412,8 +412,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       parameters.put(NEXT_TOKEN, nextToken);
     }
     parameters.put("tweet.fields", URLHelper.ALL_TWEET_FIELDS);
-    Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.getRequestHelper().getRequestWithParameters(searchUrl,
-                                                                                                        parameters, TweetSearchResponseV2.class);
+    Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV1.getRequestWithParameters(searchUrl,
+                                                                                                     parameters, TweetSearchResponseV2.class);
     if (!tweetSearchV2DTO.isPresent() || tweetSearchV2DTO.get().getData() == null) {
       return new TweetSearchResponse(new ArrayList<>(), null);
     }
@@ -513,7 +513,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public List<StreamRule> retrieveFilteredStreamRules() {
     String      url    = this.urlHelper.getFilteredStreamRulesUrl();
-    StreamRules result = this.getRequestHelper().getRequest(url, StreamRules.class).orElseThrow(NoSuchElementException::new);
+    StreamRules result = this.requestHelperV2.getRequest(url, StreamRules.class).orElseThrow(NoSuchElementException::new);
     return result.getData();
   }
 
@@ -796,7 +796,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return null;
     }
   }
-  
+
   private AbstractRequestHelper getRequestHelper() {
     if (this.requestHelperV1.getTwitterCredentials().getAccessToken() != null
         && this.requestHelperV1.getTwitterCredentials().getAccessTokenSecret() != null) {
