@@ -74,6 +74,12 @@ public class UserV1 implements User {
     return null;
   }
 
+  @Override
+  public boolean isVerified() {
+    LOGGER.debug("UnsupportedOperation");
+    return false;
+  }
+
   public LocalDateTime getLastUpdate() {
     return ConverterHelper.getDateFromTwitterString(this.lastUpdate);
   }
