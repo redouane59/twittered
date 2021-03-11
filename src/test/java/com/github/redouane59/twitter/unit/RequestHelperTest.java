@@ -1,8 +1,8 @@
 package com.github.redouane59.twitter.unit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.signature.TwitterCredentials;
@@ -30,7 +30,7 @@ public class RequestHelperTest {
 
   @Test
   public void testRequestHelpers() {
-    assertNotNull(twitterClient.getRequestHelper());
+    assertNotNull(twitterClient.getRequestHelperV1());
     assertNotNull(twitterClient.getRequestHelperV2());
   }
 
@@ -38,7 +38,7 @@ public class RequestHelperTest {
   public void testRequestV1String() {
     Optional<String>
         result =
-        twitterClient.getRequestHelper().postRequest(twitterClient.getUrlHelper().getLikeUrl("12345"), new HashMap<>(), String.class);
+        twitterClient.getRequestHelperV1().postRequest(twitterClient.getUrlHelper().getLikeUrl("12345"), new HashMap<>(), String.class);
     assertTrue(result.isPresent());
     assertTrue(result.get().contains("89"));
   }
@@ -47,7 +47,7 @@ public class RequestHelperTest {
   public void testRequestV1() {
     Optional<LinkedHashMap>
         result =
-        twitterClient.getRequestHelper().postRequest(twitterClient.getUrlHelper().getLikeUrl("12345"), new HashMap<>(), LinkedHashMap.class);
+        twitterClient.getRequestHelperV1().postRequest(twitterClient.getUrlHelper().getLikeUrl("12345"), new HashMap<>(), LinkedHashMap.class);
     assertTrue(result.isPresent());
     ArrayList<LinkedHashMap> errors = (ArrayList) result.get().get("errors");
     assertNotNull(errors);
@@ -67,10 +67,10 @@ public class RequestHelperTest {
   public void testRequestWithBodyJsonV1() {
     Optional<LinkedHashMap>
         result =
-        twitterClient.getRequestHelper().postRequestWithBodyJson(twitterClient.getUrlHelper().getLikeUrl("12345"),
-                                                                 new HashMap<>(),
-                                                                 "{\"changes\": [{\"op\":\"add\",\"tweet_id\":\"390897780949925889\"}],\"id\": \"custom-1348265030006042629\"}",
-                                                                 LinkedHashMap.class);
+        twitterClient.getRequestHelperV1().postRequestWithBodyJson(twitterClient.getUrlHelper().getLikeUrl("12345"),
+                                                                   new HashMap<>(),
+                                                                   "{\"changes\": [{\"op\":\"add\",\"tweet_id\":\"390897780949925889\"}],\"id\": \"custom-1348265030006042629\"}",
+                                                                   LinkedHashMap.class);
     assertTrue(result.isPresent());
     ArrayList<LinkedHashMap> errors = (ArrayList) result.get().get("errors");
     assertNotNull(errors);

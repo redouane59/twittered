@@ -33,6 +33,7 @@ import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.dto.user.UserListV2;
 import com.github.redouane59.twitter.dto.user.UserV2;
 import com.github.redouane59.twitter.dto.user.UserV2.UserData;
+import com.github.redouane59.twitter.helpers.AbstractRequestHelper;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import com.github.redouane59.twitter.helpers.RequestHelper;
 import com.github.redouane59.twitter.helpers.RequestHelperV2;
@@ -79,7 +80,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
       .setSerializationInclusion(JsonInclude.Include.NON_NULL);
   private              URLHelper          urlHelper                            = new URLHelper();
-  private              RequestHelper      requestHelper;
+  private              RequestHelper      requestHelperV1;
   private              RequestHelperV2    requestHelperV2;
   private              TwitterCredentials twitterCredentials;
   private static final String             IDS                                  = "ids";
@@ -124,7 +125,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   public TwitterClient(TwitterCredentials credentials, OAuth10aService service) {
     twitterCredentials = credentials;
-    requestHelper      = new RequestHelper(credentials, service);
+    requestHelperV1    = new RequestHelper(credentials, service);
     requestHelperV2    = new RequestHelperV2(credentials, service);
   }
 
@@ -135,7 +136,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     List<String> result = new ArrayList<>();
     do {
       String           urlWithCursor  = url + "&" + CURSOR + "=" + cursor;
-      Optional<IdList> idListResponse = this.requestHelperV2.getRequest(urlWithCursor, IdList.class);
+      Optional<IdList> idListResponse = this.getRequestHelper().getRequest(urlWithCursor, IdList.class);
       if (!idListResponse.isPresent()) {
         break;
       }
@@ -155,7 +156,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       if (token != null) {
         urlWithCursor = urlWithCursor + "&" + PAGINATION_TOKEN + "=" + token;
       }
-      Optional<UserListV2> userListDTO = this.requestHelperV2.getRequest(urlWithCursor, UserListV2.class);
+      Optional<UserListV2> userListDTO = this.getRequestHelper().getRequest(urlWithCursor, UserListV2.class);
       if (!userListDTO.isPresent()) {
         break;
       }
@@ -188,8 +189,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public RelationType getRelationType(String userId1, String userId2) {
     String url = this.urlHelper.getFriendshipUrl(userId1, userId2);
-    RelationshipObjectResponse relationshipDTO = this.requestHelperV2.getRequest(url, RelationshipObjectResponse.class)
-                                                                     .orElseThrow(NoSuchElementException::new);
+    RelationshipObjectResponse relationshipDTO = this.getRequestHelper().getRequest(url, RelationshipObjectResponse.class)
+                                                     .orElseThrow(NoSuchElementException::new);
     Boolean followedBy = relationshipDTO.getRelationship().getSource().isFollowedBy();
     Boolean following  = relationshipDTO.getRelationship().getSource().isFollowing();
     if (followedBy && following) {
@@ -214,68 +215,68 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public FollowResponse follow(String sourceUserId, String targetUserId) {
     String url  = this.urlHelper.getFollowUrl(sourceUserId);
     String body = OBJECT_MAPPER.writeValueAsString(new FollowBody(targetUserId));
-    return this.requestHelper.postRequestWithBodyJson(url, new HashMap<>(), body, FollowResponse.class)
-                             .orElseThrow(NoSuchElementException::new);
+    return this.requestHelperV1.postRequestWithBodyJson(url, new HashMap<>(), body, FollowResponse.class)
+                               .orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public FollowResponse unfollow(String sourceUserId, String targetUserId) {
     String url = this.urlHelper.getUnfollowUrl(sourceUserId, targetUserId);
-    return this.requestHelper.makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, FollowResponse.class)
-                             .orElseThrow(NoSuchElementException::new);
+    return this.getRequestHelper().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, FollowResponse.class)
+               .orElseThrow(NoSuchElementException::new);
 
   }
 
   @Override
   public User getUserFromUserId(String userId) {
     String url = this.getUrlHelper().getUserUrl(userId);
-    return this.requestHelperV2.getRequest(url, UserV2.class).orElseThrow(NoSuchElementException::new);
+    return this.getRequestHelper().getRequest(url, UserV2.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public UserV2 getUserFromUserName(String userName) {
     String url = this.getUrlHelper().getUserUrlFromName(userName);
-    return this.requestHelperV2.getRequest(url, UserV2.class).orElseThrow(NoSuchElementException::new);
+    return this.getRequestHelper().getRequest(url, UserV2.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public List<User> getUsersFromUserNames(List<String> userNames) {
     String url = this.getUrlHelper().getUsersUrlbyNames(userNames);
-    List<UserData> result = this.requestHelperV2.getRequest(url, UserListV2.class)
-                                                .orElseThrow(NoSuchElementException::new).getData();
+    List<UserData> result = this.getRequestHelper().getRequest(url, UserListV2.class)
+                                .orElseThrow(NoSuchElementException::new).getData();
     return result.stream().map(userData -> UserV2.builder().data(userData).build()).collect(Collectors.toList());
   }
 
   @Override
   public List<User> getUsersFromUserIds(List<String> userIds) {
     String url = this.getUrlHelper().getUsersUrlbyIds(userIds);
-    List<UserData> result = this.requestHelperV2.getRequest(url, UserListV2.class)
-                                                .orElseThrow(NoSuchElementException::new).getData();
+    List<UserData> result = this.getRequestHelper().getRequest(url, UserListV2.class)
+                                .orElseThrow(NoSuchElementException::new).getData();
     return result.stream().map(userData -> UserV2.builder().data(userData).build()).collect(Collectors.toList());
   }
 
   @Override
   public RateLimitStatus getRateLimitStatus() {
     String url = URLHelper.RATE_LIMIT_URL;
-    return this.requestHelperV2.getRequest(url, RateLimitStatus.class).orElseThrow(NoSuchElementException::new);
+    return this.getRequestHelper().getRequest(url, RateLimitStatus.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public Tweet likeTweet(String tweetId) {
     String url = this.getUrlHelper().getLikeUrl(tweetId);
-    return this.requestHelper.postRequest(url, new HashMap<>(), TweetV1.class).orElseThrow(NoSuchElementException::new);
+    return this.requestHelperV1.postRequest(url, new HashMap<>(), TweetV1.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public Tweet unlikeTweet(String tweetId) {
     String url = this.getUrlHelper().getUnlikeUrl(tweetId);
-    return this.requestHelper.postRequest(url, new HashMap<>(), TweetV1.class).orElseThrow(NoSuchElementException::new);
+    return this.requestHelperV1.postRequest(url, new HashMap<>(), TweetV1.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public Tweet retweetTweet(String tweetId) {
     String url = this.getUrlHelper().getRetweetTweetUrl(tweetId);
-    return this.requestHelper.postRequest(url, new HashMap<>(), TweetV1.class).orElseThrow(NoSuchElementException::new);
+    return this.requestHelperV1.postRequest(url, new HashMap<>(), TweetV1.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -300,27 +301,27 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (mediaIds != null) {
       parameters.put("media_ids", mediaIds);
     }
-    return this.getRequestHelper().postRequest(url, parameters, TweetV1.class).orElseThrow(NoSuchElementException::new);
+    return this.requestHelperV1.postRequest(url, parameters, TweetV1.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public Tweet deleteTweet(String tweetId) {
     String              url        = this.getUrlHelper().getDeleteTweetUrl(tweetId);
     Map<String, String> parameters = new HashMap<>();
-    return this.getRequestHelper().postRequest(url, parameters, TweetV1.class).orElseThrow(NoSuchElementException::new);
+    return this.requestHelperV1.postRequest(url, parameters, TweetV1.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public Tweet getTweet(String tweetId) {
     String url = this.getUrlHelper().getTweetUrl(tweetId);
-    return this.requestHelperV2.getRequest(url, TweetV2.class).orElseThrow(NoSuchElementException::new);
+    return this.getRequestHelper().getRequest(url, TweetV2.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public List<Tweet> getTweets(List<String> tweetIds) {
     String url = this.getUrlHelper().getTweetListUrl(tweetIds);
-    List<TweetData> result = this.requestHelperV2.getRequest(url, TweetSearchResponseV2.class)
-                                                 .orElseThrow(NoSuchElementException::new).getData();
+    List<TweetData> result = this.getRequestHelper().getRequest(url, TweetSearchResponseV2.class)
+                                 .orElseThrow(NoSuchElementException::new).getData();
     return result.stream().map(tweetData -> TweetV2.builder().data(tweetData).build()).collect(Collectors.toList());
   }
 
@@ -329,8 +330,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String url = this.getUrlHelper().getHideReplyUrl(tweetId);
     try {
       String body = TwitterClient.OBJECT_MAPPER.writeValueAsString(new HiddenData(hide));
-      HiddenResponse response = this.requestHelper.putRequest(url, body, HiddenResponse.class)
-                                                  .orElseThrow(NoSuchElementException::new);
+      HiddenResponse response = this.requestHelperV1.putRequest(url, body, HiddenResponse.class)
+                                                    .orElseThrow(NoSuchElementException::new);
       return response.getData().isHidden();
     } catch (JsonProcessingException e) {
       LOGGER.error(e.getMessage(), e);
@@ -345,8 +346,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String        maxId          = null;
     do {
       result = Arrays.asList(
-          this.requestHelperV2.getRequest(this.getUrlHelper().getFavoriteTweetsUrl(userId, maxId), TweetV1[].class)
-                              .orElseThrow(NoSuchElementException::new));
+          this.getRequestHelper().getRequest(this.getUrlHelper().getFavoriteTweetsUrl(userId, maxId), TweetV1[].class)
+              .orElseThrow(NoSuchElementException::new));
       if (result.isEmpty()) {
         break;
       }
@@ -372,8 +373,10 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String      next;
     List<Tweet> result = new ArrayList<>();
     do {
-      Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2
-          .getRequestWithParameters(URLHelper.SEARCH_TWEET_7_DAYS_URL, parameters, TweetSearchResponseV2.class);
+      Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.getRequestHelper()
+                                                             .getRequestWithParameters(URLHelper.SEARCH_TWEET_7_DAYS_URL,
+                                                                                       parameters,
+                                                                                       TweetSearchResponseV2.class);
       if (!tweetSearchV2DTO.isPresent() || tweetSearchV2DTO.get().getData() == null) {
         break;
       }
@@ -409,7 +412,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       parameters.put(NEXT_TOKEN, nextToken);
     }
     parameters.put("tweet.fields", URLHelper.ALL_TWEET_FIELDS);
-    Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(searchUrl,
+    Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV1.getRequestWithParameters(searchUrl,
                                                                                                      parameters, TweetSearchResponseV2.class);
     if (!tweetSearchV2DTO.isPresent() || tweetSearchV2DTO.get().getData() == null) {
       return new TweetSearchResponse(new ArrayList<>(), null);
@@ -442,7 +445,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String      next;
     List<Tweet> result = new ArrayList<>();
     do {
-      Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.requestHelperV2.getRequestWithParameters(
+      Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.getRequestHelper().getRequestWithParameters(
           urlHelper.getSearchTweet30DaysUrl(envName), parameters, TweetSearchResponseV1.class);
       if (!tweetSearchV1DTO.isPresent() || tweetSearchV1DTO.get().getResults() == null) {
         break;
@@ -467,7 +470,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String      next;
     List<Tweet> result = new ArrayList<>();
     do {
-      Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.requestHelperV2.getRequestWithParameters(
+      Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.getRequestHelper().getRequestWithParameters(
           urlHelper.getSearchTweetFullArchiveUrl(envName), parameters, TweetSearchResponseV1.class);
       if (!tweetSearchV1DTO.isPresent()) {
         LOGGER.error("empty response on searchForTweetsArchive");
@@ -559,7 +562,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return this.requestHelperV2.getAsyncRequest(url, listener);
   }
 
-
   @Override
   public List<Tweet> getUserTimeline(final String userId, int nbTweets) {
     return this.getUserTimeline(userId, nbTweets, null, null, null, null);
@@ -576,7 +578,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       if (token != null) {
         url = url + "&" + PAGINATION_TOKEN + "=" + token;
       }
-      Optional<TweetSearchResponseV2> tweetListDTO = this.requestHelperV2.getRequest(url, TweetSearchResponseV2.class);
+      Optional<TweetSearchResponseV2> tweetListDTO = this.getRequestHelper().getRequest(url, TweetSearchResponseV2.class);
       if (!tweetListDTO.isPresent() || tweetListDTO.get().getData() == null) {
         break;
       }
@@ -609,7 +611,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       if (token != null) {
         url = url + "&" + PAGINATION_TOKEN + "=" + token;
       }
-      Optional<TweetSearchResponseV2> tweetListDTO = this.requestHelperV2.getRequest(url, TweetSearchResponseV2.class);
+      Optional<TweetSearchResponseV2> tweetListDTO = this.getRequestHelper().getRequest(url, TweetSearchResponseV2.class);
       if (!tweetListDTO.isPresent() || tweetListDTO.get().getData() == null) {
         break;
       }
@@ -654,7 +656,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (oauthCallback != null) {
       parameters.put("oauth_callback", oauthCallback);
     }
-    String       stringResponse = this.requestHelper.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
+    String       stringResponse = this.requestHelperV1.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
     RequestToken requestToken   = new RequestToken(stringResponse);
     LOGGER.info("Open the following URL to grant access to your account:");
     LOGGER.info("https://twitter.com/oauth/authenticate?oauth_token=" + requestToken.getOauthToken());
@@ -667,20 +669,20 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     Map<String, String> parameters = new HashMap<>();
     parameters.put("oauth_verifier", pinCode);
     parameters.put("oauth_token", requestToken.getOauthToken());
-    String stringResponse = this.requestHelper.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
+    String stringResponse = this.requestHelperV1.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
     return new RequestToken(stringResponse);
   }
 
   @Override
   public UploadMediaResponse uploadMedia(String mediaName, byte[] data, MediaCategory mediaCategory) {
     String url = urlHelper.getUploadMediaUrl(mediaCategory);
-    return this.getRequestHelper().uploadMedia(url, mediaName, data, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
+    return this.requestHelperV1.uploadMedia(url, mediaName, data, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public UploadMediaResponse uploadMedia(File imageFile, MediaCategory mediaCategory) {
     String url = urlHelper.getUploadMediaUrl(mediaCategory);
-    return this.getRequestHelper().uploadMedia(url, imageFile, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
+    return this.requestHelperV1.uploadMedia(url, imageFile, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -693,7 +695,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (timeLineOrder != null) {
       parameters.put("timeline_order", timeLineOrder.value());
     }
-    return this.getRequestHelper().postRequest(url, parameters, CollectionsResponse.class).orElseThrow(NoSuchElementException::new);
+    return this.requestHelperV1.postRequest(url, parameters, CollectionsResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -716,8 +718,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
                   .map(tweetId -> String.format("{ \"op\": \"add\", \"tweet_id\": \"%s\"}", tweetId))
                   .collect(Collectors.joining(", "));
               json += "]}";
-              return this.getRequestHelper().postRequestWithBodyJson(url, Collections.emptyMap(), json, CollectionsResponse.class)
-                         .orElseThrow(NoSuchElementException::new);
+              return this.requestHelperV1.postRequestWithBodyJson(url, Collections.emptyMap(), json, CollectionsResponse.class)
+                                         .orElseThrow(NoSuchElementException::new);
             })
         .filter(CollectionsResponse::hasErrors) // any errors? If so return first chunk of errors
         .findFirst()
@@ -727,7 +729,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public CollectionsResponse collectionsDestroy(String collectionId) {
     String url = this.getUrlHelper().getCollectionsDestroyUrl(collectionId);
-    return this.getRequestHelper().postRequest(url, Collections.emptyMap(), CollectionsResponse.class).orElseThrow(NoSuchElementException::new);
+    return this.requestHelperV1.postRequest(url, Collections.emptyMap(), CollectionsResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -743,7 +745,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (minPosition != null) {
       parameters.put("min_position", minPosition);
     }
-    return requestHelper.getRequestWithParameters(url, parameters, CollectionsResponse.class).orElseThrow(NoSuchElementException::new);
+    return getRequestHelper().getRequestWithParameters(url, parameters, CollectionsResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
   public static TwitterCredentials getAuthentication() {
@@ -795,4 +797,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     }
   }
 
+  private AbstractRequestHelper getRequestHelper() {
+    if (this.requestHelperV1.getTwitterCredentials().getAccessToken() != null
+        && this.requestHelperV1.getTwitterCredentials().getAccessTokenSecret() != null) {
+      return this.requestHelperV1;
+    } else {
+      return this.requestHelperV2;
+    }
+  }
 }
