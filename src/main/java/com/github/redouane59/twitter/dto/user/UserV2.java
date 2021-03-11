@@ -158,6 +158,14 @@ public class UserV2 implements User {
   }
 
   @Override
+  public boolean isVerified() {
+    if (this.data == null) {
+      return false;
+    }
+    return this.data.verified;
+  }
+
+  @Override
   public Tweet getPinnedTweet() {
     if (this.includes.getTweets().length < 1) {
       LOGGER.error("No tweet found");

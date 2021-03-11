@@ -97,4 +97,11 @@ public interface User {
    */
   boolean isFollowing();
 
+  /**
+   * Know if the user has a verified account. Warning: this is not not support by all endpoints.
+   *
+   * @return true if the user account is certified
+   */
+  boolean isVerified();
+
 }
