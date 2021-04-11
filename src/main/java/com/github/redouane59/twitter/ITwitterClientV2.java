@@ -254,9 +254,10 @@ public interface ITwitterClientV2 {
    *
    * @param userId The user ID who you would like to initiate the block on behalf of. It must match your own user ID or that of an authenticating
    * user, meaning that you must pass the Access Tokens associated with the user ID when authenticating your request.
+   * @param targetUserId The user ID of the user that you would like the id to block.
    * @return whether the user is blocking the specified user as a result of this request.
    */
-  BlockResponse blockUser(String userId);
+  BlockResponse blockUser(String userId, String targetUserId);
 
   /**
    * Unblock a given user calling https://api.twitter.com/users/:source_user_id/blocking/:target_user_id

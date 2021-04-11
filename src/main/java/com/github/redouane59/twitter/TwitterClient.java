@@ -228,14 +228,20 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   }
 
+  @SneakyThrows
   @Override
-  public BlockResponse blockUser(final String userId) {
-    return null;
+  public BlockResponse blockUser(final String userId, final String targetUserId) {
+    String url = this.urlHelper.getBlockUserUrl(userId);
+    return this.getRequestHelperV2()
+               .postRequest(url, OBJECT_MAPPER.writeValueAsString(new FollowBody(targetUserId)), BlockResponse.class)
+               .orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public BlockResponse unblockUser(final String sourceUserId, final String targetUserId) {
-    return null;
+    String url = this.urlHelper.getUnblockUserUrl(sourceUserId, targetUserId);
+    return this.getRequestHelper().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, BlockResponse.class)
+               .orElseThrow(NoSuchElementException::new);
   }
 
   @Override
