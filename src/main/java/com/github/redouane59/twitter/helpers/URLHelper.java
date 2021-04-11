@@ -70,6 +70,7 @@ public class URLHelper {
   public static final  String GET_OAUTH1_TOKEN_URL          = "https://api.twitter.com/oauth/request_token";
   public static final  String GET_OAUTH1_ACCESS_TOKEN_URL   = "https://api.twitter.com/oauth/access_token";
   private static final String MAX_RESULTS                   = "max_results";
+  private static final String BLOCKING                      = "/blocking";
 
 
   public String getSearchTweet30DaysUrl(String envName) {
@@ -383,5 +384,13 @@ public class URLHelper {
            ID +
            "=" +
            collectionId;
+  }
+
+  public String getBlockUserUrl(String userId) {
+    return ROOT_URL_V2 + USERS + "/" + userId + BLOCKING;
+  }
+
+  public String getUnblockUserUrl(String sourceUserId, String targetUserId) {
+    return ROOT_URL_V2 + USERS + "/" + sourceUserId + BLOCKING + "/" + targetUserId;
   }
 }

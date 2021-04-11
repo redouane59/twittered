@@ -277,4 +277,19 @@ public class UrlHelperTest {
     assertEquals("https://api.twitter.com/1.1/favorites/list.json?count=200&user_id=12345&tweet_mode=extended",
                  urlHelper.getFavoriteTweetsUrl("12345", null));
   }
+
+  @Test
+  public void testGetBlockUrl() {
+    String userId = "12345";
+    assertEquals("https://api.twitter.com/2/users/" + userId + "/blocking",
+                 urlHelper.getBlockUserUrl(userId));
+  }
+
+  @Test
+  public void testGetUnblockUrl() {
+    String sourceUserId = "12345";
+    String targetUserId = "67890";
+    assertEquals("https://api.twitter.com/2/users/" + sourceUserId + "/blocking/" + targetUserId,
+                 urlHelper.getUnblockUserUrl(sourceUserId, targetUserId));
+  }
 }
