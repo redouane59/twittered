@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
 public class ITwitterClientV2Test {
 
   private static TwitterClient twitterClient;
-  private        String        userId = "1307302673318895621";
+  private        String        userId = "92073489";
 
 
   @BeforeAll
@@ -321,7 +321,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testBlockAndUnblockUser() {
-    String        targetId = "783214";
+    String        targetId = "456777022";
     BlockResponse response = twitterClient.blockUser(this.userId, targetId);
     assertTrue(response.getData().isBlocking());
     response = twitterClient.unblockUser(this.userId, targetId);
