@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.TwitterClient;
+import com.github.redouane59.twitter.dto.others.BlockResponse;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
@@ -33,7 +34,7 @@ import org.junit.jupiter.api.Test;
 public class ITwitterClientV2Test {
 
   private static TwitterClient twitterClient;
-  private        String        userId = "1307302673318895621";
+  private        String        userId = "92073489";
 
 
   @BeforeAll
@@ -316,6 +317,15 @@ public class ITwitterClientV2Test {
     assertEquals("2244994945", tweet.getIncludes().getTweets()[0].getAuthorId());
     assertEquals("1341761599976181763", tweet.getIncludes().getTweets()[0].getId());
     assertNotNull(tweet.getIncludes().getTweets()[0].getEntities());
+  }
+
+  @Test
+  public void testBlockAndUnblockUser() {
+    String        targetId = "456777022";
+    BlockResponse response = twitterClient.blockUser(this.userId, targetId);
+    assertTrue(response.getData().isBlocking());
+    response = twitterClient.unblockUser(this.userId, targetId);
+    assertFalse(response.getData().isBlocking());
   }
 
 }

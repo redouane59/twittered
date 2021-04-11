@@ -91,10 +91,17 @@ public interface User {
   boolean isProtectedAccount();
 
   /**
-   * Know if the user is following the owner account. Warning: this is not not support by all endpoints.
+   * Get if the user is following the owner account. Warning: this is not not support by all endpoints.
    *
    * @return true if the user is following the owner account, else false
    */
   boolean isFollowing();
+
+  /**
+   * Get if the user has a verified account. Warning: this is not not support by all endpoints.
+   *
+   * @return true if the user account is certified
+   */
+  boolean isVerified();
 
 }

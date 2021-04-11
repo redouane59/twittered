@@ -69,6 +69,11 @@ public class UserDeserializerV2Test {
   }
 
   @Test
+  public void testIsVerified() {
+    assertTrue(userV2.isVerified());
+  }
+
+  @Test
   public void testGetUserPinnedTweet() {
     Tweet pinnedTweet = userV2.getPinnedTweet();
     assertNotNull(pinnedTweet);

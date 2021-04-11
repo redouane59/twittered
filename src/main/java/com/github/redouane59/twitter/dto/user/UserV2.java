@@ -90,26 +90,17 @@ public class UserV2 implements User {
 
   @Override
   public String getId() {
-    if (this.data == null) {
-      return null;
-    }
-    return this.data.getId();
+    return this.data == null ? null : this.data.getId();
   }
 
   @Override
   public String getName() {
-    if (this.data == null) {
-      return null;
-    }
-    return this.data.getName();
+    return this.data == null ? null : this.data.getName();
   }
 
   @Override
   public String getDisplayedName() {
-    if (this.data == null) {
-      return null;
-    }
-    return this.data.getDisplayedName();
+    return this.data == null ? null : this.data.getDisplayedName();
   }
 
   @Override
@@ -155,6 +146,11 @@ public class UserV2 implements User {
   @Override
   public boolean isFollowing() {
     return this.data.isFollowing();
+  }
+
+  @Override
+  public boolean isVerified() {
+    return this.data == null ? false : this.data.verified;
   }
 
   @Override

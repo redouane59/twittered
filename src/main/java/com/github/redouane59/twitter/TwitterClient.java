@@ -10,6 +10,7 @@ import com.github.redouane59.twitter.dto.collections.CollectionsResponse;
 import com.github.redouane59.twitter.dto.collections.TimeLineOrder;
 import com.github.redouane59.twitter.dto.getrelationship.IdList;
 import com.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
+import com.github.redouane59.twitter.dto.others.BlockResponse;
 import com.github.redouane59.twitter.dto.others.RateLimitStatus;
 import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.stream.StreamRules;
@@ -225,6 +226,27 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return this.getRequestHelper().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, FollowResponse.class)
                .orElseThrow(NoSuchElementException::new);
 
+  }
+
+  @SneakyThrows
+  @Override
+  public BlockResponse blockUser(final String userId, final String targetUserId) {
+    String url = this.urlHelper.getBlockUserUrl(userId);
+    return this.getRequestHelper()
+               .makeRequest(Verb.POST,
+                            url,
+                            new HashMap<>(),
+                            OBJECT_MAPPER.writeValueAsString(new FollowBody(targetUserId)),
+                            true,
+                            BlockResponse.class)
+               .orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public BlockResponse unblockUser(final String sourceUserId, final String targetUserId) {
+    String url = this.urlHelper.getUnblockUserUrl(sourceUserId, targetUserId);
+    return this.getRequestHelper().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, BlockResponse.class)
+               .orElseThrow(NoSuchElementException::new);
   }
 
   @Override
