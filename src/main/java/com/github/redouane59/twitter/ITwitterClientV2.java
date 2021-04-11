@@ -1,10 +1,6 @@
 package com.github.redouane59.twitter;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.concurrent.Future;
-import java.util.function.Consumer;
-
+import com.github.redouane59.twitter.dto.others.BlockResponse;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
@@ -12,6 +8,10 @@ import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.user.FollowResponse;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.scribejava.core.model.Response;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
 public interface ITwitterClientV2 {
 
@@ -153,6 +153,7 @@ public interface ITwitterClientV2 {
 
   /**
    * Stops the filtered stream with the result of the startFilteredStream. It'll close the socket opened.
+   *
    * @param response Future<Response> given by startFilteredStream
    */
   boolean stopFilteredStream(Future<Response> response);
@@ -247,6 +248,26 @@ public interface ITwitterClientV2 {
    * @return the follow information
    */
   FollowResponse unfollow(String sourceUserId, String targetUserId);
+
+  /**
+   * Block a given user calling https://api.twitter.com/2/users/:id/blocking
+   *
+   * @param userId The user ID who you would like to initiate the block on behalf of. It must match your own user ID or that of an authenticating
+   * user, meaning that you must pass the Access Tokens associated with the user ID when authenticating your request.
+   * @return whether the user is blocking the specified user as a result of this request.
+   */
+  BlockResponse blockUser(String userId);
+
+  /**
+   * Unblock a given user calling https://api.twitter.com/users/:source_user_id/blocking/:target_user_id
+   *
+   * @param sourceUserId The user ID who you would like to initiate an unblock on behalf of. The user’s ID must correspond to the user ID of the
+   * authenticating user, meaning that you must pass the Access Tokens associated with the user ID when authenticating your request.
+   * @param targetUserId The user ID of the user that you would like the source_user_id to unblock.
+   * @return Indicates whether the user is blocking the specified user as a result of this request. The returned value is false for a successful
+   * unblock request.
+   */
+  BlockResponse unblockUser(String sourceUserId, String targetUserId);
 
 }
 
