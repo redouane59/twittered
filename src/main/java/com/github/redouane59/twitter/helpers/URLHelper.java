@@ -128,6 +128,9 @@ public class URLHelper {
            userId +
            FOLLOWERS +
            "?" +
+           MAX_RESULTS +
+           "=1000" +
+           "&" +
            USER_FIELDS +
            ALL_USER_FIELDS;
   }
@@ -139,6 +142,9 @@ public class URLHelper {
            userId +
            FOLLOWING +
            "?" +
+           MAX_RESULTS +
+           "=1000" +
+           "&" +
            USER_FIELDS +
            ALL_USER_FIELDS;
   }
