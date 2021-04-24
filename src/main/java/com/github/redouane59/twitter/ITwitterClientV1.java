@@ -14,23 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ITwitterClientV1 {
-
-  /**
-   * Like a tweet calling https://api.twitter.com/1.1/favorites/create.json
-   *
-   * @param tweetId the id of the tweet
-   * @return the liked tweet
-   */
-  Tweet likeTweet(String tweetId);
-
-  /**
-   * Unlike a tweet calling https://api.twitter.com/1.1/favorites/destroy.json
-   *
-   * @param tweetId the id of the tweet
-   * @return the unliked tweet
-   */
-  Tweet unlikeTweet(String tweetId);
-
+  
   /**
    * Retweet a tweet
    *

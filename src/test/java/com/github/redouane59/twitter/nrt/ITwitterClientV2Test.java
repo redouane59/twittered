@@ -11,6 +11,7 @@ import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.others.BlockResponse;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
+import com.github.redouane59.twitter.dto.tweet.LikeResponse;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
@@ -326,6 +327,14 @@ public class ITwitterClientV2Test {
     assertTrue(response.getData().isBlocking());
     response = twitterClient.unblockUser(this.userId, targetId);
     assertFalse(response.getData().isBlocking());
+  }
+
+  @Test
+  public void testLikeTweet() {
+    LikeResponse likedTweet = twitterClient.likeTweet("1107533", this.userId);
+    assertTrue(likedTweet.getData().isLiked());
+    LikeResponse unlikedTweet = twitterClient.unlikeTweet("1107533", this.userId);
+    assertFalse(unlikedTweet.getData().isLiked());
   }
 
 }

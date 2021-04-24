@@ -18,6 +18,7 @@ import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.HiddenResponse;
 import com.github.redouane59.twitter.dto.tweet.HiddenResponse.HiddenData;
+import com.github.redouane59.twitter.dto.tweet.LikeResponse;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
@@ -284,15 +285,16 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public Tweet likeTweet(String tweetId) {
-    String url = this.getUrlHelper().getLikeUrl(tweetId);
-    return this.requestHelperV1.postRequest(url, new HashMap<>(), TweetV1.class).orElseThrow(NoSuchElementException::new);
+  public LikeResponse likeTweet(String tweetId, String userId) {
+    String url = this.getUrlHelper().getLikeUrl(userId);
+    return this.getRequestHelperV1().postRequestWithBodyJson(url, new HashMap<>(), "{\"tweet_id\":\"" + tweetId + "\"}", LikeResponse.class)
+               .orElseThrow(NoSuchElementException::new);
   }
 
   @Override
-  public Tweet unlikeTweet(String tweetId) {
-    String url = this.getUrlHelper().getUnlikeUrl(tweetId);
-    return this.requestHelperV1.postRequest(url, new HashMap<>(), TweetV1.class).orElseThrow(NoSuchElementException::new);
+  public LikeResponse unlikeTweet(String tweetId, String userId) {
+    String url = this.getUrlHelper().getUnlikeUrl(userId, tweetId);
+    return getRequestHelper().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, LikeResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
