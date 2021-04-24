@@ -3,6 +3,7 @@ package com.github.redouane59.twitter;
 import com.github.redouane59.twitter.dto.others.BlockResponse;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
+import com.github.redouane59.twitter.dto.tweet.LikeResponse;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.user.FollowResponse;
@@ -276,9 +277,9 @@ public interface ITwitterClientV2 {
    * @param tweetId The ID of the Tweet that you would like the user id to Like.
    * @param userId The user ID who you are liking a Tweet on behalf of. It must match your own user ID or that of an authenticating user, meaning that
    * you must pass the Access Tokens associated with the user ID when authenticating your request.
-   * @return the liked tweet
+   * @return whether the user likes the specified Tweet as a result of this request.
    */
-  Tweet likeTweet(String tweetId, String userId);
+  LikeResponse likeTweet(String tweetId, String userId);
 
   /**
    * Unlike a tweet calling https://api.twitter.com/2/users/:id/likes/:tweet_id
@@ -286,9 +287,9 @@ public interface ITwitterClientV2 {
    * @param tweetId The ID of the Tweet that you would like the user id to Like.
    * @param userId The user ID who you are liking a Tweet on behalf of. It must match your own user ID or that of an authenticating user, meaning that
    * you must pass the Access Tokens associated with the user ID when authenticating your request.
-   * @return the unliked tweet
+   * @return whether the user likes the specified Tweet as a result of this request.
    */
-  Tweet unlikeTweet(String tweetId, String userId);
+  LikeResponse unlikeTweet(String tweetId, String userId);
 
 }
 
