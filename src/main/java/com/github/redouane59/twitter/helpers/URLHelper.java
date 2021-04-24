@@ -73,7 +73,6 @@ public class URLHelper {
   private static final String BLOCKING                      = "/blocking";
   private static final String LIKES                         = "/likes";
 
-
   public String getSearchTweet30DaysUrl(String envName) {
     return ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + "/" + envName + JSON;
   }
@@ -251,7 +250,6 @@ public class URLHelper {
            "&" + EXCLUDE_RTS;
   }
 
-  // /2/users/:id/likes
   public String getLikeUrl(String userId) {
     return ROOT_URL_V2 + USERS + "/" + userId + LIKES;
   }

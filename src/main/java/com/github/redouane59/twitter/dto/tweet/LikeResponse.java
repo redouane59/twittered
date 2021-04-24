@@ -24,6 +24,4 @@ public class LikeResponse {
 
     private boolean liked;
   }
-
-
 }
