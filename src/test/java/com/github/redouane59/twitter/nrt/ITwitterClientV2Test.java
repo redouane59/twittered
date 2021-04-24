@@ -328,4 +328,12 @@ public class ITwitterClientV2Test {
     assertFalse(response.getData().isBlocking());
   }
 
+  @Test
+  public void testLikeTweet() {
+    Tweet likedTweet = twitterClient.likeTweet("1107533", this.userId);
+    assertEquals("1107533", likedTweet.getId());
+    Tweet unlikedTweet = twitterClient.unlikeTweet("1107533", this.userId);
+    assertEquals("1107533", unlikedTweet.getId());
+  }
+
 }

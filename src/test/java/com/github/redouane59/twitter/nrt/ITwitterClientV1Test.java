@@ -97,15 +97,7 @@ public class ITwitterClientV1Test {
     assertTrue(result.getOauthTokenSecret().length() > 1);
     //twitterClient.getOAuth1AccessToken(result, "12345");
   }
-
-  @Test
-  public void testLikeTweet() {
-    Tweet likedTweet = twitterClient.likeTweet("1107533");
-    assertEquals("1107533", likedTweet.getId());
-    Tweet unlikedTweet = twitterClient.unlikeTweet("1107533");
-    assertEquals("1107533", unlikedTweet.getId());
-  }
-
+  
   @Test
   public void testPostAndRTandDeleteTweet() {
     String text       = "API Test " + LocalDateTime.now() + " #TwitterAPI";

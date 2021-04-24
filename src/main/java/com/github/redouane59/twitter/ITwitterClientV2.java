@@ -270,5 +270,25 @@ public interface ITwitterClientV2 {
    */
   BlockResponse unblockUser(String sourceUserId, String targetUserId);
 
+  /**
+   * Like a tweet calling https://api.twitter.com/2/users/:id/likes
+   *
+   * @param tweetId The ID of the Tweet that you would like the user id to Like.
+   * @param userId The user ID who you are liking a Tweet on behalf of. It must match your own user ID or that of an authenticating user, meaning that
+   * you must pass the Access Tokens associated with the user ID when authenticating your request.
+   * @return the liked tweet
+   */
+  Tweet likeTweet(String tweetId, String userId);
+
+  /**
+   * Unlike a tweet calling https://api.twitter.com/2/users/:id/likes/:tweet_id
+   *
+   * @param tweetId The ID of the Tweet that you would like the user id to Like.
+   * @param userId The user ID who you are liking a Tweet on behalf of. It must match your own user ID or that of an authenticating user, meaning that
+   * you must pass the Access Tokens associated with the user ID when authenticating your request.
+   * @return the unliked tweet
+   */
+  Tweet unlikeTweet(String tweetId, String userId);
+
 }
 

@@ -71,6 +71,7 @@ public class URLHelper {
   public static final  String GET_OAUTH1_ACCESS_TOKEN_URL   = "https://api.twitter.com/oauth/access_token";
   private static final String MAX_RESULTS                   = "max_results";
   private static final String BLOCKING                      = "/blocking";
+  private static final String LIKES                         = "/likes";
 
 
   public String getSearchTweet30DaysUrl(String envName) {
@@ -250,12 +251,13 @@ public class URLHelper {
            "&" + EXCLUDE_RTS;
   }
 
-  public String getLikeUrl(String tweetId) {
-    return ROOT_URL_V1 + FAVORITES + CREATE_JSON + ID + "=" + tweetId;
+  // /2/users/:id/likes
+  public String getLikeUrl(String userId) {
+    return ROOT_URL_V2 + USERS + "/" + userId + LIKES;
   }
 
-  public String getUnlikeUrl(String tweetId) {
-    return ROOT_URL_V1 + FAVORITES + DESTROY_JSON + ID + "=" + tweetId;
+  public String getUnlikeUrl(String userId, String tweetId) {
+    return ROOT_URL_V2 + USERS + "/" + userId + LIKES + "/" + tweetId;
   }
 
   public String getRetweetTweetUrl(final String tweetId) {
