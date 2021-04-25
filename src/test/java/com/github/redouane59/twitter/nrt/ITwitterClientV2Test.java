@@ -323,18 +323,23 @@ public class ITwitterClientV2Test {
   @Test
   public void testBlockAndUnblockUser() {
     String        targetId = "456777022";
-    BlockResponse response = twitterClient.blockUser(this.userId, targetId);
+    BlockResponse response = twitterClient.blockUser(targetId);
     assertTrue(response.getData().isBlocking());
-    response = twitterClient.unblockUser(this.userId, targetId);
+    response = twitterClient.unblockUser(targetId);
     assertFalse(response.getData().isBlocking());
   }
 
   @Test
   public void testLikeTweet() {
-    LikeResponse likedTweet = twitterClient.likeTweet("1107533", this.userId);
+    LikeResponse likedTweet = twitterClient.likeTweet("1107533");
     assertTrue(likedTweet.getData().isLiked());
-    LikeResponse unlikedTweet = twitterClient.unlikeTweet("1107533", this.userId);
+    LikeResponse unlikedTweet = twitterClient.unlikeTweet("1107533");
     assertFalse(unlikedTweet.getData().isLiked());
+  }
+
+  @Test
+  public void testGetUserIdFromAccessToken() {
+    assertEquals(this.userId, twitterClient.getUserIdFromAccessToken());
   }
 
 }

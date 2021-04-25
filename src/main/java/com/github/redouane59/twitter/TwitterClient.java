@@ -231,8 +231,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @SneakyThrows
   @Override
-  public BlockResponse blockUser(final String userId, final String targetUserId) {
-    String url = this.urlHelper.getBlockUserUrl(userId);
+  public BlockResponse blockUser(final String targetUserId) {
+    String url = this.urlHelper.getBlockUserUrl(this.getUserIdFromAccessToken());
     return this.getRequestHelper()
                .makeRequest(Verb.POST,
                             url,
@@ -244,8 +244,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public BlockResponse unblockUser(final String sourceUserId, final String targetUserId) {
-    String url = this.urlHelper.getUnblockUserUrl(sourceUserId, targetUserId);
+  public BlockResponse unblockUser(final String targetUserId) {
+    String url = this.urlHelper.getUnblockUserUrl(this.getUserIdFromAccessToken(), targetUserId);
     return this.getRequestHelper().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, BlockResponse.class)
                .orElseThrow(NoSuchElementException::new);
   }
@@ -285,15 +285,15 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public LikeResponse likeTweet(String tweetId, String userId) {
-    String url = this.getUrlHelper().getLikeUrl(userId);
+  public LikeResponse likeTweet(String tweetId) {
+    String url = this.getUrlHelper().getLikeUrl(this.getUserIdFromAccessToken());
     return this.getRequestHelperV1().postRequestWithBodyJson(url, new HashMap<>(), "{\"tweet_id\":\"" + tweetId + "\"}", LikeResponse.class)
                .orElseThrow(NoSuchElementException::new);
   }
 
   @Override
-  public LikeResponse unlikeTweet(String tweetId, String userId) {
-    String url = this.getUrlHelper().getUnlikeUrl(userId, tweetId);
+  public LikeResponse unlikeTweet(String tweetId) {
+    String url = this.getUrlHelper().getUnlikeUrl(this.getUserIdFromAccessToken(), tweetId);
     return getRequestHelper().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, LikeResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
@@ -828,5 +828,15 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     } else {
       return this.requestHelperV2;
     }
+  }
+
+  public String getUserIdFromAccessToken() {
+    String accessToken = this.twitterCredentials.getAccessToken();
+    if (accessToken == null
+        || accessToken.isEmpty()
+        || !accessToken.contains("-")) {
+      LOGGER.error("access token null, empty or incorrect");
+    }
+    return accessToken.substring(0, accessToken.indexOf("-"));
   }
 }
