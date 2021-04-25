@@ -235,20 +235,18 @@ public interface ITwitterClientV2 {
   /**
    * Follow a user calling https://api.twitter.com/2/users/:source_user_id/following
    *
-   * @param sourceUserId The user ID who you would like to initiate the follow on behalf of. It must match the username of the authenticating user.
-   * @param targetUserId The user ID of the user that you would like the source_user_id to follow.
+   * @param targetUserId The user ID of the user that you would like the authenticated user to follow.
    * @return the follow information
    */
-  FollowResponse follow(String sourceUserId, String targetUserId);
+  FollowResponse follow(String targetUserId);
 
   /**
    * Unfollow a user calling https://api.twitter.com/2/users/:source_user_id/following/:target_user_id
    *
-   * @param sourceUserId The user ID who you would like to initiate the unfollow on behalf of. It must match the username of the authenticating user.
-   * @param targetUserId The user ID of the user that you would like the source_user_id to unfollow.
+   * @param targetUserId The user ID of the user that you would like the authenticated user to unfollow.
    * @return the follow information
    */
-  FollowResponse unfollow(String sourceUserId, String targetUserId);
+  FollowResponse unfollow(String targetUserId);
 
   /**
    * Block a given user calling https://api.twitter.com/2/users/:id/blocking
@@ -261,7 +259,7 @@ public interface ITwitterClientV2 {
   /**
    * Unblock a given user calling https://api.twitter.com/users/:source_user_id/blocking/:target_user_id
    *
-   * @param targetUserId The user ID of the user that you would like the source_user_id to unblock.
+   * @param targetUserId The user ID of the user that you would like the authenticated user to unblock.
    * @return Indicates whether the user is blocking the specified user as a result of this request. The returned value is false for a successful
    * unblock request.
    */

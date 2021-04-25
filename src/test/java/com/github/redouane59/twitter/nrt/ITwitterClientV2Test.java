@@ -45,12 +45,9 @@ public class ITwitterClientV2Test {
 
   @Test
   public void getUserByUserName() {
-    String userName = "RedTheOne";
+    String userName = "RedouaneBali";
     User   result   = twitterClient.getUserFromUserName(userName);
-    assertEquals("92073489", result.getId());
-    userName = "RedouaneBali";
-    result   = twitterClient.getUserFromUserName(userName);
-    assertEquals("RedouaneBali", result.getName());
+    assertEquals(userName, result.getName());
   }
 
   @Test
@@ -297,10 +294,10 @@ public class ITwitterClientV2Test {
   @Test
   public void testFollowAndUnfollow() {
     User           user           = twitterClient.getUserFromUserName("red1");
-    FollowResponse followResponse = twitterClient.follow(this.userId, user.getId());
+    FollowResponse followResponse = twitterClient.follow(user.getId());
     assertTrue(followResponse.getData().isFollowing());
     assertFalse(followResponse.getData().isPending_follow());
-    FollowResponse unfollowResponse = twitterClient.unfollow(this.userId, user.getId());
+    FollowResponse unfollowResponse = twitterClient.unfollow(user.getId());
     assertFalse(unfollowResponse.getData().isFollowing());
     assertEquals(RelationType.NONE, twitterClient.getRelationType("92073489", "66533"));
   }

@@ -214,16 +214,16 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @SneakyThrows
   @Override
-  public FollowResponse follow(String sourceUserId, String targetUserId) {
-    String url  = this.urlHelper.getFollowUrl(sourceUserId);
+  public FollowResponse follow(String targetUserId) {
+    String url  = this.urlHelper.getFollowUrl(this.getUserIdFromAccessToken());
     String body = OBJECT_MAPPER.writeValueAsString(new FollowBody(targetUserId));
     return this.requestHelperV1.postRequestWithBodyJson(url, new HashMap<>(), body, FollowResponse.class)
                                .orElseThrow(NoSuchElementException::new);
   }
 
   @Override
-  public FollowResponse unfollow(String sourceUserId, String targetUserId) {
-    String url = this.urlHelper.getUnfollowUrl(sourceUserId, targetUserId);
+  public FollowResponse unfollow(String targetUserId) {
+    String url = this.urlHelper.getUnfollowUrl(this.getUserIdFromAccessToken(), targetUserId);
     return this.getRequestHelper().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, FollowResponse.class)
                .orElseThrow(NoSuchElementException::new);
 
