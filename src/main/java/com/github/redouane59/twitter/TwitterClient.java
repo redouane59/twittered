@@ -836,6 +836,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
         || accessToken.isEmpty()
         || !accessToken.contains("-")) {
       LOGGER.error("access token null, empty or incorrect");
+      throw new IllegalArgumentException();
     }
     return accessToken.substring(0, accessToken.indexOf("-"));
   }
