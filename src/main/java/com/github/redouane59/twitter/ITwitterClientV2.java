@@ -235,61 +235,53 @@ public interface ITwitterClientV2 {
   /**
    * Follow a user calling https://api.twitter.com/2/users/:source_user_id/following
    *
-   * @param sourceUserId The user ID who you would like to initiate the follow on behalf of. It must match the username of the authenticating user.
-   * @param targetUserId The user ID of the user that you would like the source_user_id to follow.
+   * @param targetUserId The user ID of the user that you would like the authenticated user to follow.
    * @return the follow information
    */
-  FollowResponse follow(String sourceUserId, String targetUserId);
+  FollowResponse follow(String targetUserId);
 
   /**
    * Unfollow a user calling https://api.twitter.com/2/users/:source_user_id/following/:target_user_id
    *
-   * @param sourceUserId The user ID who you would like to initiate the unfollow on behalf of. It must match the username of the authenticating user.
-   * @param targetUserId The user ID of the user that you would like the source_user_id to unfollow.
+   * @param targetUserId The user ID of the user that you would like the authenticated user to unfollow.
    * @return the follow information
    */
-  FollowResponse unfollow(String sourceUserId, String targetUserId);
+  FollowResponse unfollow(String targetUserId);
 
   /**
    * Block a given user calling https://api.twitter.com/2/users/:id/blocking
    *
-   * @param userId The user ID who you would like to initiate the block on behalf of. It must match your own user ID or that of an authenticating
-   * user, meaning that you must pass the Access Tokens associated with the user ID when authenticating your request.
    * @param targetUserId The user ID of the user that you would like the id to block.
    * @return whether the user is blocking the specified user as a result of this request.
    */
-  BlockResponse blockUser(String userId, String targetUserId);
+  BlockResponse blockUser(String targetUserId);
 
   /**
    * Unblock a given user calling https://api.twitter.com/users/:source_user_id/blocking/:target_user_id
    *
-   * @param sourceUserId The user ID who you would like to initiate an unblock on behalf of. The user’s ID must correspond to the user ID of the
-   * authenticating user, meaning that you must pass the Access Tokens associated with the user ID when authenticating your request.
-   * @param targetUserId The user ID of the user that you would like the source_user_id to unblock.
+   * @param targetUserId The user ID of the user that you would like the authenticated user to unblock.
    * @return Indicates whether the user is blocking the specified user as a result of this request. The returned value is false for a successful
    * unblock request.
    */
-  BlockResponse unblockUser(String sourceUserId, String targetUserId);
+  BlockResponse unblockUser(String targetUserId);
 
   /**
    * Like a tweet calling https://api.twitter.com/2/users/:id/likes
    *
-   * @param tweetId The ID of the Tweet that you would like the user id to Like.
-   * @param userId The user ID who you are liking a Tweet on behalf of. It must match your own user ID or that of an authenticating user, meaning that
-   * you must pass the Access Tokens associated with the user ID when authenticating your request.
+   * @param tweetId The ID of the Tweet that you would like the user id to Like. you must pass the Access Tokens associated with the user ID when
+   * authenticating your request.
    * @return whether the user likes the specified Tweet as a result of this request.
    */
-  LikeResponse likeTweet(String tweetId, String userId);
+  LikeResponse likeTweet(String tweetId);
 
   /**
    * Unlike a tweet calling https://api.twitter.com/2/users/:id/likes/:tweet_id
    *
-   * @param tweetId The ID of the Tweet that you would like the user id to Like.
-   * @param userId The user ID who you are liking a Tweet on behalf of. It must match your own user ID or that of an authenticating user, meaning that
-   * you must pass the Access Tokens associated with the user ID when authenticating your request.
+   * @param tweetId The ID of the Tweet that you would like the user id to Like. you must pass the Access Tokens associated with the user ID when
+   * authenticating your request.
    * @return whether the user likes the specified Tweet as a result of this request.
    */
-  LikeResponse unlikeTweet(String tweetId, String userId);
+  LikeResponse unlikeTweet(String tweetId);
 
 }
 

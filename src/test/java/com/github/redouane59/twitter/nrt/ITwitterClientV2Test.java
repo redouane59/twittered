@@ -45,12 +45,9 @@ public class ITwitterClientV2Test {
 
   @Test
   public void getUserByUserName() {
-    String userName = "RedTheOne";
+    String userName = "RedouaneBali";
     User   result   = twitterClient.getUserFromUserName(userName);
-    assertEquals("92073489", result.getId());
-    userName = "RedouaneBali";
-    result   = twitterClient.getUserFromUserName(userName);
-    assertEquals("RedouaneBali", result.getName());
+    assertEquals(userName, result.getName());
   }
 
   @Test
@@ -297,10 +294,10 @@ public class ITwitterClientV2Test {
   @Test
   public void testFollowAndUnfollow() {
     User           user           = twitterClient.getUserFromUserName("red1");
-    FollowResponse followResponse = twitterClient.follow(this.userId, user.getId());
+    FollowResponse followResponse = twitterClient.follow(user.getId());
     assertTrue(followResponse.getData().isFollowing());
     assertFalse(followResponse.getData().isPending_follow());
-    FollowResponse unfollowResponse = twitterClient.unfollow(this.userId, user.getId());
+    FollowResponse unfollowResponse = twitterClient.unfollow(user.getId());
     assertFalse(unfollowResponse.getData().isFollowing());
     assertEquals(RelationType.NONE, twitterClient.getRelationType("92073489", "66533"));
   }
@@ -323,18 +320,23 @@ public class ITwitterClientV2Test {
   @Test
   public void testBlockAndUnblockUser() {
     String        targetId = "456777022";
-    BlockResponse response = twitterClient.blockUser(this.userId, targetId);
+    BlockResponse response = twitterClient.blockUser(targetId);
     assertTrue(response.getData().isBlocking());
-    response = twitterClient.unblockUser(this.userId, targetId);
+    response = twitterClient.unblockUser(targetId);
     assertFalse(response.getData().isBlocking());
   }
 
   @Test
   public void testLikeTweet() {
-    LikeResponse likedTweet = twitterClient.likeTweet("1107533", this.userId);
+    LikeResponse likedTweet = twitterClient.likeTweet("1107533");
     assertTrue(likedTweet.getData().isLiked());
-    LikeResponse unlikedTweet = twitterClient.unlikeTweet("1107533", this.userId);
+    LikeResponse unlikedTweet = twitterClient.unlikeTweet("1107533");
     assertFalse(unlikedTweet.getData().isLiked());
+  }
+
+  @Test
+  public void testGetUserIdFromAccessToken() {
+    assertEquals(this.userId, twitterClient.getUserIdFromAccessToken());
   }
 
 }
