@@ -436,7 +436,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       parameters.put(NEXT_TOKEN, nextToken);
     }
     parameters.put("tweet.fields", URLHelper.ALL_TWEET_FIELDS);
-    Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV1.getRequestWithParameters(searchUrl,
+    Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(searchUrl,
                                                                                                      parameters, TweetSearchResponseV2.class);
     if (!tweetSearchV2DTO.isPresent() || tweetSearchV2DTO.get().getData() == null) {
       return new TweetSearchResponse(new ArrayList<>(), null);
