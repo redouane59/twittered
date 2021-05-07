@@ -1,5 +1,6 @@
 package com.github.redouane59.twitter.dto.user;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import java.time.LocalDateTime;
 
@@ -85,8 +86,17 @@ public interface User {
 
   /**
    * Get the url of the user profile
+   *
+   * @return The URL specified in the user's profile, if present.
    */
   String getUrl();
+
+  /**
+   * Get the entities user profile
+   *
+   * @return details about text that has a special meaning in the user's description.
+   */
+  JsonNode getEntities();
 
   /**
    * Get the protection level of the user account

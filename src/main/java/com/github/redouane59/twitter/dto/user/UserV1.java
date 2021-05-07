@@ -2,6 +2,7 @@ package com.github.redouane59.twitter.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
@@ -42,6 +43,7 @@ public class UserV1 implements User {
   private int         followingCount;
   private String      lang;
   private String      url;
+  private JsonNode    entities;
   @JsonProperty("tweetCount")
   @JsonAlias({"statuses_count", "tweets_count"})
   private int         tweetCount;

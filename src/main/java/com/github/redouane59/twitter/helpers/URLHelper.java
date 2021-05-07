@@ -52,7 +52,7 @@ public class URLHelper {
   public static final  int    MAX_LOOKUP                    = 100;
   public static final  String USER_FIELDS                   = "user.fields=";
   public static final  String ALL_USER_FIELDS               =
-      "id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
+      "id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
   public static final  String TWEET_FIELDS                  = "tweet.fields=";
   public static final  String
                               ALL_TWEET_FIELDS              =

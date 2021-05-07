@@ -170,6 +170,11 @@ public class UserV2 implements User {
   }
 
   @Override
+  public JsonNode getEntities() {
+    return this.data == null ? null : this.data.getEntities();
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (o == null || (this.getClass() != o.getClass() && !User.class.isAssignableFrom(o.getClass()))) {
       return false;
