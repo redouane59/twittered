@@ -89,6 +89,11 @@ public class UserDeserializerV2Test {
   }
 
   @Test
+  public void testUrl() {
+    assertEquals("www.google.com", userV2.getUrl());
+  }
+
+  @Test
   public void testEntities() {
     assertNotNull(userV2.getEntities());
     assertNotNull(userV2.getEntities().get("description"));
