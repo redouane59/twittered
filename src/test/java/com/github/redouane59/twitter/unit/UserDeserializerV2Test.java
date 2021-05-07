@@ -88,6 +88,18 @@ public class UserDeserializerV2Test {
     assertTrue(pinnedTweet.getText().contains("Thread sur ce qui m'a poussé à partir"));
   }
 
+  @Test
+  public void testUrl() {
+    assertEquals("www.google.com", userV2.getUrl());
+  }
+
+  @Test
+  public void testEntities() {
+    assertNotNull(userV2.getEntities());
+    assertNotNull(userV2.getEntities().get("description"));
+    assertNotNull(userV2.getEntities().get("description").get("hashtags"));
+  }
+
 }
 
 

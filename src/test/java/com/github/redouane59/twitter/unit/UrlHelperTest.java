@@ -22,14 +22,14 @@ public class UrlHelperTest {
   @Test
   public void testUrlFollowersById() {
     assertEquals(
-        "https://api.twitter.com/2/users/12345/followers?max_results=1000&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        "https://api.twitter.com/2/users/12345/followers?max_results=1000&user.fields=id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
         urlHelper.getFollowersUrl("12345"));
   }
 
   @Test
   public void testUrlFollowingsById() {
     assertEquals(
-        "https://api.twitter.com/2/users/12345/following?max_results=1000&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        "https://api.twitter.com/2/users/12345/following?max_results=1000&user.fields=id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
         urlHelper.getFollowingUrl("12345"));
   }
 
@@ -54,7 +54,7 @@ public class UrlHelperTest {
   @Test
   public void testUrlGetUserByIdV2() {
     assertEquals(
-        "https://api.twitter.com/2/users/12345?expansions=pinned_tweet_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        "https://api.twitter.com/2/users/12345?expansions=pinned_tweet_id&user.fields=id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
         urlHelper.getUserUrl("12345"));
   }
 
@@ -144,7 +144,7 @@ public class UrlHelperTest {
   @Test
   public void testGetUserUrlFromName() {
     assertEquals(
-        "https://api.twitter.com/2/users/by/username/RedTheOne?expansions=pinned_tweet_id&user.fields=id,created_at,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected"
+        "https://api.twitter.com/2/users/by/username/RedTheOne?expansions=pinned_tweet_id&user.fields=id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected"
         ,
         urlHelper.getUserUrlFromName("RedTheOne"));
   }
