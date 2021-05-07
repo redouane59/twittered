@@ -1,6 +1,7 @@
 package com.github.redouane59.twitter.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
@@ -41,6 +42,7 @@ public class UserV2 implements User {
     @JsonProperty("name")
     private String            displayedName;
     private String            location;
+    private JsonNode          entities;
     private String            url;
     private boolean           verified;
     @JsonProperty("profile_image_url")
@@ -160,6 +162,11 @@ public class UserV2 implements User {
       return null;
     }
     return this.includes.getTweets()[0];
+  }
+
+  @Override
+  public String getUrl() {
+    return this.data == null ? null : this.data.getUrl();
   }
 
   @Override

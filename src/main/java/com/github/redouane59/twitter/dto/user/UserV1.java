@@ -41,6 +41,7 @@ public class UserV1 implements User {
   @JsonAlias({"friends_count", "followings_count"})
   private int         followingCount;
   private String      lang;
+  private String      url;
   @JsonProperty("tweetCount")
   @JsonAlias({"statuses_count", "tweets_count"})
   private int         tweetCount;

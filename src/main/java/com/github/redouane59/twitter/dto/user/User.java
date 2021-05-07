@@ -84,6 +84,11 @@ public interface User {
   Tweet getPinnedTweet();
 
   /**
+   * Get the url of the user profile
+   */
+  String getUrl();
+
+  /**
    * Get the protection level of the user account
    *
    * @return true if the account is protected, else false
