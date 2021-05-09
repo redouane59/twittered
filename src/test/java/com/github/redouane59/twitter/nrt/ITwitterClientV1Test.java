@@ -12,6 +12,7 @@ import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -97,7 +98,7 @@ public class ITwitterClientV1Test {
     assertTrue(result.getOauthTokenSecret().length() > 1);
     //twitterClient.getOAuth1AccessToken(result, "12345");
   }
-  
+
   @Test
   public void testPostAndRTandDeleteTweet() {
     String text       = "API Test " + LocalDateTime.now() + " #TwitterAPI";
@@ -138,7 +139,7 @@ public class ITwitterClientV1Test {
   }
 
   @Test
-  public void testUploadMedia() throws Exception {
+  public void testUploadPngWithByeArray() throws Exception {
 
     try (InputStream is = ITwitterClientV1Test.class.getResourceAsStream("/twitter.png");
          ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
@@ -155,6 +156,18 @@ public class ITwitterClientV1Test {
       assertNotNull(tweet.getId());
       twitterClient.deleteTweet(tweet.getId());
     }
+  }
+
+  @Test
+  public void testUploadGifWithFile() {
+    File                gif      = new File(getClass().getClassLoader().getResource("vent.gif").getFile());
+    UploadMediaResponse response = twitterClient.uploadMedia(gif, MediaCategory.TWEET_GIF);
+    assertNotNull(response);
+    assertNotNull(response.getMediaId());
+    Tweet tweet = twitterClient.postTweet("Test", null, response.getMediaId());
+    assertNotNull(tweet);
+    assertNotNull(tweet.getId());
+    twitterClient.deleteTweet(tweet.getId());
   }
 
   @Test

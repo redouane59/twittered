@@ -268,6 +268,18 @@ public class UrlHelperTest {
   }
 
   @Test
+  public void testUploadMediaInitUrl() {
+    assertEquals("https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes=10240&media_type=tweet_gif",
+                 urlHelper.getUploadMediaInitUrl(MediaCategory.TWEET_GIF, 10240));
+  }
+
+  @Test
+  public void testUploadMediaAppendUrl() {
+    assertEquals("https://upload.twitter.com/1.1/media/upload.json?command=APPEND&media_id=123&segment_index=2&media_data=123",
+                 urlHelper.getUploadMediaAppendUrl(123, 2, 123));
+  }
+
+  @Test
   public void testGetFavouritesUrl() {
     assertEquals("https://api.twitter.com/1.1/favorites/list.json?count=200&user_id=12345&max_id=9999&tweet_mode=extended",
                  urlHelper.getFavoriteTweetsUrl("12345", "9999"));

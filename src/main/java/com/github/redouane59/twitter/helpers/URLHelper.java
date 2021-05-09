@@ -360,6 +360,17 @@ public class URLHelper {
     return "https://upload.twitter.com/1.1/media/upload.json?media_category=" + mediaCategory.label;
   }
 
+  public String getUploadMediaInitUrl(MediaCategory mediaCategory, int totalBytes) {
+    return "https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes=" + totalBytes + "&media_type=" + mediaCategory.label;
+  }
+
+  public String getUploadMediaAppendUrl(int mediaId, int segmentIndex, int mediaData) {
+    return "https://upload.twitter.com/1.1/media/upload.json?command=APPEND"
+           + "&media_id=" + mediaId
+           + "&segment_index=" + segmentIndex
+           + "&media_data=" + mediaData;
+  }
+
   public String getCollectionsCreateUrl() {
     return ROOT_URL_V1
            + COLLECTIONS
