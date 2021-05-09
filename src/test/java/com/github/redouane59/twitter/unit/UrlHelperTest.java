@@ -275,8 +275,14 @@ public class UrlHelperTest {
 
   @Test
   public void testUploadMediaAppendUrl() {
-    assertEquals("https://upload.twitter.com/1.1/media/upload.json?command=APPEND&media_id=123&segment_index=2&media_data=123",
-                 urlHelper.getUploadMediaAppendUrl(123, 2, 123));
+    assertEquals("https://upload.twitter.com/1.1/media/upload.json?command=APPEND&media_id=123&segment_index=2&media=123",
+                 urlHelper.getUploadMediaAppendUrl("123", 2, "123"));
+  }
+
+  @Test
+  public void testUploadMediaFinalizeUrl() {
+    assertEquals("https://upload.twitter.com/1.1/media/upload.json?command=FINALIZE&media_id=710511363345354753",
+                 urlHelper.getUploadMediaFinalizeUrl("710511363345354753"));
   }
 
   @Test

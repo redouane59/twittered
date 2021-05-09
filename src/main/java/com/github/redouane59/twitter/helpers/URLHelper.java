@@ -364,11 +364,16 @@ public class URLHelper {
     return "https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes=" + totalBytes + "&media_type=" + mediaCategory.label;
   }
 
-  public String getUploadMediaAppendUrl(int mediaId, int segmentIndex, int mediaData) {
+  public String getUploadMediaAppendUrl(String mediaId, int segmentIndex, String rawBinaryMediafile) {
     return "https://upload.twitter.com/1.1/media/upload.json?command=APPEND"
            + "&media_id=" + mediaId
            + "&segment_index=" + segmentIndex
-           + "&media_data=" + mediaData;
+           + "&media=" + rawBinaryMediafile;
+  }
+
+  public String getUploadMediaFinalizeUrl(String mediaId) {
+    return "https://upload.twitter.com/1.1/media/upload.json?command=FINALIZE"
+           + "&media_id=" + mediaId;
   }
 
   public String getCollectionsCreateUrl() {

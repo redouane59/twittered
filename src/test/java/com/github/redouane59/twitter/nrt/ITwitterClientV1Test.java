@@ -11,10 +11,14 @@ import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -160,14 +164,38 @@ public class ITwitterClientV1Test {
 
   @Test
   public void testUploadPngFile() {
-    File                gif      = new File(getClass().getClassLoader().getResource("twitter.png").getFile());
-    UploadMediaResponse response = twitterClient.uploadMedia(gif, MediaCategory.TWEET_GIF);
+    File                img      = new File(getClass().getClassLoader().getResource("twitter.png").getFile());
+    UploadMediaResponse response = twitterClient.uploadMedia(img, MediaCategory.TWEET_GIF);
     assertNotNull(response);
     assertNotNull(response.getMediaId());
     Tweet tweet = twitterClient.postTweet("Test", null, response.getMediaId());
     assertNotNull(tweet);
     assertNotNull(tweet.getId());
     twitterClient.deleteTweet(tweet.getId());
+  }
+
+  @Test
+  public void testUploadGif() throws IOException {
+    File          gif = new File(getClass().getClassLoader().getResource("zen.gif").getFile());
+    StringBuilder sb  = new StringBuilder();
+    try (BufferedInputStream is = new BufferedInputStream(new FileInputStream(gif))) {
+      for (int b; (b = is.read()) != -1; ) {
+        String s = Integer.toHexString(b).toUpperCase();
+        if (s.length() == 1) {
+          sb.append('0');
+        }
+        sb.append(s).append(' ');
+      }
+    }
+    String              initUrl  = twitterClient.getUrlHelper().getUploadMediaInitUrl(MediaCategory.TWEET_GIF, 311000);
+    UploadMediaResponse response = twitterClient.getRequestHelperV1().postRequest(initUrl, new HashMap<>(), UploadMediaResponse.class).get();
+    assertNotNull(response.getMediaId());
+    String appendUrl = twitterClient.getUrlHelper().getUploadMediaAppendUrl(response.getMediaId(), 0, sb.toString());
+    // Object r = twitterClient.getRequestHelperV2().postRequestWithHeader(appendUrl, header, null, UploadMediaResponse.class).get();
+    // assertNotNull(response.getMediaId());
+    String finalizeUrl = twitterClient.getUrlHelper().getUploadMediaFinalizeUrl(response.getMediaId());
+    //
+    //
   }
 
   @Test
