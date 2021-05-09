@@ -191,11 +191,12 @@ public class ITwitterClientV1Test {
     UploadMediaResponse response = twitterClient.getRequestHelperV1().postRequest(initUrl, new HashMap<>(), UploadMediaResponse.class).get();
     assertNotNull(response.getMediaId());
     String appendUrl = twitterClient.getUrlHelper().getUploadMediaAppendUrl(response.getMediaId(), 0, sb.toString());
+    // to be complete for APPEND call
     // Object r = twitterClient.getRequestHelperV2().postRequestWithHeader(appendUrl, header, null, UploadMediaResponse.class).get();
     // assertNotNull(response.getMediaId());
     String finalizeUrl = twitterClient.getUrlHelper().getUploadMediaFinalizeUrl(response.getMediaId());
-    //
-    //
+    // to be complete for FINALIZE call
+    // 
   }
 
   @Test
