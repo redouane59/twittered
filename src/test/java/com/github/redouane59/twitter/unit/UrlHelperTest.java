@@ -4,12 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.helpers.URLHelper;
-import com.google.common.net.MediaType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
 
 public class UrlHelperTest {
 
@@ -271,7 +271,7 @@ public class UrlHelperTest {
   @Test
   public void testUploadMediaInitUrl() {
     assertEquals("https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes=10240&media_type=image/gif",
-                 urlHelper.getUploadMediaInitUrl(MediaType.GIF, 10240));
+                 urlHelper.getUploadMediaInitUrl(MediaType.IMAGE_GIF, 10240));
   }
 
   @Test
