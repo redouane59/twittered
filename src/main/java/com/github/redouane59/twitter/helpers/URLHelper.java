@@ -360,7 +360,7 @@ public class URLHelper {
     return "https://upload.twitter.com/1.1/media/upload.json?media_category=" + mediaCategory.label;
   }
 
-  public String getUploadMediaInitUrl(MediaCategory mediaCategory, int totalBytes) {
+  public String getUploadMediaInitUrl(MediaCategory mediaCategory, long totalBytes) {
     return "https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes=" + totalBytes + "&media_type=" + mediaCategory.label;
   }
 

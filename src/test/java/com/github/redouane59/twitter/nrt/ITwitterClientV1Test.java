@@ -187,7 +187,7 @@ public class ITwitterClientV1Test {
         sb.append(s).append(' ');
       }
     }
-    String              initUrl  = twitterClient.getUrlHelper().getUploadMediaInitUrl(MediaCategory.TWEET_GIF, 311000);
+    String              initUrl  = twitterClient.getUrlHelper().getUploadMediaInitUrl(MediaCategory.TWEET_GIF, gif.length());
     UploadMediaResponse response = twitterClient.getRequestHelperV1().postRequest(initUrl, new HashMap<>(), UploadMediaResponse.class).get();
     assertNotNull(response.getMediaId());
     String appendUrl = twitterClient.getUrlHelper().getUploadMediaAppendUrl(response.getMediaId(), 0, sb.toString());
