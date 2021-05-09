@@ -270,7 +270,7 @@ public class UrlHelperTest {
   @Test
   public void testUploadMediaInitUrl() {
     assertEquals("https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes=10240&media_type=tweet_gif",
-                 urlHelper.getUploadMediaInitUrl(MediaCategory.TWEET_GIF, 10240));
+                 urlHelper.getUploadMediaInitUrl("image/gif", 10240));
   }
 
   @Test
