@@ -159,8 +159,8 @@ public class ITwitterClientV1Test {
   }
 
   @Test
-  public void testUploadGifWithFile() {
-    File                gif      = new File(getClass().getClassLoader().getResource("zen.gif").getFile());
+  public void testUploadPngFile() {
+    File                gif      = new File(getClass().getClassLoader().getResource("twitter.png").getFile());
     UploadMediaResponse response = twitterClient.uploadMedia(gif, MediaCategory.TWEET_GIF);
     assertNotNull(response);
     assertNotNull(response.getMediaId());
