@@ -1,6 +1,7 @@
 package com.github.redouane59.twitter.helpers;
 
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
+import com.google.common.net.MediaType;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
@@ -360,8 +361,13 @@ public class URLHelper {
     return "https://upload.twitter.com/1.1/media/upload.json?media_category=" + mediaCategory.label;
   }
 
-  public String getUploadMediaInitUrl(String mediaType, long totalBytes) {
-    return "https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes=" + totalBytes + "&media_type=" + mediaType;
+  public String getUploadMediaInitUrl(MediaType mediaType, long totalBytes) {
+    return "https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes="
+           + totalBytes
+           + "&media_type="
+           + mediaType.type()
+           + "/"
+           + mediaType.subtype();
   }
 
   public String getUploadMediaAppendUrl(String mediaId, int segmentIndex, String rawBinaryMediafile) {

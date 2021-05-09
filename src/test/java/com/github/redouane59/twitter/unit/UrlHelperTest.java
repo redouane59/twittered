@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.helpers.URLHelper;
+import com.google.common.net.MediaType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -269,8 +270,8 @@ public class UrlHelperTest {
 
   @Test
   public void testUploadMediaInitUrl() {
-    assertEquals("https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes=10240&media_type=tweet_gif",
-                 urlHelper.getUploadMediaInitUrl("image/gif", 10240));
+    assertEquals("https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes=10240&media_type=image/gif",
+                 urlHelper.getUploadMediaInitUrl(MediaType.GIF, 10240));
   }
 
   @Test

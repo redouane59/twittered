@@ -11,6 +11,7 @@ import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
+import com.google.common.net.MediaType;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -187,7 +188,7 @@ public class ITwitterClientV1Test {
         sb.append(s).append(' ');
       }
     }
-    String              initUrl  = twitterClient.getUrlHelper().getUploadMediaInitUrl("image/gif", gif.length());
+    String              initUrl  = twitterClient.getUrlHelper().getUploadMediaInitUrl(MediaType.GIF, gif.length());
     UploadMediaResponse response = twitterClient.getRequestHelperV1().postRequest(initUrl, new HashMap<>(), UploadMediaResponse.class).get();
     assertNotNull(response.getMediaId());
     String appendUrl = twitterClient.getUrlHelper().getUploadMediaAppendUrl(response.getMediaId(), 0, sb.toString());
