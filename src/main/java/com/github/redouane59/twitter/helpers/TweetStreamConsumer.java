@@ -3,17 +3,16 @@ package com.github.redouane59.twitter.helpers;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.redouane59.twitter.IAPIEventListener;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.scribejava.core.model.Response;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -58,21 +57,40 @@ public class TweetStreamConsumer {
 
     // Make Use of a Thread as the reader is blocking
     new Thread(() -> {
-      String line;
       try (BufferedReader reader = new BufferedReader(
-          new InputStreamReader(response.getStream(), StandardCharsets.UTF_8));) {
-        while ((line = reader.readLine()) != null) {
-          // Avoid empty line (heartbeat)
-          if (!line.trim().isEmpty() && (!handleData(listener, response, clazz, line))) {
-            break;
-          }
+          new InputStreamReader(response.getStream(), StandardCharsets.UTF_8))) {
+        boolean bValid = true;
+        while (bValid) {
+          bValid = readSocket(listener, response, clazz, reader);
         }
-
       } catch (IOException e) {
         listener.onStreamEnded(e);
       }
     }).start();
 
+  }
+
+  /**
+   * Reads the data from the socket. If the socket has a readtimeout, it'll be handled and continue to listen to the socket. Other IOException will be
+   * thrown and the read will be stopped.
+   */
+  private <T> boolean readSocket(IAPIEventListener listener, final Response response,
+                                 final Class<? extends T> clazz, BufferedReader reader)
+  throws IOException {
+    String line;
+    try {
+      line = reader.readLine();
+      if (line == null) {
+        return false;
+      }
+      // Avoid empty line (heartbeat)
+      if (!line.trim().isEmpty() && (!handleData(listener, response, clazz, line))) {
+        return false;
+      }
+    } catch (SocketTimeoutException e) {
+      // Nothing to do
+    }
+    return true;
   }
 
   /**
