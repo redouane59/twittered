@@ -361,13 +361,13 @@ public class URLHelper {
     return "https://upload.twitter.com/1.1/media/upload.json?media_category=" + mediaCategory.label;
   }
 
-  public String getUploadMediaInitUrl(MediaType mediaType, long totalBytes) {
+  public String getUploadMediaInitUrl(MediaType mediaType, MediaCategory mediaCategory, long totalBytes) {
     return "https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes="
            + totalBytes
            + "&media_type="
-           + mediaType.getType()
-           + "/"
-           + mediaType.getSubtype();
+           + mediaType.toString()
+           + "&media_category="
+           + mediaCategory.label;
   }
 
   public String getUploadMediaAppendUrl(String mediaId, int segmentIndex, String rawBinaryMediafile) {

@@ -11,19 +11,17 @@ import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
-import java.io.BufferedInputStream;
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Verb;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
 
 @Disabled
 public class ITwitterClientV1Test {
@@ -166,7 +164,7 @@ public class ITwitterClientV1Test {
   @Test
   public void testUploadPngFile() {
     File                img      = new File(getClass().getClassLoader().getResource("twitter.png").getFile());
-    UploadMediaResponse response = twitterClient.uploadMedia(img, MediaCategory.TWEET_GIF);
+    UploadMediaResponse response = twitterClient.uploadMedia(img, MediaCategory.TWEET_IMAGE);
     assertNotNull(response);
     assertNotNull(response.getMediaId());
     Tweet tweet = twitterClient.postTweet("Test", null, response.getMediaId());
@@ -177,13 +175,20 @@ public class ITwitterClientV1Test {
 
   @Test
   public void testUploadGif() throws IOException {
-    File                gif      = new File(getClass().getClassLoader().getResource("zen.gif").getFile());
-    String              initUrl  = twitterClient.getUrlHelper().getUploadMediaInitUrl(MediaType.IMAGE_GIF, gif.length());
-    UploadMediaResponse response = twitterClient.getRequestHelperV1().postRequest(initUrl, new HashMap<>(), UploadMediaResponse.class).get();
+    File gif = new File(getClass().getClassLoader().getResource("zen.gif").getFile());
+
+    // String       initUrl = twitterClient.getUrlHelper().getUploadMediaInitUrl(MediaType.IMAGE_GIF, MediaCategory.TWEET_GIF, gif.length());
+    String       initUrl = "https://upload.twitter.com/1.1/media/upload.json";
+    OAuthRequest request = new OAuthRequest(Verb.POST, initUrl);
+    request.initMultipartPayload();
+    request.addParameter("command", "INIT");
+    request.addParameter("total_bytes", String.valueOf(gif.length()));
+    request.addParameter("media_type", "image/gif");
+    UploadMediaResponse response = twitterClient.getRequestHelperV1().makeRequest(request, true, UploadMediaResponse.class).get();
+
     assertNotNull(response.getMediaId());
 
-    HashMap<String, String> headers = new HashMap();
-    headers.put("Content-Type", "multipart/form-data");
+    /*
     StringBuilder sb = new StringBuilder();
     try (BufferedInputStream is = new BufferedInputStream(new FileInputStream(gif))) {
       for (int b; (b = is.read()) != -1; ) {
@@ -195,11 +200,13 @@ public class ITwitterClientV1Test {
       }
     }
     String appendUrl = twitterClient.getUrlHelper().getUploadMediaAppendUrl(response.getMediaId(), 0, sb.toString());
-    String response2 = twitterClient.getRequestHelperV2().postRequestWithHeader(appendUrl, headers, null, String.class).get();
-    assertNotNull(response2);
+    // String response2 = twitterClient.getRequestHelperV2().postRequestWithHeader(appendUrl, headers, null, String.class).get();
+    // assertNotNull(response2);
     // to be complete for APPEND call
     String finalizeUrl = twitterClient.getUrlHelper().getUploadMediaFinalizeUrl(response.getMediaId());
     // to be complete for FINALIZE call
+
+     */
   }
 
   @Test
