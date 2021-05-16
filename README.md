@@ -21,6 +21,20 @@ In your pom.xml, add the following dependency and replace `VERSION` with the ver
 </dependency>
 ```
 
+To be able to see library logs, also add sl4j references : 
+```
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-api</artifactId>
+  <version>1.7.30</version>
+</dependency>
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-simple</artifactId>
+  <version>1.7.30</version>
+</dependency>
+``` 
+
 In order to use your own developer credentials, you have several options :
 
 #### Using a json file
