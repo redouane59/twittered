@@ -21,6 +21,7 @@ import com.github.redouane59.twitter.dto.tweet.HiddenResponse.HiddenData;
 import com.github.redouane59.twitter.dto.tweet.LikeResponse;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetListV2;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponseV1;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponseV2;
@@ -301,6 +302,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public UserListV2 getLikingUsers(final String tweetId) {
     String url = this.getUrlHelper().getLikingUsersUrl(tweetId);
     return getRequestHelper().getRequest(url, UserListV2.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public TweetListV2 getLikedTweets(final String userId) {
+    String url = this.getUrlHelper().getLikedTweetsUrl(userId);
+    return getRequestHelper().getRequest(url, TweetListV2.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override

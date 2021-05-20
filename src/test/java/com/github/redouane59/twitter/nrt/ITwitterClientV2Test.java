@@ -13,6 +13,7 @@ import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.LikeResponse;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetListV2;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
@@ -341,6 +342,15 @@ public class ITwitterClientV2Test {
     assertTrue(result.getData().size() > 50);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getName());
+    assertNotNull(result.getData().get(0).getCreatedAt());
+  }
+
+  @Test
+  public void testGetLikedTweets() {
+    TweetListV2 result = twitterClient.getLikedTweets("1120050519182016513");
+    assertTrue(result.getData().size() > 0);
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getData().get(0).getText());
     assertNotNull(result.getData().get(0).getCreatedAt());
   }
 

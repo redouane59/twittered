@@ -5,6 +5,7 @@ import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.LikeResponse;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetListV2;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.user.FollowResponse;
 import com.github.redouane59.twitter.dto.user.User;
@@ -291,6 +292,11 @@ public interface ITwitterClientV2 {
    */
   UserListV2 getLikingUsers(String tweetId);
 
-
+  /**
+   * Allows you to get information about a user’s liked Tweets calling https://api.twitter.com/2/users/:id/liked_tweets
+   *
+   * @param userId ID of the user to request liked Tweets for.
+   */
+  TweetListV2 getLikedTweets(String userId);
 }
 
