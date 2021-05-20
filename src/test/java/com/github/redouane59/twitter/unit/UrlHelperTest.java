@@ -300,4 +300,11 @@ public class UrlHelperTest {
         "https://api.twitter.com/2/tweets/1354143047324299264/liking_users?user.fields=id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
         urlHelper.getLikingUsersUrl("1354143047324299264"));
   }
+
+  @Test
+  public void testLikedTweetsUrl() {
+    String userId = "12345";
+    assertEquals("https://api.twitter.com/2/users/" + userId + "/liked_tweets?" + URLHelper.TWEET_FIELDS + URLHelper.ALL_TWEET_FIELDS,
+                 urlHelper.getLikedTweetsUrl(userId));
+  }
 }

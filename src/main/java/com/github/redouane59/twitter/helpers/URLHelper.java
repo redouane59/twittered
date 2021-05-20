@@ -404,4 +404,9 @@ public class URLHelper {
     return ROOT_URL_V2 + TWEETS + "/" + tweetId + "/liking_users"
            + "?" + USER_FIELDS + ALL_USER_FIELDS;
   }
+
+  public String getLikedTweetsUrl(final String userId) {
+    return ROOT_URL_V2 + USERS + "/" + userId + "/liked_tweets"
+           + "?" + TWEET_FIELDS + ALL_TWEET_FIELDS;
+  }
 }
