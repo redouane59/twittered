@@ -3,7 +3,6 @@ package com.github.redouane59.twitter.helpers;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -399,5 +398,10 @@ public class URLHelper {
 
   public String getUnblockUserUrl(String sourceUserId, String targetUserId) {
     return ROOT_URL_V2 + USERS + "/" + sourceUserId + BLOCKING + "/" + targetUserId;
+  }
+
+  public String getLikingUsersUrl(final String tweetId) {
+    return ROOT_URL_V2 + TWEETS + "/" + tweetId + "/liking_users"
+           + "&" + USER_FIELDS + ALL_USER_FIELDS;
   }
 }

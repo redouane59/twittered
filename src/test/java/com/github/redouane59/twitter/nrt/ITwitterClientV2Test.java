@@ -18,6 +18,7 @@ import com.github.redouane59.twitter.dto.tweet.TweetType;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.dto.user.FollowResponse;
 import com.github.redouane59.twitter.dto.user.User;
+import com.github.redouane59.twitter.dto.user.UserListV2;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
 import com.github.scribejava.core.model.Response;
 import java.util.ArrayList;
@@ -332,6 +333,14 @@ public class ITwitterClientV2Test {
     assertTrue(likedTweet.getData().isLiked());
     LikeResponse unlikedTweet = twitterClient.unlikeTweet("1107533");
     assertFalse(unlikedTweet.getData().isLiked());
+  }
+
+  @Test
+  public void testGetLikingUsers() {
+    UserListV2 result = twitterClient.getLikingUsers("1395447825366847488");
+    assertTrue(result.getData().size() > 50);
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getData().get(0).getName());
   }
 
   @Test
