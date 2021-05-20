@@ -402,6 +402,6 @@ public class URLHelper {
 
   public String getLikingUsersUrl(final String tweetId) {
     return ROOT_URL_V2 + TWEETS + "/" + tweetId + "/liking_users"
-           + "&" + USER_FIELDS + ALL_USER_FIELDS;
+           + "?" + USER_FIELDS + ALL_USER_FIELDS;
   }
 }

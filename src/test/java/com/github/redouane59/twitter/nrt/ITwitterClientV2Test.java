@@ -341,6 +341,7 @@ public class ITwitterClientV2Test {
     assertTrue(result.getData().size() > 50);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getName());
+    assertNotNull(result.getData().get(0).getCreatedAt());
   }
 
   @Test
