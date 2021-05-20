@@ -298,6 +298,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
+  public UserListV2 getLikingUsers(final String tweetId) {
+    String url = this.getUrlHelper().getLikingUsersUrl(tweetId);
+    return getRequestHelper().getRequest(url, UserListV2.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
   public Tweet retweetTweet(String tweetId) {
     String url = this.getUrlHelper().getRetweetTweetUrl(tweetId);
     return this.requestHelperV1.postRequest(url, new HashMap<>(), TweetV1.class).orElseThrow(NoSuchElementException::new);

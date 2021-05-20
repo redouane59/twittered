@@ -8,6 +8,7 @@ import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.user.FollowResponse;
 import com.github.redouane59.twitter.dto.user.User;
+import com.github.redouane59.twitter.dto.user.UserListV2;
 import com.github.scribejava.core.model.Response;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -282,6 +283,14 @@ public interface ITwitterClientV2 {
    * @return whether the user likes the specified Tweet as a result of this request.
    */
   LikeResponse unlikeTweet(String tweetId);
+
+  /**
+   * Allows you to get information about a Tweet’s liking users calling https://api.twitter.com/2/tweets/:id/liking_users
+   *
+   * @param tweetId ID of the Tweet to request liking users of.
+   */
+  UserListV2 getLikingUsers(String tweetId);
+
 
 }
 
