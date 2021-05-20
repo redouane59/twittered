@@ -285,7 +285,7 @@ public interface ITwitterClientV2 {
   LikeResponse unlikeTweet(String tweetId);
 
   /**
-   * Allows you to get information about a Tweet’s liking users.
+   * Allows you to get information about a Tweet’s liking users calling https://api.twitter.com/2/tweets/:id/liking_users
    *
    * @param tweetId ID of the Tweet to request liking users of.
    */
