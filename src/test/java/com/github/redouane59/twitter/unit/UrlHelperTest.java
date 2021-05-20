@@ -297,7 +297,7 @@ public class UrlHelperTest {
   @Test
   public void testLikingUsers() {
     assertEquals(
-        "https://api.twitter.com/2/tweets/1354143047324299264/liking_users&user.fields=id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        "https://api.twitter.com/2/tweets/1354143047324299264/liking_users?user.fields=id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
         urlHelper.getLikingUsersUrl("1354143047324299264"));
   }
 }
