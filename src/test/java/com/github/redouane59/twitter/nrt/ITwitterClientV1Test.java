@@ -97,7 +97,7 @@ public class ITwitterClientV1Test {
     assertTrue(result.getOauthTokenSecret().length() > 1);
     //twitterClient.getOAuth1AccessToken(result, "12345");
   }
-  
+
   @Test
   public void testPostAndRTandDeleteTweet() {
     String text       = "API Test " + LocalDateTime.now() + " #TwitterAPI";
@@ -165,14 +165,11 @@ public class ITwitterClientV1Test {
     twitterClient.deleteTweet(tweet.getId());
   }
 
-  /*
-
-    @Test
-    public void testSearchTweetsArchive(){
-        LocalDateTime startDate = DateUtils.truncate(ConverterHelper.dayBeforeNow(60),Calendar.MONTH);
-        LocalDateTime endDate = DateUtils.addDays(startDate, 1);
-        List<ITweet> result = twitterClient.searchForTweetsArchive("@RedTheOne -RT",startDate, endDate);
-        assertTrue(result.size()>0);
-    } */
+  @Test
+  public void testGetFollowersIds() {
+    List<String> ids = twitterClient.getFollowersIds("786491");
+    assertNotNull(ids);
+    assertTrue(ids.size() > 10000);
+  }
 
 }

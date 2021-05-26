@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ITwitterClientV1 {
-  
+
   /**
    * Retweet a tweet
    *
@@ -67,6 +67,11 @@ public interface ITwitterClientV1 {
    * @return a list of the ids of the users who retweeted a tweet
    */
   List<String> getRetweetersId(String tweetId);
+
+  /**
+   * Returns a cursored collection of user IDs for every user following the specified user calling https://api.twitter.com/1.1/followers/ids.json
+   */
+  List<String> getFollowersIds(String userId);
 
   /**
    * Get the relation between two users calling https://api.twitter.com/1.1/friendships/
