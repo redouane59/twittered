@@ -164,14 +164,14 @@ public class UrlHelperTest {
   @Test
   public void testSearchFullArchiveUrl() {
     assertEquals(
-        "https://api.twitter.com/2/tweets/search/allexpansions=author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id",
+        "https://api.twitter.com/2/tweets/search/all?expansions=author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id",
         URLHelper.SEARCH_TWEET_FULL_ARCHIVE_URL);
   }
 
   @Test
   public void testGetBearerTokenUrl() {
     assertEquals(
-        "https://api.twitter.com/oauth2/token?",
+        "https://api.twitter.com/oauth2/token",
         URLHelper.GET_BEARER_TOKEN_URL);
   }
 
