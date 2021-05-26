@@ -176,8 +176,7 @@ public class ITwitterClientV2Test {
                                                                           ConverterHelper.dayBeforeNow(1),
                                                                           10,
                                                                           null);
-    assertNotNull(result.getTweets().get(0).getUser());
-    assertTrue(result.getTweets().size() > 10);
+    assertEquals(10, result.getTweets().size());
     assertNotNull(result.getNextToken());
   }
 
