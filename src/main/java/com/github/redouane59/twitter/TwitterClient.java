@@ -213,6 +213,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return this.getUserIdsByRelation(url);
   }
 
+  @Override
+  public List<String> getFollowersIds(String userId) {
+    String url = this.urlHelper.getFollowersIdsUrl(userId);
+    return this.getUserIdsByRelation(url);
+  }
+
   @SneakyThrows
   @Override
   public FollowResponse follow(String targetUserId) {

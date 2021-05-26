@@ -34,6 +34,12 @@ public class UrlHelperTest {
   }
 
   @Test
+  public void testUrlFollowersIs() {
+    assertEquals("https://api.twitter.com/1.1/followers/ids.json?user_id=12345&count=5000",
+                 urlHelper.getFollowersIdsUrl("12345"));
+  }
+
+  @Test
   public void testUrlLastTweet() {
     assertEquals("https://api.twitter.com/1.1/statuses/user_timeline.json?",
                  URLHelper.LAST_TWEET_LIST_URL);
@@ -157,14 +163,16 @@ public class UrlHelperTest {
 
   @Test
   public void testSearchFullArchiveUrl() {
-    assertEquals("https://api.twitter.com/2/tweets/search/all",
-                 URLHelper.SEARCH_TWEET_FULL_ARCHIVE_URL);
+    assertEquals(
+        "https://api.twitter.com/2/tweets/search/all?expansions=author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id",
+        URLHelper.SEARCH_TWEET_FULL_ARCHIVE_URL);
   }
 
   @Test
   public void testGetBearerTokenUrl() {
-    assertEquals("https://api.twitter.com/oauth2/token",
-                 URLHelper.GET_BEARER_TOKEN_URL);
+    assertEquals(
+        "https://api.twitter.com/oauth2/token",
+        URLHelper.GET_BEARER_TOKEN_URL);
   }
 
   @Test
