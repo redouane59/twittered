@@ -134,7 +134,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testSearchTweets7days() {
-    List<Tweet> result = twitterClient.searchForTweetsWithin7days("@suhemparack -RT");
+    List<Tweet> result = twitterClient.searchForTweetsWithin7days("@lequipe -RT");
     assertTrue(result.size() > 10);
     Tweet tweet = result.get(0);
     assertNotNull(tweet.getId());
