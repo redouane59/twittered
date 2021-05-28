@@ -132,8 +132,8 @@ public class ITwitterClientV1Test {
 
   @Test
   public void testGetFavorites() {
-    int         count     = 1500;
-    List<Tweet> favorites = twitterClient.getFavorites("92073489", count);
+    int         count     = 750;
+    List<Tweet> favorites = twitterClient.getFavorites("1120050519182016513", count);
     assertNotNull(favorites);
     assertTrue(favorites.size() > count);
   }
@@ -142,7 +142,7 @@ public class ITwitterClientV1Test {
   public void testSearchTweets30days() {
     List<Tweet>
         result =
-        twitterClient.searchForTweetsWithin30days("@RedTheOne -RT", LocalDateTime.of(2020, 9, 1, 0, 0), LocalDateTime.of(2020, 9, 3, 0, 0), "30days");
+        twitterClient.searchForTweetsWithin30days("@Twitter -RT", LocalDateTime.of(2020, 9, 1, 0, 0), LocalDateTime.of(2020, 9, 3, 0, 0), "30days");
     assertTrue(result.size() > 0);
   }
 
