@@ -334,6 +334,11 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public Tweet postTweet(String text, String inReplyToStatusId, String mediaIds) {
+    return this.postTweet(text, inReplyToStatusId, mediaIds, null);
+  }
+
+  @Override
+  public Tweet postTweet(final String text, final String inReplyToStatusId, final String mediaIds, final String attachmentUrl) {
     String              url        = this.getUrlHelper().getPostTweetUrl();
     Map<String, String> parameters = new HashMap<>();
     parameters.put("status", text);
@@ -343,6 +348,9 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     }
     if (mediaIds != null) {
       parameters.put("media_ids", mediaIds);
+    }
+    if (attachmentUrl != null) {
+      parameters.put("attachment_url", attachmentUrl);
     }
     return this.requestHelperV1.postRequest(url, parameters, TweetV1.class).orElseThrow(NoSuchElementException::new);
   }
