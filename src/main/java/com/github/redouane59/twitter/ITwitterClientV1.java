@@ -53,6 +53,17 @@ public interface ITwitterClientV1 {
   Tweet postTweet(String text, String inReplyToStatusId, String mediaIds);
 
   /**
+   * Post a tweet calling https://api.twitter.com/1.1/statuses/update.json
+   *
+   * @param text the tweet text
+   * @param inReplyToStatusId the id of the tweet to answer.
+   * @param mediaIds the ids of the media obtained calling the uploadMedia() method, separated by commas
+   * @param attachmentUrl provide a URL as a Tweet attachment
+   * @return the created tweet
+   */
+  Tweet postTweet(String text, String inReplyToStatusId, String mediaIds, String attachmentUrl);
+
+  /**
    * Delete a tweet calling https://api.twitter.com/1.1/statuses/destroy/:id.json
    *
    * @param tweetId the id of the tweet

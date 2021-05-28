@@ -122,6 +122,15 @@ public class ITwitterClientV1Test {
   }
 
   @Test
+  public void postTweetWithUrl() {
+    Tweet resultPost = twitterClient.postTweet("test", null, null, "https://twitter.com/TwitterDev/status/1392465174708187137");
+    assertNotNull(resultPost);
+    assertNotNull(resultPost.getId());
+    Tweet resultDelete = twitterClient.deleteTweet(resultPost.getId());
+    assertNotNull(resultDelete);
+  }
+
+  @Test
   public void testGetFavorites() {
     int         count     = 1500;
     List<Tweet> favorites = twitterClient.getFavorites("92073489", count);
