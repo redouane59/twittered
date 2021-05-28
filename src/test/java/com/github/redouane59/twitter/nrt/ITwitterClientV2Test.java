@@ -172,11 +172,11 @@ public class ITwitterClientV2Test {
   @Test
   public void testSearchTweetsFullArchiveWithNexTokenAndCount() {
     TweetSearchResponse result = twitterClient.searchForTweetsFullArchive("@TwitterSupport",
-                                                                          ConverterHelper.dayBeforeNow(150),
+                                                                          ConverterHelper.dayBeforeNow(10),
                                                                           ConverterHelper.dayBeforeNow(1),
-                                                                          100,
+                                                                          10,
                                                                           null);
-    assertTrue(result.getTweets().size() > 10);
+    assertEquals(10, result.getTweets().size());
     assertNotNull(result.getNextToken());
   }
 

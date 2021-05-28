@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ITwitterClientV1 {
-  
+
   /**
    * Retweet a tweet
    *
@@ -53,6 +53,17 @@ public interface ITwitterClientV1 {
   Tweet postTweet(String text, String inReplyToStatusId, String mediaIds);
 
   /**
+   * Post a tweet calling https://api.twitter.com/1.1/statuses/update.json
+   *
+   * @param text the tweet text
+   * @param inReplyToStatusId the id of the tweet to answer.
+   * @param mediaIds the ids of the media obtained calling the uploadMedia() method, separated by commas
+   * @param attachmentUrl provide a URL as a Tweet attachment
+   * @return the created tweet
+   */
+  Tweet postTweet(String text, String inReplyToStatusId, String mediaIds, String attachmentUrl);
+
+  /**
    * Delete a tweet calling https://api.twitter.com/1.1/statuses/destroy/:id.json
    *
    * @param tweetId the id of the tweet
@@ -67,6 +78,11 @@ public interface ITwitterClientV1 {
    * @return a list of the ids of the users who retweeted a tweet
    */
   List<String> getRetweetersId(String tweetId);
+
+  /**
+   * Returns a cursored collection of user IDs for every user following the specified user calling https://api.twitter.com/1.1/followers/ids.json
+   */
+  List<String> getFollowersIds(String userId);
 
   /**
    * Get the relation between two users calling https://api.twitter.com/1.1/friendships/

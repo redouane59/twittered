@@ -97,7 +97,7 @@ public class ITwitterClientV1Test {
     assertTrue(result.getOauthTokenSecret().length() > 1);
     //twitterClient.getOAuth1AccessToken(result, "12345");
   }
-  
+
   @Test
   public void testPostAndRTandDeleteTweet() {
     String text       = "API Test " + LocalDateTime.now() + " #TwitterAPI";
@@ -119,6 +119,15 @@ public class ITwitterClientV1Test {
     Tweet resultDelete2 = twitterClient.deleteTweet(resultPostAnswer.getId());
     assertNotNull(resultDelete2);
     assertEquals(resultPostAnswer.getId(), resultDelete2.getId());
+  }
+
+  @Test
+  public void postTweetWithUrl() {
+    Tweet resultPost = twitterClient.postTweet("test", null, null, "https://twitter.com/TwitterDev/status/1392465174708187137");
+    assertNotNull(resultPost);
+    assertNotNull(resultPost.getId());
+    Tweet resultDelete = twitterClient.deleteTweet(resultPost.getId());
+    assertNotNull(resultDelete);
   }
 
   @Test
@@ -165,14 +174,11 @@ public class ITwitterClientV1Test {
     twitterClient.deleteTweet(tweet.getId());
   }
 
-  /*
-
-    @Test
-    public void testSearchTweetsArchive(){
-        LocalDateTime startDate = DateUtils.truncate(ConverterHelper.dayBeforeNow(60),Calendar.MONTH);
-        LocalDateTime endDate = DateUtils.addDays(startDate, 1);
-        List<ITweet> result = twitterClient.searchForTweetsArchive("@RedTheOne -RT",startDate, endDate);
-        assertTrue(result.size()>0);
-    } */
+  @Test
+  public void testGetFollowersIds() {
+    List<String> ids = twitterClient.getFollowersIds("786491");
+    assertNotNull(ids);
+    assertTrue(ids.size() > 10000);
+  }
 
 }

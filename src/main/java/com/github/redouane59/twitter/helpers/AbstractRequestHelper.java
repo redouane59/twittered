@@ -111,6 +111,7 @@ public abstract class AbstractRequestHelper {
             LOGGER.error("Using default retry after because header format is invalid: " + retryAfterStr, e);
           }
         }
+        LOGGER.debug("Rate limit exceeded, new retry in " + 1000L * retryAfter + "s");
         Thread.sleep(1000L * retryAfter);
         return makeRequest(request, false, classType); // We have already signed if it was requested
       } else if (response.getCode() < 200 || response.getCode() > 299) {
