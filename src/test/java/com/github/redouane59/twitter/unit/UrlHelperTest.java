@@ -303,6 +303,13 @@ public class UrlHelperTest {
   }
 
   @Test
+  public void testGetBlockingUsersUrl() {
+    String userId = "12345";
+    assertEquals("https://api.twitter.com/2/users/" + userId + "/blocking?" + URLHelper.USER_FIELDS + URLHelper.ALL_USER_FIELDS,
+                 urlHelper.getBlockingUsersUrl(userId));
+  }
+
+  @Test
   public void testLikingUsers() {
     assertEquals(
         "https://api.twitter.com/2/tweets/1354143047324299264/liking_users?user.fields=id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",

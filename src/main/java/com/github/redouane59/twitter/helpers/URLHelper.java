@@ -406,6 +406,10 @@ public class URLHelper {
     return ROOT_URL_V2 + USERS + "/" + sourceUserId + BLOCKING + "/" + targetUserId;
   }
 
+  public String getBlockingUsersUrl(String userId) {
+    return ROOT_URL_V2 + USERS + "/" + userId + BLOCKING + "?" + USER_FIELDS + ALL_USER_FIELDS;
+  }
+
   public String getLikingUsersUrl(final String tweetId) {
     return ROOT_URL_V2 + TWEETS + "/" + tweetId + "/liking_users"
            + "?" + USER_FIELDS + ALL_USER_FIELDS;

@@ -258,6 +258,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
+  public UserListV2 getBlockedUsers() {
+    String url = this.urlHelper.getBlockingUsersUrl(this.getUserIdFromAccessToken());
+    return this.getRequestHelper().getRequest(url, UserListV2.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
   public User getUserFromUserId(String userId) {
     String url = this.getUrlHelper().getUserUrl(userId);
     return this.getRequestHelper().getRequest(url, UserV2.class).orElseThrow(NoSuchElementException::new);
