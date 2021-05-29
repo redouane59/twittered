@@ -6,13 +6,14 @@ This project is a JAVA library which allows you to consume the Twitter API.
 
 [![Premium](https://img.shields.io/static/v1?label=Twitter%20API&message=Premium&color=794BC4&style=flat&logo=Twitter)](https://developer.twitter.com/en/docs/tweets/search/api-reference/premium-search)
 
-## /!\ Development in progress... Any [feedback](https://github.com/redouane59/twittered/issues/new/choose) is welcome :) /!\ 
+## /!\ Development in progress... Any [feedback](https://github.com/redouane59/twittered/issues/new/choose) is welcome :) /!\
 
 ### Configuration
 
 ![Maven Central](https://img.shields.io/maven-central/v/com.github.redouane59.twitter/twittered)
 
 In your pom.xml, add the following dependency and replace `VERSION` with the version you wish:
+
 ```
 <dependency>
   <groupId>com.github.redouane59.twitter</groupId>
@@ -21,7 +22,8 @@ In your pom.xml, add the following dependency and replace `VERSION` with the ver
 </dependency>
 ```
 
-To be able to see library logs, also add sl4j references : 
+To be able to see library logs, also add sl4j references :
+
 ```
 <dependency>
   <groupId>org.slf4j</groupId>
@@ -40,6 +42,7 @@ In order to use your own developer credentials, you have several options :
 #### Using a json file
 
 File example :
+
 ```
 {
   "apiKey": "xxx",
@@ -51,20 +54,24 @@ File example :
 
 ##### With program argument
 
-Pass through java argument your file path like `-Dtwitter.credentials.file.path=/your/path/to/json` .
-Then instantiate the client like 
+Pass through java argument your file path like `-Dtwitter.credentials.file.path=/your/path/to/json`
+. Then instantiate the client like
+
 ```
 TwitterClient client = new TwitterClient();
 ```
 
-or 
+or
 
 ##### Using deserialization in your code
+
 ```
 TwitterClient twitterClient = new TwitterClient(TwitterClient.OBJECT_MAPPER
                                                     .readValue(new File("/your/path/to/json"), TwitterCredentials.class));
 ``` 
+
 #### With hard-coded values
+
 ```
 TwitterClient twitterClient = new TwitterClient(TwitterCredentials.builder()
                                                             .accessToken("<access_token>")
@@ -74,35 +81,48 @@ TwitterClient twitterClient = new TwitterClient(TwitterCredentials.builder()
                                                             .build());
 ``` 
 
-NB : Your twitter credentials can be found in [your twitter app page](https://developer.twitter.com/en/apps) in the _Key and tokens_
-page. 
+NB : Your twitter credentials can be found
+in [your twitter app page](https://developer.twitter.com/en/apps) in the _Key and tokens_
+page.
 
 ### Available methods
-See : 
+
+See :
+
 - [ITwitterClientV2.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/ITwitterClientV2.java)
 - [ITwitterClientV1.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/ITwitterClientV1.java)
 - [Tweet.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/dto/tweet/Tweet.java)
 - [User.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/dto/user/User.java)
 
 ### Code samples
-See : 
+
+See :
+
 - [ITwitterClientV2Test.java](https://github.com/redouane59/twittered/blob/master/src/test/java/com/github/redouane59/twitter/nrt/ITwitterClientV2Test.java)
+- [ITwitterClientV2AuthenticatedTest.java](https://github.com/redouane59/twittered/blob/master/src/test/java/com/github/redouane59/twitter/nrt/ITwitterClientV2AuthenticatedTest.java)
 - [ITwitterClientV1Test.java](https://github.com/redouane59/twittered/blob/master/src/test/java/com/github/redouane59/twitter/nrt/ITwitterClientV1Test.java)
 
 ### Contribution
-If you want to contribute to the project, don't hesitate to submit pull requests.
-To add a new feature :
-- Create the interface method in the related interface (e.g [ITwitterClientV2.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/ITwitterClientV2.java))
-- If needed, add the endpoint URL in [URLHelper.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/helpers/URLHelper.java)
-- Implement your method in the child class (e.g [TwitterClient.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/TwitterClient.java))
+
+If you want to contribute to the project, don't hesitate to submit pull requests. To add a new
+feature :
+
+- Create the interface method in the related interface (
+  e.g [ITwitterClientV2.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/ITwitterClientV2.java))
+- If needed, add the endpoint URL
+  in [URLHelper.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/helpers/URLHelper.java)
+- Implement your method in the child class (
+  e.g [TwitterClient.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/TwitterClient.java))
 - Don't forget to add your unit tests in `src/test/java/com/github/redouane59/twitter/unit`
 
 Code style is also available in `.idea/codeStyles/GoogleStyle.xml` file.
 
 ### External Resources
+
 [Twitter Developers docs](https://developer.twitter.com/en/docs)
 
 ### Special thanks
+
 [@hypr2771](https://github.com/hypr2771)
 [@mmornati](https://github.com/mmornati)
 [@andypiper](https://github.com/andypiper)

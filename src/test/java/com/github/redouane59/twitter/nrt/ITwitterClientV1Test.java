@@ -11,6 +11,7 @@ import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
+import com.github.redouane59.twitter.helpers.ConverterHelper;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -142,7 +143,7 @@ public class ITwitterClientV1Test {
   public void testSearchTweets30days() {
     List<Tweet>
         result =
-        twitterClient.searchForTweetsWithin30days("@Twitter -RT", LocalDateTime.of(2020, 9, 1, 0, 0), LocalDateTime.of(2020, 9, 3, 0, 0), "30days");
+        twitterClient.searchForTweetsWithin30days("@Twitter -RT", ConverterHelper.dayBeforeNow(25), ConverterHelper.dayBeforeNow(1), "30days");
     assertTrue(result.size() > 0);
   }
 
@@ -168,7 +169,7 @@ public class ITwitterClientV1Test {
 
   @Test
   public void testAnswerToSeveralUsers() {
-    Tweet tweet = twitterClient.postTweet(".", "1369395732415922182");
+    Tweet tweet = twitterClient.postTweet(".", "1396580851274682370");
     assertNotNull(tweet);
     assertNotNull(tweet.getId());
     twitterClient.deleteTweet(tweet.getId());
