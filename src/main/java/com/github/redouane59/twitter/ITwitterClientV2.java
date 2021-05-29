@@ -268,6 +268,11 @@ public interface ITwitterClientV2 {
   BlockResponse unblockUser(String targetUserId);
 
   /**
+   * Returns a list of users who are blocked by the authenticated user.
+   */
+  UserListV2 getBlockedUsers();
+
+  /**
    * Like a tweet calling https://api.twitter.com/2/users/:id/likes
    *
    * @param tweetId The ID of the Tweet that you would like the user id to Like. you must pass the Access Tokens associated with the user ID when

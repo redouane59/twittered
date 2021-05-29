@@ -2,6 +2,7 @@ package com.github.redouane59.twitter.nrt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.redouane59.RelationType;
@@ -10,6 +11,7 @@ import com.github.redouane59.twitter.dto.others.BlockResponse;
 import com.github.redouane59.twitter.dto.tweet.LikeResponse;
 import com.github.redouane59.twitter.dto.user.FollowResponse;
 import com.github.redouane59.twitter.dto.user.User;
+import com.github.redouane59.twitter.dto.user.UserListV2;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -54,6 +56,15 @@ public class ITwitterClientV2AuthenticatedTest {
     assertTrue(response.getData().isBlocking());
     response = twitterClient.unblockUser(targetId);
     assertFalse(response.getData().isBlocking());
+  }
+
+  @Test
+  public void testGetBlockingUsers() {
+    UserListV2 result = twitterClient.getBlockedUsers();
+    assertNotNull(result);
+    assertTrue(result.getData().size() > 0);
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getData().get(0).getName());
   }
 
   @Test
