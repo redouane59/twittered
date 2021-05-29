@@ -268,7 +268,7 @@ public interface ITwitterClientV2 {
   BlockResponse unblockUser(String targetUserId);
 
   /**
-   * Returns a list of users who are blocked by the specified user ID.
+   * Returns a list of users who are blocked by the authenticated user.
    */
   UserListV2 getBlockedUsers();
 
