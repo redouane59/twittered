@@ -19,7 +19,7 @@ public class DMDeserializarTest {
 
   @Test
   public void testEvenCount() {
-    assertEquals(2, dmList.getEvents().size());
+    assertEquals(2, dmList.getDirectMessages().size());
   }
 
   @Test
@@ -29,17 +29,17 @@ public class DMDeserializarTest {
 
   @Test
   public void testGetDmId() {
-    assertEquals("1399066074671370249", dmList.getEvents().get(0).getId());
+    assertEquals("1399066074671370249", dmList.getDirectMessages().get(0).getId());
   }
 
   @Test
   public void testGetSenderId() {
-    assertEquals("1120050519182016513", dmList.getEvents().get(0).getMessageCreate().getSenderId());
+    assertEquals("1120050519182016513", dmList.getDirectMessages().get(0).getMessageCreate().getSenderId());
   }
 
   @Test
   public void testGetText() {
-    assertEquals("Bonjour", dmList.getEvents().get(0).getText());
+    assertEquals("Bonjour", dmList.getDirectMessages().get(0).getText());
   }
 
 }

@@ -422,7 +422,7 @@ public class URLHelper {
   }
 
   public String getDMListUrl() {
-    return ROOT_URL_V1 + DIRECT_MESSAGE_EVENTS + LIST_JSON;
+    return ROOT_URL_V1 + DIRECT_MESSAGE_EVENTS + LIST_JSON + "?" + COUNT + "=50";
   }
 
 }

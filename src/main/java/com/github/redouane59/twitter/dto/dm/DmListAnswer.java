@@ -13,14 +13,15 @@ import lombok.NoArgsConstructor;
 public class DmListAnswer {
 
   @JsonProperty("next_cursor")
-  private String      nextCursor;
-  private List<Event> events;
-  private JsonNode    apps;
+  private String              nextCursor;
+  @JsonProperty("events")
+  private List<DirectMessage> directMessages;
+  private JsonNode            apps;
 
   @NoArgsConstructor
   @AllArgsConstructor
   @Getter
-  public static class Event {
+  public static class DirectMessage {
 
     private String        id;
     @JsonProperty("created_timestamp")
