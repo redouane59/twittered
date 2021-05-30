@@ -186,19 +186,15 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  public void testGetFilteredStreamRules() {
-    List<StreamRule> result = twitterClient.retrieveFilteredStreamRules();
-    assertTrue(result.size() > 0);
-  }
-
-  @Test
-  public void testAddAndDeleteFilteredStreamRules() {
+  public void testAddAndDeleteAndGetFilteredStreamRules() {
     String     ruleName = "test_rule";
     StreamRule result   = twitterClient.addFilteredStreamRule(ruleName, "1");
     assertNotNull(result);
     assertNotNull(result.getId());
     assertEquals("test_rule", result.getValue());
     assertEquals("1", result.getTag());
+    List<StreamRule> rules = twitterClient.retrieveFilteredStreamRules();
+    assertTrue(rules.size() > 0);
     StreamMeta streamMeta = twitterClient.deleteFilteredStreamRule(ruleName);
     assertNotNull(streamMeta);
   }
