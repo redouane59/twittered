@@ -635,7 +635,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       if (token != null) {
         url = url + "&" + PAGINATION_TOKEN + "=" + token;
       }
-      Optional<TweetSearchResponseV2> tweetListDTO = this.getRequestHelper().getRequest(url, TweetSearchResponseV2.class);
+      Optional<TweetSearchResponseV2> tweetListDTO = this.getRequestHelperV2().getRequest(url, TweetSearchResponseV2.class);
       if (!tweetListDTO.isPresent() || tweetListDTO.get().getData() == null) {
         break;
       }
