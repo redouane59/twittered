@@ -134,7 +134,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testSearchTweets7days() {
-    List<Tweet> result = twitterClient.searchForTweetsWithin7days("@lequipe -RT");
+    List<Tweet> result = twitterClient.searchForTweetsWithin7days("@lequipe bonjour -RT");
     assertTrue(result.size() > 10);
     Tweet tweet = result.get(0);
     assertNotNull(tweet.getId());
@@ -227,47 +227,38 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  // todo test KO
-  public void testGetUserTimelineWithDates() {
-    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 5, ConverterHelper.dayBeforeNow(15),
+  public void testGetUserTimelineWithDatesThenWithIds() {
+    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 10, ConverterHelper.dayBeforeNow(30),
                                                        ConverterHelper.dayBeforeNow(1), null, null);
-    assertEquals(5, result.size());
+    assertEquals(10, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
-  }
 
-  @Test
-  public void testGetUserTimelineWithIds() {
-    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 10, null, null, "1368841795061350402",
-                                                       "1369395486743011338");
-    assertTrue(result.size() > 0);
+    result = twitterClient.getUserTimeline(this.userId, 5, null, null, result.get(6).getId(),
+                                           result.get(0).getId());
+    assertEquals(5, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
   }
 
   @Test
   public void testGetUserMentions() {
-    List<Tweet> result = twitterClient.getUserMentions("1120050519182016513", 150);
+    List<Tweet> result = twitterClient.getUserMentions("1307302673318895621", 150);
     assertEquals(150, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
   }
 
   @Test
-  // todo test KO
-  public void testGetUserMentionsWithDates() {
-    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 5, ConverterHelper.dayBeforeNow(20),
+  public void testGetUserMentionsWithDatesThenWithIds() {
+    List<Tweet> result = twitterClient.getUserMentions("1307302673318895621", 10, ConverterHelper.dayBeforeNow(30),
                                                        ConverterHelper.dayBeforeNow(1), null, null);
-    assertEquals(5, result.size());
+    assertEquals(10, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
-  }
 
-  @Test
-  @Disabled // impossible to test
-  public void testGetUserMentionsWithIds() {
-    List<Tweet> result = twitterClient.getUserTimeline("18936161", 10, null, null, "1339659629228384256",
-                                                       "1339993046377766912");
+    result = twitterClient.getUserMentions("1307302673318895621", 5, null, null, result.get(6).getId(),
+                                           result.get(0).getId());
     assertEquals(5, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
