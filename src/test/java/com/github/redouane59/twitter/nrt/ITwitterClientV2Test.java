@@ -186,19 +186,15 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  public void testGetFilteredStreamRules() {
-    List<StreamRule> result = twitterClient.retrieveFilteredStreamRules();
-    assertTrue(result.size() > 0);
-  }
-
-  @Test
-  public void testAddAndDeleteFilteredStreamRules() {
+  public void testAddAndDeleteAndGetFilteredStreamRules() {
     String     ruleName = "test_rule";
     StreamRule result   = twitterClient.addFilteredStreamRule(ruleName, "1");
     assertNotNull(result);
     assertNotNull(result.getId());
     assertEquals("test_rule", result.getValue());
     assertEquals("1", result.getTag());
+    List<StreamRule> rules = twitterClient.retrieveFilteredStreamRules();
+    assertTrue(rules.size() > 0);
     StreamMeta streamMeta = twitterClient.deleteFilteredStreamRule(ruleName);
     assertNotNull(streamMeta);
   }
@@ -233,9 +229,9 @@ public class ITwitterClientV2Test {
   @Test
   // todo test KO
   public void testGetUserTimelineWithDates() {
-    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 2, ConverterHelper.dayBeforeNow(5),
+    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 5, ConverterHelper.dayBeforeNow(15),
                                                        ConverterHelper.dayBeforeNow(1), null, null);
-    assertEquals(2, result.size());
+    assertEquals(5, result.size());
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getText());
   }
@@ -309,4 +305,5 @@ public class ITwitterClientV2Test {
     assertNotNull(result.getData().get(0).getText());
     assertNotNull(result.getData().get(0).getCreatedAt());
   }
+
 }
