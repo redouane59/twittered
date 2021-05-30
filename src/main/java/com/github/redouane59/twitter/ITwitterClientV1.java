@@ -4,6 +4,7 @@ import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.collections.CollectionsResponse;
 import com.github.redouane59.twitter.dto.collections.CollectionsResponse.Response.Position;
 import com.github.redouane59.twitter.dto.collections.TimeLineOrder;
+import com.github.redouane59.twitter.dto.dm.DmListAnswer;
 import com.github.redouane59.twitter.dto.others.RateLimitStatus;
 import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
@@ -212,6 +213,12 @@ public interface ITwitterClientV1 {
    * @return {@link CollectionsResponse#isDestroyed()}
    */
   CollectionsResponse collectionsDestroy(String collectionId);
+
+  /**
+   * Returns all Direct Message events (both sent and received) within the last 30 days. Sorted in reverse-chronological order. Calling
+   * https://api.twitter.com/1.1/direct_messages/events/list.json
+   */
+  DmListAnswer getDmList();
 
 }
 
