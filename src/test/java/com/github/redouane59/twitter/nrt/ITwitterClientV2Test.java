@@ -160,9 +160,9 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  public void testSearchTweetsFullArchiveWithNexTokenAndCount() {
-    TweetSearchResponse result = twitterClient.searchForTweetsFullArchive("@TwitterSupport",
-                                                                          ConverterHelper.dayBeforeNow(10),
+  public void testSearchTweetsFullArchiveWithCount() {
+    TweetSearchResponse result = twitterClient.searchForTweetsFullArchive("Twitter",
+                                                                          ConverterHelper.dayBeforeNow(2),
                                                                           ConverterHelper.dayBeforeNow(1),
                                                                           10,
                                                                           null);
