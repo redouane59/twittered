@@ -42,4 +42,8 @@ public class DMDeserializarTest {
     assertEquals("Bonjour", dmList.getDirectMessages().get(0).getText());
   }
 
+  @Test
+  public void testGetTimeStamp() {
+    assertEquals("1622398320249", dmList.getDirectMessages().get(0).getCreatedTimeStamp());
+  }
 }
