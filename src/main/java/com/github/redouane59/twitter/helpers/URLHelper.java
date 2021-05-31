@@ -17,7 +17,7 @@ public class URLHelper {
   private static final String SCREEN_NAME                   = "screen_name";
   private static final String ID                            = "id";
   private static final String COUNT                         = "count";
-  private static final String LIST_JSON                     = "/list.json?";
+  private static final String LIST_JSON                     = "/list.json";
   private static final String SHOW_JSON                     = "/show.json?";
   private static final String CREATE_JSON                   = "/create.json?";
   private static final String DESTROY_JSON                  = "/destroy.json?";
@@ -72,6 +72,7 @@ public class URLHelper {
   private static final String MAX_RESULTS                   = "max_results";
   private static final String BLOCKING                      = "/blocking";
   private static final String LIKES                         = "/likes";
+  private static final String DIRECT_MESSAGE_EVENTS         = "/direct_messages/events";
 
   public String getSearchTweet30DaysUrl(String envName) {
     return ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + "/" + envName + JSON;
@@ -419,4 +420,9 @@ public class URLHelper {
     return ROOT_URL_V2 + USERS + "/" + userId + "/liked_tweets"
            + "?" + TWEET_FIELDS + ALL_TWEET_FIELDS;
   }
+
+  public String getDMListUrl() {
+    return ROOT_URL_V1 + DIRECT_MESSAGE_EVENTS + LIST_JSON + "?" + COUNT + "=50";
+  }
+
 }

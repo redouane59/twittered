@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.collections.CollectionsResponse;
 import com.github.redouane59.twitter.dto.collections.TimeLineOrder;
+import com.github.redouane59.twitter.dto.dm.DmListAnswer;
+import com.github.redouane59.twitter.dto.dm.DmListAnswer.DirectMessage;
 import com.github.redouane59.twitter.dto.getrelationship.IdList;
 import com.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
 import com.github.redouane59.twitter.dto.others.BlockResponse;
@@ -787,6 +789,20 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public CollectionsResponse collectionsDestroy(String collectionId) {
     String url = this.getUrlHelper().getCollectionsDestroyUrl(collectionId);
     return this.requestHelperV1.postRequest(url, Collections.emptyMap(), CollectionsResponse.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public List<DirectMessage> getDmList() {
+    List<DirectMessage> result = new ArrayList<>();
+    String              url    = this.getUrlHelper().getDMListUrl();
+    DmListAnswer        dmListAnswer;
+    do {
+      dmListAnswer = this.requestHelperV1.getRequest(url, DmListAnswer.class).orElseThrow(NoSuchElementException::new);
+      result.addAll(dmListAnswer.getDirectMessages());
+      url = this.getUrlHelper().getDMListUrl() + "&" + CURSOR + "=" + dmListAnswer.getNextCursor();
+    }
+    while (dmListAnswer.getNextCursor() != null);
+    return result;
   }
 
   @Override

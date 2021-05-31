@@ -322,4 +322,9 @@ public class UrlHelperTest {
     assertEquals("https://api.twitter.com/2/users/" + userId + "/liked_tweets?" + URLHelper.TWEET_FIELDS + URLHelper.ALL_TWEET_FIELDS,
                  urlHelper.getLikedTweetsUrl(userId));
   }
+
+  @Test
+  public void testDMListUrl() {
+    assertEquals("https://api.twitter.com/1.1/direct_messages/events/list.json?count=50", urlHelper.getDMListUrl());
+  }
 }

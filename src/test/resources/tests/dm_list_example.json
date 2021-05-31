@@ -1,0 +1,54 @@
+{
+  "events": [
+    {
+      "type": "message_create",
+      "id": "1399066074671370249",
+      "created_timestamp": "1622398320249",
+      "message_create": {
+        "target": {
+          "recipient_id": "1337697885249548289"
+        },
+        "sender_id": "1120050519182016513",
+        "source_app_id": "258901",
+        "message_data": {
+          "text": "Bonjour",
+          "entities": {
+            "hashtags": [],
+            "symbols": [],
+            "user_mentions": [],
+            "urls": []
+          }
+        }
+      }
+    },
+    {
+      "type": "message_create",
+      "id": "1397795528725966853",
+      "created_timestamp": "1622095398490",
+      "message_create": {
+        "target": {
+          "recipient_id": "1313384919821844480"
+        },
+        "sender_id": "1120050519182016513",
+        "source_app_id": "258901",
+        "message_data": {
+          "text": "Hello",
+          "entities": {
+            "hashtags": [],
+            "symbols": [],
+            "user_mentions": [],
+            "urls": []
+          }
+        }
+      }
+    }
+  ],
+  "apps": {
+    "258901": {
+      "id": "258901",
+      "name": "Twitter for Android",
+      "url": "http://twitter.com/download/android"
+    }
+  },
+  "next_cursor": "MTM5Nzc5NTQ2NjIzMDgyOTA1OQ"
+}
