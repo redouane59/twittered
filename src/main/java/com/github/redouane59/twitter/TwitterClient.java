@@ -793,16 +793,25 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public List<DirectMessage> getDmList() {
-    List<DirectMessage> result = new ArrayList<>();
-    String              url    = this.getUrlHelper().getDMListUrl();
+    return this.getDmList(Integer.MAX_VALUE);
+  }
+
+  @Override
+  public List<DirectMessage> getDmList(int count) {
+    List<DirectMessage> result   = new ArrayList<>();
+    int                 maxCount = 50;
+    String              url      = this.getUrlHelper().getDMListUrl(maxCount);
     DmListAnswer        dmListAnswer;
     do {
       dmListAnswer = this.requestHelperV1.getRequest(url, DmListAnswer.class).orElseThrow(NoSuchElementException::new);
       result.addAll(dmListAnswer.getDirectMessages());
-      url = this.getUrlHelper().getDMListUrl() + "&" + CURSOR + "=" + dmListAnswer.getNextCursor();
+      url = this.getUrlHelper().getDMListUrl(maxCount) + "&" + CURSOR + "=" + dmListAnswer.getNextCursor();
     }
-    while (dmListAnswer.getNextCursor() != null);
-    return result;
+    while (dmListAnswer.getNextCursor() != null && result.size() < count);
+    if (dmListAnswer.getNextCursor() == null) {
+      return result;
+    }
+    return result.subList(0, count); // to fix the API bug which is not giving the right count
   }
 
   @Override
