@@ -224,7 +224,7 @@ public interface ITwitterClientV1 {
    * Returns all Direct Message events (both sent and received) within the last 30 days. Sorted in reverse-chronological order. Calling
    * https://api.twitter.com/1.1/direct_messages/events/list.json
    *
-   * @param count Max number of events to be returned
+   * @param count Number of direct messages to be returned
    */
   List<DirectMessage> getDmList(int count);
 
