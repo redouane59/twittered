@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.dm.DmListAnswer.DirectMessage;
+import com.github.redouane59.twitter.dto.dm.DirectMessage;
 import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
@@ -184,12 +184,15 @@ public class ITwitterClientV1Test {
   }
 
   @Test
-  public void testGetDmListWithCount() {
+  public void testGetDmListWithCountAndGetDm() {
     int                 count  = 55;
     List<DirectMessage> result = twitterClient.getDmList(count);
     assertNotNull(result);
     assertEquals(count, result.size());
     assertNotNull(result.get(0).getText());
+    DirectMessage dm = twitterClient.getDm(result.get(0).getId());
+    assertNotNull(dm);
+    assertNotNull(dm.getText());
   }
 
 }

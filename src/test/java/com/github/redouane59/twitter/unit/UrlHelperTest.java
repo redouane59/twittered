@@ -327,4 +327,10 @@ public class UrlHelperTest {
   public void testDMListUrl() {
     assertEquals("https://api.twitter.com/1.1/direct_messages/events/list.json?count=50", urlHelper.getDMListUrl(50));
   }
+
+  @Test
+  public void testDmUrl() {
+    String dmId = "110";
+    assertEquals("https://api.twitter.com/1.1/direct_messages/events/show.json?id=" + dmId, urlHelper.getDmUrl(dmId));
+  }
 }
