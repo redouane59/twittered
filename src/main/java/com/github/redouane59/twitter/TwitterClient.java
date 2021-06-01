@@ -8,8 +8,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.collections.CollectionsResponse;
 import com.github.redouane59.twitter.dto.collections.TimeLineOrder;
+import com.github.redouane59.twitter.dto.dm.DirectMessage;
+import com.github.redouane59.twitter.dto.dm.DmAnswer;
 import com.github.redouane59.twitter.dto.dm.DmListAnswer;
-import com.github.redouane59.twitter.dto.dm.DmListAnswer.DirectMessage;
 import com.github.redouane59.twitter.dto.getrelationship.IdList;
 import com.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
 import com.github.redouane59.twitter.dto.others.BlockResponse;
@@ -808,10 +809,17 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       url = this.getUrlHelper().getDMListUrl(maxCount) + "&" + CURSOR + "=" + dmListAnswer.getNextCursor();
     }
     while (dmListAnswer.getNextCursor() != null && result.size() < count);
-    if (dmListAnswer.getNextCursor() == null) {
+    if (count == Integer.MAX_VALUE) {
       return result;
     }
     return result.subList(0, count); // to fix the API bug which is not giving the right count
+  }
+
+  @Override
+  public DirectMessage getDm(String dmId) {
+    String   url    = urlHelper.getDmUrl(dmId);
+    DmAnswer result = this.getRequestHelper().getRequest(url, DmAnswer.class).orElseThrow(NoSuchElementException::new);
+    return result.getEvent();
   }
 
   @Override

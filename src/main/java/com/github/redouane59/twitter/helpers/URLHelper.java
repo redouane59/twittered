@@ -425,4 +425,8 @@ public class URLHelper {
     return ROOT_URL_V1 + DIRECT_MESSAGE_EVENTS + LIST_JSON + "?" + COUNT + "=" + count;
   }
 
+  public String getDmUrl(String id) {
+    return ROOT_URL_V1 + DIRECT_MESSAGE_EVENTS + SHOW_JSON + ID + "=" + id;
+  }
+
 }

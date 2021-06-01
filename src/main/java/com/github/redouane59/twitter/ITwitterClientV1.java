@@ -4,7 +4,7 @@ import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.collections.CollectionsResponse;
 import com.github.redouane59.twitter.dto.collections.CollectionsResponse.Response.Position;
 import com.github.redouane59.twitter.dto.collections.TimeLineOrder;
-import com.github.redouane59.twitter.dto.dm.DmListAnswer.DirectMessage;
+import com.github.redouane59.twitter.dto.dm.DirectMessage;
 import com.github.redouane59.twitter.dto.others.RateLimitStatus;
 import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
@@ -227,6 +227,13 @@ public interface ITwitterClientV1 {
    * @param count Number of direct messages to be returned
    */
   List<DirectMessage> getDmList(int count);
+
+  /**
+   * Returns a single Direct Message event by the given id.
+   *
+   * @param dmId The id of the Direct Message event that should be returned.
+   */
+  public DirectMessage getDm(String dmId);
 
 }
 
