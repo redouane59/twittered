@@ -421,8 +421,8 @@ public class URLHelper {
            + "?" + TWEET_FIELDS + ALL_TWEET_FIELDS;
   }
 
-  public String getDMListUrl() {
-    return ROOT_URL_V1 + DIRECT_MESSAGE_EVENTS + LIST_JSON + "?" + COUNT + "=50";
+  public String getDMListUrl(int count) {
+    return ROOT_URL_V1 + DIRECT_MESSAGE_EVENTS + LIST_JSON + "?" + COUNT + "=" + count;
   }
 
 }

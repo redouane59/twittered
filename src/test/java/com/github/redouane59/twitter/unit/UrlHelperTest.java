@@ -325,6 +325,6 @@ public class UrlHelperTest {
 
   @Test
   public void testDMListUrl() {
-    assertEquals("https://api.twitter.com/1.1/direct_messages/events/list.json?count=50", urlHelper.getDMListUrl());
+    assertEquals("https://api.twitter.com/1.1/direct_messages/events/list.json?count=50", urlHelper.getDMListUrl(50));
   }
 }

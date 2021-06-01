@@ -184,10 +184,11 @@ public class ITwitterClientV1Test {
   }
 
   @Test
-  public void testGetDmList() {
-    List<DirectMessage> result = twitterClient.getDmList();
+  public void testGetDmListWithCount() {
+    int                 count  = 55;
+    List<DirectMessage> result = twitterClient.getDmList(count);
     assertNotNull(result);
-    assertTrue(result.size() > 0);
+    assertEquals(count, result.size());
     assertNotNull(result.get(0).getText());
   }
 
