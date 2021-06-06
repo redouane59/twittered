@@ -1,24 +1,35 @@
 package com.github.redouane59.twitter.dto.dm;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.github.redouane59.twitter.dto.dm.DirectMessage.MessageCreate.MessageData;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
 public class DirectMessage {
 
   private String        id;
   @JsonProperty("created_timestamp")
   private String        createdTimeStamp;
-  private String        type;
+  private String        type = "message_create";
   @JsonProperty("message_create")
   private MessageCreate messageCreate;
-  private Target        target;
 
+  public DirectMessage(String text, String userId) {
+    this.messageCreate = new MessageCreate();
+    this.messageCreate.setMessageData(new MessageData(text, null));
+    this.messageCreate.setTarget(new Target(userId));
+  }
+
+  @JsonIgnore
   public String getText() {
     if (this.getMessageCreate() == null || this.getMessageCreate().getMessageData() == null) {
       return null;
@@ -26,9 +37,8 @@ public class DirectMessage {
     return this.getMessageCreate().getMessageData().getText();
   }
 
-  @NoArgsConstructor
-  @AllArgsConstructor
-  @Getter
+  @lombok.Setter
+  @lombok.Getter
   public static class MessageCreate {
 
     @JsonProperty("sender_id")
@@ -37,10 +47,12 @@ public class DirectMessage {
     private String      sourceAppId;
     @JsonProperty("message_data")
     private MessageData messageData;
+    private Target      target;
 
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
+    @Setter
     public static class MessageData {
 
       private String   text;

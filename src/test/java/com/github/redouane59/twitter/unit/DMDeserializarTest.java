@@ -2,7 +2,10 @@ package com.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.redouane59.twitter.TwitterClient;
+import com.github.redouane59.twitter.dto.dm.DirectMessage;
+import com.github.redouane59.twitter.dto.dm.DmEvent;
 import com.github.redouane59.twitter.dto.dm.DmListAnswer;
 import java.io.File;
 import java.io.IOException;
@@ -45,5 +48,15 @@ public class DMDeserializarTest {
   @Test
   public void testGetTimeStamp() {
     assertEquals("1622398320249", dmList.getDirectMessages().get(0).getCreatedTimeStamp());
+  }
+
+  @Test
+  public void testSerializeDM() throws JsonProcessingException {
+    String text   = "Hello World!";
+    String userId = "12345";
+    String
+        expectingString =
+        "{\"event\":{\"type\":\"message_create\",\"message_create\":{\"target\":{\"recipient_id\":\"12345\"},\"message_data\":{\"text\":\"Hello World!\"}}}}";
+    assertEquals(expectingString, TwitterClient.OBJECT_MAPPER.writeValueAsString(DmEvent.builder().event(new DirectMessage(text, userId)).build()));
   }
 }

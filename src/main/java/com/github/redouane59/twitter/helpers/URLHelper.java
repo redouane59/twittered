@@ -429,4 +429,8 @@ public class URLHelper {
     return ROOT_URL_V1 + DIRECT_MESSAGE_EVENTS + SHOW_JSON + ID + "=" + id;
   }
 
+  public String getPostDmUrl() {
+    return ROOT_URL_V1 + DIRECT_MESSAGE_EVENTS + "/new.json";
+  }
+
 }
