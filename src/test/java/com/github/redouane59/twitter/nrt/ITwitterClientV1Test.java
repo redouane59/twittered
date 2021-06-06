@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.TwitterClient;
 import com.github.redouane59.twitter.dto.dm.DirectMessage;
+import com.github.redouane59.twitter.dto.dm.DmEvent;
 import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
@@ -193,6 +194,13 @@ public class ITwitterClientV1Test {
     DirectMessage dm = twitterClient.getDm(result.get(0).getId());
     assertNotNull(dm);
     assertNotNull(dm.getText());
+  }
+
+  @Test
+  public void testPostDM() {
+    DmEvent result = twitterClient.postDm("Hello world !", "1120050519182016513");
+    assertNotNull(result);
+    assertNotNull(result.getEvent().getText());
   }
 
 }

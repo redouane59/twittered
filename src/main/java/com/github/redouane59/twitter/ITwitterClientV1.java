@@ -5,6 +5,7 @@ import com.github.redouane59.twitter.dto.collections.CollectionsResponse;
 import com.github.redouane59.twitter.dto.collections.CollectionsResponse.Response.Position;
 import com.github.redouane59.twitter.dto.collections.TimeLineOrder;
 import com.github.redouane59.twitter.dto.dm.DirectMessage;
+import com.github.redouane59.twitter.dto.dm.DmEvent;
 import com.github.redouane59.twitter.dto.others.RateLimitStatus;
 import com.github.redouane59.twitter.dto.others.RequestToken;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
@@ -233,7 +234,15 @@ public interface ITwitterClientV1 {
    *
    * @param dmId The id of the Direct Message event that should be returned.
    */
-  public DirectMessage getDm(String dmId);
+  DirectMessage getDm(String dmId);
+
+  /**
+   * Publishes a new message_create event resulting in a Direct Message sent to a specified user from the authenticating user
+   *
+   * @param text defining the content to deliver to the reciepient
+   * @param userId The ID of the user who should receive the direct message.
+   */
+  DmEvent postDm(String text, String userId);
 
 }
 

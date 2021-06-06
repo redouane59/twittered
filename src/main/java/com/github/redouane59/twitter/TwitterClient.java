@@ -9,7 +9,7 @@ import com.github.redouane59.RelationType;
 import com.github.redouane59.twitter.dto.collections.CollectionsResponse;
 import com.github.redouane59.twitter.dto.collections.TimeLineOrder;
 import com.github.redouane59.twitter.dto.dm.DirectMessage;
-import com.github.redouane59.twitter.dto.dm.DmAnswer;
+import com.github.redouane59.twitter.dto.dm.DmEvent;
 import com.github.redouane59.twitter.dto.dm.DmListAnswer;
 import com.github.redouane59.twitter.dto.getrelationship.IdList;
 import com.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
@@ -817,9 +817,22 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public DirectMessage getDm(String dmId) {
-    String   url    = urlHelper.getDmUrl(dmId);
-    DmAnswer result = this.getRequestHelper().getRequest(url, DmAnswer.class).orElseThrow(NoSuchElementException::new);
+    String  url    = urlHelper.getDmUrl(dmId);
+    DmEvent result = this.getRequestHelper().getRequest(url, DmEvent.class).orElseThrow(NoSuchElementException::new);
     return result.getEvent();
+  }
+
+  @Override
+  public DmEvent postDm(final String text, final String userId) {
+    String url = urlHelper.getPostDmUrl();
+    try {
+      String body = TwitterClient.OBJECT_MAPPER.writeValueAsString(
+          DmEvent.builder().event(new DirectMessage(text, userId)).build());
+      return this.getRequestHelperV1().postRequestWithBodyJson(url, null, body, DmEvent.class).orElseThrow(NoSuchElementException::new);
+    } catch (JsonProcessingException e) {
+      LOGGER.error(e.getMessage(), e.getStackTrace());
+    }
+    return null;
   }
 
   @Override
