@@ -37,22 +37,17 @@ public class DirectMessage {
     return this.getMessageCreate().getMessageData().getText();
   }
 
+  @lombok.Setter
+  @lombok.Getter
   public static class MessageCreate {
 
     @JsonProperty("sender_id")
-    @Getter
     private String      senderId;
-    @Getter
     @JsonProperty("source_app_id")
     private String      sourceAppId;
     @JsonProperty("message_data")
-    @Setter
-    @Getter
     private MessageData messageData;
-    @Getter
-    @Setter
     private Target      target;
-
 
     @NoArgsConstructor
     @AllArgsConstructor
