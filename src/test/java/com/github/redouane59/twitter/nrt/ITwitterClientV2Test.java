@@ -301,7 +301,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetTweetCount() {
-    TweetsCountsList result = twitterClient.getTweetsCounts("@Twitter");
+    TweetsCountsList result = twitterClient.getTweetCounts("@Twitter");
     assertTrue(result.getData().size() > 0);
     assertTrue(result.getData().get(0).getTweetCount() > 0);
   }
@@ -310,12 +310,21 @@ public class ITwitterClientV2Test {
   public void testGetTweetCountsWithParams() {
     TweetsCountsList
         result =
-        twitterClient.getTweetsCounts("@Twitter", AdditionnalParameters.builder()
-                                                                       .startTime(ConverterHelper.dayBeforeNow(5))
-                                                                       .endTime(ConverterHelper.dayBeforeNow(4))
-                                                                       .build());
+        twitterClient.getTweetCounts("@Twitter", AdditionnalParameters.builder()
+                                                                      .startTime(ConverterHelper.dayBeforeNow(5))
+                                                                      .endTime(ConverterHelper.dayBeforeNow(4))
+                                                                      .build());
     assertTrue(result.getData().size() > 0);
     assertTrue(result.getData().get(0).getTweetCount() > 0);
+  }
+
+  @Test
+  public void testGetTweetCountFullArchive() {
+    TweetsCountsList result = twitterClient.getTweetCountsFullArchive("@TwitterAPI");
+    assertTrue(result.getData().size() > 0);
+    assertTrue(result.getData().get(0).getTweetCount() > 0);
+    assertNotNull(result.getMeta().getNextToken());
+    assertTrue(result.getMeta().getTotalTweetCount() > 0);
   }
 
 }

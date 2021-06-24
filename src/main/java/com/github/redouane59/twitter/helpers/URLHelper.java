@@ -35,6 +35,7 @@ public class URLHelper {
   private static final String STREAM                        = "/stream";
   private static final String COUNTS                        = "/counts";
   private static final String RECENT                        = "/recent";
+  private static final String ALL                           = "/all";
   private static final String THIRTY_DAYS                   = "/30day";
   private static final String FULL_ARCHIVE                  = "/fullarchive";
   private static final String ACCOUNT_ACTIVITY              = "/account_activity/all";
@@ -437,6 +438,10 @@ public class URLHelper {
 
   public String getTweetsCountsUrl() {
     return ROOT_URL_V2 + TWEETS + COUNTS + RECENT;
+  }
+
+  public String getTweetsCountsFullArchiveUrl() {
+    return ROOT_URL_V2 + TWEETS + COUNTS + ALL;
   }
 
 }

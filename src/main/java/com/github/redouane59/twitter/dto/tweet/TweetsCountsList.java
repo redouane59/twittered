@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 public class TweetsCountsList {
 
   private List<TweetCountData> data;
+  private TweetCountMeta       meta;
 
   @AllArgsConstructor
   @NoArgsConstructor
@@ -43,13 +44,25 @@ public class TweetsCountsList {
     protected LocalDateDeserializer() {
       super(LocalDateTime.class);
     }
-    
+
     @Override
     public LocalDateTime deserialize(JsonParser jp, DeserializationContext ctxt)
     throws IOException {
       return ConverterHelper.getDateFromTwitterDateV2(jp.readValueAs(String.class));
     }
 
+  }
+
+  @AllArgsConstructor
+  @NoArgsConstructor
+  @Builder
+  @Getter
+  public static class TweetCountMeta {
+
+    @JsonProperty("total_tweet_count")
+    private int    totalTweetCount;
+    @JsonProperty("next_token")
+    private String nextToken;
   }
 
 }

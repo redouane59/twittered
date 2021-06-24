@@ -308,19 +308,38 @@ public interface ITwitterClientV2 {
 
 
   /**
-   * The recent Tweet counts endpoint returns count of Tweets from the last seven days that match a search query.
+   * The recent Tweet counts endpoint returns count of Tweets from the last seven days that match a search query calling
+   * https://api.twitter.com/2/tweets/counts/recent
    *
    * @param query One rule for matching Tweets
    */
-  TweetsCountsList getTweetsCounts(String query);
+  TweetsCountsList getTweetCounts(String query);
 
   /**
-   * The recent Tweet counts endpoint returns count of Tweets from the last seven days that match a search query.
+   * The recent Tweet counts endpoint returns count of Tweets from the last seven days that match a search query calling
+   * https://api.twitter.com/2/tweets/counts/recent
    *
    * @param query One rule for matching Tweets
-   * @param additionnalParameters parameters accepted are start_time, end_time, since_id, until_id, and granularity
+   * @param additionnalParameters parameters accepted are startTime, endTime, sinceId, untilId, and granularity
    */
-  TweetsCountsList getTweetsCounts(String query, AdditionnalParameters additionnalParameters);
+  TweetsCountsList getTweetCounts(String query, AdditionnalParameters additionnalParameters);
 
+  /**
+   * The full-archive search endpoint returns the complete history of public Tweets matching a search query; since the first Tweet was created March
+   * 26, 2006 calling https://api.twitter.com/2/tweets/counts/all
+   *
+   * @param query One query for matching Tweets.
+   */
+  TweetsCountsList getTweetCountsFullArchive(String query);
+
+  /**
+   * The full-archive search endpoint returns the complete history of public Tweets matching a search query; since the first Tweet was created March
+   * 26, 2006 calling https://api.twitter.com/2/tweets/counts/all
+   *
+   * @param query One query for matching Tweets.
+   * @param additionnalParameters parameters accepted are startTime, endTime, sinceId, untilId, granularity and nextToken
+   */
+  TweetsCountsList getTweetCountsFullArchive(String query, AdditionnalParameters additionnalParameters);
+  
 }
 

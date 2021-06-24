@@ -20,4 +20,6 @@ public class AdditionnalParameters {
   @JsonProperty("until_id")
   private String        untilId;
   private String        granularity;
+  @JsonProperty("next_token")
+  private String        nextToken;
 }

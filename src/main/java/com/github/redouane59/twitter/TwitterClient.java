@@ -333,13 +333,28 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public TweetsCountsList getTweetsCounts(final String query) {
-    return this.getTweetsCounts(query, null);
+  public TweetsCountsList getTweetCounts(final String query) {
+    return this.getTweetCounts(query, null);
   }
 
   @Override
-  public TweetsCountsList getTweetsCounts(final String query, AdditionnalParameters additionnalParameters) {
-    String              url        = this.getUrlHelper().getTweetsCountsUrl();
+  public TweetsCountsList getTweetCounts(final String query, AdditionnalParameters additionnalParameters) {
+    String url = this.getUrlHelper().getTweetsCountsUrl();
+    return this.getTweetCounts(url, query, additionnalParameters);
+  }
+
+  @Override
+  public TweetsCountsList getTweetCountsFullArchive(final String query) {
+    return this.getTweetCountsFullArchive(query, null);
+  }
+
+  @Override
+  public TweetsCountsList getTweetCountsFullArchive(final String query, AdditionnalParameters additionnalParameters) {
+    String url = this.getUrlHelper().getTweetsCountsUrl();
+    return this.getTweetCounts(url, query, additionnalParameters);
+  }
+
+  private TweetsCountsList getTweetCounts(String url, final String query, AdditionnalParameters additionnalParameters) {
     Map<String, String> parameters = new HashMap<>();
     parameters.put(QUERY, query);
     if (additionnalParameters.getGranularity() != null) {
@@ -356,6 +371,9 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     }
     if (additionnalParameters.getUntilId() != null) {
       parameters.put(UNTIL_ID, additionnalParameters.getUntilId());
+    }
+    if (additionnalParameters.getNextToken() != null) {
+      parameters.put(NEXT_TOKEN, additionnalParameters.getNextToken());
     }
     return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetsCountsList.class).orElseThrow(NoSuchElementException::new);
   }

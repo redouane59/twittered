@@ -343,4 +343,10 @@ public class UrlHelperTest {
   public void testGetTweetsCountsUrl() {
     assertEquals("https://api.twitter.com/2/tweets/counts/recent", urlHelper.getTweetsCountsUrl());
   }
+
+  @Test
+  public void testGetTweetsCountsAllUrl() {
+    assertEquals("https://api.twitter.com/2/tweets/counts/all", urlHelper.getTweetsCountsFullArchiveUrl());
+  }
+
 }
