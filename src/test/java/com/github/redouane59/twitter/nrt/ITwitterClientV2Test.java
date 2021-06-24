@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.redouane59.twitter.TwitterClient;
+import com.github.redouane59.twitter.dto.endpoints.AdditionnalParameters;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
@@ -301,6 +302,18 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetTweetCount() {
     TweetsCountsList result = twitterClient.getTweetsCounts("@Twitter");
+    assertTrue(result.getData().size() > 0);
+    assertTrue(result.getData().get(0).getTweetCount() > 0);
+  }
+
+  @Test
+  public void testGetTweetCountsWithParams() {
+    TweetsCountsList
+        result =
+        twitterClient.getTweetsCounts("@Twitter", AdditionnalParameters.builder()
+                                                                       .startTime(ConverterHelper.dayBeforeNow(5))
+                                                                       .endTime(ConverterHelper.dayBeforeNow(4))
+                                                                       .build());
     assertTrue(result.getData().size() > 0);
     assertTrue(result.getData().get(0).getTweetCount() > 0);
   }

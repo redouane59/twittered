@@ -43,8 +43,7 @@ public class TweetsCountsList {
     protected LocalDateDeserializer() {
       super(LocalDateTime.class);
     }
-
-
+    
     @Override
     public LocalDateTime deserialize(JsonParser jp, DeserializationContext ctxt)
     throws IOException {
