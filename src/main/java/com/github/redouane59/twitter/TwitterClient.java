@@ -334,7 +334,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public TweetsCountsList getTweetCounts(final String query) {
-    return this.getTweetCounts(query, null);
+    return this.getTweetCounts(query, AdditionnalParameters.builder().build());
   }
 
   @Override
@@ -345,12 +345,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public TweetsCountsList getTweetCountsFullArchive(final String query) {
-    return this.getTweetCountsFullArchive(query, null);
+    return this.getTweetCountsFullArchive(query, AdditionnalParameters.builder().build());
   }
 
   @Override
   public TweetsCountsList getTweetCountsFullArchive(final String query, AdditionnalParameters additionnalParameters) {
-    String url = this.getUrlHelper().getTweetsCountsUrl();
+    String url = this.getUrlHelper().getTweetsCountsFullArchiveUrl();
     return this.getTweetCounts(url, query, additionnalParameters);
   }
 

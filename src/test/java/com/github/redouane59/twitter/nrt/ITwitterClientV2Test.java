@@ -319,8 +319,13 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  public void testGetTweetCountFullArchive() {
-    TweetsCountsList result = twitterClient.getTweetCountsFullArchive("@TwitterAPI");
+  public void testGetTweetCountFullArchiveWithParams() {
+    TweetsCountsList
+        result =
+        twitterClient.getTweetCountsFullArchive("@Twitter", AdditionnalParameters.builder()
+                                                                                 .startTime(ConverterHelper.dayBeforeNow(1000))
+                                                                                 .endTime(ConverterHelper.dayBeforeNow(30))
+                                                                                 .build());
     assertTrue(result.getData().size() > 0);
     assertTrue(result.getData().get(0).getTweetCount() > 0);
     assertNotNull(result.getMeta().getNextToken());
