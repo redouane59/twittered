@@ -13,6 +13,7 @@ import com.github.redouane59.twitter.dto.tweet.TweetListV2;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
+import com.github.redouane59.twitter.dto.tweet.TweetsCountsList;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.dto.user.UserListV2;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
@@ -295,6 +296,13 @@ public class ITwitterClientV2Test {
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getText());
     assertNotNull(result.getData().get(0).getCreatedAt());
+  }
+
+  @Test
+  public void testGetTweetCount() {
+    TweetsCountsList result = twitterClient.getTweetsCounts("@Twitter");
+    assertTrue(result.getData().size() > 0);
+    assertTrue(result.getData().get(0).getTweetCount() > 0);
   }
 
 }

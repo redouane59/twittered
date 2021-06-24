@@ -11,6 +11,7 @@ import com.github.redouane59.twitter.dto.collections.TimeLineOrder;
 import com.github.redouane59.twitter.dto.dm.DirectMessage;
 import com.github.redouane59.twitter.dto.dm.DmEvent;
 import com.github.redouane59.twitter.dto.dm.DmListAnswer;
+import com.github.redouane59.twitter.dto.endpoints.AdditionnalParameters;
 import com.github.redouane59.twitter.dto.getrelationship.IdList;
 import com.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
 import com.github.redouane59.twitter.dto.others.BlockResponse;
@@ -32,6 +33,7 @@ import com.github.redouane59.twitter.dto.tweet.TweetV1;
 import com.github.redouane59.twitter.dto.tweet.TweetV1Deserializer;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.dto.tweet.TweetV2.TweetData;
+import com.github.redouane59.twitter.dto.tweet.TweetsCountsList;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import com.github.redouane59.twitter.dto.user.FollowBody;
 import com.github.redouane59.twitter.dto.user.FollowResponse;
@@ -91,6 +93,11 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   private              TwitterCredentials twitterCredentials;
   private static final String             IDS                                  = "ids";
   private static final String             QUERY                                = "query";
+  private static final String             GRANULARITY                          = "granularity";
+  private static final String             SINCE_ID                             = "since_id";
+  private static final String             UNTIL_ID                             = "until_id";
+  private static final String             START_TIME                           = "start_time";
+  private static final String             END_TIME                             = "end_time";
   private static final String             MAX_RESULTS                          = "max_results";
   private static final String             USERS                                = "users";
   private static final String             CURSOR                               = "cursor";
@@ -323,6 +330,34 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public TweetListV2 getLikedTweets(final String userId) {
     String url = this.getUrlHelper().getLikedTweetsUrl(userId);
     return getRequestHelper().getRequest(url, TweetListV2.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public TweetsCountsList getTweetsCounts(final String query) {
+    return this.getTweetsCounts(query, null);
+  }
+
+  @Override
+  public TweetsCountsList getTweetsCounts(final String query, AdditionnalParameters additionnalParameters) {
+    String              url        = this.getUrlHelper().getTweetsCountsUrl();
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(QUERY, query);
+    if (additionnalParameters.getGranularity() != null) {
+      parameters.put(GRANULARITY, additionnalParameters.getGranularity());
+    }
+    if (additionnalParameters.getStartTime() != null) {
+      parameters.put(START_TIME, ConverterHelper.getStringFromDateV2(additionnalParameters.getStartTime()));
+    }
+    if (additionnalParameters.getEndTime() != null) {
+      parameters.put(END_TIME, ConverterHelper.getStringFromDateV2(additionnalParameters.getEndTime()));
+    }
+    if (additionnalParameters.getSinceId() != null) {
+      parameters.put(SINCE_ID, additionnalParameters.getSinceId());
+    }
+    if (additionnalParameters.getUntilId() != null) {
+      parameters.put(UNTIL_ID, additionnalParameters.getUntilId());
+    }
+    return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetsCountsList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override

@@ -338,4 +338,9 @@ public class UrlHelperTest {
   public void testPostDmUrl() {
     assertEquals("https://api.twitter.com/1.1/direct_messages/events/new.json", urlHelper.getPostDmUrl());
   }
+
+  @Test
+  public void testGetTweetsCountsUrl() {
+    assertEquals("https://api.twitter.com/2/tweets/counts/recent", urlHelper.getTweetsCountsUrl());
+  }
 }

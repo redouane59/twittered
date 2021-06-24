@@ -33,6 +33,8 @@ public class URLHelper {
   private static final String SEARCH                        = "/search";
   private static final String SAMPLE                        = "/sample";
   private static final String STREAM                        = "/stream";
+  private static final String COUNTS                        = "/counts";
+  private static final String RECENT                        = "/recent";
   private static final String THIRTY_DAYS                   = "/30day";
   private static final String FULL_ARCHIVE                  = "/fullarchive";
   private static final String ACCOUNT_ACTIVITY              = "/account_activity/all";
@@ -64,7 +66,7 @@ public class URLHelper {
   public static final  String LAST_TWEET_LIST_URL           = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
   public static final  String RATE_LIMIT_URL                = ROOT_URL_V1 + "/application/rate_limit_status.json";
   public static final  String SEARCH_TWEET_STANDARD_URL     = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
-  public static final  String SEARCH_TWEET_7_DAYS_URL       = ROOT_URL_V2 + TWEETS + SEARCH + "/recent";
+  public static final  String SEARCH_TWEET_7_DAYS_URL       = ROOT_URL_V2 + TWEETS + SEARCH + RECENT;
   public static final  String SEARCH_TWEET_FULL_ARCHIVE_URL = ROOT_URL_V2 + TWEETS + SEARCH + "/all" + "?" + EXPANSION + ALL_EXPANSIONS;
   public static final  String GET_BEARER_TOKEN_URL          = "https://api.twitter.com/oauth2/token";
   public static final  String GET_OAUTH1_TOKEN_URL          = "https://api.twitter.com/oauth/request_token";
@@ -431,6 +433,10 @@ public class URLHelper {
 
   public String getPostDmUrl() {
     return ROOT_URL_V1 + DIRECT_MESSAGE_EVENTS + "/new.json";
+  }
+
+  public String getTweetsCountsUrl() {
+    return ROOT_URL_V2 + TWEETS + COUNTS + RECENT;
   }
 
 }
