@@ -10,11 +10,11 @@ import com.github.redouane59.twitter.dto.endpoints.AdditionnalParameters;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetCountsList;
 import com.github.redouane59.twitter.dto.tweet.TweetListV2;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
-import com.github.redouane59.twitter.dto.tweet.TweetsCountsList;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.dto.user.UserListV2;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
@@ -301,14 +301,14 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetTweetCount() {
-    TweetsCountsList result = twitterClient.getTweetCounts("@Twitter");
+    TweetCountsList result = twitterClient.getTweetCounts("@Twitter");
     assertTrue(result.getData().size() > 0);
     assertTrue(result.getData().get(0).getTweetCount() > 0);
   }
 
   @Test
   public void testGetTweetCountsWithParams() {
-    TweetsCountsList
+    TweetCountsList
         result =
         twitterClient.getTweetCounts("@Twitter", AdditionnalParameters.builder()
                                                                       .startTime(ConverterHelper.dayBeforeNow(5))
@@ -320,7 +320,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetTweetCountFullArchiveWithParams() {
-    TweetsCountsList
+    TweetCountsList
         result =
         twitterClient.getTweetCountsFullArchive("@Twitter", AdditionnalParameters.builder()
                                                                                  .startTime(ConverterHelper.dayBeforeNow(1000))

@@ -25,6 +25,7 @@ import com.github.redouane59.twitter.dto.tweet.HiddenResponse.HiddenData;
 import com.github.redouane59.twitter.dto.tweet.LikeResponse;
 import com.github.redouane59.twitter.dto.tweet.MediaCategory;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
+import com.github.redouane59.twitter.dto.tweet.TweetCountsList;
 import com.github.redouane59.twitter.dto.tweet.TweetListV2;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponseV1;
@@ -33,7 +34,6 @@ import com.github.redouane59.twitter.dto.tweet.TweetV1;
 import com.github.redouane59.twitter.dto.tweet.TweetV1Deserializer;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
 import com.github.redouane59.twitter.dto.tweet.TweetV2.TweetData;
-import com.github.redouane59.twitter.dto.tweet.TweetsCountsList;
 import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import com.github.redouane59.twitter.dto.user.FollowBody;
 import com.github.redouane59.twitter.dto.user.FollowResponse;
@@ -333,28 +333,28 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public TweetsCountsList getTweetCounts(final String query) {
+  public TweetCountsList getTweetCounts(final String query) {
     return this.getTweetCounts(query, AdditionnalParameters.builder().build());
   }
 
   @Override
-  public TweetsCountsList getTweetCounts(final String query, AdditionnalParameters additionnalParameters) {
+  public TweetCountsList getTweetCounts(final String query, AdditionnalParameters additionnalParameters) {
     String url = this.getUrlHelper().getTweetsCountsUrl();
     return this.getTweetCounts(url, query, additionnalParameters);
   }
 
   @Override
-  public TweetsCountsList getTweetCountsFullArchive(final String query) {
+  public TweetCountsList getTweetCountsFullArchive(final String query) {
     return this.getTweetCountsFullArchive(query, AdditionnalParameters.builder().build());
   }
 
   @Override
-  public TweetsCountsList getTweetCountsFullArchive(final String query, AdditionnalParameters additionnalParameters) {
+  public TweetCountsList getTweetCountsFullArchive(final String query, AdditionnalParameters additionnalParameters) {
     String url = this.getUrlHelper().getTweetsCountsFullArchiveUrl();
     return this.getTweetCounts(url, query, additionnalParameters);
   }
 
-  private TweetsCountsList getTweetCounts(String url, final String query, AdditionnalParameters additionnalParameters) {
+  private TweetCountsList getTweetCounts(String url, final String query, AdditionnalParameters additionnalParameters) {
     Map<String, String> parameters = new HashMap<>();
     parameters.put(QUERY, query);
     if (additionnalParameters.getGranularity() != null) {
@@ -375,7 +375,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (additionnalParameters.getNextToken() != null) {
       parameters.put(NEXT_TOKEN, additionnalParameters.getNextToken());
     }
-    return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetsCountsList.class).orElseThrow(NoSuchElementException::new);
+    return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetCountsList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override

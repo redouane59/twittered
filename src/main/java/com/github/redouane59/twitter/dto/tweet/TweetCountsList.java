@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Getter
-public class TweetsCountsList {
+public class TweetCountsList {
 
   private List<TweetCountData> data;
   private TweetCountMeta       meta;
