@@ -36,7 +36,6 @@ import io.github.redouane59.twitter.dto.tweet.TweetCountsList;
 import io.github.redouane59.twitter.dto.tweet.TweetListV2;
 import io.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import io.github.redouane59.twitter.dto.tweet.TweetSearchResponseV1;
-import io.github.redouane59.twitter.dto.tweet.TweetSearchResponseV2;
 import io.github.redouane59.twitter.dto.tweet.TweetV1;
 import io.github.redouane59.twitter.dto.tweet.TweetV1Deserializer;
 import io.github.redouane59.twitter.dto.tweet.TweetV2;
@@ -92,18 +91,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   private              RequestHelperV2    requestHelperV2;
   private              TwitterCredentials twitterCredentials;
   private static final String             IDS                                  = "ids";
+  private static final String             ID                                   = "id";
   private static final String             QUERY                                = "query";
-  private static final String             GRANULARITY                          = "granularity";
-  private static final String             SINCE_ID                             = "since_id";
-  private static final String             UNTIL_ID                             = "until_id";
-  private static final String             START_TIME                           = "start_time";
-  private static final String             END_TIME                             = "end_time";
-  private static final String             MAX_RESULTS                          = "max_results";
   private static final String             USERS                                = "users";
   private static final String             CURSOR                               = "cursor";
   private static final String             NEXT                                 = "next";
   private static final String             PAGINATION_TOKEN                     = "pagination_token";
-  private static final String             NEXT_TOKEN                           = "next_token";
   private static final String             RETWEET_COUNT                        = "retweet_count";
   private static final String             RELATIONSHIP                         = "relationship";
   private static final String             FOLLOWING                            = "following";
@@ -355,26 +348,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   private TweetCountsList getTweetCounts(String url, final String query, AdditionnalParameters additionnalParameters) {
-    Map<String, String> parameters = new HashMap<>();
+    Map<String, String> parameters = additionnalParameters.getMapFromParameters();
     parameters.put(QUERY, query);
-    if (additionnalParameters.getGranularity() != null) {
-      parameters.put(GRANULARITY, additionnalParameters.getGranularity());
-    }
-    if (additionnalParameters.getStartTime() != null) {
-      parameters.put(START_TIME, ConverterHelper.getStringFromDateV2(additionnalParameters.getStartTime()));
-    }
-    if (additionnalParameters.getEndTime() != null) {
-      parameters.put(END_TIME, ConverterHelper.getStringFromDateV2(additionnalParameters.getEndTime()));
-    }
-    if (additionnalParameters.getSinceId() != null) {
-      parameters.put(SINCE_ID, additionnalParameters.getSinceId());
-    }
-    if (additionnalParameters.getUntilId() != null) {
-      parameters.put(UNTIL_ID, additionnalParameters.getUntilId());
-    }
-    if (additionnalParameters.getNextToken() != null) {
-      parameters.put(NEXT_TOKEN, additionnalParameters.getNextToken());
-    }
     return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetCountsList.class).orElseThrow(NoSuchElementException::new);
   }
 
@@ -433,7 +408,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public List<Tweet> getTweets(List<String> tweetIds) {
     String url = this.getUrlHelper().getTweetListUrl(tweetIds);
-    List<TweetData> result = this.getRequestHelper().getRequest(url, TweetSearchResponseV2.class)
+    List<TweetData> result = this.getRequestHelper().getRequest(url, TweetListV2.class)
                                  .orElseThrow(NoSuchElementException::new).getData();
     return result.stream().map(tweetData -> TweetV2.builder().data(tweetData).build()).collect(Collectors.toList());
   }
@@ -475,27 +450,27 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     int                 count      = 100;
     Map<String, String> parameters = new HashMap<>();
     parameters.put(QUERY, query);
-    parameters.put(MAX_RESULTS, String.valueOf(count));
+    parameters.put(AdditionnalParameters.MAX_RESULTS, String.valueOf(count));
     if (fromDate != null) {
-      parameters.put(START_TIME, ConverterHelper.getStringFromDateV2(fromDate));
+      parameters.put(AdditionnalParameters.START_TIME, ConverterHelper.getStringFromDateV2(fromDate));
     }
     if (toDate != null) {
-      parameters.put(END_TIME, ConverterHelper.getStringFromDateV2(toDate));
+      parameters.put(AdditionnalParameters.END_TIME, ConverterHelper.getStringFromDateV2(toDate));
     }
     parameters.put("tweet.fields", URLHelper.ALL_TWEET_FIELDS);
     String      next;
     List<Tweet> result = new ArrayList<>();
     do {
-      Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.getRequestHelper()
-                                                             .getRequestWithParameters(URLHelper.SEARCH_TWEET_7_DAYS_URL,
-                                                                                       parameters,
-                                                                                       TweetSearchResponseV2.class);
+      Optional<TweetListV2> tweetSearchV2DTO = this.getRequestHelper()
+                                                   .getRequestWithParameters(URLHelper.SEARCH_TWEET_7_DAYS_URL,
+                                                                             parameters,
+                                                                             TweetListV2.class);
       if (!tweetSearchV2DTO.isPresent() || tweetSearchV2DTO.get().getData() == null) {
         break;
       }
       result.addAll(tweetSearchV2DTO.get().getData());
       next = tweetSearchV2DTO.get().getMeta().getNextToken();
-      parameters.put(NEXT_TOKEN, next);
+      parameters.put(AdditionnalParameters.NEXT_TOKEN, next);
     } while (next != null);
     return result;
   }
@@ -514,7 +489,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
                                               String nextToken, String searchUrl) {
     Map<String, String> parameters = new HashMap<>();
     parameters.put(QUERY, query);
-    parameters.put(MAX_RESULTS, String.valueOf(maxResult));
+    parameters.put(AdditionnalParameters.MAX_RESULTS, String.valueOf(maxResult));
     if (fromDate != null) {
       parameters.put("start_time", ConverterHelper.getStringFromDateV2(fromDate));
     }
@@ -522,11 +497,11 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       parameters.put("end_time", ConverterHelper.getStringFromDateV2(toDate));
     }
     if (nextToken != null) {
-      parameters.put(NEXT_TOKEN, nextToken);
+      parameters.put(AdditionnalParameters.NEXT_TOKEN, nextToken);
     }
     parameters.put("tweet.fields", URLHelper.ALL_TWEET_FIELDS);
-    Optional<TweetSearchResponseV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(searchUrl,
-                                                                                                     parameters, TweetSearchResponseV2.class);
+    Optional<TweetListV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(searchUrl,
+                                                                                           parameters, TweetListV2.class);
     if (!tweetSearchV2DTO.isPresent() || tweetSearchV2DTO.get().getData() == null) {
       return new TweetSearchResponse(new ArrayList<>(), null);
     }
@@ -577,7 +552,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     int                 count      = 100;
     Map<String, String> parameters = new HashMap<>();
     parameters.put(QUERY, query);
-    parameters.put(MAX_RESULTS, String.valueOf(count));
+    parameters.put(AdditionnalParameters.MAX_RESULTS, String.valueOf(count));
     parameters.put("fromDate", ConverterHelper.getStringFromDate(fromDate));
     parameters.put("toDate", ConverterHelper.getStringFromDate(toDate));
     String      next;
@@ -676,31 +651,15 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public List<Tweet> getUserTimeline(final String userId, int nbTweets) {
-    return this.getUserTimeline(userId, nbTweets, null, null, null, null);
+  public TweetListV2 getUserTimeline(final String userId) {
+    return this.getUserTimeline(userId, AdditionnalParameters.builder().build());
   }
 
   @Override
-  public List<Tweet> getUserTimeline(String userId, int nbTweets, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {
-    String      token          = null;
-    List<Tweet> result         = new ArrayList<>();
-    int         apiResultLimit = 100;
-    int         missingTweets  = nbTweets;
-    do {
-      String url = this.urlHelper.getUserTimelineUrl(userId, Math.min(apiResultLimit, missingTweets), startTime, endTime, sinceId, untilId);
-      if (token != null) {
-        url = url + "&" + PAGINATION_TOKEN + "=" + token;
-      }
-      Optional<TweetSearchResponseV2> tweetListDTO = this.getRequestHelperV2().getRequest(url, TweetSearchResponseV2.class);
-      if (!tweetListDTO.isPresent() || tweetListDTO.get().getData() == null) {
-        break;
-      }
-      result.addAll(tweetListDTO.get().getData());
-      token = tweetListDTO.get().getMeta().getNextToken();
-      missingTweets -= apiResultLimit;
-    }
-    while (token != null && missingTweets > 0);
-    return result;
+  public TweetListV2 getUserTimeline(String userId, AdditionnalParameters additionnalParameters) {
+    Map<String, String> parameters = additionnalParameters.getMapFromParameters();
+    String              url        = this.urlHelper.getUserTimelineUrl(userId);
+    return this.getRequestHelperV2().getRequestWithParameters(url, parameters, TweetListV2.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -724,7 +683,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       if (token != null) {
         url = url + "&" + PAGINATION_TOKEN + "=" + token;
       }
-      Optional<TweetSearchResponseV2> tweetListDTO = this.getRequestHelperV2().getRequest(url, TweetSearchResponseV2.class);
+      Optional<TweetListV2> tweetListDTO = this.getRequestHelperV2().getRequest(url, TweetListV2.class);
       if (!tweetListDTO.isPresent() || tweetListDTO.get().getData() == null) {
         break;
       }

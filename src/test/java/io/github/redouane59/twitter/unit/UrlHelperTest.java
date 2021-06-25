@@ -243,16 +243,8 @@ public class UrlHelperTest {
 
   @Test
   public void testGetUserTimelineUrl() {
-    assertEquals("https://api.twitter.com/2/users/99999/tweets?max_results=200&" + URLHelper.TWEET_FIELDS + URLHelper.ALL_TWEET_FIELDS,
-                 urlHelper.getUserTimelineUrl("99999", 200, null, null, null, null));
-  }
-
-  @Test
-  public void testGetUserTimelineUrlWithDates() {
-    assertEquals(
-        "https://api.twitter.com/2/users/99999/tweets?max_results=100&start_time=2020-01-01T00:00:00.000Z&end_time=2020-02-01T00:00:00.000Z&"
-        + URLHelper.TWEET_FIELDS + URLHelper.ALL_TWEET_FIELDS,
-        urlHelper.getUserTimelineUrl("99999", 100, LocalDateTime.of(2020, 1, 1, 0, 0), LocalDateTime.of(2020, 2, 1, 0, 0), null, null));
+    assertEquals("https://api.twitter.com/2/users/99999/tweets",
+                 urlHelper.getUserTimelineUrl("99999"));
   }
 
   @Test

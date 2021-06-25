@@ -330,9 +330,9 @@ public class URLHelper {
            + ALL_USER_FIELDS;
   }
 
-  public String getUserTimelineUrl(String userId, int maxResult, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {
-    String result = ROOT_URL_V2 + USERS + "/" + userId + TWEETS + "?" + MAX_RESULTS + "=" + maxResult;
-    if (startTime != null) {
+  public String getUserTimelineUrl(String userId) {
+    return ROOT_URL_V2 + USERS + "/" + userId + TWEETS;
+    /*if (startTime != null) {
       result += "&start_time=" + ConverterHelper.getStringFromDateV2(startTime);
     }
     if (endTime != null) {
@@ -345,7 +345,7 @@ public class URLHelper {
       result += "&until_id=" + untilId;
     }
     result += "&" + TWEET_FIELDS + ALL_TWEET_FIELDS;
-    return result;
+    return result;*/
   }
 
   public String getUserMentionsUrl(String userId, int maxResult, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {

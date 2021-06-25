@@ -1,17 +1,31 @@
 package io.github.redouane59.twitter.dto.tweet;
 
-import io.github.redouane59.twitter.dto.tweet.TweetV2.TweetData;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Getter
+@Setter
+@NoArgsConstructor
 public class TweetListV2 {
 
-  List<TweetData> data;
+  private List<TweetV2.TweetData> data;
+  private TweetMeta               meta;
+
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  public static class TweetMeta {
+
+    @JsonProperty("newest_id")
+    private String newestId;
+    @JsonProperty("oldest_id")
+    private String oldestId;
+    @JsonProperty("next_token")
+    private String nextToken;
+    @JsonProperty("result_count")
+    private int    resultCount;
+  }
 }

@@ -215,14 +215,18 @@ public interface ITwitterClientV2 {
   /**
    * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets
    *
+   * @param userId Unique identifier of the Twitter account (user ID) for whom to return results.
    * @return a list of the most recent Tweets posted by the user
    */
-  List<Tweet> getUserTimeline(String userId, int nbTweets);
+  TweetListV2 getUserTimeline(String userId);
 
   /**
    * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets (time & tweet id arguments can be null)
+   *
+   * @param userId identifier of the Twitter account (user ID) for whom to return results.
+   * @param additionnalParameters parameters accepted startTime, endTime, sinceId, untilId, maxResults
    */
-  List<Tweet> getUserTimeline(String userId, int nbTweets, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId);
+  TweetListV2 getUserTimeline(String userId, AdditionnalParameters additionnalParameters);
 
   /**
    * Get the most recent mentions received posted by the user calling https://api.twitter.com/2/users/:id/mentions
@@ -340,6 +344,6 @@ public interface ITwitterClientV2 {
    * @param additionnalParameters parameters accepted are startTime, endTime, sinceId, untilId, granularity and nextToken
    */
   TweetCountsList getTweetCountsFullArchive(String query, AdditionnalParameters additionnalParameters);
-  
+
 }
 

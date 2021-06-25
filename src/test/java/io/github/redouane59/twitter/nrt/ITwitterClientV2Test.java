@@ -223,25 +223,30 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetUserTimeline() {
-    List<Tweet> result = twitterClient.getUserTimeline("1120050519182016513", 150);
-    assertEquals(result.size(), 150);
-    assertNotNull(result.get(0).getId());
-    assertNotNull(result.get(0).getText());
+    TweetListV2 result = twitterClient.getUserTimeline("1120050519182016513", AdditionnalParameters.builder().maxResults(100).build());
+    assertEquals(result.getData().size(), 100);
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getData().get(0).getText());
   }
 
   @Test
   public void testGetUserTimelineWithDatesThenWithIds() {
-    List<Tweet> result = twitterClient.getUserTimeline(this.userId, 10, ConverterHelper.dayBeforeNow(30),
-                                                       ConverterHelper.dayBeforeNow(1), null, null);
-    assertEquals(10, result.size());
-    assertNotNull(result.get(0).getId());
-    assertNotNull(result.get(0).getText());
+    TweetListV2 result = twitterClient.getUserTimeline(this.userId, AdditionnalParameters.builder()
+                                                                                         .startTime(ConverterHelper.dayBeforeNow(30))
+                                                                                         .endTime(ConverterHelper.dayBeforeNow(1))
+                                                                                         .maxResults(10).build());
+    assertEquals(10, result.getData().size());
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getData().get(0).getText());
 
-    result = twitterClient.getUserTimeline(this.userId, 5, null, null, result.get(6).getId(),
-                                           result.get(0).getId());
-    assertEquals(5, result.size());
-    assertNotNull(result.get(0).getId());
-    assertNotNull(result.get(0).getText());
+    result = twitterClient.getUserTimeline(this.userId, AdditionnalParameters.builder()
+                                                                             .maxResults(5)
+                                                                             .sinceId(result.getData().get(6).getId())
+                                                                             .untilId(result.getData().get(0).getId())
+                                                                             .build());
+    assertEquals(5, result.getData().size());
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getData().get(0).getText());
   }
 
   @Test
