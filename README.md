@@ -10,13 +10,13 @@ This project is a JAVA library which allows you to consume the Twitter API.
 
 ### Configuration
 
-![Maven Central](https://img.shields.io/maven-central/v/com.github.redouane59.twitter/twittered)
+![Maven Central](https://img.shields.io/maven-central/v/io.github.redouane59.twitter/twittered)
 
 In your pom.xml, add the following dependency and replace `VERSION` with the version you wish:
 
 ```
 <dependency>
-  <groupId>com.github.redouane59.twitter</groupId>
+  <groupId>io.github.redouane59.twitter</groupId>
   <artifactId>twittered</artifactId>
   <version>VERSION</version>
 </dependency>
