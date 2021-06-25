@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.redouane59.twitter.TwitterClient;
+import com.github.redouane59.twitter.dto.endpoints.AdditionnalParameters;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
@@ -13,6 +14,7 @@ import com.github.redouane59.twitter.dto.tweet.TweetListV2;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
 import com.github.redouane59.twitter.dto.tweet.TweetType;
 import com.github.redouane59.twitter.dto.tweet.TweetV2;
+import com.github.redouane59.twitter.dto.tweet.TweetsCountsList;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.dto.user.UserListV2;
 import com.github.redouane59.twitter.helpers.ConverterHelper;
@@ -295,6 +297,39 @@ public class ITwitterClientV2Test {
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getText());
     assertNotNull(result.getData().get(0).getCreatedAt());
+  }
+
+  @Test
+  public void testGetTweetCount() {
+    TweetsCountsList result = twitterClient.getTweetCounts("@Twitter");
+    assertTrue(result.getData().size() > 0);
+    assertTrue(result.getData().get(0).getTweetCount() > 0);
+  }
+
+  @Test
+  public void testGetTweetCountsWithParams() {
+    TweetsCountsList
+        result =
+        twitterClient.getTweetCounts("@Twitter", AdditionnalParameters.builder()
+                                                                      .startTime(ConverterHelper.dayBeforeNow(5))
+                                                                      .endTime(ConverterHelper.dayBeforeNow(4))
+                                                                      .build());
+    assertTrue(result.getData().size() > 0);
+    assertTrue(result.getData().get(0).getTweetCount() > 0);
+  }
+
+  @Test
+  public void testGetTweetCountFullArchiveWithParams() {
+    TweetsCountsList
+        result =
+        twitterClient.getTweetCountsFullArchive("@Twitter", AdditionnalParameters.builder()
+                                                                                 .startTime(ConverterHelper.dayBeforeNow(1000))
+                                                                                 .endTime(ConverterHelper.dayBeforeNow(30))
+                                                                                 .build());
+    assertTrue(result.getData().size() > 0);
+    assertTrue(result.getData().get(0).getTweetCount() > 0);
+    assertNotNull(result.getMeta().getNextToken());
+    assertTrue(result.getMeta().getTotalTweetCount() > 0);
   }
 
 }
