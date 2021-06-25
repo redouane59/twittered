@@ -477,10 +477,10 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(QUERY, query);
     parameters.put(MAX_RESULTS, String.valueOf(count));
     if (fromDate != null) {
-      parameters.put("start_time", ConverterHelper.getStringFromDateV2(fromDate));
+      parameters.put(START_TIME, ConverterHelper.getStringFromDateV2(fromDate));
     }
     if (toDate != null) {
-      parameters.put("end_time", ConverterHelper.getStringFromDateV2(toDate));
+      parameters.put(END_TIME, ConverterHelper.getStringFromDateV2(toDate));
     }
     parameters.put("tweet.fields", URLHelper.ALL_TWEET_FIELDS);
     String      next;
