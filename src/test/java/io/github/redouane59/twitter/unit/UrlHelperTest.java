@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
 import io.github.redouane59.twitter.helpers.URLHelper;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -158,14 +157,14 @@ public class UrlHelperTest {
   @Test
   public void testSearch7DaysUrl() {
     assertEquals("https://api.twitter.com/2/tweets/search/recent",
-                 URLHelper.SEARCH_TWEET_7_DAYS_URL);
+                 this.urlHelper.getSearchRecentTweetsUrl());
   }
 
   @Test
   public void testSearchFullArchiveUrl() {
     assertEquals(
         "https://api.twitter.com/2/tweets/search/all?expansions=author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id",
-        URLHelper.SEARCH_TWEET_FULL_ARCHIVE_URL);
+        this.urlHelper.getSearchAllTweetsUrl());
   }
 
   @Test
@@ -249,16 +248,8 @@ public class UrlHelperTest {
 
   @Test
   public void testGetUserMentionsUrl() {
-    assertEquals("https://api.twitter.com/2/users/99999/mentions?max_results=200&" + URLHelper.TWEET_FIELDS + URLHelper.ALL_TWEET_FIELDS,
-                 urlHelper.getUserMentionsUrl("99999", 200, null, null, null, null));
-  }
-
-  @Test
-  public void testGetUserMentionsUrlWithDates() {
-    assertEquals(
-        "https://api.twitter.com/2/users/99999/mentions?max_results=100&start_time=2020-01-01T00:00:00.000Z&end_time=2020-02-01T00:00:00.000Z&"
-        + URLHelper.TWEET_FIELDS + URLHelper.ALL_TWEET_FIELDS,
-        urlHelper.getUserMentionsUrl("99999", 100, LocalDateTime.of(2020, 1, 1, 0, 0), LocalDateTime.of(2020, 2, 1, 0, 0), null, null));
+    assertEquals("https://api.twitter.com/2/users/99999/mentions",
+                 urlHelper.getUserMentionsUrl("99999"));
   }
 
   @Test

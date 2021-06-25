@@ -12,7 +12,7 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class AdditionnalParameters {
+public class AdditionalParameters {
 
   public static final String SINCE_ID    = "since_id";
   public static final String UNTIL_ID    = "until_id";

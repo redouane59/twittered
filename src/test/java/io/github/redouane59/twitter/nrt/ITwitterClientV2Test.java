@@ -1,19 +1,17 @@
 package io.github.redouane59.twitter.nrt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.scribejava.core.model.Response;
 import io.github.redouane59.twitter.TwitterClient;
-import io.github.redouane59.twitter.dto.endpoints.AdditionnalParameters;
+import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetCountsList;
-import io.github.redouane59.twitter.dto.tweet.TweetListV2;
-import io.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
+import io.github.redouane59.twitter.dto.tweet.TweetList;
 import io.github.redouane59.twitter.dto.tweet.TweetType;
 import io.github.redouane59.twitter.dto.tweet.TweetV2;
 import io.github.redouane59.twitter.dto.user.User;
@@ -136,10 +134,10 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  public void testSearchTweets7days() {
-    List<Tweet> result = twitterClient.searchForTweetsWithin7days("@lequipe bonjour -RT");
-    assertTrue(result.size() > 10);
-    Tweet tweet = result.get(0);
+  public void testRecentSearch() {
+    TweetList result = twitterClient.searchRecentTweets("@lequipe bonjour -RT");
+    assertTrue(result.getData().size() > 0);
+    Tweet tweet = result.getData().get(0);
     assertNotNull(tweet.getId());
     assertNotNull(tweet.getText());
     assertNotNull(tweet.getCreatedAt());
@@ -151,26 +149,18 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  public void testSearchTweets7daysWithNexTokenAndCount() {
-    TweetSearchResponse result = twitterClient.searchForTweetsWithin7days("@lequipe -RT", null, null, 100, null);
-    assertEquals(100, result.getTweets().size());
-    assertNotNull(result.getNextToken());
-    TweetSearchResponse result2 = twitterClient.searchForTweetsWithin7days("@lequipe -RT", null, null, 100,
-                                                                           result.getNextToken());
-    assertTrue(result2.getTweets().size() > 0);
-    assertNotEquals(result.getTweets().get(0).getId(), result2.getTweets().get(0).getId());
-    assertNotNull(result2.getNextToken());
-  }
-
-  @Test
-  public void testSearchTweetsFullArchiveWithCount() {
-    TweetSearchResponse result = twitterClient.searchForTweetsFullArchive("Twitter",
-                                                                          ConverterHelper.dayBeforeNow(2),
-                                                                          ConverterHelper.dayBeforeNow(1),
-                                                                          10,
-                                                                          null);
-    assertEquals(10, result.getTweets().size());
-    assertNotNull(result.getNextToken());
+  public void testAllTweetsSearch() {
+    TweetList result = twitterClient.searchAllTweets("@lequipe bonjour -RT");
+    assertTrue(result.getData().size() > 0);
+    Tweet tweet = result.getData().get(0);
+    assertNotNull(tweet.getId());
+    assertNotNull(tweet.getText());
+    assertNotNull(tweet.getCreatedAt());
+    assertNotNull(tweet.getAuthorId());
+    assertTrue(tweet.getRetweetCount() >= 0);
+    assertTrue(tweet.getReplyCount() >= 0);
+    assertTrue(tweet.getLikeCount() >= 0);
+    assertNotNull(tweet.getLang());
   }
 
   @Test
@@ -223,27 +213,31 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetUserTimeline() {
-    TweetListV2 result = twitterClient.getUserTimeline("1120050519182016513", AdditionnalParameters.builder().maxResults(100).build());
+    TweetList result = twitterClient.getUserTimeline("1120050519182016513", AdditionalParameters.builder().maxResults(100).build());
     assertEquals(result.getData().size(), 100);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getText());
+    assertNotNull(result.getData().get(0).getCreatedAt());
+    assertNotNull(result.getData().get(0).getAuthorId());
+    assertNotNull(result.getData().get(0).getConversationId());
+    assertNotNull(result.getData().get(0).getLang());
   }
 
   @Test
   public void testGetUserTimelineWithDatesThenWithIds() {
-    TweetListV2 result = twitterClient.getUserTimeline(this.userId, AdditionnalParameters.builder()
-                                                                                         .startTime(ConverterHelper.dayBeforeNow(30))
-                                                                                         .endTime(ConverterHelper.dayBeforeNow(1))
-                                                                                         .maxResults(10).build());
+    TweetList result = twitterClient.getUserTimeline(this.userId, AdditionalParameters.builder()
+                                                                                      .startTime(ConverterHelper.dayBeforeNow(30))
+                                                                                      .endTime(ConverterHelper.dayBeforeNow(1))
+                                                                                      .maxResults(10).build());
     assertEquals(10, result.getData().size());
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getText());
 
-    result = twitterClient.getUserTimeline(this.userId, AdditionnalParameters.builder()
-                                                                             .maxResults(5)
-                                                                             .sinceId(result.getData().get(6).getId())
-                                                                             .untilId(result.getData().get(0).getId())
-                                                                             .build());
+    result = twitterClient.getUserTimeline(this.userId, AdditionalParameters.builder()
+                                                                            .maxResults(5)
+                                                                            .sinceId(result.getData().get(6).getId())
+                                                                            .untilId(result.getData().get(0).getId())
+                                                                            .build());
     assertEquals(5, result.getData().size());
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getText());
@@ -251,25 +245,38 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetUserMentions() {
-    List<Tweet> result = twitterClient.getUserMentions("1307302673318895621", 150);
-    assertEquals(150, result.size());
-    assertNotNull(result.get(0).getId());
-    assertNotNull(result.get(0).getText());
+    TweetList result = twitterClient.getUserMentions("1307302673318895621", AdditionalParameters.builder()
+                                                                                                .maxResults(100).build());
+    assertEquals(100, result.getData().size());
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getData().get(0).getText());
+    assertNotNull(result.getData().get(0).getCreatedAt());
+    assertNotNull(result.getData().get(0).getAuthorId());
+    assertNotNull(result.getData().get(0).getConversationId());
+    assertNotNull(result.getData().get(0).getLang());
   }
 
   @Test
   public void testGetUserMentionsWithDatesThenWithIds() {
-    List<Tweet> result = twitterClient.getUserMentions("1307302673318895621", 10, ConverterHelper.dayBeforeNow(30),
-                                                       ConverterHelper.dayBeforeNow(1), null, null);
-    assertEquals(10, result.size());
-    assertNotNull(result.get(0).getId());
-    assertNotNull(result.get(0).getText());
+    TweetList result = twitterClient.getUserMentions("1307302673318895621",
+                                                     AdditionalParameters.builder()
+                                                                         .maxResults(10)
+                                                                         .startTime(ConverterHelper.dayBeforeNow(30))
+                                                                         .endTime(ConverterHelper.dayBeforeNow(1))
+                                                                         .build());
+    assertEquals(10, result.getData().size());
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getData().get(0).getText());
 
-    result = twitterClient.getUserMentions("1307302673318895621", 5, null, null, result.get(6).getId(),
-                                           result.get(0).getId());
-    assertEquals(5, result.size());
-    assertNotNull(result.get(0).getId());
-    assertNotNull(result.get(0).getText());
+    result = twitterClient.getUserMentions("1307302673318895621",
+                                           AdditionalParameters.builder()
+                                                               .maxResults(5)
+                                                               .sinceId(result.getData().get(6).getId())
+                                                               .untilId(result.getData().get(0).getId())
+                                                               .build());
+    assertEquals(5, result.getData().size());
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getData().get(0).getText());
   }
 
   @Test
@@ -290,15 +297,17 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetLikingUsers() {
     UserListV2 result = twitterClient.getLikingUsers("1395447825366847488");
-    assertTrue(result.getData().size() > 50);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getName());
+    assertNotNull(result.getData().get(0).getDisplayedName());
+    assertNotNull(result.getData().get(0).getProfileImageUrl());
     assertNotNull(result.getData().get(0).getCreatedAt());
+    assertTrue(result.getData().size() > 40);
   }
 
   @Test
   public void testGetLikedTweets() {
-    TweetListV2 result = twitterClient.getLikedTweets("1120050519182016513");
+    TweetList result = twitterClient.getLikedTweets("1120050519182016513");
     assertTrue(result.getData().size() > 0);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getText());
@@ -316,10 +325,10 @@ public class ITwitterClientV2Test {
   public void testGetTweetCountsWithParams() {
     TweetCountsList
         result =
-        twitterClient.getTweetCounts("@Twitter", AdditionnalParameters.builder()
-                                                                      .startTime(ConverterHelper.dayBeforeNow(5))
-                                                                      .endTime(ConverterHelper.dayBeforeNow(4))
-                                                                      .build());
+        twitterClient.getTweetCounts("@Twitter", AdditionalParameters.builder()
+                                                                     .startTime(ConverterHelper.dayBeforeNow(5))
+                                                                     .endTime(ConverterHelper.dayBeforeNow(4))
+                                                                     .build());
     assertTrue(result.getData().size() > 0);
     assertTrue(result.getData().get(0).getTweetCount() > 0);
   }
@@ -328,10 +337,10 @@ public class ITwitterClientV2Test {
   public void testGetTweetCountFullArchiveWithParams() {
     TweetCountsList
         result =
-        twitterClient.getTweetCountsFullArchive("@Twitter", AdditionnalParameters.builder()
-                                                                                 .startTime(ConverterHelper.dayBeforeNow(1000))
-                                                                                 .endTime(ConverterHelper.dayBeforeNow(30))
-                                                                                 .build());
+        twitterClient.getTweetCountsFullArchive("@Twitter", AdditionalParameters.builder()
+                                                                                .startTime(ConverterHelper.dayBeforeNow(1000))
+                                                                                .endTime(ConverterHelper.dayBeforeNow(30))
+                                                                                .build());
     assertTrue(result.getData().size() > 0);
     assertTrue(result.getData().get(0).getTweetCount() > 0);
     assertNotNull(result.getMeta().getNextToken());

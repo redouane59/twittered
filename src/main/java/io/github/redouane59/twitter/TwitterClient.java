@@ -18,7 +18,7 @@ import io.github.redouane59.twitter.dto.collections.TimeLineOrder;
 import io.github.redouane59.twitter.dto.dm.DirectMessage;
 import io.github.redouane59.twitter.dto.dm.DmEvent;
 import io.github.redouane59.twitter.dto.dm.DmListAnswer;
-import io.github.redouane59.twitter.dto.endpoints.AdditionnalParameters;
+import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.getrelationship.IdList;
 import io.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
@@ -33,8 +33,7 @@ import io.github.redouane59.twitter.dto.tweet.LikeResponse;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetCountsList;
-import io.github.redouane59.twitter.dto.tweet.TweetListV2;
-import io.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
+import io.github.redouane59.twitter.dto.tweet.TweetList;
 import io.github.redouane59.twitter.dto.tweet.TweetSearchResponseV1;
 import io.github.redouane59.twitter.dto.tweet.TweetV1;
 import io.github.redouane59.twitter.dto.tweet.TweetV1Deserializer;
@@ -90,6 +89,17 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   private              RequestHelper      requestHelperV1;
   private              RequestHelperV2    requestHelperV2;
   private              TwitterCredentials twitterCredentials;
+  private static final String             TWEET_FIELDS                         = "tweet.fields";
+  public static final  String
+                                          ALL_TWEET_FIELDS                     =
+      "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id,reply_settings";
+  public static final  String             EXPANSION                            = "expansions";
+  public static final  String
+                                          ALL_EXPANSIONS                       =
+      "author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id";
+  public static final  String             USER_FIELDS                          = "user.fields";
+  public static final  String             ALL_USER_FIELDS                      =
+      "id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
   private static final String             IDS                                  = "ids";
   private static final String             ID                                   = "id";
   private static final String             QUERY                                = "query";
@@ -320,35 +330,35 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public TweetListV2 getLikedTweets(final String userId) {
+  public TweetList getLikedTweets(final String userId) {
     String url = this.getUrlHelper().getLikedTweetsUrl(userId);
-    return getRequestHelper().getRequest(url, TweetListV2.class).orElseThrow(NoSuchElementException::new);
+    return getRequestHelper().getRequest(url, TweetList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public TweetCountsList getTweetCounts(final String query) {
-    return this.getTweetCounts(query, AdditionnalParameters.builder().build());
+    return this.getTweetCounts(query, AdditionalParameters.builder().build());
   }
 
   @Override
-  public TweetCountsList getTweetCounts(final String query, AdditionnalParameters additionnalParameters) {
+  public TweetCountsList getTweetCounts(final String query, AdditionalParameters additionalParameters) {
     String url = this.getUrlHelper().getTweetsCountsUrl();
-    return this.getTweetCounts(url, query, additionnalParameters);
+    return this.getTweetCounts(url, query, additionalParameters);
   }
 
   @Override
   public TweetCountsList getTweetCountsFullArchive(final String query) {
-    return this.getTweetCountsFullArchive(query, AdditionnalParameters.builder().build());
+    return this.getTweetCountsFullArchive(query, AdditionalParameters.builder().build());
   }
 
   @Override
-  public TweetCountsList getTweetCountsFullArchive(final String query, AdditionnalParameters additionnalParameters) {
+  public TweetCountsList getTweetCountsFullArchive(final String query, AdditionalParameters additionalParameters) {
     String url = this.getUrlHelper().getTweetsCountsFullArchiveUrl();
-    return this.getTweetCounts(url, query, additionnalParameters);
+    return this.getTweetCounts(url, query, additionalParameters);
   }
 
-  private TweetCountsList getTweetCounts(String url, final String query, AdditionnalParameters additionnalParameters) {
-    Map<String, String> parameters = additionnalParameters.getMapFromParameters();
+  private TweetCountsList getTweetCounts(String url, final String query, AdditionalParameters additionalParameters) {
+    Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(QUERY, query);
     return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetCountsList.class).orElseThrow(NoSuchElementException::new);
   }
@@ -408,7 +418,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public List<Tweet> getTweets(List<String> tweetIds) {
     String url = this.getUrlHelper().getTweetListUrl(tweetIds);
-    List<TweetData> result = this.getRequestHelper().getRequest(url, TweetListV2.class)
+    List<TweetData> result = this.getRequestHelper().getRequest(url, TweetList.class)
                                  .orElseThrow(NoSuchElementException::new).getData();
     return result.stream().map(tweetData -> TweetV2.builder().data(tweetData).build()).collect(Collectors.toList());
   }
@@ -446,80 +456,38 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public List<Tweet> searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate) {
-    int                 count      = 100;
-    Map<String, String> parameters = new HashMap<>();
+  public TweetList searchRecentTweets(String query) {
+    return this.searchRecentTweets(query, AdditionalParameters.builder().build());
+  }
+
+  @Override
+  public TweetList searchRecentTweets(String query, AdditionalParameters additionalParameters) {
+    Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(QUERY, query);
-    parameters.put(AdditionnalParameters.MAX_RESULTS, String.valueOf(count));
-    if (fromDate != null) {
-      parameters.put(AdditionnalParameters.START_TIME, ConverterHelper.getStringFromDateV2(fromDate));
-    }
-    if (toDate != null) {
-      parameters.put(AdditionnalParameters.END_TIME, ConverterHelper.getStringFromDateV2(toDate));
-    }
-    parameters.put("tweet.fields", URLHelper.ALL_TWEET_FIELDS);
-    String      next;
-    List<Tweet> result = new ArrayList<>();
-    do {
-      Optional<TweetListV2> tweetSearchV2DTO = this.getRequestHelper()
-                                                   .getRequestWithParameters(URLHelper.SEARCH_TWEET_7_DAYS_URL,
-                                                                             parameters,
-                                                                             TweetListV2.class);
-      if (!tweetSearchV2DTO.isPresent() || tweetSearchV2DTO.get().getData() == null) {
-        break;
-      }
-      result.addAll(tweetSearchV2DTO.get().getData());
-      next = tweetSearchV2DTO.get().getMeta().getNextToken();
-      parameters.put(AdditionnalParameters.NEXT_TOKEN, next);
-    } while (next != null);
-    return result;
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(EXPANSION, ALL_EXPANSIONS);
+    return this.getRequestHelper().getRequestWithParameters(this.urlHelper.getSearchRecentTweetsUrl(),
+                                                            parameters,
+                                                            TweetList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
-  public List<Tweet> searchForTweetsWithin7days(String query) {
-    return this.searchForTweetsWithin7days(query, null, null);
+  public TweetList searchAllTweets(final String query) {
+    return this.searchAllTweets(query, AdditionalParameters.builder().build());
   }
 
   @Override
-  public TweetSearchResponse searchForTweetsWithin7days(String query, int maxResult, String nextToken) {
-    return this.searchForTweetsWithin7days(query, null, null, maxResult, nextToken);
-  }
-
-  private TweetSearchResponse searchForTweets(String query, LocalDateTime fromDate, LocalDateTime toDate, int maxResult,
-                                              String nextToken, String searchUrl) {
-    Map<String, String> parameters = new HashMap<>();
+  public TweetList searchAllTweets(final String query, AdditionalParameters additionalParameters) {
+    Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(QUERY, query);
-    parameters.put(AdditionnalParameters.MAX_RESULTS, String.valueOf(maxResult));
-    if (fromDate != null) {
-      parameters.put("start_time", ConverterHelper.getStringFromDateV2(fromDate));
-    }
-    if (toDate != null) {
-      parameters.put("end_time", ConverterHelper.getStringFromDateV2(toDate));
-    }
-    if (nextToken != null) {
-      parameters.put(AdditionnalParameters.NEXT_TOKEN, nextToken);
-    }
-    parameters.put("tweet.fields", URLHelper.ALL_TWEET_FIELDS);
-    Optional<TweetListV2> tweetSearchV2DTO = this.requestHelperV2.getRequestWithParameters(searchUrl,
-                                                                                           parameters, TweetListV2.class);
-    if (!tweetSearchV2DTO.isPresent() || tweetSearchV2DTO.get().getData() == null) {
-      return new TweetSearchResponse(new ArrayList<>(), null);
-    }
-    List<Tweet> result = new ArrayList<>(tweetSearchV2DTO.get().getData());
-    return new TweetSearchResponse(result, tweetSearchV2DTO.get().getMeta().getNextToken());
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(EXPANSION, ALL_EXPANSIONS);
+    return this.getRequestHelperV2().getRequestWithParameters(this.urlHelper.getSearchAllTweetsUrl(),
+                                                              parameters,
+                                                              TweetList.class).orElseThrow(NoSuchElementException::new);
+
   }
 
-  @Override
-  public TweetSearchResponse searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate,
-                                                        int maxResult, String nextToken) {
-    return this.searchForTweets(query, fromDate, toDate, maxResult, nextToken, URLHelper.SEARCH_TWEET_7_DAYS_URL);
-  }
-
-  @Override
-  public TweetSearchResponse searchForTweetsFullArchive(final String query, final LocalDateTime fromDate,
-                                                        final LocalDateTime toDate, final int maxResult, final String nextToken) {
-    return this.searchForTweets(query, fromDate, toDate, maxResult, nextToken, URLHelper.SEARCH_TWEET_FULL_ARCHIVE_URL);
-  }
 
   @Override
   public List<Tweet> searchForTweetsWithin30days(String query, LocalDateTime fromDate, LocalDateTime toDate,
@@ -552,7 +520,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     int                 count      = 100;
     Map<String, String> parameters = new HashMap<>();
     parameters.put(QUERY, query);
-    parameters.put(AdditionnalParameters.MAX_RESULTS, String.valueOf(count));
+    parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(count));
     parameters.put("fromDate", ConverterHelper.getStringFromDate(fromDate));
     parameters.put("toDate", ConverterHelper.getStringFromDate(toDate));
     String      next;
@@ -651,48 +619,29 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public TweetListV2 getUserTimeline(final String userId) {
-    return this.getUserTimeline(userId, AdditionnalParameters.builder().build());
+  public TweetList getUserTimeline(final String userId) {
+    return this.getUserTimeline(userId, AdditionalParameters.builder().build());
   }
 
   @Override
-  public TweetListV2 getUserTimeline(String userId, AdditionnalParameters additionnalParameters) {
-    Map<String, String> parameters = additionnalParameters.getMapFromParameters();
-    String              url        = this.urlHelper.getUserTimelineUrl(userId);
-    return this.getRequestHelperV2().getRequestWithParameters(url, parameters, TweetListV2.class).orElseThrow(NoSuchElementException::new);
+  public TweetList getUserTimeline(String userId, AdditionalParameters additionalParameters) {
+    Map<String, String> parameters = additionalParameters.getMapFromParameters();
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    String url = this.urlHelper.getUserTimelineUrl(userId);
+    return this.getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
-  public List<Tweet> getUserMentions(final String userId, final int nbTweets) {
-    return this.getUserMentions(userId, nbTweets, null, null, null, null);
+  public TweetList getUserMentions(final String userId) {
+    return this.getUserMentions(userId, AdditionalParameters.builder().build());
   }
 
   @Override
-  public List<Tweet> getUserMentions(final String userId,
-                                     final int nbTweets,
-                                     final LocalDateTime startTime,
-                                     final LocalDateTime endTime,
-                                     final String sinceId,
-                                     final String untilId) {
-    String      token          = null;
-    List<Tweet> result         = new ArrayList<>();
-    int         apiResultLimit = 100;
-    int         missingTweets  = nbTweets;
-    do {
-      String url = this.urlHelper.getUserMentionsUrl(userId, Math.min(apiResultLimit, missingTweets), startTime, endTime, sinceId, untilId);
-      if (token != null) {
-        url = url + "&" + PAGINATION_TOKEN + "=" + token;
-      }
-      Optional<TweetListV2> tweetListDTO = this.getRequestHelperV2().getRequest(url, TweetListV2.class);
-      if (!tweetListDTO.isPresent() || tweetListDTO.get().getData() == null) {
-        break;
-      }
-      result.addAll(tweetListDTO.get().getData());
-      token = tweetListDTO.get().getMeta().getNextToken();
-      missingTweets -= apiResultLimit;
-    }
-    while (token != null && missingTweets > 0);
-    return result;
+  public TweetList getUserMentions(final String userId, AdditionalParameters additionalParameters) {
+    Map<String, String> parameters = additionalParameters.getMapFromParameters();
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    String url = this.urlHelper.getUserMentionsUrl(userId);
+    return this.getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override

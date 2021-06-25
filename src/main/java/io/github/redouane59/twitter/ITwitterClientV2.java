@@ -1,19 +1,17 @@
 package io.github.redouane59.twitter;
 
 import com.github.scribejava.core.model.Response;
-import io.github.redouane59.twitter.dto.endpoints.AdditionnalParameters;
+import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetCountsList;
-import io.github.redouane59.twitter.dto.tweet.TweetListV2;
-import io.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
+import io.github.redouane59.twitter.dto.tweet.TweetList;
 import io.github.redouane59.twitter.dto.user.FollowResponse;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserListV2;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
@@ -97,11 +95,9 @@ public interface ITwitterClientV2 {
    * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
    *
    * @param query the search query
-   * @param fromDate the start date
-   * @param toDate the end date
    * @return a list of tweets
    */
-  List<Tweet> searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate);
+  TweetList searchRecentTweets(String query);
 
   /**
    * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
@@ -109,42 +105,21 @@ public interface ITwitterClientV2 {
    * @param query the search query
    * @return a list of tweets
    */
-  List<Tweet> searchForTweetsWithin7days(String query);
-
-  /**
-   * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
-   *
-   * @param query the search query
-   * @param maxResult maximum 100 (default 10)
-   * @param nextToken the next_token given by the API to start from an index
-   * @return a TweetSearchResponse object containing a list of tweets and the next token
-   */
-  TweetSearchResponse searchForTweetsWithin7days(String query, int maxResult, String nextToken);
-
-  /**
-   * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
-   *
-   * @param query the search query
-   * @param fromDate the start date
-   * @param toDate the end date
-   * @param maxResult maximum 100 (default 10)
-   * @param nextToken the next_token given by the API to start from an index
-   * @return a TweetSearchResponse object containing a list of tweets and the next token
-   */
-  TweetSearchResponse searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate, int maxResult, String nextToken);
+  TweetList searchRecentTweets(String query, AdditionalParameters additionalParameters);
 
   /**
    * Search archived tweets calling https://api.twitter.com/2/tweets/search/all
    *
-   * @param query the search query
-   * @param fromDate the start date
-   * @param toDate the end date
-   * @param maxResult maximum 100 (default 10)
-   * @param nextToken the next_token given by the API to start from an index
    * @return a TweetSearchResponse object containing a list of tweets and the next token
    */
-  TweetSearchResponse searchForTweetsFullArchive(String query, LocalDateTime fromDate, LocalDateTime toDate, int maxResult, String nextToken);
+  TweetList searchAllTweets(String query);
 
+  /**
+   * Search archived tweets calling https://api.twitter.com/2/tweets/search/all
+   *
+   * @return a TweetSearchResponse object containing a list of tweets and the next token
+   */
+  TweetList searchAllTweets(String query, AdditionalParameters additionalParameters);
 
   /**
    * Stream using previous set up filters calling https://api.twitter.com/2/tweets/search/stream
@@ -218,27 +193,27 @@ public interface ITwitterClientV2 {
    * @param userId Unique identifier of the Twitter account (user ID) for whom to return results.
    * @return a list of the most recent Tweets posted by the user
    */
-  TweetListV2 getUserTimeline(String userId);
+  TweetList getUserTimeline(String userId);
 
   /**
    * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets (time & tweet id arguments can be null)
    *
    * @param userId identifier of the Twitter account (user ID) for whom to return results.
-   * @param additionnalParameters parameters accepted startTime, endTime, sinceId, untilId, maxResults
+   * @param additionalParameters parameters accepted startTime, endTime, sinceId, untilId, maxResults
    */
-  TweetListV2 getUserTimeline(String userId, AdditionnalParameters additionnalParameters);
+  TweetList getUserTimeline(String userId, AdditionalParameters additionalParameters);
 
   /**
    * Get the most recent mentions received posted by the user calling https://api.twitter.com/2/users/:id/mentions
    *
    * @return a list of the most recent Tweets posted by the user
    */
-  List<Tweet> getUserMentions(String userId, int nbTweets);
+  TweetList getUserMentions(String userId);
 
   /**
    * Get the most recent mentions received by the user calling https://api.twitter.com/2/users/:id/mentions (time & tweet id arguments can be null)
    */
-  List<Tweet> getUserMentions(String userId, int nbTweets, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId);
+  TweetList getUserMentions(String userId, AdditionalParameters additionalParameters);
 
   /**
    * Follow a user calling https://api.twitter.com/2/users/:source_user_id/following
@@ -308,7 +283,7 @@ public interface ITwitterClientV2 {
    *
    * @param userId ID of the user to request liked Tweets for.
    */
-  TweetListV2 getLikedTweets(String userId);
+  TweetList getLikedTweets(String userId);
 
 
   /**
@@ -324,9 +299,9 @@ public interface ITwitterClientV2 {
    * https://api.twitter.com/2/tweets/counts/recent
    *
    * @param query One rule for matching Tweets
-   * @param additionnalParameters parameters accepted are startTime, endTime, sinceId, untilId, and granularity
+   * @param additionalParameters parameters accepted are startTime, endTime, sinceId, untilId, and granularity
    */
-  TweetCountsList getTweetCounts(String query, AdditionnalParameters additionnalParameters);
+  TweetCountsList getTweetCounts(String query, AdditionalParameters additionalParameters);
 
   /**
    * The full-archive search endpoint returns the complete history of public Tweets matching a search query; since the first Tweet was created March
@@ -341,9 +316,9 @@ public interface ITwitterClientV2 {
    * 26, 2006 calling https://api.twitter.com/2/tweets/counts/all
    *
    * @param query One query for matching Tweets.
-   * @param additionnalParameters parameters accepted are startTime, endTime, sinceId, untilId, granularity and nextToken
+   * @param additionalParameters parameters accepted are startTime, endTime, sinceId, untilId, granularity and nextToken
    */
-  TweetCountsList getTweetCountsFullArchive(String query, AdditionnalParameters additionnalParameters);
+  TweetCountsList getTweetCountsFullArchive(String query, AdditionalParameters additionalParameters);
 
 }
 
