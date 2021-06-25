@@ -1,4 +1,4 @@
-package com.github.redouane59.twitter.dto.dm;
+package io.github.redouane59.twitter.dto.dm;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

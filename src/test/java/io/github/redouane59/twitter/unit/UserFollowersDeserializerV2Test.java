@@ -1,12 +1,13 @@
-package com.github.redouane59.twitter.unit;
+package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.user.UserListV2;
+import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.user.UserListV2;
 import java.io.File;
 import java.io.IOException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class UserFollowersDeserializerV2Test {
@@ -25,32 +26,32 @@ public class UserFollowersDeserializerV2Test {
 
   @Test
   public void testUserName() {
-    assertEquals("samsamia13", users.getData().get(0).getName());
+    Assertions.assertEquals("samsamia13", users.getData().get(0).getName());
   }
 
   @Test
   public void testUserId() {
-    assertEquals("606255425", users.getData().get(0).getId());
+    Assertions.assertEquals("606255425", users.getData().get(0).getId());
   }
 
   @Test
   public void testUserDescription() {
-    assertEquals("💉🩸 assistante du Ko .", users.getData().get(0).getDescription());
+    Assertions.assertEquals("💉🩸 assistante du Ko .", users.getData().get(0).getDescription());
   }
 
   @Test
   public void testUserLocation() {
-    assertEquals("Paris, France", users.getData().get(0).getLocation());
+    Assertions.assertEquals("Paris, France", users.getData().get(0).getLocation());
   }
 
   @Test
   public void testUserFollowersCount() {
-    assertEquals(70, users.getData().get(0).getFollowersCount());
+    Assertions.assertEquals(70, users.getData().get(0).getFollowersCount());
   }
 
   @Test
   public void testUserFollowingCount() {
-    assertEquals(515, users.getData().get(0).getFollowingCount());
+    Assertions.assertEquals(515, users.getData().get(0).getFollowingCount());
   }
 
 }

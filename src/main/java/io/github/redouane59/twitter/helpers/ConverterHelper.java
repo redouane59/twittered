@@ -1,4 +1,4 @@
-package com.github.redouane59.twitter.helpers;
+package io.github.redouane59.twitter.helpers;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -69,13 +69,13 @@ public class ConverterHelper {
     SimpleDateFormat sf      = new SimpleDateFormat(TWITTER, Locale.ENGLISH);
     sf.setLenient(true);
     try {
-	  return sf.parse(date).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-	} catch (ParseException e) {
-	  return null;
-	}
+      return sf.parse(date).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    } catch (ParseException e) {
+      return null;
+    }
   }
 
   public static LocalDateTime getDateFromTwitterDateV2(String date) {
-	return date!=null?LocalDateTime.parse(date, DateTimeFormatter.ofPattern(DATE_PATTERN_V2)):null;
+    return date != null ? LocalDateTime.parse(date, DateTimeFormatter.ofPattern(DATE_PATTERN_V2)) : null;
   }
 }

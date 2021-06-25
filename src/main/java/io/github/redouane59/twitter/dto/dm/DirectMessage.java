@@ -1,9 +1,9 @@
-package com.github.redouane59.twitter.dto.dm;
+package io.github.redouane59.twitter.dto.dm;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.redouane59.twitter.dto.dm.DirectMessage.MessageCreate.MessageData;
+import io.github.redouane59.twitter.dto.dm.DirectMessage.MessageCreate.MessageData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

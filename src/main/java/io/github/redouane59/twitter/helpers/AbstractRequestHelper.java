@@ -1,14 +1,14 @@
-package com.github.redouane59.twitter.helpers;
+package io.github.redouane59.twitter.helpers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.signature.TwitterCredentials;
 import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
+import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;

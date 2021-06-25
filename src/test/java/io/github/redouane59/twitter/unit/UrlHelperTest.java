@@ -1,9 +1,9 @@
-package com.github.redouane59.twitter.unit;
+package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.github.redouane59.twitter.dto.tweet.MediaCategory;
-import com.github.redouane59.twitter.helpers.URLHelper;
+import io.github.redouane59.twitter.dto.tweet.MediaCategory;
+import io.github.redouane59.twitter.helpers.URLHelper;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;

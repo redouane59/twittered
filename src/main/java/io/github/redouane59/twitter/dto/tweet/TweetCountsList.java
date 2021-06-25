@@ -1,11 +1,11 @@
-package com.github.redouane59.twitter.dto.tweet;
+package io.github.redouane59.twitter.dto.tweet;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.github.redouane59.twitter.helpers.ConverterHelper;
+import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;

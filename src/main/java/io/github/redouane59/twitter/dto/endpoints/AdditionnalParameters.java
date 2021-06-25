@@ -1,4 +1,4 @@
-package com.github.redouane59.twitter.dto.endpoints;
+package io.github.redouane59.twitter.dto.endpoints;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;

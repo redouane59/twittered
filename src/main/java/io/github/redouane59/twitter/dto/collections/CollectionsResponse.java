@@ -1,11 +1,11 @@
-package com.github.redouane59.twitter.dto.collections;
+package io.github.redouane59.twitter.dto.collections;
 
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.redouane59.twitter.dto.tweet.TweetV1;
-import com.github.redouane59.twitter.dto.user.UserV1;
+import io.github.redouane59.twitter.dto.tweet.TweetV1;
+import io.github.redouane59.twitter.dto.user.UserV1;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -1,10 +1,10 @@
-package com.github.redouane59.twitter.nrt;
+package io.github.redouane59.twitter.nrt;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.tweet.TweetV1;
+import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.tweet.TweetV1;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;

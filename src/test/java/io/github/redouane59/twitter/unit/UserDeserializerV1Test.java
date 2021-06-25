@@ -1,11 +1,11 @@
-package com.github.redouane59.twitter.unit;
+package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.user.User;
-import com.github.redouane59.twitter.dto.user.UserV1;
-import com.github.redouane59.twitter.helpers.ConverterHelper;
+import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.user.User;
+import io.github.redouane59.twitter.dto.user.UserV1;
+import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;

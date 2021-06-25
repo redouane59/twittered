@@ -1,4 +1,4 @@
-package com.github.redouane59.twitter.dto.others;
+package io.github.redouane59.twitter.dto.others;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

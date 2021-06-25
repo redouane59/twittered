@@ -1,7 +1,7 @@
-package com.github.redouane59.twitter.dto.user;
+package io.github.redouane59.twitter.dto.user;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.redouane59.twitter.dto.tweet.Tweet;
+import io.github.redouane59.twitter.dto.tweet.Tweet;
 import java.time.LocalDateTime;
 
 public interface User {

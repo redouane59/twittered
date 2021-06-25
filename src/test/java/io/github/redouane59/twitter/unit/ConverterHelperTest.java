@@ -1,9 +1,9 @@
-package com.github.redouane59.twitter.unit;
+package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.github.redouane59.twitter.helpers.ConverterHelper;
+import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 

@@ -1,5 +1,10 @@
-package com.github.redouane59.twitter.helpers;
+package io.github.redouane59.twitter.helpers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.scribejava.core.model.Response;
+import io.github.redouane59.twitter.IAPIEventListener;
+import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.tweet.TweetV2;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,11 +13,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.redouane59.twitter.IAPIEventListener;
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.tweet.TweetV2;
-import com.github.scribejava.core.model.Response;
 import lombok.extern.slf4j.Slf4j;
 
 /**

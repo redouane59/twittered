@@ -1,6 +1,6 @@
-package com.github.redouane59.twitter.dto.tweet;
+package io.github.redouane59.twitter.dto.tweet;
 
-import com.github.redouane59.twitter.dto.user.User;
+import io.github.redouane59.twitter.dto.user.User;
 import java.time.LocalDateTime;
 import java.util.List;
 

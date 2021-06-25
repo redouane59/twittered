@@ -1,12 +1,12 @@
-package com.github.redouane59.twitter.unit;
+package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.dm.DirectMessage;
-import com.github.redouane59.twitter.dto.dm.DmEvent;
-import com.github.redouane59.twitter.dto.dm.DmListAnswer;
+import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.dm.DirectMessage;
+import io.github.redouane59.twitter.dto.dm.DmEvent;
+import io.github.redouane59.twitter.dto.dm.DmListAnswer;
 import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;

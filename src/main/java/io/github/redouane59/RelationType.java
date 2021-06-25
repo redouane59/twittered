@@ -1,4 +1,4 @@
-package com.github.redouane59;
+package io.github.redouane59;
 
 public enum RelationType {
   FOLLOWER,

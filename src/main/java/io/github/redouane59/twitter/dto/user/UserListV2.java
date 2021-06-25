@@ -1,7 +1,7 @@
-package com.github.redouane59.twitter.dto.user;
+package io.github.redouane59.twitter.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.redouane59.twitter.dto.user.UserV2.UserData;
+import io.github.redouane59.twitter.dto.user.UserV2.UserData;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

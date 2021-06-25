@@ -1,9 +1,9 @@
-package com.github.redouane59.twitter.unit;
+package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.stream.StreamRules;
+import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.stream.StreamRules;
 import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;

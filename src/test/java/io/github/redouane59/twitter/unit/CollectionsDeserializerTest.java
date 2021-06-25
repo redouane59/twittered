@@ -1,20 +1,21 @@
-package com.github.redouane59.twitter.unit;
+package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.collections.CollectionsResponse;
-import com.github.redouane59.twitter.dto.collections.CollectionsResponse.Objects.Timelines.Timeline;
-import com.github.redouane59.twitter.dto.collections.CollectionsResponse.Response.Error;
-import com.github.redouane59.twitter.dto.collections.CollectionsResponse.Response.TimelineTweet;
-import com.github.redouane59.twitter.dto.tweet.TweetV1;
-import com.github.redouane59.twitter.dto.user.UserV1;
+import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.collections.CollectionsResponse;
+import io.github.redouane59.twitter.dto.collections.CollectionsResponse.Objects.Timelines.Timeline;
+import io.github.redouane59.twitter.dto.collections.CollectionsResponse.Response.Error;
+import io.github.redouane59.twitter.dto.collections.CollectionsResponse.Response.TimelineTweet;
+import io.github.redouane59.twitter.dto.tweet.TweetV1;
+import io.github.redouane59.twitter.dto.user.UserV1;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -108,7 +109,7 @@ public class CollectionsDeserializerTest {
   public void testCollectionsCreateUsers() {
     assertEquals(1, collectionsCreateResponse.getObjects().getUsers().get().size());
     UserV1 userV1 = collectionsCreateResponse.getObjects().getUsers().get().get(0);
-    assertEquals(userV1, collectionsCreateResponse.getObjects().getUsers().getUserDetails().get(userV1.getId()));
+    Assertions.assertEquals(userV1, collectionsCreateResponse.getObjects().getUsers().getUserDetails().get(userV1.getId()));
     assertEquals("Tim's Listening Party", userV1.getDisplayedName());
     assertEquals("Updates and info about #TimsTwitterListeningParty", userV1.getDescription());
     assertEquals(47244, userV1.getFollowersCount());
@@ -134,7 +135,7 @@ public class CollectionsDeserializerTest {
     assertEquals(3, collectionsEntriesResponse.getObjects().getTweets().get().size());
     TweetV1 firstTweet = collectionsEntriesResponse.getObjects().getTweets().get().get(0);
     // mapped by tweet id
-    assertEquals(collectionsEntriesResponse.getObjects().getTweets().getTweetDetails().get(firstTweet.getId()), firstTweet);
+    Assertions.assertEquals(collectionsEntriesResponse.getObjects().getTweets().getTweetDetails().get(firstTweet.getId()), firstTweet);
 
     assertEquals("Kung fu city", firstTweet.getText());
   }
@@ -143,8 +144,8 @@ public class CollectionsDeserializerTest {
   public void testCollectionsEntriesPosition() {
     assertNotNull(collectionsEntriesResponse.getResponse());
     assertFalse(collectionsEntriesResponse.getResponse().getPosition().getWasTruncated());
-    assertEquals("7875026924025212925",collectionsEntriesResponse.getResponse().getPosition().getMinPosition());
-    assertEquals("7875107834917625854",collectionsEntriesResponse.getResponse().getPosition().getMaxPosition());
+    assertEquals("7875026924025212925", collectionsEntriesResponse.getResponse().getPosition().getMinPosition());
+    assertEquals("7875107834917625854", collectionsEntriesResponse.getResponse().getPosition().getMaxPosition());
   }
 
   @Test
@@ -155,7 +156,7 @@ public class CollectionsDeserializerTest {
 
     UserV1 firstUser = collectionsEntriesResponse.getObjects().getUsers().get().get(0);
     // mapped by tweet id
-    assertEquals(collectionsEntriesResponse.getObjects().getUsers().getUserDetails().get(firstUser.getId()), firstUser);
+    Assertions.assertEquals(collectionsEntriesResponse.getObjects().getUsers().getUserDetails().get(firstUser.getId()), firstUser);
 
     assertEquals("LlSTENlNG_PARTY", firstUser.getName());
     assertEquals("Tim's Listening Party", firstUser.getDisplayedName());

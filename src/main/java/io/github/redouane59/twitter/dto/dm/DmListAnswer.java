@@ -1,4 +1,4 @@
-package com.github.redouane59.twitter.dto.dm;
+package io.github.redouane59.twitter.dto.dm;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -17,6 +17,6 @@ public class DmListAnswer {
   @JsonProperty("events")
   private List<DirectMessage> directMessages;
   private JsonNode            apps;
-  
+
 
 }

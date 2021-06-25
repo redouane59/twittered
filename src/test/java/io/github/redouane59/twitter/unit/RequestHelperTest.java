@@ -1,11 +1,11 @@
-package com.github.redouane59.twitter.unit;
+package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.signature.TwitterCredentials;
+import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.signature.TwitterCredentials;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;

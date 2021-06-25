@@ -1,6 +1,6 @@
-package com.github.redouane59.twitter.helpers;
+package io.github.redouane59.twitter.helpers;
 
-import com.github.redouane59.twitter.dto.tweet.MediaCategory;
+import io.github.redouane59.twitter.dto.tweet.MediaCategory;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;

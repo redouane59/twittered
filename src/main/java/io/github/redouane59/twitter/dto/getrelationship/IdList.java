@@ -1,4 +1,4 @@
-package com.github.redouane59.twitter.dto.getrelationship;
+package io.github.redouane59.twitter.dto.getrelationship;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

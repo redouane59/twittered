@@ -1,13 +1,13 @@
-package com.github.redouane59.twitter.unit;
+package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.tweet.TweetV2;
-import com.github.redouane59.twitter.helpers.TweetStreamConsumer;
+import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.tweet.TweetV2;
+import io.github.redouane59.twitter.helpers.TweetStreamConsumer;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;

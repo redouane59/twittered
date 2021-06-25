@@ -1,10 +1,10 @@
-package com.github.redouane59.twitter.dto.tweet;
+package io.github.redouane59.twitter.dto.tweet;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.TwitterClient;
 import java.io.IOException;
 
 

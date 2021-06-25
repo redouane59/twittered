@@ -1,17 +1,15 @@
-package com.github.redouane59.twitter.unit;
+package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.tweet.TweetV2;
-
+import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.tweet.TweetV2;
+import java.io.File;
+import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 public class StreamTweetDeserializerTest {

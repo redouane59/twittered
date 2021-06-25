@@ -1,10 +1,10 @@
-package com.github.redouane59.twitter.helpers;
+package io.github.redouane59.twitter.helpers;
 
-import com.github.redouane59.twitter.signature.TwitterCredentials;
 import com.github.scribejava.core.httpclient.multipart.FileByteArrayBodyPartPayload;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
+import io.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

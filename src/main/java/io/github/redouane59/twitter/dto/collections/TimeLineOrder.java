@@ -1,4 +1,4 @@
-package com.github.redouane59.twitter.dto.collections;
+package io.github.redouane59.twitter.dto.collections;
 
 /**
  * timeline_order used when creating a collection - https://api.twitter.com/1.1/collections/create.json

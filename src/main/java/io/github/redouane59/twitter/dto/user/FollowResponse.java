@@ -1,4 +1,4 @@
-package com.github.redouane59.twitter.dto.user;
+package io.github.redouane59.twitter.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

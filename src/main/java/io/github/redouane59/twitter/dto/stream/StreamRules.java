@@ -1,12 +1,12 @@
-package com.github.redouane59.twitter.dto.stream;
+package io.github.redouane59.twitter.dto.stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta.StreamMetaBuilder;
-import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta.StreamSummary.StreamSummaryBuilder;
-import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule.StreamRuleBuilder;
-import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRulesBuilder;
+import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta.StreamMetaBuilder;
+import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta.StreamSummary.StreamSummaryBuilder;
+import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule.StreamRuleBuilder;
+import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRulesBuilder;
 import java.util.List;
 
 @lombok.Value

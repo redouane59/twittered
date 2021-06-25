@@ -1,4 +1,4 @@
-package com.github.redouane59.twitter.dto.tweet;
+package io.github.redouane59.twitter.dto.tweet;
 
 import java.util.List;
 import lombok.Getter;

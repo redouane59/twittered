@@ -1,17 +1,18 @@
-package com.github.redouane59.twitter.nrt;
+package io.github.redouane59.twitter.nrt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.github.redouane59.RelationType;
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.others.BlockResponse;
-import com.github.redouane59.twitter.dto.tweet.LikeResponse;
-import com.github.redouane59.twitter.dto.user.FollowResponse;
-import com.github.redouane59.twitter.dto.user.User;
-import com.github.redouane59.twitter.dto.user.UserListV2;
+import io.github.redouane59.RelationType;
+import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.others.BlockResponse;
+import io.github.redouane59.twitter.dto.tweet.LikeResponse;
+import io.github.redouane59.twitter.dto.user.FollowResponse;
+import io.github.redouane59.twitter.dto.user.User;
+import io.github.redouane59.twitter.dto.user.UserListV2;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -46,7 +47,7 @@ public class ITwitterClientV2AuthenticatedTest {
     assertFalse(followResponse.getData().isPending_follow());
     FollowResponse unfollowResponse = twitterClient.unfollow(user.getId());
     assertFalse(unfollowResponse.getData().isFollowing());
-    assertEquals(RelationType.NONE, twitterClient.getRelationType("92073489", "66533"));
+    Assertions.assertEquals(RelationType.NONE, twitterClient.getRelationType("92073489", "66533"));
   }
 
   @Test

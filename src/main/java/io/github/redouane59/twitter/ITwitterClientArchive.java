@@ -1,6 +1,6 @@
-package com.github.redouane59.twitter;
+package io.github.redouane59.twitter;
 
-import com.github.redouane59.twitter.dto.tweet.TweetV1;
+import io.github.redouane59.twitter.dto.tweet.TweetV1;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -15,6 +15,6 @@ public interface ITwitterClientArchive {
    * @throws IOException if excpetion when reading file
    */
   List<TweetV1> readTwitterDataFile(File file) throws IOException;
-  
+
 }
 

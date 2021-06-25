@@ -1,5 +1,16 @@
-package com.github.redouane59.twitter.helpers;
+package io.github.redouane59.twitter.helpers;
 
+import com.github.scribejava.core.model.OAuthAsyncRequestCallback;
+import com.github.scribejava.core.model.OAuthConstants;
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.OAuth10aService;
+import io.github.redouane59.twitter.IAPIEventListener;
+import io.github.redouane59.twitter.dto.others.BearerToken;
+import io.github.redouane59.twitter.dto.tweet.Tweet;
+import io.github.redouane59.twitter.dto.tweet.TweetV2;
+import io.github.redouane59.twitter.signature.TwitterCredentials;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,19 +18,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
-
-import com.github.redouane59.twitter.IAPIEventListener;
-import com.github.redouane59.twitter.dto.others.BearerToken;
-import com.github.redouane59.twitter.dto.tweet.Tweet;
-import com.github.redouane59.twitter.dto.tweet.TweetV2;
-import com.github.redouane59.twitter.signature.TwitterCredentials;
-import com.github.scribejava.core.model.OAuthAsyncRequestCallback;
-import com.github.scribejava.core.model.OAuthConstants;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Response;
-import com.github.scribejava.core.model.Verb;
-import com.github.scribejava.core.oauth.OAuth10aService;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

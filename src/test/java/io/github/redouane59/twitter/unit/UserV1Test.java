@@ -1,11 +1,11 @@
-package com.github.redouane59.twitter.unit;
+package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import com.github.redouane59.twitter.dto.user.UserV1;
-import com.github.redouane59.twitter.dto.user.UserV2;
-import com.github.redouane59.twitter.dto.user.UserV2.UserData;
+import io.github.redouane59.twitter.dto.user.UserV1;
+import io.github.redouane59.twitter.dto.user.UserV2;
+import io.github.redouane59.twitter.dto.user.UserV2.UserData;
 import org.junit.jupiter.api.Test;
 
 public class UserV1Test {

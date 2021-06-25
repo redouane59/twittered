@@ -1,19 +1,19 @@
-package com.github.redouane59.twitter.nrt;
+package io.github.redouane59.twitter.nrt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.github.redouane59.RelationType;
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.dto.dm.DirectMessage;
-import com.github.redouane59.twitter.dto.dm.DmEvent;
-import com.github.redouane59.twitter.dto.others.RequestToken;
-import com.github.redouane59.twitter.dto.tweet.MediaCategory;
-import com.github.redouane59.twitter.dto.tweet.Tweet;
-import com.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
-import com.github.redouane59.twitter.helpers.ConverterHelper;
+import io.github.redouane59.RelationType;
+import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.dm.DirectMessage;
+import io.github.redouane59.twitter.dto.dm.DmEvent;
+import io.github.redouane59.twitter.dto.others.RequestToken;
+import io.github.redouane59.twitter.dto.tweet.MediaCategory;
+import io.github.redouane59.twitter.dto.tweet.Tweet;
+import io.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
+import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;

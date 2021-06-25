@@ -1,10 +1,10 @@
-package com.github.redouane59.twitter.dto.user;
+package io.github.redouane59.twitter.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.redouane59.twitter.dto.tweet.Tweet;
-import com.github.redouane59.twitter.dto.tweet.TweetV2;
-import com.github.redouane59.twitter.helpers.ConverterHelper;
+import io.github.redouane59.twitter.dto.tweet.Tweet;
+import io.github.redouane59.twitter.dto.tweet.TweetV2.TweetData;
+import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -60,7 +60,7 @@ public class UserV2 implements User {
     @Setter
     public static class Includes {
 
-      private TweetV2.TweetData[] tweets;
+      private TweetData[] tweets;
     }
 
     @Override

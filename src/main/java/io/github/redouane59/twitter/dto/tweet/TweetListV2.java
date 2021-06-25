@@ -1,6 +1,6 @@
-package com.github.redouane59.twitter.dto.tweet;
+package io.github.redouane59.twitter.dto.tweet;
 
-import com.github.redouane59.twitter.dto.tweet.TweetV2.TweetData;
+import io.github.redouane59.twitter.dto.tweet.TweetV2.TweetData;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

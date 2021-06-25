@@ -1,10 +1,10 @@
-package com.github.redouane59.twitter.dto.user;
+package io.github.redouane59.twitter.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.redouane59.twitter.dto.tweet.Tweet;
-import com.github.redouane59.twitter.helpers.ConverterHelper;
+import io.github.redouane59.twitter.dto.tweet.Tweet;
+import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
