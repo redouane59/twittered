@@ -1,5 +1,6 @@
 package com.github.redouane59.twitter;
 
+import com.github.redouane59.twitter.dto.endpoints.AdditionnalParameters;
 import com.github.redouane59.twitter.dto.others.BlockResponse;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import com.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
@@ -7,6 +8,7 @@ import com.github.redouane59.twitter.dto.tweet.LikeResponse;
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.tweet.TweetListV2;
 import com.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
+import com.github.redouane59.twitter.dto.tweet.TweetsCountsList;
 import com.github.redouane59.twitter.dto.user.FollowResponse;
 import com.github.redouane59.twitter.dto.user.User;
 import com.github.redouane59.twitter.dto.user.UserListV2;
@@ -303,5 +305,41 @@ public interface ITwitterClientV2 {
    * @param userId ID of the user to request liked Tweets for.
    */
   TweetListV2 getLikedTweets(String userId);
+
+
+  /**
+   * The recent Tweet counts endpoint returns count of Tweets from the last seven days that match a search query calling
+   * https://api.twitter.com/2/tweets/counts/recent
+   *
+   * @param query One rule for matching Tweets
+   */
+  TweetsCountsList getTweetCounts(String query);
+
+  /**
+   * The recent Tweet counts endpoint returns count of Tweets from the last seven days that match a search query calling
+   * https://api.twitter.com/2/tweets/counts/recent
+   *
+   * @param query One rule for matching Tweets
+   * @param additionnalParameters parameters accepted are startTime, endTime, sinceId, untilId, and granularity
+   */
+  TweetsCountsList getTweetCounts(String query, AdditionnalParameters additionnalParameters);
+
+  /**
+   * The full-archive search endpoint returns the complete history of public Tweets matching a search query; since the first Tweet was created March
+   * 26, 2006 calling https://api.twitter.com/2/tweets/counts/all
+   *
+   * @param query One query for matching Tweets.
+   */
+  TweetsCountsList getTweetCountsFullArchive(String query);
+
+  /**
+   * The full-archive search endpoint returns the complete history of public Tweets matching a search query; since the first Tweet was created March
+   * 26, 2006 calling https://api.twitter.com/2/tweets/counts/all
+   *
+   * @param query One query for matching Tweets.
+   * @param additionnalParameters parameters accepted are startTime, endTime, sinceId, untilId, granularity and nextToken
+   */
+  TweetsCountsList getTweetCountsFullArchive(String query, AdditionnalParameters additionnalParameters);
+  
 }
 
