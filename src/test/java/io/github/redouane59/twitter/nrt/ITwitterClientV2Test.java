@@ -116,7 +116,7 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetFollowing() {
     UserList result = twitterClient.getFollowing("882266619115864066");
-    assertEquals(100, result.getData().size());
+    assertTrue(result.getData().size() > 200);
     assertTrue(result.getMeta().getResultCount() > 0);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getName());
@@ -161,7 +161,7 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetFollowers() {
     UserList result = twitterClient.getFollowers("882266619115864066");
-    assertEquals(100, result.getData().size());
+    assertTrue(result.getData().size() > 200);
     assertTrue(result.getMeta().getResultCount() > 0);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getName());
