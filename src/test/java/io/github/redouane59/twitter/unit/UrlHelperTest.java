@@ -21,15 +21,14 @@ public class UrlHelperTest {
   @Test
   public void testUrlFollowersById() {
     assertEquals(
-        "https://api.twitter.com/2/users/12345/followers?max_results=1000&user.fields=id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
+        "https://api.twitter.com/2/users/12345/followers",
         urlHelper.getFollowersUrl("12345"));
   }
 
   @Test
   public void testUrlFollowingsById() {
     assertEquals(
-        "https://api.twitter.com/2/users/12345/following?max_results=1000&user.fields=id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
-        urlHelper.getFollowingUrl("12345"));
+        "https://api.twitter.com/2/users/12345/following", urlHelper.getFollowingUrl("12345"));
   }
 
   @Test
