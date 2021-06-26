@@ -88,7 +88,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   private              RequestHelper      requestHelperV1;
   private              RequestHelperV2    requestHelperV2;
   private              TwitterCredentials twitterCredentials;
-  private static final String             TWEET_FIELDS                         = "tweet.fields";
+  public static final  String             TWEET_FIELDS                         = "tweet.fields";
   public static final  String
                                           ALL_TWEET_FIELDS                     =
       "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id,reply_settings";
@@ -285,20 +285,28 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public UserList getBlockedUsers() {
-    String url = this.urlHelper.getBlockingUsersUrl(this.getUserIdFromAccessToken());
-    return this.getRequestHelper().getRequest(url, UserList.class).orElseThrow(NoSuchElementException::new);
+    String              url        = this.urlHelper.getBlockingUsersUrl(this.getUserIdFromAccessToken());
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    return this.getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public User getUserFromUserId(String userId) {
-    String url = this.getUrlHelper().getUserUrl(userId);
-    return this.getRequestHelper().getRequest(url, UserV2.class).orElseThrow(NoSuchElementException::new);
+    String              url        = this.getUrlHelper().getUserUrl(userId);
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(EXPANSION, "pinned_tweet_id");
+    return this.getRequestHelper().getRequestWithParameters(url, parameters, UserV2.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public UserV2 getUserFromUserName(String userName) {
-    String url = this.getUrlHelper().getUserUrlFromName(userName);
-    return this.getRequestHelper().getRequest(url, UserV2.class).orElseThrow(NoSuchElementException::new);
+    String              url        = this.getUrlHelper().getUserUrlFromName(userName);
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(EXPANSION, "pinned_tweet_id");
+    return this.getRequestHelper().getRequestWithParameters(url, parameters, UserV2.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -338,14 +346,18 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public UserList getLikingUsers(final String tweetId) {
-    String url = this.getUrlHelper().getLikingUsersUrl(tweetId);
-    return getRequestHelper().getRequest(url, UserList.class).orElseThrow(NoSuchElementException::new);
+    String              url        = this.getUrlHelper().getLikingUsersUrl(tweetId);
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    return getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public TweetList getLikedTweets(final String userId) {
-    String url = this.getUrlHelper().getLikedTweetsUrl(userId);
-    return getRequestHelper().getRequest(url, TweetList.class).orElseThrow(NoSuchElementException::new);
+    String              url        = this.getUrlHelper().getLikedTweetsUrl(userId);
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    return getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -355,7 +367,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public TweetCountsList getTweetCounts(final String query, AdditionalParameters additionalParameters) {
-    String url = this.getUrlHelper().getTweetsCountsUrl();
+    String url = this.getUrlHelper().getTweetsCountUrl();
     return this.getTweetCounts(url, query, additionalParameters);
   }
 
@@ -366,7 +378,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public TweetCountsList getTweetCountsFullArchive(final String query, AdditionalParameters additionalParameters) {
-    String url = this.getUrlHelper().getTweetsCountsFullArchiveUrl();
+    String url = this.getUrlHelper().getTweetsCountAllUrl();
     return this.getTweetCounts(url, query, additionalParameters);
   }
 
@@ -424,14 +436,22 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public Tweet getTweet(String tweetId) {
-    String url = this.getUrlHelper().getTweetUrl(tweetId);
-    return this.getRequestHelper().getRequest(url, TweetV2.class).orElseThrow(NoSuchElementException::new);
+    String              url        = this.getUrlHelper().getTweetUrl(tweetId);
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(EXPANSION, ALL_EXPANSIONS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    return this.getRequestHelper().getRequestWithParameters(url, parameters, TweetV2.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public TweetList getTweets(List<String> tweetIds) {
-    String url = this.getUrlHelper().getTweetListUrl(tweetIds);
-    return this.getRequestHelper().getRequest(url, TweetList.class).orElseThrow(NoSuchElementException::new);
+    String              url        = this.getUrlHelper().getTweetListUrl(tweetIds);
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(EXPANSION, ALL_EXPANSIONS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    return this.getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override

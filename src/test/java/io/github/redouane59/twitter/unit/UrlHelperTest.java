@@ -2,6 +2,7 @@ package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
 import io.github.redouane59.twitter.helpers.URLHelper;
 import java.util.ArrayList;
@@ -57,9 +58,7 @@ public class UrlHelperTest {
 
   @Test
   public void testUrlGetUserByIdV2() {
-    assertEquals(
-        "https://api.twitter.com/2/users/12345?expansions=pinned_tweet_id&user.fields=id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
-        urlHelper.getUserUrl("12345"));
+    assertEquals("https://api.twitter.com/2/users/12345", urlHelper.getUserUrl("12345"));
   }
 
   @Test
@@ -125,32 +124,19 @@ public class UrlHelperTest {
 
   @Test
   public void testTweetUrl() {
-    assertEquals(
-        "https://api.twitter.com/2/tweets/12345?expansions=author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id&"
-        + URLHelper.TWEET_FIELDS
-        + URLHelper.ALL_TWEET_FIELDS
-        + "&"
-        + URLHelper.USER_FIELDS
-        + URLHelper.ALL_USER_FIELDS,
-        urlHelper.getTweetUrl("12345"));
+    assertEquals("https://api.twitter.com/2/tweets/12345", urlHelper.getTweetUrl("12345"));
   }
 
   @Test
   public void testUrlGetTweetsV2() {
     assertEquals(
-        "https://api.twitter.com/2/tweets?ids=1294174710624849921,1294380029430960128,1294375095746666496&"
-        + URLHelper.TWEET_FIELDS + URLHelper.ALL_TWEET_FIELDS
-        + "&"
-        + URLHelper.USER_FIELDS + URLHelper.ALL_USER_FIELDS,
+        "https://api.twitter.com/2/tweets?ids=1294174710624849921,1294380029430960128,1294375095746666496",
         urlHelper.getTweetListUrl(Arrays.asList("1294174710624849921,1294380029430960128,1294375095746666496")));
   }
 
   @Test
   public void testGetUserUrlFromName() {
-    assertEquals(
-        "https://api.twitter.com/2/users/by/username/RedTheOne?expansions=pinned_tweet_id&user.fields=id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected"
-        ,
-        urlHelper.getUserUrlFromName("RedTheOne"));
+    assertEquals("https://api.twitter.com/2/users/by/username/RedTheOne", urlHelper.getUserUrlFromName("RedTheOne"));
   }
 
   @Test
@@ -197,14 +183,14 @@ public class UrlHelperTest {
   public void testFilteredStreamUrl() {
     assertEquals(
         "https://api.twitter.com/2/tweets/search/stream?"
-        + URLHelper.EXPANSION
-        + URLHelper.ALL_EXPANSIONS
+        + TwitterClient.EXPANSION
+        + TwitterClient.ALL_EXPANSIONS
         + "&"
-        + URLHelper.TWEET_FIELDS
-        + URLHelper.ALL_TWEET_FIELDS
+        + TwitterClient.TWEET_FIELDS
+        + TwitterClient.ALL_TWEET_FIELDS
         + "&"
-        + URLHelper.USER_FIELDS
-        + URLHelper.ALL_USER_FIELDS,
+        + TwitterClient.USER_FIELDS
+        + TwitterClient.ALL_USER_FIELDS,
         urlHelper.getFilteredStreamUrl());
   }
 
@@ -212,14 +198,14 @@ public class UrlHelperTest {
   public void testSampledStreamUrl() {
     assertEquals(
         "https://api.twitter.com/2/tweets/sample/stream?"
-        + URLHelper.EXPANSION
-        + URLHelper.ALL_EXPANSIONS
+        + TwitterClient.EXPANSION
+        + TwitterClient.ALL_EXPANSIONS
         + "&"
-        + URLHelper.TWEET_FIELDS
-        + URLHelper.ALL_TWEET_FIELDS
+        + TwitterClient.TWEET_FIELDS
+        + TwitterClient.ALL_TWEET_FIELDS
         + "&"
-        + URLHelper.USER_FIELDS
-        + URLHelper.ALL_USER_FIELDS,
+        + TwitterClient.USER_FIELDS
+        + TwitterClient.ALL_USER_FIELDS,
         urlHelper.getSampledStreamUrl());
   }
 
@@ -281,22 +267,19 @@ public class UrlHelperTest {
   @Test
   public void testGetBlockingUsersUrl() {
     String userId = "12345";
-    assertEquals("https://api.twitter.com/2/users/" + userId + "/blocking?" + URLHelper.USER_FIELDS + URLHelper.ALL_USER_FIELDS,
-                 urlHelper.getBlockingUsersUrl(userId));
+    assertEquals("https://api.twitter.com/2/users/" + userId + "/blocking", urlHelper.getBlockingUsersUrl(userId));
   }
 
   @Test
   public void testLikingUsers() {
-    assertEquals(
-        "https://api.twitter.com/2/tweets/1354143047324299264/liking_users?user.fields=id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected",
-        urlHelper.getLikingUsersUrl("1354143047324299264"));
+    assertEquals("https://api.twitter.com/2/tweets/1354143047324299264/liking_users",
+                 urlHelper.getLikingUsersUrl("1354143047324299264"));
   }
 
   @Test
   public void testLikedTweetsUrl() {
     String userId = "12345";
-    assertEquals("https://api.twitter.com/2/users/" + userId + "/liked_tweets?" + URLHelper.TWEET_FIELDS + URLHelper.ALL_TWEET_FIELDS,
-                 urlHelper.getLikedTweetsUrl(userId));
+    assertEquals("https://api.twitter.com/2/users/" + userId + "/liked_tweets", urlHelper.getLikedTweetsUrl(userId));
   }
 
   @Test
@@ -317,12 +300,12 @@ public class UrlHelperTest {
 
   @Test
   public void testGetTweetsCountsUrl() {
-    assertEquals("https://api.twitter.com/2/tweets/counts/recent", urlHelper.getTweetsCountsUrl());
+    assertEquals("https://api.twitter.com/2/tweets/counts/recent", urlHelper.getTweetsCountUrl());
   }
 
   @Test
   public void testGetTweetsCountsAllUrl() {
-    assertEquals("https://api.twitter.com/2/tweets/counts/all", urlHelper.getTweetsCountsFullArchiveUrl());
+    assertEquals("https://api.twitter.com/2/tweets/counts/all", urlHelper.getTweetsCountAllUrl());
   }
 
 }
