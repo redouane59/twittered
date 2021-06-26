@@ -4,13 +4,13 @@ import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
 import java.util.List;
 import lombok.Getter;
-import lombok.Setter;
 
-@Setter
 public class URLHelper {
 
-  private static final String ROOT_URL_V1                 = "https://api.twitter.com/1.1";
-  private static final String ROOT_URL_V2                 = "https://api.twitter.com/2";
+  private static final String ROOT_URL_V1 = "https://api.twitter.com/1.1";
+  private static final String ROOT_URL_V2 = "https://api.twitter.com/2";
+
+  // v1 legacy
   private static final String IDS_JSON                    = "/ids.json?";
   private static final String ID                          = "id";
   private static final String COUNT                       = "count";
@@ -40,38 +40,38 @@ public class URLHelper {
   public static final  String GET_OAUTH1_ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
   private static final String DIRECT_MESSAGE_EVENTS       = "/direct_messages/events";
 
-  // refacto
+  // v2
   private final String idVariable             = ":id";
   @Getter
-  private final String searchRecentTweetsUrl  = ROOT_URL_V2 + "/tweets/search/recent";
+  private final String searchRecentTweetsUrl  = "https://api.twitter.com/2/tweets/search/recent";
   @Getter
-  private final String searchAllTweetsUrl     = ROOT_URL_V2 + "/tweets/search/all";
-  private final String followUrl              = ROOT_URL_V2 + "/users/:id/following";
-  private final String unfollowUrl            = ROOT_URL_V2 + "/users/:sourceId/following/:targetId";
-  private final String followersUrl           = ROOT_URL_V2 + "/users/:id/followers";
-  private final String followingUrl           = ROOT_URL_V2 + "/users/:id/following";
-  private final String userUrl                = ROOT_URL_V2 + "/users/:id";
-  private final String userUrlFromName        = ROOT_URL_V2 + "/users/by/username/:username";
-  private final String tweetUrl               = ROOT_URL_V2 + "/tweets/:id";
-  private final String likeUrl                = ROOT_URL_V2 + "/users/:id/likes";
-  private final String unlikeUrl              = ROOT_URL_V2 + "/users/:userId/likes/:tweetId";
-  private final String hideUrl                = ROOT_URL_V2 + "/tweets/:id/hidden";
+  private final String searchAllTweetsUrl     = "https://api.twitter.com/2/tweets/search/all";
   @Getter
-  private final String filteredStreamRulesUrl = ROOT_URL_V2 + "/tweets/search/stream/rules";
+  private final String filteredStreamRulesUrl = "https://api.twitter.com/2/tweets/search/stream/rules";
   @Getter
-  private final String filteredStreamUrl      = ROOT_URL_V2 + "/tweets/search/stream";
-  private final String sampledStreamUrl       = ROOT_URL_V2 + "/tweets/sample/stream";
-  private final String userTimelineUrl        = ROOT_URL_V2 + "/users/:id/tweets";
-  private final String userMentionsUrl        = ROOT_URL_V2 + "/users/:id/mentions";
-  private final String blockUserUrl           = ROOT_URL_V2 + "/users/:id/blocking";
-  private final String unblockUserUrl         = ROOT_URL_V2 + "/users/:sourceId/blocking/:targetId";
-  private final String blockingUsersUrl       = ROOT_URL_V2 + "/users/:id/blocking";
-  private final String likingUsersUrl         = ROOT_URL_V2 + "/tweets/:id/liking_users";
-  private final String likedTweetsUrl         = ROOT_URL_V2 + "/users/:id/liked_tweets";
+  private final String filteredStreamUrl      = "https://api.twitter.com/2/tweets/search/stream";
   @Getter
-  private final String tweetsCountUrl         = ROOT_URL_V2 + "/tweets/counts/recent";
+  private final String tweetsCountUrl         = "https://api.twitter.com/2/tweets/counts/recent";
   @Getter
-  private final String tweetsCountAllUrl      = ROOT_URL_V2 + "/tweets/counts/all";
+  private final String tweetsCountAllUrl      = "https://api.twitter.com/2/tweets/counts/all";
+  private final String followUrl              = "https://api.twitter.com/2/users/:id/following";
+  private final String unfollowUrl            = "https://api.twitter.com/2/users/:sourceId/following/:targetId";
+  private final String followersUrl           = "https://api.twitter.com/2/users/:id/followers";
+  private final String followingUrl           = "https://api.twitter.com/2/users/:id/following";
+  private final String userUrl                = "https://api.twitter.com/2/users/:id";
+  private final String userUrlFromName        = "https://api.twitter.com/2/users/by/username/:username";
+  private final String tweetUrl               = "https://api.twitter.com/2/tweets/:id";
+  private final String likeUrl                = "https://api.twitter.com/2/users/:id/likes";
+  private final String unlikeUrl              = "https://api.twitter.com/2/users/:userId/likes/:tweetId";
+  private final String hideUrl                = "https://api.twitter.com/2/tweets/:id/hidden";
+  private final String sampledStreamUrl       = "https://api.twitter.com/2/tweets/sample/stream";
+  private final String userTimelineUrl        = "https://api.twitter.com/2/users/:id/tweets";
+  private final String userMentionsUrl        = "https://api.twitter.com/2/users/:id/mentions";
+  private final String blockUserUrl           = "https://api.twitter.com/2/users/:id/blocking";
+  private final String unblockUserUrl         = "https://api.twitter.com/2/users/:sourceId/blocking/:targetId";
+  private final String blockingUsersUrl       = "https://api.twitter.com/2/users/:id/blocking";
+  private final String likingUsersUrl         = "https://api.twitter.com/2/tweets/:id/liking_users";
+  private final String likedTweetsUrl         = "https://api.twitter.com/2/users/:id/liked_tweets";
 
   public String getSearchTweet30DaysUrl(String envName) {
     return ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + "/" + envName + JSON;

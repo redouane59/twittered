@@ -171,7 +171,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetFollowingsFromRelations() {
-    List<User> result = twitterClient.getUsersByRelation("882266619115864066", RelationType.FOLLOWING);
+    List<User> result = twitterClient.getUsersByRelation("1120050519182016513", RelationType.FOLLOWING);
     assertTrue(result.size() > 100);
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getName());
@@ -180,7 +180,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetFollowersFromRelations() {
-    List<User> result = twitterClient.getUsersByRelation("882266619115864066", RelationType.FOLLOWER);
+    List<User> result = twitterClient.getUsersByRelation("1120050519182016513", RelationType.FOLLOWER);
     assertTrue(result.size() > 100);
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getName());
