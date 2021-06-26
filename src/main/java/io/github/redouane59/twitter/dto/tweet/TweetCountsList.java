@@ -48,7 +48,7 @@ public class TweetCountsList {
     @Override
     public LocalDateTime deserialize(JsonParser jp, DeserializationContext ctxt)
     throws IOException {
-      return ConverterHelper.getDateFromTwitterDateV2(jp.readValueAs(String.class));
+      return ConverterHelper.getDateFromTwitterStringV2(jp.readValueAs(String.class));
     }
 
   }

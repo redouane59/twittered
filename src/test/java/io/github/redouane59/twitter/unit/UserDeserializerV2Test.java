@@ -65,7 +65,7 @@ public class UserDeserializerV2Test {
 
   @Test
   public void testGetUserDateOfCreation() {
-    assertEquals(ConverterHelper.getDateFromTwitterDateV2("2009-11-23T17:53:15.000Z"), userV2.getDateOfCreation());
+    assertEquals(ConverterHelper.getDateFromTwitterStringV2("2009-11-23T17:53:15.000Z"), userV2.getDateOfCreation());
   }
 
   @Test
@@ -78,7 +78,7 @@ public class UserDeserializerV2Test {
     Tweet pinnedTweet = userV2.getPinnedTweet();
     assertNotNull(pinnedTweet);
     assertEquals("92073489", pinnedTweet.getAuthorId());
-    assertEquals(ConverterHelper.getDateFromTwitterDateV2("2018-08-30T15:50:15.000Z"), pinnedTweet.getCreatedAt());
+    assertEquals(ConverterHelper.getDateFromTwitterStringV2("2018-08-30T15:50:15.000Z"), pinnedTweet.getCreatedAt());
     assertEquals("1035192987008020480", pinnedTweet.getId());
     assertEquals("fr", pinnedTweet.getLang());
     assertEquals(1910, pinnedTweet.getRetweetCount());

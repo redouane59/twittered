@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import io.github.redouane59.twitter.TwitterClient;
-import io.github.redouane59.twitter.dto.user.UserListV2;
+import io.github.redouane59.twitter.dto.user.UserList;
 import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 
 public class UserFollowersDeserializerV2Test {
 
-  private File       userFile2 = new File(getClass().getClassLoader().getResource("tests/user_followers_example_v2.json").getFile());
-  private UserListV2 users     = TwitterClient.OBJECT_MAPPER.readValue(userFile2, UserListV2.class);
+  private File     userFile2 = new File(getClass().getClassLoader().getResource("tests/user_followers_example_v2.json").getFile());
+  private UserList users     = TwitterClient.OBJECT_MAPPER.readValue(userFile2, UserList.class);
 
   public UserFollowersDeserializerV2Test() throws IOException {
   }

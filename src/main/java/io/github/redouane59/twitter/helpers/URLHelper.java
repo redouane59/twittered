@@ -1,81 +1,77 @@
 package io.github.redouane59.twitter.helpers;
 
+import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class URLHelper {
 
-  private static final String ROOT_URL_V1                   = "https://api.twitter.com/1.1";
-  private static final String ROOT_URL_V2                   = "https://api.twitter.com/2";
-  private static final String ROOT_URL_LABS_V2              = "https://api.twitter.com/labs/2";
-  private static final String IDS_JSON                      = "/ids.json?";
-  private static final String SCREEN_NAME                   = "screen_name";
-  private static final String ID                            = "id";
-  private static final String COUNT                         = "count";
-  private static final String LIST_JSON                     = "/list.json";
-  private static final String SHOW_JSON                     = "/show.json?";
-  private static final String CREATE_JSON                   = "/create.json?";
-  private static final String DESTROY_JSON                  = "/destroy.json?";
-  private static final String RETWEETERS                    = "/retweeters";
-  private static final String FOLLOWERS                     = "/followers";
-  private static final String FOLLOWING                     = "/following";
-  private static final String STATUSES                      = "/statuses";
-  private static final String FRIENDSHIPS                   = "/friendships";
-  private static final String FAVORITES                     = "/favorites";
-  private static final String USERS                         = "/users";
-  private static final String TWEETS                        = "/tweets";
-  private static final String MENTIONS                      = "/mentions";
-  private static final String SEARCH                        = "/search";
-  private static final String SAMPLE                        = "/sample";
-  private static final String STREAM                        = "/stream";
-  private static final String COUNTS                        = "/counts";
-  private static final String RECENT                        = "/recent";
-  private static final String ALL                           = "/all";
-  private static final String THIRTY_DAYS                   = "/30day";
-  private static final String FULL_ARCHIVE                  = "/fullarchive";
-  private static final String ACCOUNT_ACTIVITY              = "/account_activity/all";
-  private static final String WEBHOOKS                      = "/webhooks";
-  private static final String USER_ID                       = "user_id";
-  private static final String LOOKUP_JSON                   = "/lookup.json?";
-  private static final String USER_TIMELINE                 = "/user_timeline.json?";
-  private static final String JSON                          = ".json";
-  private static final String TRIM_USER                     = "trim_user=true";
-  private static final String EXCLUDE_RTS                   = "include_rts=false";
-  private static final String USER_FORMAT_DETAILED          = "user.format=detailed";
-  private static final String TWEET_FORMAT_DETAILED         = "tweet.format=detailed";
-  private static final String MAX_ID                        = "max_id";
-  private static final String COLLECTIONS                   = "/collections";
-  private static final int    MAX_COUNT                     = 200;
-  private static final int    RETWEET_MAX_COUNT             = 100;
-  public static final  int    MAX_LOOKUP                    = 100;
-  public static final  String USER_FIELDS                   = "user.fields=";
-  public static final  String ALL_USER_FIELDS               =
-      "id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
-  public static final  String TWEET_FIELDS                  = "tweet.fields=";
-  public static final  String
-                              ALL_TWEET_FIELDS              =
-      "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id,reply_settings";
-  public static final  String EXPANSION                     = "expansions=";
-  public static final  String
-                              ALL_EXPANSIONS                =
-      "author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id";
-  public static final  String LAST_TWEET_LIST_URL           = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
-  public static final  String RATE_LIMIT_URL                = ROOT_URL_V1 + "/application/rate_limit_status.json";
-  public static final  String SEARCH_TWEET_STANDARD_URL     = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
-  public static final  String SEARCH_TWEET_7_DAYS_URL       = ROOT_URL_V2 + TWEETS + SEARCH + RECENT;
-  public static final  String SEARCH_TWEET_FULL_ARCHIVE_URL = ROOT_URL_V2 + TWEETS + SEARCH + "/all" + "?" + EXPANSION + ALL_EXPANSIONS;
-  public static final  String GET_BEARER_TOKEN_URL          = "https://api.twitter.com/oauth2/token";
-  public static final  String GET_OAUTH1_TOKEN_URL          = "https://api.twitter.com/oauth/request_token";
-  public static final  String GET_OAUTH1_ACCESS_TOKEN_URL   = "https://api.twitter.com/oauth/access_token";
-  private static final String MAX_RESULTS                   = "max_results";
-  private static final String BLOCKING                      = "/blocking";
-  private static final String LIKES                         = "/likes";
-  private static final String DIRECT_MESSAGE_EVENTS         = "/direct_messages/events";
+  private static final String ROOT_URL_V1 = "https://api.twitter.com/1.1";
+  private static final String ROOT_URL_V2 = "https://api.twitter.com/2";
+
+  // v1 legacy
+  private static final String IDS_JSON                    = "/ids.json?";
+  private static final String ID                          = "id";
+  private static final String COUNT                       = "count";
+  private static final String LIST_JSON                   = "/list.json";
+  private static final String SHOW_JSON                   = "/show.json?";
+  private static final String RETWEETERS                  = "/retweeters";
+  private static final String FOLLOWERS                   = "/followers";
+  private static final String STATUSES                    = "/statuses";
+  private static final String FRIENDSHIPS                 = "/friendships";
+  private static final String USERS                       = "/users";
+  private static final String TWEETS                      = "/tweets";
+  private static final String SEARCH                      = "/search";
+  private static final String THIRTY_DAYS                 = "/30day";
+  private static final String FULL_ARCHIVE                = "/fullarchive";
+  private static final String USER_ID                     = "user_id";
+  private static final String USER_TIMELINE               = "/user_timeline.json?";
+  private static final String JSON                        = ".json";
+  private static final String MAX_ID                      = "max_id";
+  private static final String COLLECTIONS                 = "/collections";
+  private static final int    RETWEET_MAX_COUNT           = 100;
+  public static final  int    MAX_LOOKUP                  = 100;
+  public static final  String LAST_TWEET_LIST_URL         = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
+  public static final  String RATE_LIMIT_URL              = ROOT_URL_V1 + "/application/rate_limit_status.json";
+  public static final  String SEARCH_TWEET_STANDARD_URL   = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
+  public static final  String GET_BEARER_TOKEN_URL        = "https://api.twitter.com/oauth2/token";
+  public static final  String GET_OAUTH1_TOKEN_URL        = "https://api.twitter.com/oauth/request_token";
+  public static final  String GET_OAUTH1_ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
+  private static final String DIRECT_MESSAGE_EVENTS       = "/direct_messages/events";
+
+  // v2
+  private final String idVariable             = ":id";
+  @Getter
+  private final String searchRecentTweetsUrl  = "https://api.twitter.com/2/tweets/search/recent";
+  @Getter
+  private final String searchAllTweetsUrl     = "https://api.twitter.com/2/tweets/search/all";
+  @Getter
+  private final String filteredStreamRulesUrl = "https://api.twitter.com/2/tweets/search/stream/rules";
+  @Getter
+  private final String filteredStreamUrl      = "https://api.twitter.com/2/tweets/search/stream";
+  @Getter
+  private final String tweetsCountUrl         = "https://api.twitter.com/2/tweets/counts/recent";
+  @Getter
+  private final String tweetsCountAllUrl      = "https://api.twitter.com/2/tweets/counts/all";
+  private final String followUrl              = "https://api.twitter.com/2/users/:id/following";
+  private final String unfollowUrl            = "https://api.twitter.com/2/users/:sourceId/following/:targetId";
+  private final String followersUrl           = "https://api.twitter.com/2/users/:id/followers";
+  private final String followingUrl           = "https://api.twitter.com/2/users/:id/following";
+  private final String userUrl                = "https://api.twitter.com/2/users/:id";
+  private final String userUrlFromName        = "https://api.twitter.com/2/users/by/username/:username";
+  private final String tweetUrl               = "https://api.twitter.com/2/tweets/:id";
+  private final String likeUrl                = "https://api.twitter.com/2/users/:id/likes";
+  private final String unlikeUrl              = "https://api.twitter.com/2/users/:userId/likes/:tweetId";
+  private final String hideUrl                = "https://api.twitter.com/2/tweets/:id/hidden";
+  private final String sampledStreamUrl       = "https://api.twitter.com/2/tweets/sample/stream";
+  private final String userTimelineUrl        = "https://api.twitter.com/2/users/:id/tweets";
+  private final String userMentionsUrl        = "https://api.twitter.com/2/users/:id/mentions";
+  private final String blockUserUrl           = "https://api.twitter.com/2/users/:id/blocking";
+  private final String unblockUserUrl         = "https://api.twitter.com/2/users/:sourceId/blocking/:targetId";
+  private final String blockingUsersUrl       = "https://api.twitter.com/2/users/:id/blocking";
+  private final String likingUsersUrl         = "https://api.twitter.com/2/tweets/:id/liking_users";
+  private final String likedTweetsUrl         = "https://api.twitter.com/2/users/:id/liked_tweets";
 
   public String getSearchTweet30DaysUrl(String envName) {
     return ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + "/" + envName + JSON;
@@ -85,23 +81,12 @@ public class URLHelper {
     return ROOT_URL_V1 + TWEETS + SEARCH + FULL_ARCHIVE + "/" + envName + JSON;
   }
 
-  public String getLiveEventUrl(String envName) {
-    return ROOT_URL_V1 + ACCOUNT_ACTIVITY + "/" + envName + WEBHOOKS + JSON;
-  }
-
   public String getFollowUrl(String userId) {
-    return ROOT_URL_V2 +
-           USERS +
-           "/" + userId +
-           FOLLOWING;
+    return followUrl.replace(idVariable, userId);
   }
 
   public String getUnfollowUrl(String sourceUserId, String targetUserId) {
-    return ROOT_URL_V2 +
-           USERS +
-           "/" + sourceUserId +
-           FOLLOWING
-           + "/" + targetUserId;
+    return unfollowUrl.replace(":sourceId", sourceUserId).replace(":targetId", targetUserId);
   }
 
   public String getFriendshipUrl(String sourceId, String targetId) {
@@ -126,17 +111,7 @@ public class URLHelper {
   }
 
   public String getFollowersUrl(String userId) {
-    return ROOT_URL_V2 +
-           USERS +
-           "/" +
-           userId +
-           FOLLOWERS +
-           "?" +
-           MAX_RESULTS +
-           "=1000" +
-           "&" +
-           USER_FIELDS +
-           ALL_USER_FIELDS;
+    return followersUrl.replace(idVariable, userId);
   }
 
   public String getFollowersIdsUrl(String userId) {
@@ -146,58 +121,22 @@ public class URLHelper {
   }
 
   public String getFollowingUrl(String userId) {
-    return ROOT_URL_V2 +
-           USERS +
-           "/" +
-           userId +
-           FOLLOWING +
-           "?" +
-           MAX_RESULTS +
-           "=1000" +
-           "&" +
-           USER_FIELDS +
-           ALL_USER_FIELDS;
+    return followingUrl.replace(idVariable, userId);
   }
 
   public String getUserUrl(String userId) {
-    return ROOT_URL_V2 +
-           USERS +
-           "/" +
-           userId +
-           "?" +
-           "expansions=pinned_tweet_id" +
-           "&" +
-           USER_FIELDS +
-           ALL_USER_FIELDS;
+    return userUrl.replace(idVariable, userId);
   }
 
   public String getUserUrlFromName(String username) {
-    return ROOT_URL_V2 +
-           USERS +
-           "/by/username/" +
-           username +
-           "?" +
-           "expansions=pinned_tweet_id" +
-           "&" +
-           USER_FIELDS +
-           ALL_USER_FIELDS;
+    return userUrlFromName.replace(":username", username);
   }
 
   public String getTweetUrl(String tweetId) {
-    return ROOT_URL_V2 +
-           "/tweets/" +
-           tweetId +
-           "?" +
-           EXPANSION +
-           ALL_EXPANSIONS +
-           "&" +
-           TWEET_FIELDS +
-           ALL_TWEET_FIELDS +
-           "&" +
-           USER_FIELDS +
-           ALL_USER_FIELDS;
+    return tweetUrl.replace(idVariable, tweetId);
   }
 
+  // @todo to improve
   public String getTweetListUrl(List<String> ids) {
     StringBuilder result = new StringBuilder(ROOT_URL_V2 +
                                              "/tweets?ids=");
@@ -209,15 +148,10 @@ public class URLHelper {
       i++;
     }
     result.delete(result.length() - 1, result.length());
-    result.append("&");
-    result.append(TWEET_FIELDS);
-    result.append(ALL_TWEET_FIELDS);
-    result.append("&");
-    result.append(USER_FIELDS);
-    result.append(ALL_USER_FIELDS);
     return result.toString();
   }
 
+  // @todo to improve
   public String getUsersUrlbyNames(List<String> names) {
     StringBuilder result = new StringBuilder(ROOT_URL_V2)
         .append(USERS)
@@ -233,6 +167,7 @@ public class URLHelper {
     return result.toString();
   }
 
+  // @todo to improve
   public String getUsersUrlbyIds(List<String> ids) {
     StringBuilder result = new StringBuilder(ROOT_URL_V2)
         .append(USERS)
@@ -248,24 +183,12 @@ public class URLHelper {
     return result.toString();
   }
 
-  public String getUserTweetsUrl(String userId, int count) {
-    return ROOT_URL_V1 +
-           STATUSES +
-           USER_TIMELINE +
-           USER_ID + "=" +
-           userId +
-           "&" + COUNT + "=" +
-           count +
-           "&" + TRIM_USER +
-           "&" + EXCLUDE_RTS;
-  }
-
   public String getLikeUrl(String userId) {
-    return ROOT_URL_V2 + USERS + "/" + userId + LIKES;
+    return likeUrl.replace(idVariable, userId);
   }
 
   public String getUnlikeUrl(String userId, String tweetId) {
-    return ROOT_URL_V2 + USERS + "/" + userId + LIKES + "/" + tweetId;
+    return unlikeUrl.replace(":userId", userId).replace(":tweetId", tweetId);
   }
 
   public String getRetweetTweetUrl(final String tweetId) {
@@ -291,79 +214,43 @@ public class URLHelper {
   }
 
   public String getHideReplyUrl(final String tweetId) {
-    return ROOT_URL_V2 + TWEETS + "/" + tweetId + "/hidden";
+    return hideUrl.replace(idVariable, tweetId);
   }
 
-  public String getFilteredStreamRulesUrl() {
-    return ROOT_URL_V2 + TWEETS + SEARCH + STREAM + "/rules";
-  }
-
+  // @todo to improve
   public String getFilteredStreamUrl() {
-    return ROOT_URL_V2
-           + TWEETS
-           + SEARCH
-           + STREAM
+    return filteredStreamUrl
            + "?"
-           + EXPANSION
-           + ALL_EXPANSIONS
+           + TwitterClient.EXPANSION
+           + TwitterClient.ALL_EXPANSIONS
            + "&"
-           + TWEET_FIELDS
-           + ALL_TWEET_FIELDS
+           + TwitterClient.TWEET_FIELDS
+           + TwitterClient.ALL_TWEET_FIELDS
            + "&"
-           + USER_FIELDS
-           + ALL_USER_FIELDS;
+           + TwitterClient.USER_FIELDS
+           + TwitterClient.ALL_USER_FIELDS;
   }
 
+  // @todo to improve
   public String getSampledStreamUrl() {
-    return ROOT_URL_V2
-           + TWEETS
-           + SAMPLE
-           + STREAM
+    return sampledStreamUrl
            + "?"
-           + EXPANSION
-           + ALL_EXPANSIONS
+           + TwitterClient.EXPANSION
+           + TwitterClient.ALL_EXPANSIONS
            + "&"
-           + TWEET_FIELDS
-           + ALL_TWEET_FIELDS
+           + TwitterClient.TWEET_FIELDS
+           + TwitterClient.ALL_TWEET_FIELDS
            + "&"
-           + USER_FIELDS
-           + ALL_USER_FIELDS;
+           + TwitterClient.USER_FIELDS
+           + TwitterClient.ALL_USER_FIELDS;
   }
 
-  public String getUserTimelineUrl(String userId, int maxResult, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {
-    String result = ROOT_URL_V2 + USERS + "/" + userId + TWEETS + "?" + MAX_RESULTS + "=" + maxResult;
-    if (startTime != null) {
-      result += "&start_time=" + ConverterHelper.getStringFromDateV2(startTime);
-    }
-    if (endTime != null) {
-      result += "&end_time=" + ConverterHelper.getStringFromDateV2(endTime);
-    }
-    if (sinceId != null) {
-      result += "&since_id=" + sinceId;
-    }
-    if (untilId != null) {
-      result += "&until_id=" + untilId;
-    }
-    result += "&" + TWEET_FIELDS + ALL_TWEET_FIELDS;
-    return result;
+  public String getUserTimelineUrl(String userId) {
+    return userTimelineUrl.replace(idVariable, userId);
   }
 
-  public String getUserMentionsUrl(String userId, int maxResult, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId) {
-    String result = ROOT_URL_V2 + USERS + "/" + userId + MENTIONS + "?" + MAX_RESULTS + "=" + maxResult;
-    if (startTime != null) {
-      result += "&start_time=" + ConverterHelper.getStringFromDateV2(startTime);
-    }
-    if (endTime != null) {
-      result += "&end_time=" + ConverterHelper.getStringFromDateV2(endTime);
-    }
-    if (sinceId != null) {
-      result += "&since_id=" + sinceId;
-    }
-    if (untilId != null) {
-      result += "&until_id=" + untilId;
-    }
-    result += "&" + TWEET_FIELDS + ALL_TWEET_FIELDS;
-    return result;
+  public String getUserMentionsUrl(String userId) {
+    return userMentionsUrl.replace(idVariable, userId);
   }
 
   public String getUploadMediaUrl(MediaCategory mediaCategory) {
@@ -403,25 +290,23 @@ public class URLHelper {
   }
 
   public String getBlockUserUrl(String userId) {
-    return ROOT_URL_V2 + USERS + "/" + userId + BLOCKING;
+    return blockUserUrl.replace(idVariable, userId);
   }
 
   public String getUnblockUserUrl(String sourceUserId, String targetUserId) {
-    return ROOT_URL_V2 + USERS + "/" + sourceUserId + BLOCKING + "/" + targetUserId;
+    return unblockUserUrl.replace(":sourceId", sourceUserId).replace(":targetId", targetUserId);
   }
 
   public String getBlockingUsersUrl(String userId) {
-    return ROOT_URL_V2 + USERS + "/" + userId + BLOCKING + "?" + USER_FIELDS + ALL_USER_FIELDS;
+    return blockingUsersUrl.replace(idVariable, userId);
   }
 
   public String getLikingUsersUrl(final String tweetId) {
-    return ROOT_URL_V2 + TWEETS + "/" + tweetId + "/liking_users"
-           + "?" + USER_FIELDS + ALL_USER_FIELDS;
+    return likingUsersUrl.replace(idVariable, tweetId);
   }
 
   public String getLikedTweetsUrl(final String userId) {
-    return ROOT_URL_V2 + USERS + "/" + userId + "/liked_tweets"
-           + "?" + TWEET_FIELDS + ALL_TWEET_FIELDS;
+    return likedTweetsUrl.replace(idVariable, userId);
   }
 
   public String getDMListUrl(int count) {
@@ -434,14 +319,6 @@ public class URLHelper {
 
   public String getPostDmUrl() {
     return ROOT_URL_V1 + DIRECT_MESSAGE_EVENTS + "/new.json";
-  }
-
-  public String getTweetsCountsUrl() {
-    return ROOT_URL_V2 + TWEETS + COUNTS + RECENT;
-  }
-
-  public String getTweetsCountsFullArchiveUrl() {
-    return ROOT_URL_V2 + TWEETS + COUNTS + ALL;
   }
 
 }
