@@ -2,6 +2,7 @@ package io.github.redouane59.twitter.dto.tweet;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
 public class TweetList {
 
   private List<TweetV2.TweetData> data;

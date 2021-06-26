@@ -38,6 +38,7 @@ import io.github.redouane59.twitter.dto.tweet.TweetSearchResponseV1;
 import io.github.redouane59.twitter.dto.tweet.TweetV1;
 import io.github.redouane59.twitter.dto.tweet.TweetV1Deserializer;
 import io.github.redouane59.twitter.dto.tweet.TweetV2;
+import io.github.redouane59.twitter.dto.tweet.TweetV2.TweetData;
 import io.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import io.github.redouane59.twitter.dto.user.FollowBody;
 import io.github.redouane59.twitter.dto.user.FollowResponse;
@@ -498,13 +499,40 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public TweetList searchTweets(String query, AdditionalParameters additionalParameters) {
+    return this.searchTweets(query, additionalParameters, false);
+  }
+
+  @Override
+  public TweetList searchTweets(String query, AdditionalParameters additionalParameters, boolean recursively) {
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(QUERY, query);
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     parameters.put(EXPANSION, ALL_EXPANSIONS);
-    return this.getRequestHelper().getRequestWithParameters(this.urlHelper.getSearchRecentTweetsUrl(),
-                                                            parameters,
-                                                            TweetList.class).orElseThrow(NoSuchElementException::new);
+    if (!recursively) {
+      return this.getRequestHelper().getRequestWithParameters(this.urlHelper.getSearchRecentTweetsUrl(),
+                                                              parameters,
+                                                              TweetList.class).orElseThrow(NoSuchElementException::new);
+    } else {
+      if (additionalParameters.getMaxResults() <= 0) {
+        parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(100));
+      }
+      return TweetList.builder().data(this.getTweetsRecursively(this.urlHelper.getSearchRecentTweetsUrl(), parameters)).build();
+    }
+  }
+
+  public List<TweetData> getTweetsRecursively(String url, Map<String, String> parameters) {
+    String          next;
+    List<TweetData> result = new ArrayList<>();
+    do {
+      Optional<TweetList> tweetSearchV2DTO = this.getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class);
+      if (!tweetSearchV2DTO.isPresent() || tweetSearchV2DTO.get().getData() == null) {
+        break;
+      }
+      result.addAll(tweetSearchV2DTO.get().getData());
+      next = tweetSearchV2DTO.get().getMeta().getNextToken();
+      parameters.put(AdditionalParameters.NEXT_TOKEN, next);
+    } while (next != null);
+    return result;
   }
 
   @Override
