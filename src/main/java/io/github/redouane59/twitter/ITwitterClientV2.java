@@ -125,17 +125,7 @@ public interface ITwitterClientV2 {
    * @return a TweetList object containing a list of tweets and the next token
    */
   TweetList searchTweets(String query, AdditionalParameters additionalParameters);
-
-  /**
-   * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
-   *
-   * @param query the search query
-   * @param additionalParameters accepted parameters are startTime, endTime, sinceId, untilId, maxResults
-   * @param recursively if true, will loop until next_token is null to provide a full result
-   * @return a TweetList object containing a list of tweets and the next token
-   */
-  TweetList searchTweets(String query, AdditionalParameters additionalParameters, boolean recursively);
-
+  
   /**
    * Search archived tweets calling https://api.twitter.com/2/tweets/search/all
    *

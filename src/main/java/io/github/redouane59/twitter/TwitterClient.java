@@ -499,27 +499,44 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public TweetList searchTweets(String query, AdditionalParameters additionalParameters) {
-    return this.searchTweets(query, additionalParameters, false);
-  }
-
-  @Override
-  public TweetList searchTweets(String query, AdditionalParameters additionalParameters, boolean recursively) {
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(QUERY, query);
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     parameters.put(EXPANSION, ALL_EXPANSIONS);
-    if (!recursively) {
-      return this.getRequestHelper().getRequestWithParameters(this.urlHelper.getSearchRecentTweetsUrl(),
-                                                              parameters,
-                                                              TweetList.class).orElseThrow(NoSuchElementException::new);
-    } else {
-      if (additionalParameters.getMaxResults() <= 0) {
-        parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(100));
-      }
-      return TweetList.builder().data(this.getTweetsRecursively(this.urlHelper.getSearchRecentTweetsUrl(), parameters)).build();
+    String url = this.urlHelper.getSearchRecentTweetsUrl();
+    if (!additionalParameters.isRecursiveCall()) {
+      return this.getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
+    if (additionalParameters.getMaxResults() <= 0) {
+      parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(100));
+    }
+    return TweetList.builder().data(this.getTweetsRecursively(url, parameters)).build();
   }
 
+  @Override
+  public TweetList searchAllTweets(final String query) {
+    return this.searchAllTweets(query, AdditionalParameters.builder().maxResults(500).build());
+  }
+
+  @Override
+  public TweetList searchAllTweets(final String query, AdditionalParameters additionalParameters) {
+    Map<String, String> parameters = additionalParameters.getMapFromParameters();
+    parameters.put(QUERY, query);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(EXPANSION, ALL_EXPANSIONS);
+    String url = this.urlHelper.getSearchAllTweetsUrl();
+    if (!additionalParameters.isRecursiveCall()) {
+      return this.getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
+    }
+    if (additionalParameters.getMaxResults() <= 0) {
+      parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(500));
+    }
+    return TweetList.builder().data(this.getTweetsRecursively(url, parameters)).build();
+  }
+
+  /**
+   * Call the endpoints recursively until next_token is null to provide a full result
+   */
   public List<TweetData> getTweetsRecursively(String url, Map<String, String> parameters) {
     String          next;
     List<TweetData> result = new ArrayList<>();
@@ -535,25 +552,11 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return result;
   }
 
+  @Deprecated
   @Override
-  public TweetList searchAllTweets(final String query) {
-    return this.searchAllTweets(query, AdditionalParameters.builder().maxResults(500).build());
-  }
-
-  @Override
-  public TweetList searchAllTweets(final String query, AdditionalParameters additionalParameters) {
-    Map<String, String> parameters = additionalParameters.getMapFromParameters();
-    parameters.put(QUERY, query);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
-    parameters.put(EXPANSION, ALL_EXPANSIONS);
-    return this.getRequestHelperV2().getRequestWithParameters(this.urlHelper.getSearchAllTweetsUrl(),
-                                                              parameters,
-                                                              TweetList.class).orElseThrow(NoSuchElementException::new);
-
-  }
-
-
-  @Override
+  /**
+   * Use {@link TwitterClient#searchTweets(query)} instead.
+   */
   public List<Tweet> searchForTweetsWithin30days(String query, LocalDateTime fromDate, LocalDateTime toDate,
                                                  String envName) {
     int                 count      = 100;
@@ -579,6 +582,9 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   @Deprecated
+  /**
+   * Use {@link TwitterClient#searchTweets(query)} instead.
+   */
   public List<Tweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate,
                                             String envName) {
     int                 count      = 100;
@@ -692,7 +698,13 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     String url = this.urlHelper.getUserTimelineUrl(userId);
-    return this.getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
+    if (!additionalParameters.isRecursiveCall()) {
+      return this.getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
+    }
+    if (additionalParameters.getMaxResults() <= 0) {
+      parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(100));
+    }
+    return TweetList.builder().data(this.getTweetsRecursively(url, parameters)).build();
   }
 
   @Override
@@ -705,7 +717,13 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     String url = this.urlHelper.getUserMentionsUrl(userId);
-    return this.getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
+    if (!additionalParameters.isRecursiveCall()) {
+      return this.getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
+    }
+    if (additionalParameters.getMaxResults() <= 0) {
+      parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(100));
+    }
+    return TweetList.builder().data(this.getTweetsRecursively(url, parameters)).build();
   }
 
   @Override
