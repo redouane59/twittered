@@ -377,12 +377,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public TweetCountsList getTweetCountsFullArchive(final String query) {
-    return this.getTweetCountsFullArchive(query, AdditionalParameters.builder().build());
+  public TweetCountsList getAllTweetCounts(final String query) {
+    return this.getAllTweetCounts(query, AdditionalParameters.builder().build());
   }
 
   @Override
-  public TweetCountsList getTweetCountsFullArchive(final String query, AdditionalParameters additionalParameters) {
+  public TweetCountsList getAllTweetCounts(final String query, AdditionalParameters additionalParameters) {
     String url = this.getUrlHelper().getTweetsCountAllUrl();
     return this.getTweetCounts(url, query, additionalParameters);
   }
@@ -492,12 +492,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public TweetList searchRecentTweets(String query) {
-    return this.searchRecentTweets(query, AdditionalParameters.builder().build());
+  public TweetList searchTweets(String query) {
+    return this.searchTweets(query, AdditionalParameters.builder().build());
   }
 
   @Override
-  public TweetList searchRecentTweets(String query, AdditionalParameters additionalParameters) {
+  public TweetList searchTweets(String query, AdditionalParameters additionalParameters) {
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(QUERY, query);
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);

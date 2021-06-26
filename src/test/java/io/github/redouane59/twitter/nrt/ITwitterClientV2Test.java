@@ -116,7 +116,7 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetFollowing() {
     UserList result = twitterClient.getFollowing("882266619115864066");
-    assertTrue(result.getData().size() > 100);
+    assertEquals(100, result.getData().size());
     assertTrue(result.getMeta().getResultCount() > 0);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getName());
@@ -126,8 +126,8 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetFollowingWithParameters() {
-    UserList result = twitterClient.getFollowing("882266619115864066", AdditionalParameters.builder().maxResults(10).build());
-    assertEquals(10, result.getData().size());
+    UserList result = twitterClient.getFollowing("882266619115864066", AdditionalParameters.builder().maxResults(150).build());
+    assertEquals(150, result.getData().size());
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getMeta().getNextToken());
     UserList result2 = twitterClient.getFollowing("882266619115864066",
@@ -143,8 +143,8 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetFollowersWithParameters() {
-    UserList result = twitterClient.getFollowers("882266619115864066", AdditionalParameters.builder().maxResults(10).build());
-    assertEquals(10, result.getData().size());
+    UserList result = twitterClient.getFollowers("882266619115864066", AdditionalParameters.builder().maxResults(150).build());
+    assertEquals(150, result.getData().size());
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getMeta().getNextToken());
     UserList result2 = twitterClient.getFollowers("882266619115864066",
@@ -161,7 +161,7 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetFollowers() {
     UserList result = twitterClient.getFollowers("882266619115864066");
-    assertTrue(result.getData().size() > 100);
+    assertEquals(100, result.getData().size());
     assertTrue(result.getMeta().getResultCount() > 0);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getName());
@@ -199,7 +199,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testRecentSearch() {
-    TweetList result = twitterClient.searchRecentTweets("@lequipe bonjour -RT");
+    TweetList result = twitterClient.searchTweets("@lequipe bonjour -RT");
     assertTrue(result.getData().size() > 0);
     Tweet tweet = result.getData().get(0);
     assertNotNull(tweet.getId());
@@ -416,10 +416,10 @@ public class ITwitterClientV2Test {
   public void testGetTweetCountFullArchiveWithParams() {
     TweetCountsList
         result =
-        twitterClient.getTweetCountsFullArchive("@Twitter", AdditionalParameters.builder()
-                                                                                .startTime(ConverterHelper.dayBeforeNow(1000))
-                                                                                .endTime(ConverterHelper.dayBeforeNow(30))
-                                                                                .build());
+        twitterClient.getAllTweetCounts("@Twitter", AdditionalParameters.builder()
+                                                                        .startTime(ConverterHelper.dayBeforeNow(1000))
+                                                                        .endTime(ConverterHelper.dayBeforeNow(30))
+                                                                        .build());
     assertTrue(result.getData().size() > 0);
     assertTrue(result.getData().get(0).getTweetCount() > 0);
     assertNotNull(result.getMeta().getNextToken());

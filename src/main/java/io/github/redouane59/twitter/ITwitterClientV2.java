@@ -115,7 +115,7 @@ public interface ITwitterClientV2 {
    * @param query the search query
    * @return a list of tweets
    */
-  TweetList searchRecentTweets(String query);
+  TweetList searchTweets(String query);
 
   /**
    * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
@@ -124,7 +124,7 @@ public interface ITwitterClientV2 {
    * @param additionalParameters accepted parameters are startTime, endTime, sinceId, untilId, maxResults
    * @return a list of tweets
    */
-  TweetList searchRecentTweets(String query, AdditionalParameters additionalParameters);
+  TweetList searchTweets(String query, AdditionalParameters additionalParameters);
 
   /**
    * Search archived tweets calling https://api.twitter.com/2/tweets/search/all
@@ -331,7 +331,7 @@ public interface ITwitterClientV2 {
    *
    * @param query One query for matching Tweets.
    */
-  TweetCountsList getTweetCountsFullArchive(String query);
+  TweetCountsList getAllTweetCounts(String query);
 
   /**
    * The full-archive search endpoint returns the complete history of public Tweets matching a search query; since the first Tweet was created March
@@ -340,7 +340,7 @@ public interface ITwitterClientV2 {
    * @param query One query for matching Tweets.
    * @param additionalParameters parameters accepted are startTime, endTime, sinceId, untilId, granularity and nextToken
    */
-  TweetCountsList getTweetCountsFullArchive(String query, AdditionalParameters additionalParameters);
+  TweetCountsList getAllTweetCounts(String query, AdditionalParameters additionalParameters);
 
 }
 
