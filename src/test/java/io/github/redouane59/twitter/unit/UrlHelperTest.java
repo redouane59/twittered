@@ -146,7 +146,7 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testSearchFullArchiveUrl() {
+  public void testSearchAllTweetsUrl() {
     assertEquals(
         "https://api.twitter.com/2/tweets/search/all",
         this.urlHelper.getSearchAllTweetsUrl());

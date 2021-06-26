@@ -65,7 +65,7 @@ public class UserV2 implements User {
 
     @Override
     public LocalDateTime getDateOfCreation() {
-      return ConverterHelper.getDateFromTwitterString(this.createdAt);
+      return ConverterHelper.getDateFromTwitterStringV2(this.createdAt);
     }
 
     @Override
@@ -117,7 +117,7 @@ public class UserV2 implements User {
 
   @Override
   public LocalDateTime getDateOfCreation() {
-    return ConverterHelper.getDateFromTwitterDateV2(this.data.getCreatedAt());
+    return ConverterHelper.getDateFromTwitterStringV2(this.data.getCreatedAt());
   }
 
   @Override

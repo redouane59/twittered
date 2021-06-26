@@ -176,6 +176,7 @@ public class ITwitterClientV2Test {
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getName());
     assertNotNull(result.get(0).getDateOfCreation());
+    assertNotNull(result.get(0).getDisplayedName());
   }
 
   @Test
@@ -185,6 +186,7 @@ public class ITwitterClientV2Test {
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getName());
     assertNotNull(result.get(0).getDateOfCreation());
+    assertNotNull(result.get(0).getDisplayedName());
   }
 
   @Test
@@ -413,7 +415,7 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  public void testGetTweetCountFullArchiveWithParams() {
+  public void testGetAllTweetCountWithParams() {
     TweetCountsList
         result =
         twitterClient.getAllTweetCounts("@Twitter", AdditionalParameters.builder()

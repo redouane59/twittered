@@ -129,7 +129,7 @@ public class TweetV2 implements Tweet {
 
     @Override
     public LocalDateTime getCreatedAt() {
-      return ConverterHelper.getDateFromTwitterDateV2(this.createdAt);
+      return ConverterHelper.getDateFromTwitterStringV2(this.createdAt);
     }
 
   }
