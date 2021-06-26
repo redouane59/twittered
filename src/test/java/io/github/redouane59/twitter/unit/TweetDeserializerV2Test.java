@@ -58,7 +58,7 @@ public class TweetDeserializerV2Test {
 
   @Test
   public void testCreateAt() {
-    assertEquals(ConverterHelper.getDateFromTwitterDateV2("2020-02-02T18:59:26.000Z"), tweetv2.getCreatedAt());
+    assertEquals(ConverterHelper.getDateFromTwitterStringV2("2020-02-02T18:59:26.000Z"), tweetv2.getCreatedAt());
   }
 
   @Test

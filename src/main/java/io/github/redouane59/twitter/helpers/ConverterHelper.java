@@ -75,7 +75,7 @@ public class ConverterHelper {
     }
   }
 
-  public static LocalDateTime getDateFromTwitterDateV2(String date) {
+  public static LocalDateTime getDateFromTwitterStringV2(String date) {
     return date != null ? LocalDateTime.parse(date, DateTimeFormatter.ofPattern(DATE_PATTERN_V2)) : null;
   }
 }

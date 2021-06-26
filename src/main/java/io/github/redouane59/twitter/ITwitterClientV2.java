@@ -1,19 +1,17 @@
 package io.github.redouane59.twitter;
 
 import com.github.scribejava.core.model.Response;
-import io.github.redouane59.twitter.dto.endpoints.AdditionnalParameters;
+import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetCountsList;
-import io.github.redouane59.twitter.dto.tweet.TweetListV2;
-import io.github.redouane59.twitter.dto.tweet.TweetSearchResponse;
+import io.github.redouane59.twitter.dto.tweet.TweetList;
 import io.github.redouane59.twitter.dto.user.FollowResponse;
 import io.github.redouane59.twitter.dto.user.User;
-import io.github.redouane59.twitter.dto.user.UserListV2;
-import java.time.LocalDateTime;
+import io.github.redouane59.twitter.dto.user.UserList;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
@@ -53,20 +51,38 @@ public interface ITwitterClientV2 {
   List<User> getUsersFromUserIds(List<String> userIds);
 
   /**
-   * Get a list of the user followers calling https://api.twitter.com/2/users/:id/followers
+   * Get a list of the user followers limited to 1000 results calling https://api.twitter.com/2/users/:id/followers
    *
    * @param userId the id of the targeted user
    * @return a list of users who are following the targeted user
    */
-  List<User> getFollowers(String userId);
+  UserList getFollowers(String userId);
 
   /**
-   * Get a list of the user following calling https://api.twitter.com/2/users/:id/following
+   * Get a list of the user followers limited to 1000 results calling https://api.twitter.com/2/users/:id/followers
+   *
+   * @param userId the id of the targeted user
+   * @param additionalParameters accepted parameters are maxResults, pagination_token
+   * @return a list of users who are following the targeted user
+   */
+  UserList getFollowers(String userId, AdditionalParameters additionalParameters);
+
+  /**
+   * Get a list of the user following limited to 1000 results calling https://api.twitter.com/2/users/:id/following
    *
    * @param userId the id of the targeted user
    * @return a list of users that the targeted user is following
    */
-  List<User> getFollowing(String userId);
+  UserList getFollowing(String userId);
+
+  /**
+   * Get a list of the user following limited to 1000 results calling https://api.twitter.com/2/users/:id/following
+   *
+   * @param additionalParameters accepted parameters are maxResults, pagination_token
+   * @param userId the id of the targeted user
+   * @return a list of users that the targeted user is following
+   */
+  UserList getFollowing(String userId, AdditionalParameters additionalParameters);
 
   /**
    * Get a tweet from its id calling https://api.twitter.com/2/tweets
@@ -82,7 +98,7 @@ public interface ITwitterClientV2 {
    * @param tweetIds the ids of the tweets
    * @return a tweet object list
    */
-  List<Tweet> getTweets(List<String> tweetIds);
+  TweetList getTweets(List<String> tweetIds);
 
   /**
    * Hide/Unide a reply using https://api.twitter.com/labs/2/tweets/:id/hidden
@@ -97,54 +113,35 @@ public interface ITwitterClientV2 {
    * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
    *
    * @param query the search query
-   * @param fromDate the start date
-   * @param toDate the end date
    * @return a list of tweets
    */
-  List<Tweet> searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate);
+  TweetList searchTweets(String query);
 
   /**
    * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
    *
    * @param query the search query
+   * @param additionalParameters accepted parameters are startTime, endTime, sinceId, untilId, maxResults
    * @return a list of tweets
    */
-  List<Tweet> searchForTweetsWithin7days(String query);
-
-  /**
-   * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
-   *
-   * @param query the search query
-   * @param maxResult maximum 100 (default 10)
-   * @param nextToken the next_token given by the API to start from an index
-   * @return a TweetSearchResponse object containing a list of tweets and the next token
-   */
-  TweetSearchResponse searchForTweetsWithin7days(String query, int maxResult, String nextToken);
-
-  /**
-   * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
-   *
-   * @param query the search query
-   * @param fromDate the start date
-   * @param toDate the end date
-   * @param maxResult maximum 100 (default 10)
-   * @param nextToken the next_token given by the API to start from an index
-   * @return a TweetSearchResponse object containing a list of tweets and the next token
-   */
-  TweetSearchResponse searchForTweetsWithin7days(String query, LocalDateTime fromDate, LocalDateTime toDate, int maxResult, String nextToken);
+  TweetList searchTweets(String query, AdditionalParameters additionalParameters);
 
   /**
    * Search archived tweets calling https://api.twitter.com/2/tweets/search/all
    *
    * @param query the search query
-   * @param fromDate the start date
-   * @param toDate the end date
-   * @param maxResult maximum 100 (default 10)
-   * @param nextToken the next_token given by the API to start from an index
    * @return a TweetSearchResponse object containing a list of tweets and the next token
    */
-  TweetSearchResponse searchForTweetsFullArchive(String query, LocalDateTime fromDate, LocalDateTime toDate, int maxResult, String nextToken);
+  TweetList searchAllTweets(String query);
 
+  /**
+   * Search archived tweets calling https://api.twitter.com/2/tweets/search/all
+   *
+   * @param query the search query
+   * @param additionalParameters accepted paramteres are startTime, endTime, sinceId, untilId, maxResults, nextToken
+   * @return a TweetSearchResponse object containing a list of tweets and the next token
+   */
+  TweetList searchAllTweets(String query, AdditionalParameters additionalParameters);
 
   /**
    * Stream using previous set up filters calling https://api.twitter.com/2/tweets/search/stream
@@ -215,26 +212,30 @@ public interface ITwitterClientV2 {
   /**
    * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets
    *
+   * @param userId Unique identifier of the Twitter account (user ID) for whom to return results.
    * @return a list of the most recent Tweets posted by the user
    */
-  List<Tweet> getUserTimeline(String userId, int nbTweets);
+  TweetList getUserTimeline(String userId);
 
   /**
    * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets (time & tweet id arguments can be null)
+   *
+   * @param userId identifier of the Twitter account (user ID) for whom to return results.
+   * @param additionalParameters parameters accepted startTime, endTime, sinceId, untilId, maxResults
    */
-  List<Tweet> getUserTimeline(String userId, int nbTweets, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId);
+  TweetList getUserTimeline(String userId, AdditionalParameters additionalParameters);
 
   /**
    * Get the most recent mentions received posted by the user calling https://api.twitter.com/2/users/:id/mentions
    *
    * @return a list of the most recent Tweets posted by the user
    */
-  List<Tweet> getUserMentions(String userId, int nbTweets);
+  TweetList getUserMentions(String userId);
 
   /**
    * Get the most recent mentions received by the user calling https://api.twitter.com/2/users/:id/mentions (time & tweet id arguments can be null)
    */
-  List<Tweet> getUserMentions(String userId, int nbTweets, LocalDateTime startTime, LocalDateTime endTime, String sinceId, String untilId);
+  TweetList getUserMentions(String userId, AdditionalParameters additionalParameters);
 
   /**
    * Follow a user calling https://api.twitter.com/2/users/:source_user_id/following
@@ -272,7 +273,7 @@ public interface ITwitterClientV2 {
   /**
    * Returns a list of users who are blocked by the authenticated user.
    */
-  UserListV2 getBlockedUsers();
+  UserList getBlockedUsers();
 
   /**
    * Like a tweet calling https://api.twitter.com/2/users/:id/likes
@@ -297,14 +298,14 @@ public interface ITwitterClientV2 {
    *
    * @param tweetId ID of the Tweet to request liking users of.
    */
-  UserListV2 getLikingUsers(String tweetId);
+  UserList getLikingUsers(String tweetId);
 
   /**
    * Allows you to get information about a user’s liked Tweets calling https://api.twitter.com/2/users/:id/liked_tweets
    *
    * @param userId ID of the user to request liked Tweets for.
    */
-  TweetListV2 getLikedTweets(String userId);
+  TweetList getLikedTweets(String userId);
 
 
   /**
@@ -320,9 +321,9 @@ public interface ITwitterClientV2 {
    * https://api.twitter.com/2/tweets/counts/recent
    *
    * @param query One rule for matching Tweets
-   * @param additionnalParameters parameters accepted are startTime, endTime, sinceId, untilId, and granularity
+   * @param additionalParameters parameters accepted are startTime, endTime, sinceId, untilId, and granularity
    */
-  TweetCountsList getTweetCounts(String query, AdditionnalParameters additionnalParameters);
+  TweetCountsList getTweetCounts(String query, AdditionalParameters additionalParameters);
 
   /**
    * The full-archive search endpoint returns the complete history of public Tweets matching a search query; since the first Tweet was created March
@@ -330,16 +331,16 @@ public interface ITwitterClientV2 {
    *
    * @param query One query for matching Tweets.
    */
-  TweetCountsList getTweetCountsFullArchive(String query);
+  TweetCountsList getAllTweetCounts(String query);
 
   /**
    * The full-archive search endpoint returns the complete history of public Tweets matching a search query; since the first Tweet was created March
    * 26, 2006 calling https://api.twitter.com/2/tweets/counts/all
    *
    * @param query One query for matching Tweets.
-   * @param additionnalParameters parameters accepted are startTime, endTime, sinceId, untilId, granularity and nextToken
+   * @param additionalParameters parameters accepted are startTime, endTime, sinceId, untilId, granularity and nextToken
    */
-  TweetCountsList getTweetCountsFullArchive(String query, AdditionnalParameters additionnalParameters);
-  
+  TweetCountsList getAllTweetCounts(String query, AdditionalParameters additionalParameters);
+
 }
 
