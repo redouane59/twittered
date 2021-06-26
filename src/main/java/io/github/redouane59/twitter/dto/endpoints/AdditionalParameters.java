@@ -24,6 +24,7 @@ public class AdditionalParameters {
   public static final String GRANULARITY      = "granularity";
 
   // if set to true, will loop the call until next_token is null to provide a full answer
+  @Builder.Default
   private boolean       recursiveCall = true;
   @JsonProperty("start_time")
   private LocalDateTime startTime;

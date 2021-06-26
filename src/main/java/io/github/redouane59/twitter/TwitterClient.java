@@ -358,6 +358,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
   }
 
+  // @todo add additionnalParameter constructor
   @Override
   public TweetList getLikedTweets(final String userId) {
     String              url        = this.getUrlHelper().getLikedTweetsUrl(userId);
@@ -547,7 +548,11 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       }
       result.addAll(tweetSearchV2DTO.get().getData());
       next = tweetSearchV2DTO.get().getMeta().getNextToken();
-      parameters.put(AdditionalParameters.NEXT_TOKEN, next);
+      if (url.contains("/search")) { // @todo dirty
+        parameters.put(AdditionalParameters.NEXT_TOKEN, next);
+      } else {
+        parameters.put(AdditionalParameters.PAGINATION_TOKEN, next);
+      }
     } while (next != null);
     return result;
   }
