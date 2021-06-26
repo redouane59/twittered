@@ -103,6 +103,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   private static final String             CURSOR                               = "cursor";
   private static final String             NEXT                                 = "next";
   private static final String             PAGINATION_TOKEN                     = "pagination_token";
+  private static final String             PINNED_TWEET_ID                      = "pinned_tweet_id";
   private static final String[]           DEFAULT_VALID_CREDENTIALS_FILE_NAMES = {"test-twitter-credentials.json",
                                                                                   "twitter-credentials.json"};
 
@@ -155,14 +156,18 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   // can manage up to 200 results/call . Max 15 calls/15min ==> 3.000 results
   // max./15min
   private List<User> getUsersInfoByRelation(String url) {
-    String     token  = null;
-    List<User> result = new ArrayList<>();
+    String              token      = null;
+    List<User>          result     = new ArrayList<>();
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(1000));
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(EXPANSION, PINNED_TWEET_ID);
     do {
       String urlWithCursor = url;
       if (token != null) {
         urlWithCursor = urlWithCursor + "?" + PAGINATION_TOKEN + "=" + token;
       }
-      Optional<UserList> userListDTO = this.getRequestHelper().getRequest(urlWithCursor, UserList.class);
+      Optional<UserList> userListDTO = this.getRequestHelper().getRequestWithParameters(urlWithCursor, parameters, UserList.class);
       if (!userListDTO.isPresent()) {
         break;
       }
@@ -296,7 +301,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String              url        = this.getUrlHelper().getUserUrl(userId);
     Map<String, String> parameters = new HashMap<>();
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
-    parameters.put(EXPANSION, "pinned_tweet_id");
+    parameters.put(EXPANSION, PINNED_TWEET_ID);
     return this.getRequestHelper().getRequestWithParameters(url, parameters, UserV2.class).orElseThrow(NoSuchElementException::new);
   }
 
@@ -305,7 +310,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String              url        = this.getUrlHelper().getUserUrlFromName(userName);
     Map<String, String> parameters = new HashMap<>();
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
-    parameters.put(EXPANSION, "pinned_tweet_id");
+    parameters.put(EXPANSION, PINNED_TWEET_ID);
     return this.getRequestHelper().getRequestWithParameters(url, parameters, UserV2.class).orElseThrow(NoSuchElementException::new);
   }
 

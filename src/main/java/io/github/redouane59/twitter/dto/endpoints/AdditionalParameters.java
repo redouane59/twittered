@@ -22,8 +22,7 @@ public class AdditionalParameters {
   public static final String NEXT_TOKEN       = "next_token";
   public static final String PAGINATION_TOKEN = "pagination_token";
   public static final String GRANULARITY      = "granularity";
-
-
+  
   @JsonProperty("start_time")
   private LocalDateTime startTime;
   @JsonProperty("end_time")
