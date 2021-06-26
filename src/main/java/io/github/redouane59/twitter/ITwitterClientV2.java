@@ -113,7 +113,7 @@ public interface ITwitterClientV2 {
    * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
    *
    * @param query the search query
-   * @return a list of tweets
+   * @return a TweetList object containing a list of tweets
    */
   TweetList searchTweets(String query);
 
@@ -121,8 +121,8 @@ public interface ITwitterClientV2 {
    * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
    *
    * @param query the search query
-   * @param additionalParameters accepted parameters are startTime, endTime, sinceId, untilId, maxResults
-   * @return a list of tweets
+   * @param additionalParameters accepted parameters are recursiveCall, startTime, endTime, sinceId, untilId, maxResults
+   * @return a TweetList object containing a list of tweets and the next token if recursiveCall is set to false
    */
   TweetList searchTweets(String query, AdditionalParameters additionalParameters);
 
@@ -130,7 +130,7 @@ public interface ITwitterClientV2 {
    * Search archived tweets calling https://api.twitter.com/2/tweets/search/all
    *
    * @param query the search query
-   * @return a TweetSearchResponse object containing a list of tweets and the next token
+   * @return a TweetList object containing a list of tweets
    */
   TweetList searchAllTweets(String query);
 
@@ -138,8 +138,8 @@ public interface ITwitterClientV2 {
    * Search archived tweets calling https://api.twitter.com/2/tweets/search/all
    *
    * @param query the search query
-   * @param additionalParameters accepted paramteres are startTime, endTime, sinceId, untilId, maxResults, nextToken
-   * @return a TweetSearchResponse object containing a list of tweets and the next token
+   * @param additionalParameters accepted parameters are recursiveCall, startTime, endTime, sinceId, untilId, maxResults, nextToken
+   * @return a TweetList object containing a list of tweets and the next token if recursiveCall is set to false
    */
   TweetList searchAllTweets(String query, AdditionalParameters additionalParameters);
 
@@ -213,7 +213,7 @@ public interface ITwitterClientV2 {
    * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets
    *
    * @param userId Unique identifier of the Twitter account (user ID) for whom to return results.
-   * @return a list of the most recent Tweets posted by the user
+   * @return a TweetList object containing a list of tweets
    */
   TweetList getUserTimeline(String userId);
 
@@ -221,19 +221,23 @@ public interface ITwitterClientV2 {
    * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets (time & tweet id arguments can be null)
    *
    * @param userId identifier of the Twitter account (user ID) for whom to return results.
-   * @param additionalParameters parameters accepted startTime, endTime, sinceId, untilId, maxResults
+   * @param additionalParameters parameters accepted recursiveCall, startTime, endTime, sinceId, untilId, maxResults
+   * @return a TweetList object containing a list of tweets and the next token if recursiveCall is set to false
    */
   TweetList getUserTimeline(String userId, AdditionalParameters additionalParameters);
 
   /**
    * Get the most recent mentions received posted by the user calling https://api.twitter.com/2/users/:id/mentions
    *
-   * @return a list of the most recent Tweets posted by the user
+   * @return a TweetList object containing a list of tweets
    */
   TweetList getUserMentions(String userId);
 
   /**
    * Get the most recent mentions received by the user calling https://api.twitter.com/2/users/:id/mentions (time & tweet id arguments can be null)
+   *
+   * @param additionalParameters parameters accepted recursiveCall, startTime, endTime, sinceId, untilId, maxResults
+   * @return a TweetList object containing a list of tweets and the next token if recursiveCall is set to false
    */
   TweetList getUserMentions(String userId, AdditionalParameters additionalParameters);
 
@@ -304,6 +308,7 @@ public interface ITwitterClientV2 {
    * Allows you to get information about a user’s liked Tweets calling https://api.twitter.com/2/users/:id/liked_tweets
    *
    * @param userId ID of the user to request liked Tweets for.
+   * @return a TweetList object containing a list of tweets and the next token
    */
   TweetList getLikedTweets(String userId);
 

@@ -116,7 +116,7 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetFollowing() {
     UserList result = twitterClient.getFollowing("882266619115864066");
-    assertEquals(100, result.getData().size());
+    assertTrue(result.getData().size() > 200);
     assertTrue(result.getMeta().getResultCount() > 0);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getName());
@@ -161,7 +161,7 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetFollowers() {
     UserList result = twitterClient.getFollowers("882266619115864066");
-    assertEquals(100, result.getData().size());
+    assertTrue(result.getData().size() > 200);
     assertTrue(result.getMeta().getResultCount() > 0);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getName());
@@ -214,8 +214,25 @@ public class ITwitterClientV2Test {
     assertNotNull(tweet.getLang());
   }
 
+  @Test
+  public void testRecentSearchWithParameters() {
+    TweetList result = twitterClient.searchTweets("@lequipe bonjour",
+                                                  AdditionalParameters.builder().recursiveCall(false).maxResults(10).build());
+    assertEquals(10, result.getData().size());
+    Tweet tweet = result.getData().get(0);
+    assertNotNull(tweet.getId());
+    assertNotNull(tweet.getText());
+    assertNotNull(tweet.getCreatedAt());
+    assertNotNull(tweet.getAuthorId());
+    assertTrue(tweet.getRetweetCount() >= 0);
+    assertTrue(tweet.getReplyCount() >= 0);
+    assertTrue(tweet.getLikeCount() >= 0);
+    assertNotNull(tweet.getLang());
+  }
+
   public void testAllTweetsSearch() {
-    TweetList result = twitterClient.searchAllTweets("@lequipe bonjour -RT");
+    TweetList result = twitterClient.searchAllTweets("@lequipe bonjour -RT", AdditionalParameters.builder()
+                                                                                                 .recursiveCall(false).build());
     assertTrue(result.getData().size() > 0);
     Tweet tweet = result.getData().get(0);
     assertNotNull(tweet.getId());
@@ -233,12 +250,14 @@ public class ITwitterClientV2Test {
     TweetList result = twitterClient.searchAllTweets("@lequipe bonjour -RT", AdditionalParameters.builder()
                                                                                                  .startTime(ConverterHelper.dayBeforeNow(50))
                                                                                                  .endTime(ConverterHelper.dayBeforeNow(45))
+                                                                                                 .recursiveCall(false)
                                                                                                  .build());
     assertTrue(result.getData().size() > 0);
     assertNotNull(result.getData().get(0).getId());
     result = twitterClient.searchAllTweets("@lequipe bonjour -RT", AdditionalParameters.builder()
                                                                                        .sinceId(result.getData().get(6).getId())
                                                                                        .untilId(result.getData().get(0).getId())
+                                                                                       .recursiveCall(false)
                                                                                        .build());
     assertTrue(result.getData().size() > 0);
     assertNotNull(result.getData().get(0).getId());
@@ -293,15 +312,18 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  public void testGetUserTimeline() {
-    TweetList result = twitterClient.getUserTimeline("1120050519182016513", AdditionalParameters.builder().maxResults(100).build());
-    assertEquals(result.getData().size(), 100);
+  public void testGetUserTimelineRecursively() {
+    TweetList result = twitterClient.getUserTimeline("1120050519182016513", AdditionalParameters.builder().build());
+    assertTrue(result.getData().size() > 200);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getText());
     assertNotNull(result.getData().get(0).getCreatedAt());
     assertNotNull(result.getData().get(0).getAuthorId());
     assertNotNull(result.getData().get(0).getConversationId());
     assertNotNull(result.getData().get(0).getLang());
+    assertNotNull(result.getMeta().getNewestId());
+    assertNotNull(result.getMeta().getOldestId());
+    assertEquals(result.getData().size(), result.getMeta().getResultCount());
   }
 
   @Test
@@ -309,6 +331,7 @@ public class ITwitterClientV2Test {
     TweetList result = twitterClient.getUserTimeline(this.userId, AdditionalParameters.builder()
                                                                                       .startTime(ConverterHelper.dayBeforeNow(30))
                                                                                       .endTime(ConverterHelper.dayBeforeNow(1))
+                                                                                      .recursiveCall(false)
                                                                                       .maxResults(10).build());
     assertEquals(10, result.getData().size());
     assertNotNull(result.getData().get(0).getId());
@@ -318,6 +341,7 @@ public class ITwitterClientV2Test {
                                                                             .maxResults(5)
                                                                             .sinceId(result.getData().get(6).getId())
                                                                             .untilId(result.getData().get(0).getId())
+                                                                            .recursiveCall(false)
                                                                             .build());
     assertEquals(5, result.getData().size());
     assertNotNull(result.getData().get(0).getId());
@@ -325,16 +349,18 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  public void testGetUserMentions() {
-    TweetList result = twitterClient.getUserMentions("1307302673318895621", AdditionalParameters.builder()
-                                                                                                .maxResults(100).build());
-    assertEquals(100, result.getData().size());
+  public void testGetUserMentionsRecursively() {
+    TweetList result = twitterClient.getUserMentions("1307302673318895621", AdditionalParameters.builder().build());
+    assertTrue(result.getData().size() > 200);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getText());
     assertNotNull(result.getData().get(0).getCreatedAt());
     assertNotNull(result.getData().get(0).getAuthorId());
     assertNotNull(result.getData().get(0).getConversationId());
     assertNotNull(result.getData().get(0).getLang());
+    assertNotNull(result.getMeta().getNewestId());
+    assertNotNull(result.getMeta().getOldestId());
+    assertEquals(result.getData().size(), result.getMeta().getResultCount());
   }
 
   @Test
@@ -344,6 +370,7 @@ public class ITwitterClientV2Test {
                                                                          .maxResults(10)
                                                                          .startTime(ConverterHelper.dayBeforeNow(30))
                                                                          .endTime(ConverterHelper.dayBeforeNow(1))
+                                                                         .recursiveCall(false)
                                                                          .build());
     assertEquals(10, result.getData().size());
     assertNotNull(result.getData().get(0).getId());
@@ -354,6 +381,7 @@ public class ITwitterClientV2Test {
                                                                .maxResults(5)
                                                                .sinceId(result.getData().get(6).getId())
                                                                .untilId(result.getData().get(0).getId())
+                                                               .recursiveCall(false)
                                                                .build());
     assertEquals(5, result.getData().size());
     assertNotNull(result.getData().get(0).getId());
