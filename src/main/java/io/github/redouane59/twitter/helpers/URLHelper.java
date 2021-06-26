@@ -11,21 +11,16 @@ public class URLHelper {
 
   private static final String ROOT_URL_V1                 = "https://api.twitter.com/1.1";
   private static final String ROOT_URL_V2                 = "https://api.twitter.com/2";
-  private static final String ROOT_URL_LABS_V2            = "https://api.twitter.com/labs/2";
   private static final String IDS_JSON                    = "/ids.json?";
-  private static final String SCREEN_NAME                 = "screen_name";
   private static final String ID                          = "id";
   private static final String COUNT                       = "count";
   private static final String LIST_JSON                   = "/list.json";
   private static final String SHOW_JSON                   = "/show.json?";
-  private static final String CREATE_JSON                 = "/create.json?";
-  private static final String DESTROY_JSON                = "/destroy.json?";
   private static final String RETWEETERS                  = "/retweeters";
   private static final String FOLLOWERS                   = "/followers";
   private static final String FOLLOWING                   = "/following";
   private static final String STATUSES                    = "/statuses";
   private static final String FRIENDSHIPS                 = "/friendships";
-  private static final String FAVORITES                   = "/favorites";
   private static final String USERS                       = "/users";
   private static final String TWEETS                      = "/tweets";
   private static final String MENTIONS                    = "/mentions";
@@ -40,16 +35,12 @@ public class URLHelper {
   private static final String ACCOUNT_ACTIVITY            = "/account_activity/all";
   private static final String WEBHOOKS                    = "/webhooks";
   private static final String USER_ID                     = "user_id";
-  private static final String LOOKUP_JSON                 = "/lookup.json?";
   private static final String USER_TIMELINE               = "/user_timeline.json?";
   private static final String JSON                        = ".json";
   private static final String TRIM_USER                   = "trim_user=true";
   private static final String EXCLUDE_RTS                 = "include_rts=false";
-  private static final String USER_FORMAT_DETAILED        = "user.format=detailed";
-  private static final String TWEET_FORMAT_DETAILED       = "tweet.format=detailed";
   private static final String MAX_ID                      = "max_id";
   private static final String COLLECTIONS                 = "/collections";
-  private static final int    MAX_COUNT                   = 200;
   private static final int    RETWEET_MAX_COUNT           = 100;
   public static final  int    MAX_LOOKUP                  = 100;
   public static final  String USER_FIELDS                 = "user.fields=";
@@ -88,10 +79,6 @@ public class URLHelper {
 
   public String getSearchAllTweetsUrl() {
     return ROOT_URL_V2 + TWEETS + SEARCH + "/all";
-  }
-
-  public String getLiveEventUrl(String envName) {
-    return ROOT_URL_V1 + ACCOUNT_ACTIVITY + "/" + envName + WEBHOOKS + JSON;
   }
 
   public String getFollowUrl(String userId) {
@@ -135,13 +122,7 @@ public class URLHelper {
            USERS +
            "/" +
            userId +
-           FOLLOWERS +
-           "?" +
-           MAX_RESULTS +
-           "=1000" +
-           "&" +
-           USER_FIELDS +
-           ALL_USER_FIELDS;
+           FOLLOWERS;
   }
 
   public String getFollowersIdsUrl(String userId) {
@@ -155,13 +136,7 @@ public class URLHelper {
            USERS +
            "/" +
            userId +
-           FOLLOWING +
-           "?" +
-           MAX_RESULTS +
-           "=1000" +
-           "&" +
-           USER_FIELDS +
-           ALL_USER_FIELDS;
+           FOLLOWING;
   }
 
   public String getUserUrl(String userId) {
@@ -251,18 +226,6 @@ public class URLHelper {
     }
     result.delete(result.length() - 1, result.length());
     return result.toString();
-  }
-
-  public String getUserTweetsUrl(String userId, int count) {
-    return ROOT_URL_V1 +
-           STATUSES +
-           USER_TIMELINE +
-           USER_ID + "=" +
-           userId +
-           "&" + COUNT + "=" +
-           count +
-           "&" + TRIM_USER +
-           "&" + EXCLUDE_RTS;
   }
 
   public String getLikeUrl(String userId) {

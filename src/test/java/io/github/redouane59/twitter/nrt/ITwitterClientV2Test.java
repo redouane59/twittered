@@ -1,10 +1,12 @@
 package io.github.redouane59.twitter.nrt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.scribejava.core.model.Response;
+import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
@@ -15,7 +17,7 @@ import io.github.redouane59.twitter.dto.tweet.TweetList;
 import io.github.redouane59.twitter.dto.tweet.TweetType;
 import io.github.redouane59.twitter.dto.tweet.TweetV2;
 import io.github.redouane59.twitter.dto.user.User;
-import io.github.redouane59.twitter.dto.user.UserListV2;
+import io.github.redouane59.twitter.dto.user.UserList;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,25 +114,87 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  public void testGetFollowingById() {
-    List<User> followings = twitterClient.getFollowing("882266619115864066");
-    assertTrue(followings.size() > 200);
+  public void testGetFollowing() {
+    UserList result = twitterClient.getFollowing("882266619115864066");
+    assertTrue(result.getData().size() > 100);
+    assertTrue(result.getMeta().getResultCount() > 0);
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getData().get(0).getName());
+    assertNotNull(result.getData().get(0).getCreatedAt());
+    assertNotNull(result.getData().get(0).getProfileImageUrl());
   }
 
   @Test
-  public void testGetFollowersById() {
-    List<User> followers = twitterClient.getFollowers("882266619115864066");
-    assertTrue(followers.size() > 500);
+  public void testGetFollowingWithParameters() {
+    UserList result = twitterClient.getFollowing("882266619115864066", AdditionalParameters.builder().maxResults(10).build());
+    assertEquals(10, result.getData().size());
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getMeta().getNextToken());
+    UserList result2 = twitterClient.getFollowing("882266619115864066",
+                                                  AdditionalParameters.builder()
+                                                                      .maxResults(10)
+                                                                      .paginationToken(result.getMeta().getNextToken())
+                                                                      .build());
+    assertEquals(10, result2.getData().size());
+    assertNotNull(result2.getData().get(0).getId());
+    assertNotEquals(result.getData().get(0).getId(), result2.getData().get(0).getId());
+    assertNotNull(result2.getMeta().getNextToken());
+  }
+
+  @Test
+  public void testGetFollowersWithParameters() {
+    UserList result = twitterClient.getFollowers("882266619115864066", AdditionalParameters.builder().maxResults(10).build());
+    assertEquals(10, result.getData().size());
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getMeta().getNextToken());
+    UserList result2 = twitterClient.getFollowers("882266619115864066",
+                                                  AdditionalParameters.builder()
+                                                                      .maxResults(10)
+                                                                      .paginationToken(result.getMeta().getNextToken())
+                                                                      .build());
+    assertEquals(10, result2.getData().size());
+    assertNotNull(result2.getData().get(0).getId());
+    assertNotEquals(result.getData().get(0).getId(), result2.getData().get(0).getId());
+    assertNotNull(result2.getMeta().getNextToken());
+  }
+
+  @Test
+  public void testGetFollowers() {
+    UserList result = twitterClient.getFollowers("882266619115864066");
+    assertTrue(result.getData().size() > 100);
+    assertTrue(result.getMeta().getResultCount() > 0);
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getData().get(0).getName());
+    assertNotNull(result.getData().get(0).getCreatedAt());
+    assertNotNull(result.getData().get(0).getProfileImageUrl());
+  }
+
+  @Test
+  public void testGetFollowingsFromRelations() {
+    List<User> result = twitterClient.getUsersByRelation("882266619115864066", RelationType.FOLLOWING);
+    assertTrue(result.size() > 100);
+    assertNotNull(result.get(0).getId());
+    assertNotNull(result.get(0).getName());
+    assertNotNull(result.get(0).getDateOfCreation());
+  }
+
+  @Test
+  public void testGetFollowersFromRelations() {
+    List<User> result = twitterClient.getUsersByRelation("882266619115864066", RelationType.FOLLOWER);
+    assertTrue(result.size() > 100);
+    assertNotNull(result.get(0).getId());
+    assertNotNull(result.get(0).getName());
+    assertNotNull(result.get(0).getDateOfCreation());
   }
 
   @Test
   public void testGetTweetsByIds() {
     List<String> tweetIds = Arrays.asList("1294174710624849921,1294380029430960128,1294375095746666496");
-    List<Tweet>  tweets   = twitterClient.getTweets(tweetIds);
-    assertTrue(tweets.size() > 0);
-    assertTrue(tweets.get(0).getText().length() > 0);
-    assertTrue(tweets.get(1).getText().length() > 0);
-    assertTrue(tweets.get(2).getText().length() > 0);
+    TweetList    tweets   = twitterClient.getTweets(tweetIds);
+    assertTrue(tweets.getData().size() > 0);
+    assertTrue(tweets.getData().get(0).getText().length() > 0);
+    assertTrue(tweets.getData().get(1).getText().length() > 0);
+    assertTrue(tweets.getData().get(2).getText().length() > 0);
   }
 
   @Test
@@ -148,7 +212,6 @@ public class ITwitterClientV2Test {
     assertNotNull(tweet.getLang());
   }
 
-  @Test
   public void testAllTweetsSearch() {
     TweetList result = twitterClient.searchAllTweets("@lequipe bonjour -RT");
     assertTrue(result.getData().size() > 0);
@@ -161,6 +224,22 @@ public class ITwitterClientV2Test {
     assertTrue(tweet.getReplyCount() >= 0);
     assertTrue(tweet.getLikeCount() >= 0);
     assertNotNull(tweet.getLang());
+  }
+
+  @Test
+  public void testAllTweetsSearchWithParams() {
+    TweetList result = twitterClient.searchAllTweets("@lequipe bonjour -RT", AdditionalParameters.builder()
+                                                                                                 .startTime(ConverterHelper.dayBeforeNow(50))
+                                                                                                 .endTime(ConverterHelper.dayBeforeNow(45))
+                                                                                                 .build());
+    assertTrue(result.getData().size() > 0);
+    assertNotNull(result.getData().get(0).getId());
+    result = twitterClient.searchAllTweets("@lequipe bonjour -RT", AdditionalParameters.builder()
+                                                                                       .sinceId(result.getData().get(6).getId())
+                                                                                       .untilId(result.getData().get(0).getId())
+                                                                                       .build());
+    assertTrue(result.getData().size() > 0);
+    assertNotNull(result.getData().get(0).getId());
   }
 
   @Test
@@ -296,7 +375,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetLikingUsers() {
-    UserListV2 result = twitterClient.getLikingUsers("1395447825366847488");
+    UserList result = twitterClient.getLikingUsers("1395447825366847488");
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getName());
     assertNotNull(result.getData().get(0).getDisplayedName());

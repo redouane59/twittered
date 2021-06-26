@@ -163,7 +163,7 @@ public class UrlHelperTest {
   @Test
   public void testSearchFullArchiveUrl() {
     assertEquals(
-        "https://api.twitter.com/2/tweets/search/all?expansions=author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id",
+        "https://api.twitter.com/2/tweets/search/all",
         this.urlHelper.getSearchAllTweetsUrl());
   }
 
@@ -232,12 +232,6 @@ public class UrlHelperTest {
   @Test
   public void testSearch30daysUrl() {
     assertEquals("https://api.twitter.com/1.1/tweets/search/30day/dev.json", urlHelper.getSearchTweet30DaysUrl("dev"));
-  }
-
-  @Test
-  public void testLiveEventUrl() {
-    assertEquals("https://api.twitter.com/1.1/account_activity/all/dev/webhooks.json",
-                 urlHelper.getLiveEventUrl("dev"));
   }
 
   @Test

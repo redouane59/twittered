@@ -14,13 +14,14 @@ import lombok.Setter;
 @Setter
 public class AdditionalParameters {
 
-  public static final String SINCE_ID    = "since_id";
-  public static final String UNTIL_ID    = "until_id";
-  public static final String START_TIME  = "start_time";
-  public static final String END_TIME    = "end_time";
-  public static final String MAX_RESULTS = "max_results";
-  public static final String NEXT_TOKEN  = "next_token";
-  public static final String GRANULARITY = "granularity";
+  public static final String SINCE_ID         = "since_id";
+  public static final String UNTIL_ID         = "until_id";
+  public static final String START_TIME       = "start_time";
+  public static final String END_TIME         = "end_time";
+  public static final String MAX_RESULTS      = "max_results";
+  public static final String NEXT_TOKEN       = "next_token";
+  public static final String PAGINATION_TOKEN = "pagination_token";
+  public static final String GRANULARITY      = "granularity";
 
 
   @JsonProperty("start_time")
@@ -34,6 +35,8 @@ public class AdditionalParameters {
   private String        granularity;
   @JsonProperty("next_token")
   private String        nextToken;
+  @JsonProperty("pagination_token")
+  private String        paginationToken;
   @JsonProperty("max_results")
   private int           maxResults;
 
@@ -56,6 +59,9 @@ public class AdditionalParameters {
     }
     if (this.getNextToken() != null) {
       parameters.put(NEXT_TOKEN, this.getNextToken());
+    }
+    if (this.getPaginationToken() != null) {
+      parameters.put(PAGINATION_TOKEN, this.getPaginationToken());
     }
     if (this.getMaxResults() > 0) {
       parameters.put(MAX_RESULTS, String.valueOf(this.getMaxResults()));

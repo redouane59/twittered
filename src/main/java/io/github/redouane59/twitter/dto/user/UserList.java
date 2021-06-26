@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserListV2 {
+public class UserList {
 
   private List<UserData> data;
   private UserMeta       meta;

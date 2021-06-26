@@ -11,7 +11,7 @@ import io.github.redouane59.twitter.dto.tweet.TweetCountsList;
 import io.github.redouane59.twitter.dto.tweet.TweetList;
 import io.github.redouane59.twitter.dto.user.FollowResponse;
 import io.github.redouane59.twitter.dto.user.User;
-import io.github.redouane59.twitter.dto.user.UserListV2;
+import io.github.redouane59.twitter.dto.user.UserList;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
@@ -51,20 +51,38 @@ public interface ITwitterClientV2 {
   List<User> getUsersFromUserIds(List<String> userIds);
 
   /**
-   * Get a list of the user followers calling https://api.twitter.com/2/users/:id/followers
+   * Get a list of the user followers limited to 1000 results calling https://api.twitter.com/2/users/:id/followers
    *
    * @param userId the id of the targeted user
    * @return a list of users who are following the targeted user
    */
-  List<User> getFollowers(String userId);
+  UserList getFollowers(String userId);
 
   /**
-   * Get a list of the user following calling https://api.twitter.com/2/users/:id/following
+   * Get a list of the user followers limited to 1000 results calling https://api.twitter.com/2/users/:id/followers
+   *
+   * @param userId the id of the targeted user
+   * @param additionalParameters accepted parameters are maxResults, pagination_token
+   * @return a list of users who are following the targeted user
+   */
+  UserList getFollowers(String userId, AdditionalParameters additionalParameters);
+
+  /**
+   * Get a list of the user following limited to 1000 results calling https://api.twitter.com/2/users/:id/following
    *
    * @param userId the id of the targeted user
    * @return a list of users that the targeted user is following
    */
-  List<User> getFollowing(String userId);
+  UserList getFollowing(String userId);
+
+  /**
+   * Get a list of the user following limited to 1000 results calling https://api.twitter.com/2/users/:id/following
+   *
+   * @param additionalParameters accepted parameters are maxResults, pagination_token
+   * @param userId the id of the targeted user
+   * @return a list of users that the targeted user is following
+   */
+  UserList getFollowing(String userId, AdditionalParameters additionalParameters);
 
   /**
    * Get a tweet from its id calling https://api.twitter.com/2/tweets
@@ -80,7 +98,7 @@ public interface ITwitterClientV2 {
    * @param tweetIds the ids of the tweets
    * @return a tweet object list
    */
-  List<Tweet> getTweets(List<String> tweetIds);
+  TweetList getTweets(List<String> tweetIds);
 
   /**
    * Hide/Unide a reply using https://api.twitter.com/labs/2/tweets/:id/hidden
@@ -103,6 +121,7 @@ public interface ITwitterClientV2 {
    * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
    *
    * @param query the search query
+   * @param additionalParameters accepted parameters are startTime, endTime, sinceId, untilId, maxResults
    * @return a list of tweets
    */
   TweetList searchRecentTweets(String query, AdditionalParameters additionalParameters);
@@ -110,6 +129,7 @@ public interface ITwitterClientV2 {
   /**
    * Search archived tweets calling https://api.twitter.com/2/tweets/search/all
    *
+   * @param query the search query
    * @return a TweetSearchResponse object containing a list of tweets and the next token
    */
   TweetList searchAllTweets(String query);
@@ -117,6 +137,8 @@ public interface ITwitterClientV2 {
   /**
    * Search archived tweets calling https://api.twitter.com/2/tweets/search/all
    *
+   * @param query the search query
+   * @param additionalParameters accepted paramteres are startTime, endTime, sinceId, untilId, maxResults, nextToken
    * @return a TweetSearchResponse object containing a list of tweets and the next token
    */
   TweetList searchAllTweets(String query, AdditionalParameters additionalParameters);
@@ -251,7 +273,7 @@ public interface ITwitterClientV2 {
   /**
    * Returns a list of users who are blocked by the authenticated user.
    */
-  UserListV2 getBlockedUsers();
+  UserList getBlockedUsers();
 
   /**
    * Like a tweet calling https://api.twitter.com/2/users/:id/likes
@@ -276,7 +298,7 @@ public interface ITwitterClientV2 {
    *
    * @param tweetId ID of the Tweet to request liking users of.
    */
-  UserListV2 getLikingUsers(String tweetId);
+  UserList getLikingUsers(String tweetId);
 
   /**
    * Allows you to get information about a user’s liked Tweets calling https://api.twitter.com/2/users/:id/liked_tweets

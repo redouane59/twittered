@@ -38,12 +38,11 @@ import io.github.redouane59.twitter.dto.tweet.TweetSearchResponseV1;
 import io.github.redouane59.twitter.dto.tweet.TweetV1;
 import io.github.redouane59.twitter.dto.tweet.TweetV1Deserializer;
 import io.github.redouane59.twitter.dto.tweet.TweetV2;
-import io.github.redouane59.twitter.dto.tweet.TweetV2.TweetData;
 import io.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import io.github.redouane59.twitter.dto.user.FollowBody;
 import io.github.redouane59.twitter.dto.user.FollowResponse;
 import io.github.redouane59.twitter.dto.user.User;
-import io.github.redouane59.twitter.dto.user.UserListV2;
+import io.github.redouane59.twitter.dto.user.UserList;
 import io.github.redouane59.twitter.dto.user.UserV2;
 import io.github.redouane59.twitter.dto.user.UserV2.UserData;
 import io.github.redouane59.twitter.helpers.AbstractRequestHelper;
@@ -100,19 +99,10 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public static final  String             USER_FIELDS                          = "user.fields";
   public static final  String             ALL_USER_FIELDS                      =
       "id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
-  private static final String             IDS                                  = "ids";
-  private static final String             ID                                   = "id";
   private static final String             QUERY                                = "query";
-  private static final String             USERS                                = "users";
   private static final String             CURSOR                               = "cursor";
   private static final String             NEXT                                 = "next";
   private static final String             PAGINATION_TOKEN                     = "pagination_token";
-  private static final String             RETWEET_COUNT                        = "retweet_count";
-  private static final String             RELATIONSHIP                         = "relationship";
-  private static final String             FOLLOWING                            = "following";
-  private static final String             FOLLOWED_BY                          = "followed_by";
-  private static final String             SOURCE                               = "source";
-  private static final String             NULL_OR_ID_NOT_FOUND_ERROR           = "response null or ids not found !";
   private static final String[]           DEFAULT_VALID_CREDENTIALS_FILE_NAMES = {"test-twitter-credentials.json",
                                                                                   "twitter-credentials.json"};
 
@@ -172,7 +162,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       if (token != null) {
         urlWithCursor = urlWithCursor + "&" + PAGINATION_TOKEN + "=" + token;
       }
-      Optional<UserListV2> userListDTO = this.getRequestHelper().getRequest(urlWithCursor, UserListV2.class);
+      Optional<UserList> userListDTO = this.getRequestHelper().getRequest(urlWithCursor, UserList.class);
       if (!userListDTO.isPresent()) {
         break;
       }
@@ -182,7 +172,14 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return result;
   }
 
-  private List<User> getUsersInfoByRelation(String userId, RelationType relationType) {
+  /**
+   * Get the users corresponding to a specific relation in oneshot
+   *
+   * @param userId the id of the user
+   * @param relationType the relations you want to retrieve
+   * @return a list of users corresponding to the specified relation
+   */
+  public List<User> getUsersByRelation(String userId, RelationType relationType) {
     String url = null;
     if (relationType == RelationType.FOLLOWER) {
       url = this.urlHelper.getFollowersUrl(userId);
@@ -193,13 +190,29 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public List<User> getFollowers(String userId) {
-    return this.getUsersInfoByRelation(userId, RelationType.FOLLOWER);
+  public UserList getFollowers(String userId) {
+    return this.getFollowers(userId, AdditionalParameters.builder().build());
   }
 
   @Override
-  public List<User> getFollowing(String userId) {
-    return this.getUsersInfoByRelation(userId, RelationType.FOLLOWING);
+  public UserList getFollowers(final String userId, final AdditionalParameters additionalParameters) {
+    String              url        = this.urlHelper.getFollowersUrl(userId);
+    Map<String, String> parameters = additionalParameters.getMapFromParameters();
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    return this.getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public UserList getFollowing(String userId) {
+    return this.getFollowing(userId, AdditionalParameters.builder().build());
+  }
+
+  @Override
+  public UserList getFollowing(final String userId, final AdditionalParameters additionalParameters) {
+    String              url        = this.urlHelper.getFollowingUrl(userId);
+    Map<String, String> parameters = additionalParameters.getMapFromParameters();
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    return this.getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -271,9 +284,9 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public UserListV2 getBlockedUsers() {
+  public UserList getBlockedUsers() {
     String url = this.urlHelper.getBlockingUsersUrl(this.getUserIdFromAccessToken());
-    return this.getRequestHelper().getRequest(url, UserListV2.class).orElseThrow(NoSuchElementException::new);
+    return this.getRequestHelper().getRequest(url, UserList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -291,7 +304,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public List<User> getUsersFromUserNames(List<String> userNames) {
     String url = this.getUrlHelper().getUsersUrlbyNames(userNames);
-    List<UserData> result = this.getRequestHelper().getRequest(url, UserListV2.class)
+    List<UserData> result = this.getRequestHelper().getRequest(url, UserList.class)
                                 .orElseThrow(NoSuchElementException::new).getData();
     return result.stream().map(userData -> UserV2.builder().data(userData).build()).collect(Collectors.toList());
   }
@@ -299,7 +312,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public List<User> getUsersFromUserIds(List<String> userIds) {
     String url = this.getUrlHelper().getUsersUrlbyIds(userIds);
-    List<UserData> result = this.getRequestHelper().getRequest(url, UserListV2.class)
+    List<UserData> result = this.getRequestHelper().getRequest(url, UserList.class)
                                 .orElseThrow(NoSuchElementException::new).getData();
     return result.stream().map(userData -> UserV2.builder().data(userData).build()).collect(Collectors.toList());
   }
@@ -324,9 +337,9 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public UserListV2 getLikingUsers(final String tweetId) {
+  public UserList getLikingUsers(final String tweetId) {
     String url = this.getUrlHelper().getLikingUsersUrl(tweetId);
-    return getRequestHelper().getRequest(url, UserListV2.class).orElseThrow(NoSuchElementException::new);
+    return getRequestHelper().getRequest(url, UserList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -416,11 +429,9 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public List<Tweet> getTweets(List<String> tweetIds) {
+  public TweetList getTweets(List<String> tweetIds) {
     String url = this.getUrlHelper().getTweetListUrl(tweetIds);
-    List<TweetData> result = this.getRequestHelper().getRequest(url, TweetList.class)
-                                 .orElseThrow(NoSuchElementException::new).getData();
-    return result.stream().map(tweetData -> TweetV2.builder().data(tweetData).build()).collect(Collectors.toList());
+    return this.getRequestHelper().getRequest(url, TweetList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override

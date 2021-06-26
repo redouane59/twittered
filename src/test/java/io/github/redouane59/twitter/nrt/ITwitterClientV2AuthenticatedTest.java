@@ -11,7 +11,7 @@ import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
 import io.github.redouane59.twitter.dto.user.FollowResponse;
 import io.github.redouane59.twitter.dto.user.User;
-import io.github.redouane59.twitter.dto.user.UserListV2;
+import io.github.redouane59.twitter.dto.user.UserList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -61,7 +61,7 @@ public class ITwitterClientV2AuthenticatedTest {
 
   @Test
   public void testGetBlockingUsers() {
-    UserListV2 result = twitterClient.getBlockedUsers();
+    UserList result = twitterClient.getBlockedUsers();
     assertNotNull(result);
     assertTrue(result.getData().size() > 0);
     assertNotNull(result.getData().get(0).getId());
