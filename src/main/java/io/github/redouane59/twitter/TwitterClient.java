@@ -34,11 +34,11 @@ import io.github.redouane59.twitter.dto.tweet.MediaCategory;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetCountsList;
 import io.github.redouane59.twitter.dto.tweet.TweetList;
+import io.github.redouane59.twitter.dto.tweet.TweetList.TweetMeta;
 import io.github.redouane59.twitter.dto.tweet.TweetSearchResponseV1;
 import io.github.redouane59.twitter.dto.tweet.TweetV1;
 import io.github.redouane59.twitter.dto.tweet.TweetV1Deserializer;
 import io.github.redouane59.twitter.dto.tweet.TweetV2;
-import io.github.redouane59.twitter.dto.tweet.TweetV2.TweetData;
 import io.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import io.github.redouane59.twitter.dto.user.FollowBody;
 import io.github.redouane59.twitter.dto.user.FollowResponse;
@@ -511,7 +511,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (additionalParameters.getMaxResults() <= 0) {
       parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(100));
     }
-    return TweetList.builder().data(this.getTweetsRecursively(url, parameters)).build();
+    return this.getTweetsRecursively(url, parameters);
   }
 
   @Override
@@ -532,22 +532,33 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (additionalParameters.getMaxResults() <= 0) {
       parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(500));
     }
-    return TweetList.builder().data(this.getTweetsRecursively(url, parameters)).build();
+    return this.getTweetsRecursively(url, parameters);
   }
 
   /**
    * Call the endpoints recursively until next_token is null to provide a full result
    */
-  public List<TweetData> getTweetsRecursively(String url, Map<String, String> parameters) {
-    String          next;
-    List<TweetData> result = new ArrayList<>();
+  public TweetList getTweetsRecursively(String url, Map<String, String> parameters) {
+    String    next;
+    TweetList result   = TweetList.builder().data(new ArrayList<>()).meta(new TweetMeta()).build();
+    String    newestId = null;
     do {
-      Optional<TweetList> tweetSearchV2DTO = this.getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class);
-      if (!tweetSearchV2DTO.isPresent() || tweetSearchV2DTO.get().getData() == null) {
+      Optional<TweetList> tweetList = this.getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class);
+      if (!tweetList.isPresent() || tweetList.get().getData() == null) {
         break;
       }
-      result.addAll(tweetSearchV2DTO.get().getData());
-      next = tweetSearchV2DTO.get().getMeta().getNextToken();
+      result.getData().addAll(tweetList.get().getData());
+      if (newestId == null) {
+        newestId = tweetList.get().getMeta().getNewestId();
+      }
+      TweetMeta meta = TweetMeta.builder()
+                                .resultCount(result.getData().size())
+                                .oldestId(tweetList.get().getMeta().getOldestId())
+                                .newestId(newestId)
+                                .nextToken(tweetList.get().getMeta().getNextToken())
+                                .build();
+      result.setMeta(meta);
+      next = tweetList.get().getMeta().getNextToken();
       if (url.contains("/search")) { // @todo dirty
         parameters.put(AdditionalParameters.NEXT_TOKEN, next);
       } else {
@@ -709,7 +720,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (additionalParameters.getMaxResults() <= 0) {
       parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(100));
     }
-    return TweetList.builder().data(this.getTweetsRecursively(url, parameters)).build();
+    return this.getTweetsRecursively(url, parameters);
   }
 
   @Override
@@ -728,7 +739,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (additionalParameters.getMaxResults() <= 0) {
       parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(100));
     }
-    return TweetList.builder().data(this.getTweetsRecursively(url, parameters)).build();
+    return this.getTweetsRecursively(url, parameters);
   }
 
   @Override
