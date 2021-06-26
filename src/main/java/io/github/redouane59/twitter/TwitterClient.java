@@ -196,7 +196,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public UserList getFollowers(String userId) {
-    return this.getFollowers(userId, AdditionalParameters.builder().build());
+    return this.getFollowers(userId, AdditionalParameters.builder().maxResults(1000).build());
   }
 
   @Override
@@ -209,7 +209,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public UserList getFollowing(String userId) {
-    return this.getFollowing(userId, AdditionalParameters.builder().build());
+    return this.getFollowing(userId, AdditionalParameters.builder().maxResults(1000).build());
   }
 
   @Override
@@ -493,7 +493,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public TweetList searchTweets(String query) {
-    return this.searchTweets(query, AdditionalParameters.builder().build());
+    return this.searchTweets(query, AdditionalParameters.builder().maxResults(100).build());
   }
 
   @Override
@@ -509,7 +509,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public TweetList searchAllTweets(final String query) {
-    return this.searchAllTweets(query, AdditionalParameters.builder().build());
+    return this.searchAllTweets(query, AdditionalParameters.builder().maxResults(500).build());
   }
 
   @Override
@@ -656,7 +656,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public TweetList getUserTimeline(final String userId) {
-    return this.getUserTimeline(userId, AdditionalParameters.builder().build());
+    return this.getUserTimeline(userId, AdditionalParameters.builder().maxResults(100).build());
   }
 
   @Override
@@ -669,7 +669,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public TweetList getUserMentions(final String userId) {
-    return this.getUserMentions(userId, AdditionalParameters.builder().build());
+    return this.getUserMentions(userId, AdditionalParameters.builder().maxResults(100).build());
   }
 
   @Override
