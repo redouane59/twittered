@@ -145,7 +145,7 @@ public class ITwitterClientV1Test {
   public void testSearchTweets30days() {
     List<Tweet>
         result =
-        twitterClient.searchForTweetsWithin30days("@Twitter -RT", ConverterHelper.dayBeforeNow(25), ConverterHelper.dayBeforeNow(1), "30days");
+        twitterClient.searchForTweetsWithin30days("Hello World!", ConverterHelper.dayBeforeNow(25), ConverterHelper.dayBeforeNow(1), "30days");
     assertTrue(result.size() > 0);
   }
 
