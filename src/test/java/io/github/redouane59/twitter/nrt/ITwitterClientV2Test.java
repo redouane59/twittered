@@ -321,6 +321,9 @@ public class ITwitterClientV2Test {
     assertNotNull(result.getData().get(0).getAuthorId());
     assertNotNull(result.getData().get(0).getConversationId());
     assertNotNull(result.getData().get(0).getLang());
+    assertNotNull(result.getMeta().getNewestId());
+    assertNotNull(result.getMeta().getOldestId());
+    assertEquals(result.getData().size(), result.getMeta().getResultCount());
   }
 
   @Test
@@ -355,6 +358,9 @@ public class ITwitterClientV2Test {
     assertNotNull(result.getData().get(0).getAuthorId());
     assertNotNull(result.getData().get(0).getConversationId());
     assertNotNull(result.getData().get(0).getLang());
+    assertNotNull(result.getMeta().getNewestId());
+    assertNotNull(result.getMeta().getOldestId());
+    assertEquals(result.getData().size(), result.getMeta().getResultCount());
   }
 
   @Test

@@ -536,9 +536,9 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   /**
-   * Call the endpoints recursively until next_token is null to provide a full result
+   * Call the endpoint recursively until next_token is null to provide a full result
    */
-  public TweetList getTweetsRecursively(String url, Map<String, String> parameters) {
+  private TweetList getTweetsRecursively(String url, Map<String, String> parameters) {
     String    next;
     TweetList result   = TweetList.builder().data(new ArrayList<>()).meta(new TweetMeta()).build();
     String    newestId = null;
@@ -599,7 +599,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   @Deprecated
   /**
-   * Use {@link TwitterClient#searchTweets(query)} instead.
+   * Use {@link TwitterClient#searchAllTweets(String)} (query)} instead.
    */
   public List<Tweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate,
                                             String envName) {
