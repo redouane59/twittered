@@ -178,24 +178,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     } while (token != null);
     return result;
   }
-
-  /**
-   * Get the users corresponding to a specific relation in oneshot
-   *
-   * @param userId the id of the user
-   * @param relationType the relations you want to retrieve
-   * @return a list of users corresponding to the specified relation
-   */
-  public List<User> getUsersByRelation(String userId, RelationType relationType) {
-    String url = null;
-    if (relationType == RelationType.FOLLOWER) {
-      url = this.urlHelper.getFollowersUrl(userId);
-    } else if (relationType == RelationType.FOLLOWING) {
-      url = this.urlHelper.getFollowingUrl(userId);
-    }
-    return this.getUsersInfoByRelation(url);
-  }
-
+  
   @Override
   public UserList getFollowers(String userId) {
     return this.getFollowers(userId, AdditionalParameters.builder().maxResults(1000).build());
