@@ -317,16 +317,42 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public List<User> getUsersFromUserNames(List<String> userNames) {
-    String url = this.getUrlHelper().getUsersUrlbyNames(userNames);
-    List<UserData> result = this.getRequestHelper().getRequest(url, UserList.class)
+    String              url        = this.getUrlHelper().getUsersByUrl();
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(EXPANSION, PINNED_TWEET_ID);
+    StringBuilder names = new StringBuilder();
+    int           i     = 0;
+    while (i < userNames.size() && i < URLHelper.MAX_LOOKUP) {
+      String name = userNames.get(i);
+      names.append(name);
+      names.append(",");
+      i++;
+    }
+    names.delete(names.length() - 1, names.length());
+    parameters.put("usernames", names.toString());
+    List<UserData> result = this.getRequestHelper().getRequestWithParameters(url, parameters, UserList.class)
                                 .orElseThrow(NoSuchElementException::new).getData();
     return result.stream().map(userData -> UserV2.builder().data(userData).build()).collect(Collectors.toList());
   }
 
   @Override
   public List<User> getUsersFromUserIds(List<String> userIds) {
-    String url = this.getUrlHelper().getUsersUrlbyIds(userIds);
-    List<UserData> result = this.getRequestHelper().getRequest(url, UserList.class)
+    String              url        = this.getUrlHelper().getUsersUrl();
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(EXPANSION, PINNED_TWEET_ID);
+    StringBuilder names = new StringBuilder();
+    int           i     = 0;
+    while (i < userIds.size() && i < URLHelper.MAX_LOOKUP) {
+      String name = userIds.get(i);
+      names.append(name);
+      names.append(",");
+      i++;
+    }
+    names.delete(names.length() - 1, names.length());
+    parameters.put("ids", names.toString());
+    List<UserData> result = this.getRequestHelper().getRequestWithParameters(url, parameters, UserList.class)
                                 .orElseThrow(NoSuchElementException::new).getData();
     return result.stream().map(userData -> UserV2.builder().data(userData).build()).collect(Collectors.toList());
   }
@@ -453,11 +479,21 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public TweetList getTweets(List<String> tweetIds) {
-    String              url        = this.getUrlHelper().getTweetListUrl(tweetIds);
+    String              url        = this.getUrlHelper().getTweetsUrl();
     Map<String, String> parameters = new HashMap<>();
     parameters.put(EXPANSION, ALL_EXPANSIONS);
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    StringBuilder result = new StringBuilder();
+    int           i      = 0;
+    while (i < tweetIds.size() && i < URLHelper.MAX_LOOKUP) {
+      String id = tweetIds.get(i);
+      result.append(id);
+      result.append(",");
+      i++;
+    }
+    result.delete(result.length() - 1, result.length());
+    parameters.put("ids", result.toString());
     return this.getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
   }
 

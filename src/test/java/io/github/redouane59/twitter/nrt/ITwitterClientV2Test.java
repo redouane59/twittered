@@ -54,6 +54,10 @@ public class ITwitterClientV2Test {
   public void getUsersByUserNames() {
     List<User> result = twitterClient.getUsersFromUserNames(Arrays.asList("Zidane", "Ronaldo", "RedouaneBali"));
     assertEquals(3, result.size());
+    assertNotNull(result.get(0).getId());
+    assertNotNull(result.get(0).getName());
+    assertNotNull(result.get(0).getDisplayedName());
+    assertNotNull(result.get(0).getDateOfCreation());
     assertEquals(userId, result.get(2).getId());
   }
 
@@ -100,10 +104,12 @@ public class ITwitterClientV2Test {
   public void testGetUsersFromUserIds() {
     List<String> ids = new ArrayList<>();
     ids.add(userId);
-    ids.add("22848599"); // Soltana
+    ids.add("22848599");
     List<User> result = twitterClient.getUsersFromUserIds(ids);
     assertEquals("RedouaneBali", result.get(0).getName());
     assertEquals("Soltana", result.get(1).getName());
+    assertNotNull(result.get(0).getDisplayedName());
+    assertNotNull(result.get(0).getDateOfCreation());
   }
 
   @Test
