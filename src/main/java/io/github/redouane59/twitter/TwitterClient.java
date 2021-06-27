@@ -214,6 +214,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
+
   public UserList getFollowing(final String userId, final AdditionalParameters additionalParameters) {
     String              url        = this.urlHelper.getFollowingUrl(userId);
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
