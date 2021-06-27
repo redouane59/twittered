@@ -168,7 +168,7 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetFollowers() {
     UserList result = twitterClient.getFollowers("882266619115864066");
-    assertTrue(result.getData().size() > 200);
+    assertTrue(result.getData().size() > 1000);
     assertTrue(result.getMeta().getResultCount() > 0);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getName());

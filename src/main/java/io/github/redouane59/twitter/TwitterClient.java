@@ -596,7 +596,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   /**
-   * Call an endpoint relative to tweets recursively until next_token is null to provide a full result
+   * Call an endpoint related to tweets recursively until next_token is null to provide a full result
    */
   private TweetList getTweetsRecursively(String url, Map<String, String> parameters) {
     String    next;
@@ -629,25 +629,27 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return result;
   }
 
+  // @todo KO
+
   /**
-   * Call an endpoint relative to users recursively until next_token is null to provide a full result
+   * Call an endpoint related to users recursively until next_token is null to provide a full result
    */
   private UserList getUsersRecursively(String url, Map<String, String> parameters) {
     String   next;
     UserList result = UserList.builder().data(new ArrayList<>()).meta(new UserMeta()).build();
     do {
-      Optional<UserList> tweetList = this.getRequestHelper().getRequestWithParameters(url, parameters, UserList.class);
-      if (!tweetList.isPresent() || tweetList.get().getData() == null) {
+      Optional<UserList> userList = this.getRequestHelper().getRequestWithParameters(url, parameters, UserList.class);
+      if (!userList.isPresent() || userList.get().getData() == null) {
         result.getMeta().setNextToken(null);
         break;
       }
-      result.getData().addAll(tweetList.get().getData());
+      result.getData().addAll(userList.get().getData());
       UserMeta meta = UserMeta.builder()
                               .resultCount(result.getData().size())
-                              .nextToken(tweetList.get().getMeta().getNextToken())
+                              .nextToken(userList.get().getMeta().getNextToken())
                               .build();
       result.setMeta(meta);
-      next = tweetList.get().getMeta().getNextToken();
+      next = userList.get().getMeta().getNextToken();
       parameters.put(AdditionalParameters.NEXT_TOKEN, next);
     } while (next != null);
     return result;
