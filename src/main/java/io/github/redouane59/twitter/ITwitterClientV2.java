@@ -66,7 +66,7 @@ public interface ITwitterClientV2 {
    * @return a list of users who are following the targeted user
    */
   UserList getFollowers(String userId, AdditionalParameters additionalParameters);
-
+  
   /**
    * Get a list of the user following limited to 1000 results calling https://api.twitter.com/2/users/:id/following
    *
@@ -82,6 +82,7 @@ public interface ITwitterClientV2 {
    * @param userId the id of the targeted user
    * @return a list of users that the targeted user is following
    */
+
   UserList getFollowing(String userId, AdditionalParameters additionalParameters);
 
   /**

@@ -22,7 +22,11 @@ public class AdditionalParameters {
   public static final String NEXT_TOKEN       = "next_token";
   public static final String PAGINATION_TOKEN = "pagination_token";
   public static final String GRANULARITY      = "granularity";
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 46222a049c683651d914ea63a2a65ebb613825a6
   @Builder.Default
   /**
    * If set to true, will loop the call until next_token is null to provide a full answer.
