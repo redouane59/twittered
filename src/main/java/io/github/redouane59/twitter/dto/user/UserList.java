@@ -3,17 +3,13 @@ package io.github.redouane59.twitter.dto.user;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.redouane59.twitter.dto.user.UserV2.UserData;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserList {
 
   private List<UserData> data;
@@ -21,9 +17,7 @@ public class UserList {
 
   @Getter
   @Setter
-  @Builder
   @NoArgsConstructor
-  @AllArgsConstructor
   public static class UserMeta {
 
     @JsonProperty("result_count")

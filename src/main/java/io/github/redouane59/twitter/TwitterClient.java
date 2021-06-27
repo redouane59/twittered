@@ -44,7 +44,6 @@ import io.github.redouane59.twitter.dto.user.FollowBody;
 import io.github.redouane59.twitter.dto.user.FollowResponse;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserList;
-import io.github.redouane59.twitter.dto.user.UserList.UserMeta;
 import io.github.redouane59.twitter.dto.user.UserV2;
 import io.github.redouane59.twitter.dto.user.UserV2.UserData;
 import io.github.redouane59.twitter.helpers.AbstractRequestHelper;
@@ -178,7 +177,24 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     } while (token != null);
     return result;
   }
-  
+
+  /**
+   * Get the users corresponding to a specific relation in oneshot
+   *
+   * @param userId the id of the user
+   * @param relationType the relations you want to retrieve
+   * @return a list of users corresponding to the specified relation
+   */
+  public List<User> getUsersByRelation(String userId, RelationType relationType) {
+    String url = null;
+    if (relationType == RelationType.FOLLOWER) {
+      url = this.urlHelper.getFollowersUrl(userId);
+    } else if (relationType == RelationType.FOLLOWING) {
+      url = this.urlHelper.getFollowingUrl(userId);
+    }
+    return this.getUsersInfoByRelation(url);
+  }
+
   @Override
   public UserList getFollowers(String userId) {
     return this.getFollowers(userId, AdditionalParameters.builder().maxResults(1000).build());
@@ -189,13 +205,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String              url        = this.urlHelper.getFollowersUrl(userId);
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
-    if (!additionalParameters.isRecursiveCall()) {
-      return this.getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
-    }
-    if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(1000));
-    }
-    return this.getUsersRecursively(url, parameters);
+    return this.getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -209,13 +219,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String              url        = this.urlHelper.getFollowingUrl(userId);
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
-    if (!additionalParameters.isRecursiveCall()) {
-      return this.getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
-    }
-    if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(1000));
-    }
-    return this.getUsersRecursively(url, parameters);
+    return this.getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -579,7 +583,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   /**
-   * Call an endpoint related to tweets recursively until next_token is null to provide a full result
+   * Call the endpoint recursively until next_token is null to provide a full result
    */
   private TweetList getTweetsRecursively(String url, Map<String, String> parameters) {
     String    next;
@@ -608,30 +612,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       } else {
         parameters.put(AdditionalParameters.PAGINATION_TOKEN, next);
       }
-    } while (next != null);
-    return result;
-  }
-
-  /**
-   * Call an endpoint related to users recursively until next_token is null to provide a full result
-   */
-  private UserList getUsersRecursively(String url, Map<String, String> parameters) {
-    String   next;
-    UserList result = UserList.builder().data(new ArrayList<>()).meta(new UserMeta()).build();
-    do {
-      Optional<UserList> userList = this.getRequestHelper().getRequestWithParameters(url, parameters, UserList.class);
-      if (!userList.isPresent() || userList.get().getData() == null) {
-        result.getMeta().setNextToken(null);
-        break;
-      }
-      result.getData().addAll(userList.get().getData());
-      UserMeta meta = UserMeta.builder()
-                              .resultCount(result.getData().size())
-                              .nextToken(userList.get().getMeta().getNextToken())
-                              .build();
-      result.setMeta(meta);
-      next = userList.get().getMeta().getNextToken();
-      parameters.put(AdditionalParameters.PAGINATION_TOKEN, next);
     } while (next != null);
     return result;
   }
