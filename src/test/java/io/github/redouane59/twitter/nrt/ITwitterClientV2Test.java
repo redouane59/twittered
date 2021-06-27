@@ -122,8 +122,8 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetFollowing() {
-    UserList result = twitterClient.getFollowing("882266619115864066");
-    assertTrue(result.getData().size() > 200);
+    UserList result = twitterClient.getFollowing(userId);
+    assertTrue(result.getData().size() > 1000);
     assertTrue(result.getMeta().getResultCount() > 0);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getName());
@@ -150,11 +150,11 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetFollowersWithParameters() {
-    UserList result = twitterClient.getFollowers("882266619115864066", AdditionalParameters.builder().maxResults(150).build());
+    UserList result = twitterClient.getFollowers(userId, AdditionalParameters.builder().maxResults(150).build());
     assertEquals(150, result.getData().size());
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getMeta().getNextToken());
-    UserList result2 = twitterClient.getFollowers("882266619115864066",
+    UserList result2 = twitterClient.getFollowers(userId,
                                                   AdditionalParameters.builder()
                                                                       .maxResults(10)
                                                                       .paginationToken(result.getMeta().getNextToken())
@@ -167,7 +167,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetFollowers() {
-    UserList result = twitterClient.getFollowers("882266619115864066");
+    UserList result = twitterClient.getFollowers(userId);
     assertTrue(result.getData().size() > 1000);
     assertTrue(result.getMeta().getResultCount() > 0);
     assertNotNull(result.getData().get(0).getId());
@@ -178,7 +178,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetFollowingsFromRelations() {
-    List<User> result = twitterClient.getUsersByRelation("1120050519182016513", RelationType.FOLLOWING);
+    List<User> result = twitterClient.getUsersByRelation(userId, RelationType.FOLLOWING);
     assertTrue(result.size() > 100);
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getName());
@@ -188,7 +188,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetFollowersFromRelations() {
-    List<User> result = twitterClient.getUsersByRelation("1120050519182016513", RelationType.FOLLOWER);
+    List<User> result = twitterClient.getUsersByRelation(userId, RelationType.FOLLOWER);
     assertTrue(result.size() > 100);
     assertNotNull(result.get(0).getId());
     assertNotNull(result.get(0).getName());
@@ -438,7 +438,7 @@ public class ITwitterClientV2Test {
                                                                                 .recursiveCall(false).maxResults(20).build());
     assertTrue(result.getData().size() > 0);
     assertTrue(result.getMeta().getResultCount() > 0);
-    assertNull(result.getMeta().getNextToken());
+    assertNotNull(result.getMeta().getNextToken());
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getText());
     assertNotNull(result.getData().get(0).getCreatedAt());

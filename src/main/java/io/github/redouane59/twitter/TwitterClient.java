@@ -629,8 +629,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return result;
   }
 
-  // @todo KO
-
   /**
    * Call an endpoint related to users recursively until next_token is null to provide a full result
    */
@@ -650,7 +648,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
                               .build();
       result.setMeta(meta);
       next = userList.get().getMeta().getNextToken();
-      parameters.put(AdditionalParameters.NEXT_TOKEN, next);
+      parameters.put(AdditionalParameters.PAGINATION_TOKEN, next);
     } while (next != null);
     return result;
   }
