@@ -446,17 +446,6 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  public void testGetLikedTweetsWithParameters() {
-    TweetList result = twitterClient.getLikedTweets(userId, AdditionalParameters.builder()
-                                                                                .recursiveCall(false).maxResults(20).build());
-    assertTrue(result.getData().size() > 0);
-    assertNotNull(result.getData().get(0).getId());
-    assertNotNull(result.getData().get(0).getText());
-    assertNotNull(result.getData().get(0).getCreatedAt());
-    assertNotNull(result.getMeta().getNextToken());
-  }
-
-  @Test
   public void testGetTweetCount() {
     TweetCountsList result = twitterClient.getTweetCounts("@Twitter");
     assertTrue(result.getData().size() > 0);
