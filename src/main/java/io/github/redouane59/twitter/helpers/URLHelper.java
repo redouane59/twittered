@@ -2,7 +2,6 @@ package io.github.redouane59.twitter.helpers;
 
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
-import java.util.List;
 import lombok.Getter;
 
 public class URLHelper {
@@ -54,6 +53,12 @@ public class URLHelper {
   private final String tweetsCountUrl         = "https://api.twitter.com/2/tweets/counts/recent";
   @Getter
   private final String tweetsCountAllUrl      = "https://api.twitter.com/2/tweets/counts/all";
+  @Getter
+  private final String tweetsUrl              = "https://api.twitter.com/2/tweets";
+  @Getter
+  private final String usersByUrl             = "https://api.twitter.com/2/users/by";
+  @Getter
+  private final String usersUrl               = "https://api.twitter.com/2/users";
   private final String followUrl              = "https://api.twitter.com/2/users/:id/following";
   private final String unfollowUrl            = "https://api.twitter.com/2/users/:sourceId/following/:targetId";
   private final String followersUrl           = "https://api.twitter.com/2/users/:id/followers";
@@ -134,53 +139,6 @@ public class URLHelper {
 
   public String getTweetUrl(String tweetId) {
     return tweetUrl.replace(idVariable, tweetId);
-  }
-
-  // @todo to improve
-  public String getTweetListUrl(List<String> ids) {
-    StringBuilder result = new StringBuilder(ROOT_URL_V2 +
-                                             "/tweets?ids=");
-    int i = 0;
-    while (i < ids.size() && i < MAX_LOOKUP) {
-      String id = ids.get(i);
-      result.append(id);
-      result.append(",");
-      i++;
-    }
-    result.delete(result.length() - 1, result.length());
-    return result.toString();
-  }
-
-  // @todo to improve
-  public String getUsersUrlbyNames(List<String> names) {
-    StringBuilder result = new StringBuilder(ROOT_URL_V2)
-        .append(USERS)
-        .append("/by?usernames=");
-    int i = 0;
-    while (i < names.size() && i < MAX_LOOKUP) {
-      String name = names.get(i);
-      result.append(name);
-      result.append(",");
-      i++;
-    }
-    result.delete(result.length() - 1, result.length());
-    return result.toString();
-  }
-
-  // @todo to improve
-  public String getUsersUrlbyIds(List<String> ids) {
-    StringBuilder result = new StringBuilder(ROOT_URL_V2)
-        .append(USERS)
-        .append("?ids=");
-    int i = 0;
-    while (i < ids.size() && i < MAX_LOOKUP) {
-      String id = ids.get(i);
-      result.append(id);
-      result.append(",");
-      i++;
-    }
-    result.delete(result.length() - 1, result.length());
-    return result.toString();
   }
 
   public String getLikeUrl(String userId) {
