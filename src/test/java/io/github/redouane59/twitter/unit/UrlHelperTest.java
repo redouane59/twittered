@@ -5,9 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
 import io.github.redouane59.twitter.helpers.URLHelper;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class UrlHelperTest {
@@ -62,23 +59,8 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testUrlGetUsersByNames() {
-    List<String> names = new ArrayList<>();
-    names.add("RedTheOne");
-    names.add("Ronaldo");
-    names.add("Zidane");
-    assertEquals("https://api.twitter.com/2/users/by?usernames=RedTheOne,Ronaldo,Zidane",
-                 urlHelper.getUsersUrlbyNames(names));
-  }
-
-  @Test
-  public void testUrlGetUsersByIds() {
-    List<String> ids = new ArrayList<>();
-    ids.add("12345");
-    ids.add("23456");
-    ids.add("34567");
-    assertEquals("https://api.twitter.com/2/users?ids=12345,23456,34567",
-                 urlHelper.getUsersUrlbyIds(ids));
+  public void testUrlGetUsersBy() {
+    assertEquals("https://api.twitter.com/2/users/by", urlHelper.getUsersByUrl());
   }
 
   @Test
@@ -130,8 +112,8 @@ public class UrlHelperTest {
   @Test
   public void testUrlGetTweetsV2() {
     assertEquals(
-        "https://api.twitter.com/2/tweets?ids=1294174710624849921,1294380029430960128,1294375095746666496",
-        urlHelper.getTweetListUrl(Arrays.asList("1294174710624849921,1294380029430960128,1294375095746666496")));
+        "https://api.twitter.com/2/tweets",
+        urlHelper.getTweetsUrl());
   }
 
   @Test

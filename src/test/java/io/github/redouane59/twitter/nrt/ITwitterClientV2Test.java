@@ -3,6 +3,7 @@ package io.github.redouane59.twitter.nrt;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.scribejava.core.model.Response;
@@ -54,6 +55,10 @@ public class ITwitterClientV2Test {
   public void getUsersByUserNames() {
     List<User> result = twitterClient.getUsersFromUserNames(Arrays.asList("Zidane", "Ronaldo", "RedouaneBali"));
     assertEquals(3, result.size());
+    assertNotNull(result.get(0).getId());
+    assertNotNull(result.get(0).getName());
+    assertNotNull(result.get(0).getDisplayedName());
+    assertNotNull(result.get(0).getDateOfCreation());
     assertEquals(userId, result.get(2).getId());
   }
 
@@ -100,10 +105,12 @@ public class ITwitterClientV2Test {
   public void testGetUsersFromUserIds() {
     List<String> ids = new ArrayList<>();
     ids.add(userId);
-    ids.add("22848599"); // Soltana
+    ids.add("22848599");
     List<User> result = twitterClient.getUsersFromUserIds(ids);
     assertEquals("RedouaneBali", result.get(0).getName());
     assertEquals("Soltana", result.get(1).getName());
+    assertNotNull(result.get(0).getDisplayedName());
+    assertNotNull(result.get(0).getDateOfCreation());
   }
 
   @Test
@@ -416,11 +423,24 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetLikedTweets() {
-    TweetList result = twitterClient.getLikedTweets("1120050519182016513");
+    TweetList result = twitterClient.getLikedTweets(userId);
+    assertTrue(result.getData().size() > 0);
+    assertTrue(result.getMeta().getResultCount() > 0);
+    assertNull(result.getMeta().getNextToken());
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getData().get(0).getText());
+    assertNotNull(result.getData().get(0).getCreatedAt());
+  }
+
+  @Test
+  public void testGetLikedTweetsWithParameters() {
+    TweetList result = twitterClient.getLikedTweets(userId, AdditionalParameters.builder()
+                                                                                .recursiveCall(false).maxResults(20).build());
     assertTrue(result.getData().size() > 0);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getText());
     assertNotNull(result.getData().get(0).getCreatedAt());
+    assertNotNull(result.getMeta().getNextToken());
   }
 
   @Test
