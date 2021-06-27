@@ -316,7 +316,7 @@ public interface ITwitterClientV2 {
    * Allows you to get information about a user’s liked Tweets calling https://api.twitter.com/2/users/:id/liked_tweets
    *
    * @param userId ID of the user to request liked Tweets for.
-   * @param additionalParameters accepted parameters are maxResults, paginationToken,
+   * @param additionalParameters accepted parameters are recursiveCall, maxResults, paginationToken
    * @return a TweetList object containing a list of tweets and the next token
    */
   TweetList getLikedTweets(String userId, AdditionalParameters additionalParameters);
