@@ -384,13 +384,23 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
   }
 
-  // @todo add additionnalParameter constructor
   @Override
   public TweetList getLikedTweets(final String userId) {
+    return this.getLikedTweets(userId, AdditionalParameters.builder().maxResults(100).build());
+  }
+
+  @Override
+  public TweetList getLikedTweets(final String userId, AdditionalParameters additionalParameters) {
     String              url        = this.getUrlHelper().getLikedTweetsUrl(userId);
     Map<String, String> parameters = new HashMap<>();
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
-    return getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
+    if (!additionalParameters.isRecursiveCall()) {
+      return getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
+    }
+    if (additionalParameters.getMaxResults() <= 0) {
+      parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(100));
+    }
+    return this.getTweetsRecursively(url, parameters);
   }
 
   @Override
@@ -581,6 +591,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     do {
       Optional<TweetList> tweetList = this.getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class);
       if (!tweetList.isPresent() || tweetList.get().getData() == null) {
+        result.getMeta().setNextToken(null);
         break;
       }
       result.getData().addAll(tweetList.get().getData());

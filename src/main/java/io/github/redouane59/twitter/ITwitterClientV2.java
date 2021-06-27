@@ -221,7 +221,7 @@ public interface ITwitterClientV2 {
    * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets (time & tweet id arguments can be null)
    *
    * @param userId identifier of the Twitter account (user ID) for whom to return results.
-   * @param additionalParameters parameters accepted recursiveCall, startTime, endTime, sinceId, untilId, maxResults
+   * @param additionalParameters accepted parameters recursiveCall, startTime, endTime, sinceId, untilId, maxResults
    * @return a TweetList object containing a list of tweets and the next token if recursiveCall is set to false
    */
   TweetList getUserTimeline(String userId, AdditionalParameters additionalParameters);
@@ -236,7 +236,7 @@ public interface ITwitterClientV2 {
   /**
    * Get the most recent mentions received by the user calling https://api.twitter.com/2/users/:id/mentions (time & tweet id arguments can be null)
    *
-   * @param additionalParameters parameters accepted recursiveCall, startTime, endTime, sinceId, untilId, maxResults
+   * @param additionalParameters accepted parameters recursiveCall, startTime, endTime, sinceId, untilId, maxResults
    * @return a TweetList object containing a list of tweets and the next token if recursiveCall is set to false
    */
   TweetList getUserMentions(String userId, AdditionalParameters additionalParameters);
@@ -312,6 +312,15 @@ public interface ITwitterClientV2 {
    */
   TweetList getLikedTweets(String userId);
 
+  /**
+   * Allows you to get information about a user’s liked Tweets calling https://api.twitter.com/2/users/:id/liked_tweets
+   *
+   * @param userId ID of the user to request liked Tweets for.
+   * @param additionalParameters accepted parameters are maxResults, paginationToken,
+   * @return a TweetList object containing a list of tweets and the next token
+   */
+  TweetList getLikedTweets(String userId, AdditionalParameters additionalParameters);
+
 
   /**
    * The recent Tweet counts endpoint returns count of Tweets from the last seven days that match a search query calling
@@ -326,7 +335,7 @@ public interface ITwitterClientV2 {
    * https://api.twitter.com/2/tweets/counts/recent
    *
    * @param query One rule for matching Tweets
-   * @param additionalParameters parameters accepted are startTime, endTime, sinceId, untilId, and granularity
+   * @param additionalParameters accepted parameters are startTime, endTime, sinceId, untilId, and granularity
    */
   TweetCountsList getTweetCounts(String query, AdditionalParameters additionalParameters);
 
@@ -343,7 +352,7 @@ public interface ITwitterClientV2 {
    * 26, 2006 calling https://api.twitter.com/2/tweets/counts/all
    *
    * @param query One query for matching Tweets.
-   * @param additionalParameters parameters accepted are startTime, endTime, sinceId, untilId, granularity and nextToken
+   * @param additionalParameters accepted parameters are startTime, endTime, sinceId, untilId, granularity and nextToken
    */
   TweetCountsList getAllTweetCounts(String query, AdditionalParameters additionalParameters);
 
