@@ -240,10 +240,6 @@ public class ITwitterClientV2Test {
   public void testAllTweetsSearch() {
     TweetList result = twitterClient.searchAllTweets("@lequipe bonjour -RT", AdditionalParameters.builder()
                                                                                                  .recursiveCall(false).build());
-<<<<<<< HEAD
-=======
-
->>>>>>> 46222a049c683651d914ea63a2a65ebb613825a6
     assertTrue(result.getData().size() > 0);
     Tweet tweet = result.getData().get(0);
     assertNotNull(tweet.getId());
@@ -262,10 +258,6 @@ public class ITwitterClientV2Test {
                                                                                                  .startTime(ConverterHelper.dayBeforeNow(50))
                                                                                                  .endTime(ConverterHelper.dayBeforeNow(45))
                                                                                                  .recursiveCall(false)
-<<<<<<< HEAD
-=======
-
->>>>>>> 46222a049c683651d914ea63a2a65ebb613825a6
                                                                                                  .build());
     assertTrue(result.getData().size() > 0);
     assertNotNull(result.getData().get(0).getId());
@@ -432,28 +424,12 @@ public class ITwitterClientV2Test {
   @Test
   public void testGetLikedTweets() {
     TweetList result = twitterClient.getLikedTweets(userId);
-<<<<<<< HEAD
     assertTrue(result.getData().size() > 0);
     assertTrue(result.getMeta().getResultCount() > 0);
     assertNull(result.getMeta().getNextToken());
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getText());
     assertNotNull(result.getData().get(0).getCreatedAt());
-  }
-
-  @Test
-  public void testGetLikedTweetsWithParameters() {
-    TweetList result = twitterClient.getLikedTweets(userId, AdditionalParameters.builder()
-                                                                                .recursiveCall(false).maxResults(20).build());
-=======
->>>>>>> 46222a049c683651d914ea63a2a65ebb613825a6
-    assertTrue(result.getData().size() > 0);
-    assertTrue(result.getMeta().getResultCount() > 0);
-    assertNull(result.getMeta().getNextToken());
-    assertNotNull(result.getData().get(0).getId());
-    assertNotNull(result.getData().get(0).getText());
-    assertNotNull(result.getData().get(0).getCreatedAt());
-    assertNotNull(result.getMeta().getNextToken());
   }
 
   @Test

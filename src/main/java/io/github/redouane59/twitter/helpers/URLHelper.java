@@ -141,10 +141,6 @@ public class URLHelper {
     return tweetUrl.replace(idVariable, tweetId);
   }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 46222a049c683651d914ea63a2a65ebb613825a6
   public String getLikeUrl(String userId) {
     return likeUrl.replace(idVariable, userId);
   }
