@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserList {
+public class UserListV1 {
 
   private List<UserV1> users;
   @JsonProperty("next_cursor_str")
