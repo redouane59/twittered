@@ -66,28 +66,10 @@ public interface ITwitterClientV2 {
    * @return a list of users who are following the targeted user
    */
   UserList getFollowers(String userId, AdditionalParameters additionalParameters);
-
+  
   /**
    * Get a list of the user following limited to 1000 results calling https://api.twitter.com/2/users/:id/following
    *
-   * @param userId the id of the targeted user
-   * @param additionalParameters accepted parameters are maxResults, pagination_token
-   * @return a list of users who are following the targeted user
-   */
-  UserList getFollowers(String userId, AdditionalParameters additionalParameters);
-
-  /**
-   * Get a list of the user following limited to 1000 results calling https://api.twitter.com/2/users/:id/following
-   *
-   * @param userId the id of the targeted user
-   * @return a list of users that the targeted user is following
-   */
-  UserList getFollowing(String userId);
-
-  /**
-   * Get a list of the user following limited to 1000 results calling https://api.twitter.com/2/users/:id/following
-   *
-   * @param additionalParameters accepted parameters are maxResults, pagination_token
    * @param userId the id of the targeted user
    * @return a list of users that the targeted user is following
    */
@@ -339,7 +321,6 @@ public interface ITwitterClientV2 {
    * @return a TweetList object containing a list of tweets and the next token
    */
   TweetList getLikedTweets(String userId, AdditionalParameters additionalParameters);
-
 
 
   /**
