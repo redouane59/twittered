@@ -23,8 +23,11 @@ public class AdditionalParameters {
   public static final String PAGINATION_TOKEN = "pagination_token";
   public static final String GRANULARITY      = "granularity";
 
-  // if set to true, will loop the call until next_token is null to provide a full answer
   @Builder.Default
+  /**
+   * If set to true, will loop the call until next_token is null to provide a full answer.
+   * If set to false, will make just one call and return the next_token if it exists
+   */
   private boolean       recursiveCall = true;
   @JsonProperty("start_time")
   private LocalDateTime startTime;
@@ -40,6 +43,9 @@ public class AdditionalParameters {
   @JsonProperty("pagination_token")
   private String        paginationToken;
   @JsonProperty("max_results")
+  /**
+   * The maximum number of results to be returned per call
+   */
   private int           maxResults;
 
   public Map<String, String> getMapFromParameters() {
