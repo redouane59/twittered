@@ -106,6 +106,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   private static final String             NEXT                                 = "next";
   private static final String             PAGINATION_TOKEN                     = "pagination_token";
   private static final String             PINNED_TWEET_ID                      = "pinned_tweet_id";
+  private static final String             BACKFILL_MINUTES                     = "backfill_minutes";
   private static final String[]           DEFAULT_VALID_CREDENTIALS_FILE_NAMES = {"test-twitter-credentials.json",
                                                                                   "twitter-credentials.json"};
 
@@ -671,14 +672,30 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public Future<Response> startFilteredStream(Consumer<Tweet> consumer) {
-    String url = this.urlHelper.getFilteredStreamUrl();
-    return this.requestHelperV2.getAsyncRequest(url, consumer);
+    String              url        = this.urlHelper.getFilteredStreamUrl();
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(EXPANSION, ALL_EXPANSIONS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    return this.requestHelperV2.getAsyncRequest(url, parameters, consumer);
   }
 
   @Override
   public Future<Response> startFilteredStream(IAPIEventListener listener) {
-    String url = this.urlHelper.getFilteredStreamUrl();
-    return this.requestHelperV2.getAsyncRequest(url, listener);
+    return this.startFilteredStream(listener, 0);
+  }
+
+  @Override
+  public Future<Response> startFilteredStream(IAPIEventListener listener, int backfillMinutes) {
+    String              url        = this.urlHelper.getFilteredStreamUrl();
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(EXPANSION, ALL_EXPANSIONS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    if (backfillMinutes > 0) {
+      parameters.put(BACKFILL_MINUTES, String.valueOf(backfillMinutes));
+    }
+    return this.requestHelperV2.getAsyncRequest(url, parameters, listener);
   }
 
   @Override
@@ -738,14 +755,30 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public Future<Response> startSampledStream(Consumer<Tweet> consumer) {
-    String url = this.urlHelper.getSampledStreamUrl();
-    return this.requestHelperV2.getAsyncRequest(url, consumer);
+    String              url        = this.urlHelper.getSampledStreamUrl();
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(EXPANSION, ALL_EXPANSIONS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    return this.requestHelperV2.getAsyncRequest(url, parameters, consumer);
   }
 
   @Override
   public Future<Response> startSampledStream(IAPIEventListener listener) {
-    String url = this.urlHelper.getSampledStreamUrl();
-    return this.requestHelperV2.getAsyncRequest(url, listener);
+    return this.startSampledStream(listener, 0);
+  }
+
+  @Override
+  public Future<Response> startSampledStream(IAPIEventListener listener, int backfillMinutes) {
+    String              url        = this.urlHelper.getSampledStreamUrl();
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(EXPANSION, ALL_EXPANSIONS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    if (backfillMinutes > 0) {
+      parameters.put(BACKFILL_MINUTES, String.valueOf(backfillMinutes));
+    }
+    return this.requestHelperV2.getAsyncRequest(url, parameters, listener);
   }
 
   @Override

@@ -2,7 +2,6 @@ package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
 import io.github.redouane59.twitter.helpers.URLHelper;
 import org.junit.jupiter.api.Test;
@@ -163,32 +162,12 @@ public class UrlHelperTest {
 
   @Test
   public void testFilteredStreamUrl() {
-    assertEquals(
-        "https://api.twitter.com/2/tweets/search/stream?"
-        + TwitterClient.EXPANSION
-        + TwitterClient.ALL_EXPANSIONS
-        + "&"
-        + TwitterClient.TWEET_FIELDS
-        + TwitterClient.ALL_TWEET_FIELDS
-        + "&"
-        + TwitterClient.USER_FIELDS
-        + TwitterClient.ALL_USER_FIELDS,
-        urlHelper.getFilteredStreamUrl());
+    assertEquals("https://api.twitter.com/2/tweets/search/stream", urlHelper.getFilteredStreamUrl());
   }
 
   @Test
   public void testSampledStreamUrl() {
-    assertEquals(
-        "https://api.twitter.com/2/tweets/sample/stream?"
-        + TwitterClient.EXPANSION
-        + TwitterClient.ALL_EXPANSIONS
-        + "&"
-        + TwitterClient.TWEET_FIELDS
-        + TwitterClient.ALL_TWEET_FIELDS
-        + "&"
-        + TwitterClient.USER_FIELDS
-        + TwitterClient.ALL_USER_FIELDS,
-        urlHelper.getSampledStreamUrl());
+    assertEquals("https://api.twitter.com/2/tweets/sample/stream", urlHelper.getSampledStreamUrl());
   }
 
   @Test

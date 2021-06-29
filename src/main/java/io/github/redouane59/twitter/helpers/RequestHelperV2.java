@@ -42,7 +42,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
   }
 
   // @todo add parameters arguments
-  public Future<Response> getAsyncRequest(String url, Consumer<Tweet> consumer) {
+  public Future<Response> getAsyncRequest(String url, Map<String, String> parameters, Consumer<Tweet> consumer) {
     // All the stream are handled internally with an IAPIEventListener.
     IAPIEventListener listener = new IAPIEventListener() {
 
@@ -68,15 +68,21 @@ public class RequestHelperV2 extends AbstractRequestHelper {
 
     };
 
-    return getAsyncRequest(url, listener, TweetV2.class);
+    return getAsyncRequest(url, parameters, listener, TweetV2.class);
   }
 
-  public Future<Response> getAsyncRequest(String url, IAPIEventListener listener) {
-    return getAsyncRequest(url, listener, TweetV2.class);
+  public Future<Response> getAsyncRequest(String url, Map<String, String> parameters, IAPIEventListener listener) {
+    return getAsyncRequest(url, parameters, listener, TweetV2.class);
   }
 
-  public <T> Future<Response> getAsyncRequest(String url, IAPIEventListener listener, final Class<? extends T> targetClass) {
+  public <T> Future<Response> getAsyncRequest(String url,
+                                              Map<String, String> parameters,
+                                              IAPIEventListener listener,
+                                              final Class<? extends T> targetClass) {
     OAuthRequest request = new OAuthRequest(Verb.GET, url);
+    if (parameters != null) {
+      parameters.forEach(request::addOAuthParameter);
+    }
     signRequest(request);
     return getService().execute(request, new OAuthAsyncRequestCallback<Response>() {
 
