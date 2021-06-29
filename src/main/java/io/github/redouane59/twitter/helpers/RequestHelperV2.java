@@ -79,10 +79,14 @@ public class RequestHelperV2 extends AbstractRequestHelper {
                                               Map<String, String> parameters,
                                               IAPIEventListener listener,
                                               final Class<? extends T> targetClass) {
-    OAuthRequest request = new OAuthRequest(Verb.GET, url);
     if (parameters != null) {
-      parameters.forEach(request::addOAuthParameter);
+      url += parameters.entrySet().stream()
+                       .map(p -> p.getKey() + "=" + p.getValue())
+                       .reduce((p1, p2) -> p1 + "&" + p2)
+                       .map(s -> "?" + s)
+                       .orElse("");
     }
+    OAuthRequest request = new OAuthRequest(Verb.GET, url);
     signRequest(request);
     return getService().execute(request, new OAuthAsyncRequestCallback<Response>() {
 
