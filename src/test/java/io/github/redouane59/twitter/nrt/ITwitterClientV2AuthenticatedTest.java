@@ -44,7 +44,7 @@ public class ITwitterClientV2AuthenticatedTest {
     User           user           = twitterClient.getUserFromUserName("red1");
     FollowResponse followResponse = twitterClient.follow(user.getId());
     assertTrue(followResponse.getData().isFollowing());
-    assertFalse(followResponse.getData().isPending_follow());
+    assertFalse(followResponse.getData().isPendingFollow());
     FollowResponse unfollowResponse = twitterClient.unfollow(user.getId());
     assertFalse(unfollowResponse.getData().isFollowing());
     Assertions.assertEquals(RelationType.NONE, twitterClient.getRelationType("92073489", "66533"));

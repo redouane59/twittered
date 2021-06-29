@@ -178,7 +178,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     } while (token != null);
     return result;
   }
-  
+
   @Override
   public UserList getFollowers(String userId) {
     return this.getFollowers(userId, AdditionalParameters.builder().maxResults(1000).build());
@@ -193,7 +193,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return this.getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(1000));
+      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(1000));
     }
     return this.getUsersRecursively(url, parameters);
   }
@@ -213,7 +213,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return this.getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(1000));
+      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(1000));
     }
     return this.getUsersRecursively(url, parameters);
   }
@@ -223,8 +223,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String url = this.urlHelper.getFriendshipUrl(userId1, userId2);
     RelationshipObjectResponse relationshipDTO = this.getRequestHelper().getRequest(url, RelationshipObjectResponse.class)
                                                      .orElseThrow(NoSuchElementException::new);
-    Boolean followedBy = relationshipDTO.getRelationship().getSource().isFollowedBy();
-    Boolean following  = relationshipDTO.getRelationship().getSource().isFollowing();
+    boolean followedBy = relationshipDTO.getRelationship().getSource().isFollowedBy();
+    boolean following  = relationshipDTO.getRelationship().getSource().isFollowing();
     if (followedBy && following) {
       return RelationType.FRIENDS;
     } else if (!followedBy && !following) {
@@ -395,7 +395,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(100));
+      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
     }
     return this.getTweetsRecursively(url, parameters);
   }
@@ -552,7 +552,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return this.getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(100));
+      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
     }
     return this.getTweetsRecursively(url, parameters);
   }
@@ -573,7 +573,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return this.getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(500));
+      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(500));
     }
     return this.getTweetsRecursively(url, parameters);
   }
@@ -786,7 +786,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return this.getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(100));
+      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
     }
     return this.getTweetsRecursively(url, parameters);
   }
@@ -805,7 +805,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return this.getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(additionalParameters.MAX_RESULTS, String.valueOf(100));
+      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
     }
     return this.getTweetsRecursively(url, parameters);
   }

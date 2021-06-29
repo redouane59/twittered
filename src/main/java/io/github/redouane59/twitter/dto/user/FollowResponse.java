@@ -22,7 +22,7 @@ public class FollowResponse {
 
     private boolean following;
     @JsonProperty("pending_follow")
-    private boolean pending_follow;
+    private boolean pendingFollow;
 
   }
 }
