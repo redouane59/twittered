@@ -41,7 +41,6 @@ public class RequestHelperV2 extends AbstractRequestHelper {
     return makeRequest(Verb.GET, url, parameters, null, true, classType);
   }
 
-  // @todo add parameters arguments
   public Future<Response> getAsyncRequest(String url, Map<String, String> parameters, Consumer<Tweet> consumer) {
     // All the stream are handled internally with an IAPIEventListener.
     IAPIEventListener listener = new IAPIEventListener() {
