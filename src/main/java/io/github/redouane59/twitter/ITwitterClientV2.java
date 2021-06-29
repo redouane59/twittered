@@ -66,7 +66,7 @@ public interface ITwitterClientV2 {
    * @return a list of users who are following the targeted user
    */
   UserList getFollowers(String userId, AdditionalParameters additionalParameters);
-  
+
   /**
    * Get a list of the user following limited to 1000 results calling https://api.twitter.com/2/users/:id/following
    *
@@ -147,12 +147,21 @@ public interface ITwitterClientV2 {
   /**
    * Stream using previous set up filters calling https://api.twitter.com/2/tweets/search/stream
    */
-  Future<Response> startFilteredStream(IAPIEventListener listener);
+  Future<Response> startFilteredStream(Consumer<Tweet> tweet);
 
   /**
    * Stream using previous set up filters calling https://api.twitter.com/2/tweets/search/stream
    */
-  Future<Response> startFilteredStream(Consumer<Tweet> tweet);
+  Future<Response> startFilteredStream(IAPIEventListener listener);
+
+  /**
+   * Stream using previous set up filters calling https://api.twitter.com/2/tweets/search/stream
+   *
+   * @param backfillMinutes By passing this parameter, you can recover up to five minutes worth of data that you might have missed during a
+   * disconnection. The backfilled Tweets will automatically flow through a reconnected stream, with older Tweets generally being delivered before any
+   * newly matching Tweets. You must include a whole number between 1 and 5 as the value to this parameter.
+   */
+  Future<Response> startFilteredStream(IAPIEventListener listener, int backfillMinutes);
 
   /**
    * Stops the filtered stream with the result of the startFilteredStream. It'll close the socket opened.
@@ -209,6 +218,15 @@ public interface ITwitterClientV2 {
    * Stream about 1% of all tweets calling https://api.twitter.com/2/tweets/sample/stream
    */
   Future<Response> startSampledStream(IAPIEventListener listener);
+
+  /**
+   * Stream about 1% of all tweets calling https://api.twitter.com/2/tweets/sample/stream
+   *
+   * @param backfillMinutes By passing this parameter, you can recover up to five minutes worth of data that you might have missed during a
+   * disconnection. The backfilled Tweets will automatically flow through a reconnected stream, with older Tweets generally being delivered before any
+   * newly matching Tweets. You must include a whole number between 1 and 5 as the value to this parameter.
+   */
+  Future<Response> startSampledStream(IAPIEventListener listener, int backfillMinutes);
 
   /**
    * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets

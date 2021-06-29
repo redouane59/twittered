@@ -1,6 +1,5 @@
 package io.github.redouane59.twitter.helpers;
 
-import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
 import lombok.Getter;
 
@@ -50,6 +49,8 @@ public class URLHelper {
   @Getter
   private final String filteredStreamUrl      = "https://api.twitter.com/2/tweets/search/stream";
   @Getter
+  private final String sampledStreamUrl       = "https://api.twitter.com/2/tweets/sample/stream";
+  @Getter
   private final String tweetsCountUrl         = "https://api.twitter.com/2/tweets/counts/recent";
   @Getter
   private final String tweetsCountAllUrl      = "https://api.twitter.com/2/tweets/counts/all";
@@ -69,7 +70,6 @@ public class URLHelper {
   private final String likeUrl                = "https://api.twitter.com/2/users/:id/likes";
   private final String unlikeUrl              = "https://api.twitter.com/2/users/:userId/likes/:tweetId";
   private final String hideUrl                = "https://api.twitter.com/2/tweets/:id/hidden";
-  private final String sampledStreamUrl       = "https://api.twitter.com/2/tweets/sample/stream";
   private final String userTimelineUrl        = "https://api.twitter.com/2/users/:id/tweets";
   private final String userMentionsUrl        = "https://api.twitter.com/2/users/:id/mentions";
   private final String blockUserUrl           = "https://api.twitter.com/2/users/:id/blocking";
@@ -174,35 +174,7 @@ public class URLHelper {
   public String getHideReplyUrl(final String tweetId) {
     return hideUrl.replace(idVariable, tweetId);
   }
-
-  // @todo to improve
-  public String getFilteredStreamUrl() {
-    return filteredStreamUrl
-           + "?"
-           + TwitterClient.EXPANSION
-           + TwitterClient.ALL_EXPANSIONS
-           + "&"
-           + TwitterClient.TWEET_FIELDS
-           + TwitterClient.ALL_TWEET_FIELDS
-           + "&"
-           + TwitterClient.USER_FIELDS
-           + TwitterClient.ALL_USER_FIELDS;
-  }
-
-  // @todo to improve
-  public String getSampledStreamUrl() {
-    return sampledStreamUrl
-           + "?"
-           + TwitterClient.EXPANSION
-           + TwitterClient.ALL_EXPANSIONS
-           + "&"
-           + TwitterClient.TWEET_FIELDS
-           + TwitterClient.ALL_TWEET_FIELDS
-           + "&"
-           + TwitterClient.USER_FIELDS
-           + TwitterClient.ALL_USER_FIELDS;
-  }
-
+  
   public String getUserTimelineUrl(String userId) {
     return userTimelineUrl.replace(idVariable, userId);
   }
