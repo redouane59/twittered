@@ -50,13 +50,16 @@ public class TweetV1 implements Tweet {
   @JsonProperty("is_quote_status")
   private boolean isQuoteStatus;
 
+  private static final String NOT_IMPLEMENTED_EXECEPTION = "not implemented";
+
+
   public LocalDateTime getCreatedAt() {
     return ConverterHelper.getDateFromTwitterString(this.createdAt);
   }
 
   @Override
   public List<ContextAnnotation> getContextAnnotations() {
-    LOGGER.error("not implemented");
+    LOGGER.error(NOT_IMPLEMENTED_EXECEPTION);
     return Arrays.asList();
   }
 
@@ -70,25 +73,25 @@ public class TweetV1 implements Tweet {
 
   @Override
   public String getConversationId() {
-    LOGGER.error("not implemented");
+    LOGGER.error(NOT_IMPLEMENTED_EXECEPTION);
     return null;
   }
 
   @Override
   public ReplySettings getReplySettings() {
-    LOGGER.error("not implemented");
+    LOGGER.error(NOT_IMPLEMENTED_EXECEPTION);
     return null;
   }
 
   @Override
   public Geo getGeo() {
-    LOGGER.error("not implemented");
+    LOGGER.error(NOT_IMPLEMENTED_EXECEPTION);
     return new Geo();
   }
 
   @Override
   public Attachments getAttachments() {
-    LOGGER.error("not implemented");
+    LOGGER.error(NOT_IMPLEMENTED_EXECEPTION);
     return new Attachments();
   }
 

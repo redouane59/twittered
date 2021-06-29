@@ -9,8 +9,6 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
-import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import lombok.Getter;
@@ -47,21 +45,6 @@ public abstract class AbstractRequestHelper {
 
   public static void logApiError(String method, String url, String stringResponse, int code) {
     LOGGER.error("(" + method + ") Error calling " + url + " " + stringResponse + " - " + code);
-  }
-
-  private int getCacheTimeoutFromUrl(String url, File configFile) {
-    int defaultCache = 48;
-    try {
-      Map<String, Integer> map = TwitterClient.OBJECT_MAPPER.readValue(configFile, Map.class);
-      for (Map.Entry<String, Integer> e : map.entrySet()) {
-        if (url.contains(e.getKey())) {
-          return e.getValue();
-        }
-      }
-    } catch (IOException e) {
-      LOGGER.error(e.getMessage(), e);
-    }
-    return defaultCache;
   }
 
   protected abstract void signRequest(OAuthRequest request);

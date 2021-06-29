@@ -132,11 +132,11 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetFollowingWithParameters() {
-    UserList result = twitterClient.getFollowing("882266619115864066", AdditionalParameters.builder().recursiveCall(false).maxResults(150).build());
+    UserList result = twitterClient.getFollowing(userId, AdditionalParameters.builder().recursiveCall(false).maxResults(150).build());
     assertEquals(150, result.getData().size());
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getMeta().getNextToken());
-    UserList result2 = twitterClient.getFollowing("882266619115864066",
+    UserList result2 = twitterClient.getFollowing(userId,
                                                   AdditionalParameters.builder()
                                                                       .recursiveCall(false)
                                                                       .maxResults(10)
@@ -289,8 +289,7 @@ public class ITwitterClientV2Test {
     } catch (TimeoutException exc) {
       // It's OK
     }
-    ;
-
+    assertNotNull(future.get());
   }
 
   @Test
