@@ -103,6 +103,7 @@ public abstract class AbstractRequestHelper {
       result = convert(stringResponse, classType);
     } catch (Exception e) {
       LOGGER.error(e.getMessage(), e);
+      Thread.currentThread().interrupt();
     }
     return Optional.ofNullable(result);
   }
