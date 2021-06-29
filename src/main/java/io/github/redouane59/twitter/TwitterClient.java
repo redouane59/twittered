@@ -155,30 +155,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return result;
   }
 
-  // can manage up to 200 results/call . Max 15 calls/15min ==> 3.000 results
-  // max./15min
-  private List<User> getUsersInfoByRelation(String url) {
-    String              token      = null;
-    List<User>          result     = new ArrayList<>();
-    Map<String, String> parameters = new HashMap<>();
-    parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(1000));
-    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
-    parameters.put(EXPANSION, PINNED_TWEET_ID);
-    do {
-      String urlWithCursor = url;
-      if (token != null) {
-        urlWithCursor = urlWithCursor + "?" + PAGINATION_TOKEN + "=" + token;
-      }
-      Optional<UserList> userListDTO = this.getRequestHelper().getRequestWithParameters(urlWithCursor, parameters, UserList.class);
-      if (!userListDTO.isPresent()) {
-        break;
-      }
-      result.addAll(userListDTO.get().getData());
-      token = userListDTO.get().getMeta().getNextToken();
-    } while (token != null);
-    return result;
-  }
-
   @Override
   public UserList getFollowers(String userId) {
     return this.getFollowers(userId, AdditionalParameters.builder().maxResults(1000).build());
@@ -603,7 +579,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
                                 .build();
       result.setMeta(meta);
       next = tweetList.get().getMeta().getNextToken();
-      if (url.contains("/search")) { // @todo dirty
+      if (url.contains("/search")) { // dirty
         parameters.put(AdditionalParameters.NEXT_TOKEN, next);
       } else {
         parameters.put(AdditionalParameters.PAGINATION_TOKEN, next);
