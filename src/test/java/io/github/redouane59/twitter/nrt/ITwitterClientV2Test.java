@@ -1,6 +1,7 @@
 package io.github.redouane59.twitter.nrt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -17,6 +18,7 @@ import io.github.redouane59.twitter.dto.tweet.TweetList;
 import io.github.redouane59.twitter.dto.tweet.TweetType;
 import io.github.redouane59.twitter.dto.tweet.TweetV2;
 import io.github.redouane59.twitter.dto.user.User;
+import io.github.redouane59.twitter.dto.user.UserActionResponse;
 import io.github.redouane59.twitter.dto.user.UserList;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.util.ArrayList;
@@ -457,6 +459,15 @@ public class ITwitterClientV2Test {
     assertTrue(result.getData().get(0).getTweetCount() > 0);
     assertNotNull(result.getMeta().getNextToken());
     assertTrue(result.getMeta().getTotalTweetCount() > 0);
+  }
+
+  @Test
+  public void testMuteAndUnmuteUser() {
+    String             userId = "1324848235714736129";
+    UserActionResponse result = twitterClient.muteUser(userId);
+    assertTrue(result.getData().isMuting());
+    result = twitterClient.unmuteUser(userId);
+    assertFalse(result.getData().isMuting());
   }
 
 }

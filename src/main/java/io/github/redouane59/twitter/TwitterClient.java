@@ -41,8 +41,8 @@ import io.github.redouane59.twitter.dto.tweet.TweetV1Deserializer;
 import io.github.redouane59.twitter.dto.tweet.TweetV2;
 import io.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import io.github.redouane59.twitter.dto.user.FollowBody;
-import io.github.redouane59.twitter.dto.user.FollowResponse;
 import io.github.redouane59.twitter.dto.user.User;
+import io.github.redouane59.twitter.dto.user.UserActionResponse;
 import io.github.redouane59.twitter.dto.user.UserList;
 import io.github.redouane59.twitter.dto.user.UserList.UserMeta;
 import io.github.redouane59.twitter.dto.user.UserV2;
@@ -227,17 +227,17 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @SneakyThrows
   @Override
-  public FollowResponse follow(String targetUserId) {
+  public UserActionResponse follow(String targetUserId) {
     String url  = this.urlHelper.getFollowUrl(this.getUserIdFromAccessToken());
     String body = OBJECT_MAPPER.writeValueAsString(new FollowBody(targetUserId));
-    return this.requestHelperV1.postRequestWithBodyJson(url, new HashMap<>(), body, FollowResponse.class)
+    return this.requestHelperV1.postRequestWithBodyJson(url, new HashMap<>(), body, UserActionResponse.class)
                                .orElseThrow(NoSuchElementException::new);
   }
 
   @Override
-  public FollowResponse unfollow(String targetUserId) {
+  public UserActionResponse unfollow(String targetUserId) {
     String url = this.urlHelper.getUnfollowUrl(this.getUserIdFromAccessToken(), targetUserId);
-    return this.getRequestHelper().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, FollowResponse.class)
+    return this.getRequestHelper().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, UserActionResponse.class)
                .orElseThrow(NoSuchElementException::new);
 
   }
@@ -395,7 +395,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public TweetCountsList getAllTweetCounts(final String query, AdditionalParameters additionalParameters) {
-    String url = this.getUrlHelper().getTweetsCountAllUrl();
+    String url = this.urlHelper.getTweetsCountAllUrl();
     return this.getTweetCounts(url, query, additionalParameters);
   }
 
@@ -403,6 +403,22 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(QUERY, query);
     return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetCountsList.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @SneakyThrows
+  @Override
+  public UserActionResponse muteUser(final String userId) {
+    String url  = this.urlHelper.getMuteUserUrl(this.getUserIdFromAccessToken());
+    String body = OBJECT_MAPPER.writeValueAsString(new FollowBody(userId));
+    return this.requestHelperV1.postRequestWithBodyJson(url, new HashMap<>(), body, UserActionResponse.class)
+                               .orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public UserActionResponse unmuteUser(final String userId) {
+    String url = this.urlHelper.getUnmuteUserUrl(this.getUserIdFromAccessToken(), userId);
+    return this.getRequestHelper().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, UserActionResponse.class)
+               .orElseThrow(NoSuchElementException::new);
   }
 
   @Override

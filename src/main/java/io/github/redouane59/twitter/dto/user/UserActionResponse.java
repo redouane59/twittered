@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class FollowResponse {
+public class UserActionResponse {
 
   private FollowData data;
 
@@ -23,6 +23,7 @@ public class FollowResponse {
     private boolean following;
     @JsonProperty("pending_follow")
     private boolean pendingFollow;
+    boolean muting;
 
   }
 }

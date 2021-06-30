@@ -269,4 +269,13 @@ public class UrlHelperTest {
     assertEquals("https://api.twitter.com/2/tweets/counts/all", urlHelper.getTweetsCountAllUrl());
   }
 
+  @Test
+  public void testMuteUserUrl() {
+    assertEquals("https://api.twitter.com/2/users/12345/muting", urlHelper.getMuteUserUrl("12345"));
+  }
+
+  @Test
+  public void testUnuteUserUrl() {
+    assertEquals("https://api.twitter.com/2/users/12345/muting/67890", urlHelper.getUnmuteUserUrl("12345", "67890"));
+  }
 }
