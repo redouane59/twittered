@@ -6,7 +6,6 @@ import lombok.Getter;
 public class URLHelper {
 
   private static final String ROOT_URL_V1 = "https://api.twitter.com/1.1";
-  private static final String ROOT_URL_V2 = "https://api.twitter.com/2";
 
   // v1 legacy
   private static final String IDS_JSON                    = "/ids.json?";
@@ -18,7 +17,6 @@ public class URLHelper {
   private static final String FOLLOWERS                   = "/followers";
   private static final String STATUSES                    = "/statuses";
   private static final String FRIENDSHIPS                 = "/friendships";
-  private static final String USERS                       = "/users";
   private static final String TWEETS                      = "/tweets";
   private static final String SEARCH                      = "/search";
   private static final String THIRTY_DAYS                 = "/30day";
@@ -77,6 +75,8 @@ public class URLHelper {
   private final String blockingUsersUrl       = "https://api.twitter.com/2/users/:id/blocking";
   private final String likingUsersUrl         = "https://api.twitter.com/2/tweets/:id/liking_users";
   private final String likedTweetsUrl         = "https://api.twitter.com/2/users/:id/liked_tweets";
+  private final String muteUserUrl            = "https://api.twitter.com/2/users/:id/muting";
+  private final String unmuteUserUrl          = "https://api.twitter.com/2/users/:source_user_id/muting/:target_user_id";
 
   public String getSearchTweet30DaysUrl(String envName) {
     return ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + "/" + envName + JSON;
@@ -174,7 +174,7 @@ public class URLHelper {
   public String getHideReplyUrl(final String tweetId) {
     return hideUrl.replace(idVariable, tweetId);
   }
-  
+
   public String getUserTimelineUrl(String userId) {
     return userTimelineUrl.replace(idVariable, userId);
   }
@@ -249,6 +249,14 @@ public class URLHelper {
 
   public String getPostDmUrl() {
     return ROOT_URL_V1 + DIRECT_MESSAGE_EVENTS + "/new.json";
+  }
+
+  public String getMuteUserUrl(String sourceUserId) {
+    return muteUserUrl.replace(idVariable, sourceUserId);
+  }
+
+  public String getUnmuteUserUrl(String sourceUserId, String targetUserId) {
+    return unmuteUserUrl.replace(":source_user_id", sourceUserId).replace(":target_user_id", targetUserId);
   }
 
 }

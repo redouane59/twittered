@@ -9,8 +9,8 @@ import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
-import io.github.redouane59.twitter.dto.user.FollowResponse;
 import io.github.redouane59.twitter.dto.user.User;
+import io.github.redouane59.twitter.dto.user.UserActionResponse;
 import io.github.redouane59.twitter.dto.user.UserList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -41,11 +41,11 @@ public class ITwitterClientV2AuthenticatedTest {
 
   @Test
   public void testFollowAndUnfollow() {
-    User           user           = twitterClient.getUserFromUserName("red1");
-    FollowResponse followResponse = twitterClient.follow(user.getId());
-    assertTrue(followResponse.getData().isFollowing());
-    assertFalse(followResponse.getData().isPendingFollow());
-    FollowResponse unfollowResponse = twitterClient.unfollow(user.getId());
+    User               user               = twitterClient.getUserFromUserName("red1");
+    UserActionResponse userActionResponse = twitterClient.follow(user.getId());
+    assertTrue(userActionResponse.getData().isFollowing());
+    assertFalse(userActionResponse.getData().isPendingFollow());
+    UserActionResponse unfollowResponse = twitterClient.unfollow(user.getId());
     assertFalse(unfollowResponse.getData().isFollowing());
     Assertions.assertEquals(RelationType.NONE, twitterClient.getRelationType("92073489", "66533"));
   }
@@ -74,6 +74,15 @@ public class ITwitterClientV2AuthenticatedTest {
     assertTrue(likedTweet.getData().isLiked());
     LikeResponse unlikedTweet = twitterClient.unlikeTweet("1107533");
     assertFalse(unlikedTweet.getData().isLiked());
+  }
+
+  @Test
+  public void testMuteAndUnmuteUser() {
+    String             userId = "1324848235714736129";
+    UserActionResponse result = twitterClient.muteUser(userId);
+    assertTrue(result.getData().isMuting());
+    result = twitterClient.unmuteUser(userId);
+    assertFalse(result.getData().isMuting());
   }
 
   @Test

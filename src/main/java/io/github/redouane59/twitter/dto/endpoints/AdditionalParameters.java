@@ -72,7 +72,8 @@ public class AdditionalParameters {
   private             String        paginationToken;
   @JsonProperty("max_results")
   /**
-   * The maximum number of results to be returned per call
+   * The maximum number of results to be returned per call. Warning, if recursiveCall is not set to false, calling an endpoint will
+   * return x times maxResults
    */
   private             int           maxResults;
 

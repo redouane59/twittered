@@ -458,5 +458,5 @@ public class ITwitterClientV2Test {
     assertNotNull(result.getMeta().getNextToken());
     assertTrue(result.getMeta().getTotalTweetCount() > 0);
   }
-
+  
 }

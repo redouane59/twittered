@@ -9,8 +9,8 @@ import io.github.redouane59.twitter.dto.tweet.LikeResponse;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetCountsList;
 import io.github.redouane59.twitter.dto.tweet.TweetList;
-import io.github.redouane59.twitter.dto.user.FollowResponse;
 import io.github.redouane59.twitter.dto.user.User;
+import io.github.redouane59.twitter.dto.user.UserActionResponse;
 import io.github.redouane59.twitter.dto.user.UserList;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -266,7 +266,7 @@ public interface ITwitterClientV2 {
    * @param targetUserId The user ID of the user that you would like the authenticated user to follow.
    * @return the follow information
    */
-  FollowResponse follow(String targetUserId);
+  UserActionResponse follow(String targetUserId);
 
   /**
    * Unfollow a user calling https://api.twitter.com/2/users/:source_user_id/following/:target_user_id
@@ -274,7 +274,7 @@ public interface ITwitterClientV2 {
    * @param targetUserId The user ID of the user that you would like the authenticated user to unfollow.
    * @return the follow information
    */
-  FollowResponse unfollow(String targetUserId);
+  UserActionResponse unfollow(String targetUserId);
 
   /**
    * Block a given user calling https://api.twitter.com/2/users/:id/blocking
@@ -374,6 +374,22 @@ public interface ITwitterClientV2 {
    * @param additionalParameters accepted parameters are startTime, endTime, sinceId, untilId, granularity and nextToken
    */
   TweetCountsList getAllTweetCounts(String query, AdditionalParameters additionalParameters);
+
+  /**
+   * Allows an authenticated user ID to mute the target user calling https://api.twitter.com/2/users/:id/muting
+   *
+   * @param userId The user ID of the user that you would like the id to mute.
+   */
+  UserActionResponse muteUser(String userId);
+
+  /**
+   * Allows an authenticated user ID to unmute the target user calling https://api.twitter.com/2/users/:source_user_id/muting/:target_user_id. The
+   * request succeeds with no action when the user sends a request to a user they're not muting or have already unmuted.
+   *
+   * @param userId The user ID of the user that you would like the id to mute.
+   */
+  UserActionResponse unmuteUser(String userId);
+
 
 }
 
