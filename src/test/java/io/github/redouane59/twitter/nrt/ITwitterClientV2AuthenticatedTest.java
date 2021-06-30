@@ -77,6 +77,15 @@ public class ITwitterClientV2AuthenticatedTest {
   }
 
   @Test
+  public void testMuteAndUnmuteUser() {
+    String             userId = "1324848235714736129";
+    UserActionResponse result = twitterClient.muteUser(userId);
+    assertTrue(result.getData().isMuting());
+    result = twitterClient.unmuteUser(userId);
+    assertFalse(result.getData().isMuting());
+  }
+
+  @Test
   public void testGetUserIdFromAccessToken() {
     assertEquals(this.userId, twitterClient.getUserIdFromAccessToken());
   }
