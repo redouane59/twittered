@@ -138,8 +138,6 @@ System.out.println(tweet.getUser().getPinnedTweet());
 System.out.println(tweet.getUser().getLocation());
 System.out.println(tweet.getUser().getId());
 System.out.println(tweet.getUser().getUrl());
-
-
 ```
 
 ### Contribution
