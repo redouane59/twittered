@@ -163,9 +163,12 @@ Code style is also available in `.idea/codeStyles/GoogleStyle.xml` file.
 
 ### Special thanks
 
+I would like to give special thanks to
 [@hypr2771](https://github.com/hypr2771)
 [@mmornati](https://github.com/mmornati)
 [@andypiper](https://github.com/andypiper)
 [@igorbrigadir](https://github.com/igorbrigadir)
 [@sparack](https://github.com/sparack)
-
+for having helped me building this Twitter API library for Java. The tool is now working and I hope
+that students, junior and senior developers will enjoy it, being able to play easily with twitter
+data using Java programming language.
