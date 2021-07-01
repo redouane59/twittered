@@ -116,7 +116,7 @@ public class ITwitterClientV2Test {
   public void testGetTweetById() {
     String tweetId = "1224041905333379073";
     Tweet  tweet   = twitterClient.getTweet(tweetId);
-    assertNotNull(tweet);
+    assertEquals("RedouaneBali", tweet.getUser().getName());
   }
 
   @Test
@@ -219,6 +219,7 @@ public class ITwitterClientV2Test {
     assertNotNull(tweet.getLang());
   }
 
+  @Test
   public void testAllTweetsSearch() {
     TweetList result = twitterClient.searchAllTweets("@lequipe bonjour -RT", AdditionalParameters.builder()
                                                                                                  .recursiveCall(false).build());
@@ -458,5 +459,5 @@ public class ITwitterClientV2Test {
     assertNotNull(result.getMeta().getNextToken());
     assertTrue(result.getMeta().getTotalTweetCount() > 0);
   }
-  
+
 }

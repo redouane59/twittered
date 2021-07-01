@@ -6,8 +6,6 @@ This project is a JAVA library which allows you to consume the Twitter API.
 
 [![Premium](https://img.shields.io/static/v1?label=Twitter%20API&message=Premium&color=794BC4&style=flat&logo=Twitter)](https://developer.twitter.com/en/docs/tweets/search/api-reference/premium-search)
 
-## /!\ Development in progress... Any [feedback](https://github.com/redouane59/twittered/issues/new/choose) is welcome :) /!\
-
 ### Configuration
 
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.redouane59.twitter/twittered)
@@ -102,6 +100,48 @@ See :
 - [ITwitterClientV2AuthenticatedTest.java](https://github.com/redouane59/twittered/blob/master/src/test/java/com/github/redouane59/twitter/nrt/ITwitterClientV2AuthenticatedTest.java)
 - [ITwitterClientV1Test.java](https://github.com/redouane59/twittered/blob/master/src/test/java/com/github/redouane59/twitter/nrt/ITwitterClientV1Test.java)
 
+### Basic examples
+
+#### 1. Init TwitterClient
+
+```
+TwitterClient twitterClient = new TwitterClient(TwitterClient.OBJECT_MAPPER
+                                  .readValue(new File("/your/path/to/json"), TwitterCredentials.class));
+```
+
+#### 2. Get Tweet object from tweet id and display some information
+
+```    
+Tweet  tweet   = twitterClient.getTweet("1224041905333379073");
+System.out.println(tweet.getText());
+System.out.println(tweet.getCreatedAt());
+System.out.println(tweet.getLang());
+System.out.println(tweet.getLikeCount());
+System.out.println(tweet.getRetweetCount());
+System.out.println(tweet.getReplyCount());
+System.out.println(tweet.getUser().getName());
+```
+
+#### 3. Get User object from username and display some information
+
+```    
+User   user   = twitterClient.getUserFromUserName("RedouaneBali");
+System.out.println(tweet.getUser().getName());
+System.out.println(tweet.getUser().getDisplayedName());
+System.out.println(tweet.getUser().getDateOfCreation());
+System.out.println(tweet.getUser().getDescription());
+System.out.println(tweet.getUser().getTweetCount());
+System.out.println(tweet.getUser().getFollowersCount());
+System.out.println(tweet.getUser().getFollowingCount());
+System.out.println(tweet.getUser().getPinnedTweet());
+System.out.println(tweet.getUser().getPinnedTweet());
+System.out.println(tweet.getUser().getLocation());
+System.out.println(tweet.getUser().getId());
+System.out.println(tweet.getUser().getUrl());
+
+
+```
+
 ### Contribution
 
 If you want to contribute to the project, don't hesitate to submit pull requests. To add a new
@@ -123,9 +163,12 @@ Code style is also available in `.idea/codeStyles/GoogleStyle.xml` file.
 
 ### Special thanks
 
+I would like to give special thanks to
 [@hypr2771](https://github.com/hypr2771)
 [@mmornati](https://github.com/mmornati)
 [@andypiper](https://github.com/andypiper)
 [@igorbrigadir](https://github.com/igorbrigadir)
 [@sparack](https://github.com/sparack)
-
+for having helped me building this Twitter API library for Java. The tool is now working and I hope
+that students, junior and senior developers will enjoy it, being able to play easily with twitter
+data using Java programming language.
