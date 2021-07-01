@@ -116,8 +116,7 @@ public class ITwitterClientV2Test {
   public void testGetTweetById() {
     String tweetId = "1224041905333379073";
     Tweet  tweet   = twitterClient.getTweet(tweetId);
-    assertEquals("RedouaneBali", tweet.getUser());
-    
+    assertEquals("RedouaneBali", tweet.getUser().getName());
   }
 
   @Test
