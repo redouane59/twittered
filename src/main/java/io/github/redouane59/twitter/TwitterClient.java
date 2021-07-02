@@ -134,9 +134,19 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   public TwitterClient(TwitterCredentials credentials, OAuth10aService service) {
-    twitterCredentials = credentials;
-    requestHelperV1    = new RequestHelper(credentials, service);
-    requestHelperV2    = new RequestHelperV2(credentials, service);
+    twitterCredentials   = credentials;
+    this.requestHelperV1 = new RequestHelper(credentials, service);
+    this.requestHelperV2 = new RequestHelperV2(credentials, service);
+  }
+
+  /**
+   * Define the default behavior when Twitter API limits are reached (default value is true)
+   *
+   * @param automaticRetry false will raise a LimitExceededException, true will wait and call the endpoint again once the limit is over
+   */
+  public void setAutomaticRetry(boolean automaticRetry) {
+    this.requestHelperV1.setAutomaticRetry(automaticRetry);
+    this.requestHelperV2.setAutomaticRetry(automaticRetry);
   }
 
   // can manage up to 5000 results / call . Max 15 calls / 15min ==> 75.000

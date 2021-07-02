@@ -11,7 +11,9 @@ import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
 import java.util.Map;
 import java.util.Optional;
+import javax.naming.LimitExceededException;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -23,6 +25,8 @@ public abstract class AbstractRequestHelper {
   private final   TwitterCredentials  twitterCredentials;
   private final   OAuth10aService     service;
   protected final TweetStreamConsumer tweetStreamConsumer = new TweetStreamConsumer();
+  @Setter
+  private         boolean             automaticRetry      = true;
 
   protected AbstractRequestHelper(TwitterCredentials twitterCredentials) {
     this(twitterCredentials, new ServiceBuilder(twitterCredentials.getApiKey())
@@ -85,6 +89,9 @@ public abstract class AbstractRequestHelper {
       Response response       = getService().execute(request);
       String   stringResponse = response.getBody();
       if (response.getCode() == 429) {
+        if (!automaticRetry) {
+          throw new LimitExceededException();
+        }
         int    retryAfter    = DEFAULT_RETRY_AFTER_SEC;
         String retryAfterStr = response.getHeader("Retry-After");
         if (retryAfterStr != null) {
