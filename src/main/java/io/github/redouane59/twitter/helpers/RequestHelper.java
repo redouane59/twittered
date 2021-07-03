@@ -51,11 +51,13 @@ public class RequestHelper extends AbstractRequestHelper {
     return makeRequest(Verb.PUT, url, null, body, true, classType);
   }
 
+  @Override
   public <T> Optional<T> getRequest(String url, Class<T> classType) {
     return getRequestWithParameters(url, null, classType);
   }
 
 
+  @Override
   public <T> Optional<T> getRequestWithParameters(String url, Map<String, String> parameters, Class<T> classType) {
     return makeRequest(Verb.GET, url, parameters, null, true, classType);
   }

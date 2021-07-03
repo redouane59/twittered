@@ -13,7 +13,7 @@ public enum TweetType {
 
   public final String label;
 
-  private TweetType(String label) {
+  TweetType(String label) {
     this.label = label;
   }
 

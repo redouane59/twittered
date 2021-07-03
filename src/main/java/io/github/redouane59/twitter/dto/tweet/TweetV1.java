@@ -28,33 +28,32 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TweetV1 implements Tweet {
 
-  private String  id;
-  private String  lang;
+  private static final String  NOT_IMPLEMENTED_EXECEPTION = "not implemented";
+  private              String  id;
+  private              String  lang;
   @JsonProperty("retweet_count")
-  private int     retweetCount;
+  private              int     retweetCount;
   @JsonProperty("favorite_count")
-  private int     likeCount;
+  private              int     likeCount;
   @JsonProperty("reply_count")
-  private int     replyCount;
+  private              int     replyCount;
   @JsonProperty("quote_count")
-  private int     quoteCount;
+  private              int     quoteCount;
   @JsonAlias({"text", "full_text"})
-  private String  text;
+  private              String  text;
   @JsonProperty("created_at")
-  private String  createdAt;
-  private UserV1  user;
+  private              String  createdAt;
+  private              UserV1  user;
   @JsonProperty("in_reply_to_status_id_str")
-  private String  inReplyToStatusId;
+  private              String  inReplyToStatusId;
   @JsonProperty("in_reply_to_user_id_str")
-  private String  inReplyToUserId;
+  private              String  inReplyToUserId;
   @JsonProperty("is_quote_status")
-  private boolean isQuoteStatus;
+  private              boolean isQuoteStatus;
 
-  private static final String NOT_IMPLEMENTED_EXECEPTION = "not implemented";
-
-
+  @Override
   public LocalDateTime getCreatedAt() {
-    return ConverterHelper.getDateFromTwitterString(this.createdAt);
+    return ConverterHelper.getDateFromTwitterString(createdAt);
   }
 
   @Override
@@ -65,7 +64,7 @@ public class TweetV1 implements Tweet {
 
   @Override
   public TweetType getTweetType() {
-    if (this.isQuoteStatus) {
+    if (isQuoteStatus) {
       return TweetType.QUOTED;
     }
     return TweetType.DEFAULT;
@@ -97,14 +96,14 @@ public class TweetV1 implements Tweet {
 
   @Override
   public String getInReplyToStatusId(TweetType type) {
-    return this.getInReplyToStatusId();
+    return getInReplyToStatusId();
   }
 
   @Override
   public String getAuthorId() {
-    if (this.user == null) {
+    if (user == null) {
       return null;
     }
-    return this.user.getId();
+    return user.getId();
   }
 }
