@@ -20,10 +20,10 @@ public class UserActionResponse {
   @Getter
   public static class FollowData {
 
+    boolean muting;
     private boolean following;
     @JsonProperty("pending_follow")
     private boolean pendingFollow;
-    boolean muting;
 
   }
 }
