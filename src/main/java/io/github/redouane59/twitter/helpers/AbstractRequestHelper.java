@@ -9,6 +9,7 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
 import javax.naming.LimitExceededException;
@@ -101,7 +102,8 @@ public abstract class AbstractRequestHelper {
           LOGGER.error("Using default retry after because header format is invalid: " + retryAfterStr, e);
         }
       }
-      LOGGER.info("Rate limit exceeded, new retry in " + retryAfter + "s");
+      LOGGER.info("Rate limit exceeded, new retry in " + ConverterHelper.getSecondsAsText(retryAfter) + " at " + ConverterHelper.minutesBeforeNow(
+          -retryAfter / 60).format(DateTimeFormatter.ofPattern("HH:MM")));
       Thread.sleep(1000L * retryAfter);
       return makeRequest(request, false, classType); // We have already signed if it was requested
     } else if (response.getCode() < 200 || response.getCode() > 299) {

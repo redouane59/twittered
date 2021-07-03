@@ -78,4 +78,24 @@ public class ConverterHelper {
   public static LocalDateTime getDateFromTwitterStringV2(String date) {
     return date != null ? LocalDateTime.parse(date, DateTimeFormatter.ofPattern(DATE_PATTERN_V2)) : null;
   }
+
+  public static String getSecondsAsText(int time) {
+    String str = "";
+    int    hours, minutes, seconds;
+
+    hours   = time / 3600;
+    minutes = (time - hours * 3600) / 60;
+    seconds = time - hours * 3600 - minutes * 60;
+
+    if (hours > 0) {
+      str = str.concat(hours + "h");
+    }
+    if (minutes > 0) {
+      str = str.concat(minutes + "m");
+    }
+    if (seconds > 0) {
+      str = str.concat(seconds + "s");
+    }
+    return str;
+  }
 }
