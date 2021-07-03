@@ -86,10 +86,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public static final  ObjectMapper       OBJECT_MAPPER                        = new ObjectMapper()
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
       .setSerializationInclusion(JsonInclude.Include.NON_NULL);
-  private              URLHelper          urlHelper                            = new URLHelper();
-  private              RequestHelper      requestHelperV1;
-  private              RequestHelperV2    requestHelperV2;
-  private              TwitterCredentials twitterCredentials;
   public static final  String             TWEET_FIELDS                         = "tweet.fields";
   public static final  String
                                           ALL_TWEET_FIELDS                     =
@@ -109,6 +105,10 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   private static final String             BACKFILL_MINUTES                     = "backfill_minutes";
   private static final String[]           DEFAULT_VALID_CREDENTIALS_FILE_NAMES = {"test-twitter-credentials.json",
                                                                                   "twitter-credentials.json"};
+  private              URLHelper          urlHelper                            = new URLHelper();
+  private              RequestHelper      requestHelperV1;
+  private              RequestHelperV2    requestHelperV2;
+  private              TwitterCredentials twitterCredentials;
 
   public TwitterClient() {
     this(getAuthentication());
@@ -134,9 +134,58 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   public TwitterClient(TwitterCredentials credentials, OAuth10aService service) {
-    twitterCredentials   = credentials;
-    this.requestHelperV1 = new RequestHelper(credentials, service);
-    this.requestHelperV2 = new RequestHelperV2(credentials, service);
+    this.twitterCredentials = credentials;
+    this.requestHelperV1    = new RequestHelper(credentials, service);
+    this.requestHelperV2    = new RequestHelperV2(credentials, service);
+  }
+
+  public static TwitterCredentials getAuthentication() {
+    String credentialPath = System.getProperty("twitter.credentials.file.path");
+    if (credentialPath != null) {
+      return getAuthentication(new File(credentialPath));
+    } else {
+      return getAuthentication(Paths.get(""));
+    }
+  }
+
+  public static TwitterCredentials getAuthentication(final Path pathToScan, final String... validNames) {
+    if (pathToScan.toFile().isFile()) {
+      return getAuthentication(pathToScan.toFile());
+    } else {
+      String[] namesToCheck = validNames != null && validNames.length > 0 ? validNames : DEFAULT_VALID_CREDENTIALS_FILE_NAMES;
+      for (Path currentPath = pathToScan; currentPath != null; currentPath = currentPath.getParent()) {
+        for (String name : namesToCheck) {
+          Path file = currentPath.resolve(name);
+          if (Files.isRegularFile(file)) {
+            return getAuthentication(file.toFile());
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  public static TwitterCredentials getAuthentication(File twitterCredentialsFile) {
+    try {
+      TwitterCredentials twitterCredentials = TwitterClient.OBJECT_MAPPER.readValue(twitterCredentialsFile, TwitterCredentials.class);
+      if (twitterCredentials.getAccessToken() == null) {
+        LOGGER.error("Access token is null in twitter-credentials.json");
+      }
+      if (twitterCredentials.getAccessTokenSecret() == null) {
+        LOGGER.error("Secret token is null in twitter-credentials.json");
+      }
+      if (twitterCredentials.getApiKey() == null) {
+        LOGGER.error("Consumer key is null in twitter-credentials.json");
+      }
+      if (twitterCredentials.getApiSecretKey() == null) {
+        LOGGER.error("Consumer secret is null in twitter-credentials.json");
+      }
+      return twitterCredentials;
+    } catch (Exception e) {
+      LOGGER.error("twitter credentials json file error in path " + twitterCredentialsFile.getAbsolutePath()
+                   + ". Use program argument -Dtwitter.credentials.file.path=/my/path/to/json . ", e);
+      return null;
+    }
   }
 
   /**
@@ -356,7 +405,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public LikeResponse unlikeTweet(String tweetId) {
     String url = this.getUrlHelper().getUnlikeUrl(this.getUserIdFromAccessToken(), tweetId);
-    return getRequestHelper().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, LikeResponse.class).orElseThrow(NoSuchElementException::new);
+    return this.getRequestHelper().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, LikeResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -364,7 +413,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String              url        = this.getUrlHelper().getLikingUsersUrl(tweetId);
     Map<String, String> parameters = new HashMap<>();
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
-    return getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
+    return this.getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -378,7 +427,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     Map<String, String> parameters = new HashMap<>();
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     if (!additionalParameters.isRecursiveCall()) {
-      return getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
+      return this.getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
       parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
@@ -411,7 +460,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   private TweetCountsList getTweetCounts(String url, final String query, AdditionalParameters additionalParameters) {
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(QUERY, query);
-    return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetCountsList.class).orElseThrow(NoSuchElementException::new);
+    return this.getRequestHelperV2().getRequestWithParameters(url, parameters, TweetCountsList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @SneakyThrows
@@ -655,7 +704,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     List<Tweet> result = new ArrayList<>();
     do {
       Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.getRequestHelper().getRequestWithParameters(
-          urlHelper.getSearchTweet30DaysUrl(envName), parameters, TweetSearchResponseV1.class);
+          this.urlHelper.getSearchTweet30DaysUrl(envName), parameters, TweetSearchResponseV1.class);
       if (!tweetSearchV1DTO.isPresent() || tweetSearchV1DTO.get().getResults() == null) {
         break;
       }
@@ -683,7 +732,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     List<Tweet> result = new ArrayList<>();
     do {
       Optional<TweetSearchResponseV1> tweetSearchV1DTO = this.getRequestHelper().getRequestWithParameters(
-          urlHelper.getSearchTweetFullArchiveUrl(envName), parameters, TweetSearchResponseV1.class);
+          this.urlHelper.getSearchTweetFullArchiveUrl(envName), parameters, TweetSearchResponseV1.class);
       if (!tweetSearchV1DTO.isPresent()) {
         LOGGER.error("empty response on searchForTweetsArchive");
         break;
@@ -862,7 +911,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public String getBearerToken() {
-    return requestHelperV2.getBearerToken();
+    return this.requestHelperV2.getBearerToken();
   }
 
   @Override
@@ -896,13 +945,13 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public UploadMediaResponse uploadMedia(String mediaName, byte[] data, MediaCategory mediaCategory) {
-    String url = urlHelper.getUploadMediaUrl(mediaCategory);
+    String url = this.urlHelper.getUploadMediaUrl(mediaCategory);
     return this.requestHelperV1.uploadMedia(url, mediaName, data, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public UploadMediaResponse uploadMedia(File imageFile, MediaCategory mediaCategory) {
-    String url = urlHelper.getUploadMediaUrl(mediaCategory);
+    String url = this.urlHelper.getUploadMediaUrl(mediaCategory);
     return this.requestHelperV1.uploadMedia(url, imageFile, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
@@ -978,14 +1027,14 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public DirectMessage getDm(String dmId) {
-    String  url    = urlHelper.getDmUrl(dmId);
+    String  url    = this.urlHelper.getDmUrl(dmId);
     DmEvent result = this.getRequestHelper().getRequest(url, DmEvent.class).orElseThrow(NoSuchElementException::new);
     return result.getEvent();
   }
 
   @Override
   public DmEvent postDm(final String text, final String userId) {
-    String url = urlHelper.getPostDmUrl();
+    String url = this.urlHelper.getPostDmUrl();
     try {
       String body = TwitterClient.OBJECT_MAPPER.writeValueAsString(
           DmEvent.builder().event(new DirectMessage(text, userId)).build());
@@ -1009,56 +1058,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (minPosition != null) {
       parameters.put("min_position", minPosition);
     }
-    return getRequestHelper().getRequestWithParameters(url, parameters, CollectionsResponse.class).orElseThrow(NoSuchElementException::new);
-  }
-
-  public static TwitterCredentials getAuthentication() {
-    String credentialPath = System.getProperty("twitter.credentials.file.path");
-    if (credentialPath != null) {
-      return getAuthentication(new File(credentialPath));
-    } else {
-      return getAuthentication(Paths.get(""));
-    }
-  }
-
-  public static TwitterCredentials getAuthentication(final Path pathToScan, final String... validNames) {
-    if (pathToScan.toFile().isFile()) {
-      return getAuthentication(pathToScan.toFile());
-    } else {
-      String[] namesToCheck = validNames != null && validNames.length > 0 ? validNames : DEFAULT_VALID_CREDENTIALS_FILE_NAMES;
-      for (Path currentPath = pathToScan; currentPath != null; currentPath = currentPath.getParent()) {
-        for (String name : namesToCheck) {
-          Path file = currentPath.resolve(name);
-          if (Files.isRegularFile(file)) {
-            return getAuthentication(file.toFile());
-          }
-        }
-      }
-    }
-    return null;
-  }
-
-  public static TwitterCredentials getAuthentication(File twitterCredentialsFile) {
-    try {
-      TwitterCredentials twitterCredentials = TwitterClient.OBJECT_MAPPER.readValue(twitterCredentialsFile, TwitterCredentials.class);
-      if (twitterCredentials.getAccessToken() == null) {
-        LOGGER.error("Access token is null in twitter-credentials.json");
-      }
-      if (twitterCredentials.getAccessTokenSecret() == null) {
-        LOGGER.error("Secret token is null in twitter-credentials.json");
-      }
-      if (twitterCredentials.getApiKey() == null) {
-        LOGGER.error("Consumer key is null in twitter-credentials.json");
-      }
-      if (twitterCredentials.getApiSecretKey() == null) {
-        LOGGER.error("Consumer secret is null in twitter-credentials.json");
-      }
-      return twitterCredentials;
-    } catch (Exception e) {
-      LOGGER.error("twitter credentials json file error in path " + twitterCredentialsFile.getAbsolutePath()
-                   + ". Use program argument -Dtwitter.credentials.file.path=/my/path/to/json . ", e);
-      return null;
-    }
+    return this.getRequestHelper().getRequestWithParameters(url, parameters, CollectionsResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
   private AbstractRequestHelper getRequestHelper() {
