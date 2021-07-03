@@ -11,18 +11,22 @@ import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
 import java.util.Map;
 import java.util.Optional;
+import javax.naming.LimitExceededException;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Getter
 public abstract class AbstractRequestHelper {
 
-  public static final int DEFAULT_RETRY_AFTER_SEC = 300;
-
-  private final   TwitterCredentials  twitterCredentials;
-  private final   OAuth10aService     service;
-  protected final TweetStreamConsumer tweetStreamConsumer = new TweetStreamConsumer();
+  public static final int                 DEFAULT_RETRY_AFTER_SEC = 300;
+  protected final     TweetStreamConsumer tweetStreamConsumer     = new TweetStreamConsumer();
+  private final       TwitterCredentials  twitterCredentials;
+  private final       OAuth10aService     service;
+  @Setter
+  private             boolean             automaticRetry          = true;
 
   protected AbstractRequestHelper(TwitterCredentials twitterCredentials) {
     this(twitterCredentials, new ServiceBuilder(twitterCredentials.getApiKey())
@@ -35,16 +39,16 @@ public abstract class AbstractRequestHelper {
     this.service            = service;
   }
 
+  public static void logApiError(String method, String url, String stringResponse, int code) {
+    LOGGER.error("(" + method + ") Error calling " + url + " " + stringResponse + " - " + code);
+  }
+
   protected <T> T convert(String json, Class<? extends T> targetClass) throws JsonProcessingException {
     if (targetClass.isInstance(json)) {
       return (T) json;
     } else {
       return TwitterClient.OBJECT_MAPPER.readValue(json, targetClass);
     }
-  }
-
-  public static void logApiError(String method, String url, String stringResponse, int code) {
-    LOGGER.error("(" + method + ") Error calling " + url + " " + stringResponse + " - " + code);
   }
 
   protected abstract void signRequest(OAuthRequest request);
@@ -76,35 +80,34 @@ public abstract class AbstractRequestHelper {
     return makeRequest(request, signRequired, classType);
   }
 
+  @SneakyThrows
   public <T> Optional<T> makeRequest(OAuthRequest request, boolean signRequired, Class<T> classType) {
     T result = null;
-    try {
-      if (signRequired) {
-        signRequest(request);
-      }
-      Response response       = getService().execute(request);
-      String   stringResponse = response.getBody();
-      if (response.getCode() == 429) {
-        int    retryAfter    = DEFAULT_RETRY_AFTER_SEC;
-        String retryAfterStr = response.getHeader("Retry-After");
-        if (retryAfterStr != null) {
-          try {
-            retryAfter = Integer.parseInt(retryAfterStr);
-          } catch (NumberFormatException e) {
-            LOGGER.error("Using default retry after because header format is invalid: " + retryAfterStr, e);
-          }
-        }
-        LOGGER.info("Rate limit exceeded, new retry in " + 1000L * retryAfter + "s");
-        Thread.sleep(1000L * retryAfter);
-        return makeRequest(request, false, classType); // We have already signed if it was requested
-      } else if (response.getCode() < 200 || response.getCode() > 299) {
-        logApiError(request.getVerb().name(), request.getUrl(), stringResponse, response.getCode());
-      }
-      result = convert(stringResponse, classType);
-    } catch (Exception e) {
-      LOGGER.error(e.getMessage(), e);
-      Thread.currentThread().interrupt();
+    if (signRequired) {
+      signRequest(request);
     }
+    Response response       = getService().execute(request);
+    String   stringResponse = response.getBody();
+    if (response.getCode() == 429) {
+      if (!automaticRetry) {
+        throw new LimitExceededException();
+      }
+      int    retryAfter    = DEFAULT_RETRY_AFTER_SEC;
+      String retryAfterStr = response.getHeader("Retry-After");
+      if (retryAfterStr != null) {
+        try {
+          retryAfter = Integer.parseInt(retryAfterStr);
+        } catch (NumberFormatException e) {
+          LOGGER.error("Using default retry after because header format is invalid: " + retryAfterStr, e);
+        }
+      }
+      LOGGER.info("Rate limit exceeded, new retry in " + 1000L * retryAfter + "s");
+      Thread.sleep(1000L * retryAfter);
+      return makeRequest(request, false, classType); // We have already signed if it was requested
+    } else if (response.getCode() < 200 || response.getCode() > 299) {
+      logApiError(request.getVerb().name(), request.getUrl(), stringResponse, response.getCode());
+    }
+    result = convert(stringResponse, classType);
     return Optional.ofNullable(result);
   }
 
