@@ -107,15 +107,6 @@ public interface ITwitterClientV1 {
   RateLimitStatus getRateLimitStatus();
 
   /**
-   * Get the most recent Tweets liked calling https://api.twitter.com/1.1/favorites/list.json
-   *
-   * @param userId id of the user
-   * @param count number of needed tweets
-   * @return a list of liked tweets
-   */
-  List<Tweet> getFavorites(String userId, int count);
-
-  /**
    * Search tweets from last 30 days calling https://api.twitter.com/1.1/tweets/search/30day/dev.json Your development environment name should be
    * "dev". See https://developer.twitter.com/en/account/environments
    *

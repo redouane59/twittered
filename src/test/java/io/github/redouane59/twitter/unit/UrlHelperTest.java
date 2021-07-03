@@ -123,14 +123,14 @@ public class UrlHelperTest {
   @Test
   public void testSearch7DaysUrl() {
     assertEquals("https://api.twitter.com/2/tweets/search/recent",
-                 this.urlHelper.getSearchRecentTweetsUrl());
+                 urlHelper.getSearchRecentTweetsUrl());
   }
 
   @Test
   public void testSearchAllTweetsUrl() {
     assertEquals(
         "https://api.twitter.com/2/tweets/search/all",
-        this.urlHelper.getSearchAllTweetsUrl());
+        urlHelper.getSearchAllTweetsUrl());
   }
 
   @Test
@@ -196,18 +196,6 @@ public class UrlHelperTest {
   public void testUploadMediaUrl() {
     assertEquals("https://upload.twitter.com/1.1/media/upload.json?media_category=tweet_image",
                  urlHelper.getUploadMediaUrl(MediaCategory.TWEET_IMAGE));
-  }
-
-  @Test
-  public void testGetFavouritesUrl() {
-    assertEquals("https://api.twitter.com/1.1/favorites/list.json?count=200&user_id=12345&max_id=9999&tweet_mode=extended",
-                 urlHelper.getFavoriteTweetsUrl("12345", "9999"));
-  }
-
-  @Test
-  public void testGetFavouritesUrlWithoutMaxId() {
-    assertEquals("https://api.twitter.com/1.1/favorites/list.json?count=200&user_id=12345&tweet_mode=extended",
-                 urlHelper.getFavoriteTweetsUrl("12345", null));
   }
 
   @Test
