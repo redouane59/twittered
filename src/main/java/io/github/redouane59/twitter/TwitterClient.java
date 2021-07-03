@@ -136,7 +136,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public TwitterClient(TwitterCredentials credentials, OAuth10aService service) {
     twitterCredentials = credentials;
     requestHelperV1    = new RequestHelper(credentials, service);
-    requestHelperV2         = new RequestHelperV2(credentials, service);
+    requestHelperV2    = new RequestHelperV2(credentials, service);
   }
 
   public static TwitterCredentials getAuthentication() {
@@ -305,13 +305,13 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public BlockResponse blockUser(final String targetUserId) {
     String url = urlHelper.getBlockUserUrl(getUserIdFromAccessToken());
     return getRequestHelper()
-               .makeRequest(Verb.POST,
-                            url,
-                            new HashMap<>(),
-                            OBJECT_MAPPER.writeValueAsString(new FollowBody(targetUserId)),
-                            true,
-                            BlockResponse.class)
-               .orElseThrow(NoSuchElementException::new);
+        .makeRequest(Verb.POST,
+                     url,
+                     new HashMap<>(),
+                     OBJECT_MAPPER.writeValueAsString(new FollowBody(targetUserId)),
+                     true,
+                     BlockResponse.class)
+        .orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -406,8 +406,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public LikeResponse unlikeTweet(String tweetId) {
     String url = getUrlHelper().getUnlikeUrl(getUserIdFromAccessToken(), tweetId);
     return getRequestHelper()
-               .makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, LikeResponse.class)
-               .orElseThrow(NoSuchElementException::new);
+        .makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, LikeResponse.class)
+        .orElseThrow(NoSuchElementException::new);
   }
 
   @Override

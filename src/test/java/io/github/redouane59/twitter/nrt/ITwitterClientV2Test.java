@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.scribejava.core.model.Response;
@@ -26,6 +27,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import javax.naming.LimitExceededException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -179,6 +181,15 @@ public class ITwitterClientV2Test {
   }
 
   @Test
+  @Disabled
+  public void testGetFollowersWithLimitException() {
+    twitterClient.setAutomaticRetry(false);
+    assertThrows(LimitExceededException.class, () -> {
+      twitterClient.getFollowers(userId, AdditionalParameters.builder().maxResults(20).build());
+    });
+  }
+
+  @Test
   public void testGetTweetsByIds() {
     List<String> tweetIds = Arrays.asList("1294174710624849921,1294380029430960128,1294375095746666496");
     TweetList    tweets   = twitterClient.getTweets(tweetIds);
@@ -317,21 +328,21 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetUserTimelineWithDatesThenWithIds() {
-    TweetList result = twitterClient.getUserTimeline(this.userId, AdditionalParameters.builder()
-                                                                                      .startTime(ConverterHelper.dayBeforeNow(30))
-                                                                                      .endTime(ConverterHelper.dayBeforeNow(1))
-                                                                                      .recursiveCall(false)
-                                                                                      .maxResults(10).build());
+    TweetList result = twitterClient.getUserTimeline(userId, AdditionalParameters.builder()
+                                                                                 .startTime(ConverterHelper.dayBeforeNow(30))
+                                                                                 .endTime(ConverterHelper.dayBeforeNow(1))
+                                                                                 .recursiveCall(false)
+                                                                                 .maxResults(10).build());
     assertEquals(10, result.getData().size());
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getText());
 
-    result = twitterClient.getUserTimeline(this.userId, AdditionalParameters.builder()
-                                                                            .maxResults(5)
-                                                                            .sinceId(result.getData().get(6).getId())
-                                                                            .untilId(result.getData().get(0).getId())
-                                                                            .recursiveCall(false)
-                                                                            .build());
+    result = twitterClient.getUserTimeline(userId, AdditionalParameters.builder()
+                                                                       .maxResults(5)
+                                                                       .sinceId(result.getData().get(6).getId())
+                                                                       .untilId(result.getData().get(0).getId())
+                                                                       .recursiveCall(false)
+                                                                       .build());
     assertEquals(5, result.getData().size());
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getText());
