@@ -572,24 +572,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public List<Tweet> getFavorites(String userId, int count) {
-    List<Tweet>   favoriteTweets = new ArrayList<>();
-    List<TweetV1> result;
-    String        maxId          = null;
-    do {
-      result = Arrays.asList(
-          getRequestHelper().getRequest(getUrlHelper().getFavoriteTweetsUrl(userId, maxId), TweetV1[].class)
-                            .orElseThrow(NoSuchElementException::new));
-      if (result.isEmpty()) {
-        break;
-      }
-      maxId = result.get(result.size() - 1).getId();
-      favoriteTweets.addAll(result.subList(0, result.size() - 1)); // to avoid having duplicates
-    } while (favoriteTweets.size() < count && result.size() > 1);
-    return favoriteTweets;
-  }
-
-  @Override
   public TweetList searchTweets(String query) {
     return searchTweets(query, AdditionalParameters.builder().maxResults(100).build());
   }
