@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.user.User;
@@ -28,7 +29,7 @@ public class UserDeserializerV2Test {
 
   @Test
   public void testGetUserScreenNameV2() {
-    assertEquals("RedTheOne", userV2.getName());
+    assertEquals("RedouaneBali", userV2.getName());
   }
 
   @Test
@@ -85,7 +86,7 @@ public class UserDeserializerV2Test {
     assertEquals(232, pinnedTweet.getReplyCount());
     assertEquals(2286, pinnedTweet.getLikeCount());
     assertEquals(237, pinnedTweet.getQuoteCount());
-    assertTrue(pinnedTweet.getText().contains("Thread sur ce qui m'a poussé à partir"));
+    assertTrue(pinnedTweet.getText().contains("Thread"));
   }
 
   @Test
@@ -98,6 +99,13 @@ public class UserDeserializerV2Test {
     assertNotNull(userV2.getEntities());
     assertNotNull(userV2.getEntities().get("description"));
     assertNotNull(userV2.getEntities().get("description").get("hashtags"));
+  }
+
+  @Test
+  public void testSerialization() throws JsonProcessingException {
+    String userAsString = TwitterClient.OBJECT_MAPPER.writeValueAsString(userV2);
+    assertNotNull(userAsString);
+    assertTrue(userAsString.contains("RedouaneBali"));
   }
 
 }
