@@ -1,5 +1,6 @@
 package io.github.redouane59.twitter.dto.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
@@ -26,6 +27,106 @@ public class UserV2 implements User {
 
   private UserData          data;
   private UserData.Includes includes;
+
+  @Override
+  public String getId() {
+    return data == null ? null : data.getId();
+  }
+
+  @Override
+  public String getName() {
+    return data == null ? null : data.getName();
+  }
+
+  @Override
+  public String getDisplayedName() {
+    return data == null ? null : data.getDisplayedName();
+  }
+
+  @Override
+  public String getLocation() {
+    return data.getLocation();
+  }
+
+  @Override
+  public String getDescription() {
+    return data.getDescription();
+  }
+
+  @Override
+  public LocalDateTime getDateOfCreation() {
+    return ConverterHelper.getDateFromTwitterStringV2(data.getCreatedAt());
+  }
+
+  @Override
+  public int getFollowersCount() {
+    return data.getPublicMetrics().getFollowersCount();
+  }
+
+  @Override
+  public int getFollowingCount() {
+    return data.getPublicMetrics().getFollowingCount();
+  }
+
+  @Override
+  public int getTweetCount() {
+    return data.getPublicMetrics().getTweetCount();
+  }
+
+  @Override
+  @JsonIgnore
+  public String getLang() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  @JsonIgnore
+  public boolean isProtectedAccount() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean isFollowing() {
+    return data.isFollowing();
+  }
+
+  @Override
+  public boolean isVerified() {
+    return data == null ? false : data.verified;
+  }
+
+  @Override
+  public Tweet getPinnedTweet() {
+    if (includes.getTweets().length < 1) {
+      LOGGER.error("No tweet found");
+      return null;
+    }
+    return includes.getTweets()[0];
+  }
+
+  @Override
+  public String getUrl() {
+    return data == null ? null : data.getUrl();
+  }
+
+  @Override
+  public JsonNode getEntities() {
+    return data == null ? null : data.getEntities();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || (getClass() != o.getClass() && !User.class.isAssignableFrom(o.getClass()))) {
+      return false;
+    }
+    User otherUser = (User) o;
+    return (otherUser).getId().equals(getId());
+  }
+
+  @Override
+  public int hashCode() {
+    return getId().hashCode();
+  }
 
   @Getter
   @Setter
@@ -56,31 +157,24 @@ public class UserV2 implements User {
     private boolean           isProtectedAccount;
     private boolean           following;
 
-    @Getter
-    @Setter
-    public static class Includes {
-
-      private TweetData[] tweets;
-    }
-
     @Override
     public LocalDateTime getDateOfCreation() {
-      return ConverterHelper.getDateFromTwitterStringV2(this.createdAt);
+      return ConverterHelper.getDateFromTwitterStringV2(createdAt);
     }
 
     @Override
     public int getFollowersCount() {
-      return this.publicMetrics.getFollowersCount();
+      return publicMetrics.getFollowersCount();
     }
 
     @Override
     public int getFollowingCount() {
-      return this.publicMetrics.getFollowingCount();
+      return publicMetrics.getFollowingCount();
     }
 
     @Override
     public int getTweetCount() {
-      return this.publicMetrics.getTweetCount();
+      return publicMetrics.getTweetCount();
     }
 
     @Override
@@ -88,103 +182,15 @@ public class UserV2 implements User {
       LOGGER.error("Enable to access the data from here");
       return null;
     }
-  }
 
-  @Override
-  public String getId() {
-    return this.data == null ? null : this.data.getId();
-  }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Includes {
 
-  @Override
-  public String getName() {
-    return this.data == null ? null : this.data.getName();
-  }
-
-  @Override
-  public String getDisplayedName() {
-    return this.data == null ? null : this.data.getDisplayedName();
-  }
-
-  @Override
-  public String getLocation() {
-    return this.data.getLocation();
-  }
-
-  @Override
-  public String getDescription() {
-    return this.data.getDescription();
-  }
-
-  @Override
-  public LocalDateTime getDateOfCreation() {
-    return ConverterHelper.getDateFromTwitterStringV2(this.data.getCreatedAt());
-  }
-
-  @Override
-  public int getFollowersCount() {
-    return this.data.getPublicMetrics().getFollowersCount();
-  }
-
-  @Override
-  public int getFollowingCount() {
-    return this.data.getPublicMetrics().getFollowingCount();
-  }
-
-  @Override
-  public int getTweetCount() {
-    return this.data.getPublicMetrics().getTweetCount();
-  }
-
-  @Override
-  public String getLang() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean isProtectedAccount() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean isFollowing() {
-    return this.data.isFollowing();
-  }
-
-  @Override
-  public boolean isVerified() {
-    return this.data == null ? false : this.data.verified;
-  }
-
-  @Override
-  public Tweet getPinnedTweet() {
-    if (this.includes.getTweets().length < 1) {
-      LOGGER.error("No tweet found");
-      return null;
+      private TweetData[] tweets;
     }
-    return this.includes.getTweets()[0];
-  }
-
-  @Override
-  public String getUrl() {
-    return this.data == null ? null : this.data.getUrl();
-  }
-
-  @Override
-  public JsonNode getEntities() {
-    return this.data == null ? null : this.data.getEntities();
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (o == null || (this.getClass() != o.getClass() && !User.class.isAssignableFrom(o.getClass()))) {
-      return false;
-    }
-    User otherUser = (User) o;
-    return (otherUser).getId().equals(this.getId());
-  }
-
-  @Override
-  public int hashCode() {
-    return this.getId().hashCode();
   }
 }
