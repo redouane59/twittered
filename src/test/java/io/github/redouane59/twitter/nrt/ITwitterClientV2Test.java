@@ -187,6 +187,7 @@ public class ITwitterClientV2Test {
     assertThrows(LimitExceededException.class, () -> {
       twitterClient.getFollowers(userId, AdditionalParameters.builder().maxResults(20).build());
     });
+    twitterClient.setAutomaticRetry(true);
   }
 
   @Test
