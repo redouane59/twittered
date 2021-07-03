@@ -9,7 +9,7 @@ public enum MediaCategory {
 
   public final String label;
 
-  private MediaCategory(String label) {
+  MediaCategory(String label) {
     this.label = label;
   }
 

@@ -886,7 +886,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
     List<TweetV1> result = new ArrayList<>();
     if (!file.exists()) {
-      LOGGER.error("file not found at : " + file.toURI().toString());
+      LOGGER.error("file not found at : " + file.toURI());
     } else {
       result = Arrays.asList(customObjectMapper.readValue(file, TweetV1[].class));
     }

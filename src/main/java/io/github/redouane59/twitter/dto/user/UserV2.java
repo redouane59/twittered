@@ -92,7 +92,7 @@ public class UserV2 implements User {
 
   @Override
   public boolean isVerified() {
-    return data == null ? false : data.verified;
+    return data != null && data.verified;
   }
 
   @Override
