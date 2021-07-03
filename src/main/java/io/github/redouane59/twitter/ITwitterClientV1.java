@@ -83,7 +83,10 @@ public interface ITwitterClientV1 {
 
   /**
    * Returns a cursored collection of user IDs for every user following the specified user calling https://api.twitter.com/1.1/followers/ids.json
+   *
+   * @Deprecated <p> Use {@link ITwitterClientV2#getFollowers(String)} instead.
    */
+  @Deprecated
   List<String> getFollowersIds(String userId);
 
   /**
@@ -121,7 +124,9 @@ public interface ITwitterClientV1 {
    * @param toDate the end date
    * @param envName name of the premium environment. See https://developer.twitter.com/en/account/environments
    * @return a list of tweets
+   * @Deprecated <p> Use {@link ITwitterClientV2#searchTweets(String)} instead.
    */
+  @Deprecated
   List<Tweet> searchForTweetsWithin30days(String query, LocalDateTime fromDate, LocalDateTime toDate, String envName);
 
   /**
@@ -133,6 +138,7 @@ public interface ITwitterClientV1 {
    * @param toDate the end date
    * @param envName name of the premium environment. See https://developer.twitter.com/en/account/environments
    * @return a list of tweets
+   * @Deprecated <p> Use {@link ITwitterClientV2#searchAllTweets(String)} instead.
    */
 
   List<Tweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate, String envName);
