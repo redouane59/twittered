@@ -149,7 +149,7 @@ public class UserV2 implements User {
     @JsonProperty("profile_image_url")
     private String            profileImageUrl;
     @JsonProperty("public_metrics")
-    private UserPublicMetrics publicMetrics;
+    private UserPublicMetrics publicMetrics = new UserPublicMetrics();
     @JsonProperty("pinned_tweet_id")
     private String            pinnedTweetId;
     private String            description;
