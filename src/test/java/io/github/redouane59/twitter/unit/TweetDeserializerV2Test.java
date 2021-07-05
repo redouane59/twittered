@@ -2,7 +2,9 @@ package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.ContextAnnotation;
 import io.github.redouane59.twitter.dto.tweet.ReplySettings;
@@ -125,5 +127,12 @@ public class TweetDeserializerV2Test {
     assertNotNull(tweetv2.getAttachments());
     assertNotNull(tweetv2.getAttachments().getMediaKeys());
     assertEquals("3_1365362339449561088", tweetv2.getAttachments().getMediaKeys()[0]);
+  }
+
+  @Test
+  public void testSerialization() throws JsonProcessingException {
+    String tweetAsString = TwitterClient.OBJECT_MAPPER.writeValueAsString(tweetv2);
+    assertNotNull(tweetAsString);
+    assertTrue(tweetAsString.contains("Try to use some function"));
   }
 }
