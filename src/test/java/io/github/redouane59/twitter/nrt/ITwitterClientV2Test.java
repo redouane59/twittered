@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.scribejava.core.model.Response;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
@@ -21,6 +20,10 @@ import io.github.redouane59.twitter.dto.tweet.TweetV2;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserList;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,10 +57,15 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  public void getAndSerializeUser() throws JsonProcessingException {
+  public void getAndSerializeUser() throws IOException {
     String userName = "RedouaneBali";
     User   result   = twitterClient.getUserFromUserName(userName);
     assertNotNull(TwitterClient.OBJECT_MAPPER.writeValueAsString(result));
+    FileOutputStream   fileOut = new FileOutputStream(new File("../ser.json"));
+    ObjectOutputStream out     = new ObjectOutputStream(fileOut);
+    out.writeObject(TwitterClient.OBJECT_MAPPER.writeValueAsString(result));
+    out.close();
+    fileOut.close();
   }
 
   @Test
