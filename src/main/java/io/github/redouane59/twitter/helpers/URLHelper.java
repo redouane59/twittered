@@ -35,46 +35,46 @@ public class URLHelper {
   private static final String DIRECT_MESSAGE_EVENTS       = "/direct_messages/events";
 
   // v2
-  private final String idVariable             = ":id";
+  private static final String idVariable             = ":id";
   @Getter
-  private final String searchRecentTweetsUrl  = "https://api.twitter.com/2/tweets/search/recent";
+  private static final String searchRecentTweetsUrl  = "https://api.twitter.com/2/tweets/search/recent";
   @Getter
-  private final String searchAllTweetsUrl     = "https://api.twitter.com/2/tweets/search/all";
+  private static final String searchAllTweetsUrl     = "https://api.twitter.com/2/tweets/search/all";
   @Getter
-  private final String filteredStreamRulesUrl = "https://api.twitter.com/2/tweets/search/stream/rules";
+  private static final String filteredStreamRulesUrl = "https://api.twitter.com/2/tweets/search/stream/rules";
   @Getter
-  private final String filteredStreamUrl      = "https://api.twitter.com/2/tweets/search/stream";
+  private static final String filteredStreamUrl      = "https://api.twitter.com/2/tweets/search/stream";
   @Getter
-  private final String sampledStreamUrl       = "https://api.twitter.com/2/tweets/sample/stream";
+  private static final String sampledStreamUrl       = "https://api.twitter.com/2/tweets/sample/stream";
   @Getter
-  private final String tweetsCountUrl         = "https://api.twitter.com/2/tweets/counts/recent";
+  private static final String tweetsCountUrl         = "https://api.twitter.com/2/tweets/counts/recent";
   @Getter
-  private final String tweetsCountAllUrl      = "https://api.twitter.com/2/tweets/counts/all";
+  private static final String tweetsUrl              = "https://api.twitter.com/2/tweets";
   @Getter
-  private final String tweetsUrl              = "https://api.twitter.com/2/tweets";
+  private static final String usersByUrl             = "https://api.twitter.com/2/users/by";
   @Getter
-  private final String usersByUrl             = "https://api.twitter.com/2/users/by";
+  private static final String usersUrl               = "https://api.twitter.com/2/users";
+  private static final String followUrl              = "https://api.twitter.com/2/users/:id/following";
+  private static final String unfollowUrl            = "https://api.twitter.com/2/users/:sourceId/following/:targetId";
+  private static final String followersUrl           = "https://api.twitter.com/2/users/:id/followers";
+  private static final String followingUrl           = "https://api.twitter.com/2/users/:id/following";
+  private static final String userUrl                = "https://api.twitter.com/2/users/:id";
+  private static final String userUrlFromName        = "https://api.twitter.com/2/users/by/username/:username";
+  private static final String tweetUrl               = "https://api.twitter.com/2/tweets/:id";
+  private static final String likeUrl                = "https://api.twitter.com/2/users/:id/likes";
+  private static final String unlikeUrl              = "https://api.twitter.com/2/users/:userId/likes/:tweetId";
+  private static final String hideUrl                = "https://api.twitter.com/2/tweets/:id/hidden";
+  private static final String userTimelineUrl        = "https://api.twitter.com/2/users/:id/tweets";
+  private static final String userMentionsUrl        = "https://api.twitter.com/2/users/:id/mentions";
+  private static final String blockUserUrl           = "https://api.twitter.com/2/users/:id/blocking";
+  private static final String unblockUserUrl         = "https://api.twitter.com/2/users/:sourceId/blocking/:targetId";
+  private static final String blockingUsersUrl       = "https://api.twitter.com/2/users/:id/blocking";
+  private static final String likingUsersUrl         = "https://api.twitter.com/2/tweets/:id/liking_users";
+  private static final String likedTweetsUrl         = "https://api.twitter.com/2/users/:id/liked_tweets";
+  private static final String muteUserUrl            = "https://api.twitter.com/2/users/:id/muting";
+  private static final String unmuteUserUrl          = "https://api.twitter.com/2/users/:source_user_id/muting/:target_user_id";
   @Getter
-  private final String usersUrl               = "https://api.twitter.com/2/users";
-  private final String followUrl              = "https://api.twitter.com/2/users/:id/following";
-  private final String unfollowUrl            = "https://api.twitter.com/2/users/:sourceId/following/:targetId";
-  private final String followersUrl           = "https://api.twitter.com/2/users/:id/followers";
-  private final String followingUrl           = "https://api.twitter.com/2/users/:id/following";
-  private final String userUrl                = "https://api.twitter.com/2/users/:id";
-  private final String userUrlFromName        = "https://api.twitter.com/2/users/by/username/:username";
-  private final String tweetUrl               = "https://api.twitter.com/2/tweets/:id";
-  private final String likeUrl                = "https://api.twitter.com/2/users/:id/likes";
-  private final String unlikeUrl              = "https://api.twitter.com/2/users/:userId/likes/:tweetId";
-  private final String hideUrl                = "https://api.twitter.com/2/tweets/:id/hidden";
-  private final String userTimelineUrl        = "https://api.twitter.com/2/users/:id/tweets";
-  private final String userMentionsUrl        = "https://api.twitter.com/2/users/:id/mentions";
-  private final String blockUserUrl           = "https://api.twitter.com/2/users/:id/blocking";
-  private final String unblockUserUrl         = "https://api.twitter.com/2/users/:sourceId/blocking/:targetId";
-  private final String blockingUsersUrl       = "https://api.twitter.com/2/users/:id/blocking";
-  private final String likingUsersUrl         = "https://api.twitter.com/2/tweets/:id/liking_users";
-  private final String likedTweetsUrl         = "https://api.twitter.com/2/users/:id/liked_tweets";
-  private final String muteUserUrl            = "https://api.twitter.com/2/users/:id/muting";
-  private final String unmuteUserUrl          = "https://api.twitter.com/2/users/:source_user_id/muting/:target_user_id";
+  private static final String tweetsCountAllUrl      = "https://api.twitter.com/2/tweets/counts/all";
 
   public String getSearchTweet30DaysUrl(String envName) {
     return ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + "/" + envName + JSON;
