@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.scribejava.core.model.Response;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
@@ -50,6 +51,13 @@ public class ITwitterClientV2Test {
     String userName = "RedouaneBali";
     User   result   = twitterClient.getUserFromUserName(userName);
     assertEquals(userName, result.getName());
+  }
+
+  @Test
+  public void getAndSerializeUser() throws JsonProcessingException {
+    String userName = "RedouaneBali";
+    User   result   = twitterClient.getUserFromUserName(userName);
+    assertNotNull(TwitterClient.OBJECT_MAPPER.writeValueAsString(result));
   }
 
   @Test

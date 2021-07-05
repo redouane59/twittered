@@ -213,7 +213,7 @@ public class TweetV2 implements Tweet {
     private List<ReferencedTweetDTO> referencedTweets;
     private JsonNode                 entities;
     @JsonProperty("public_metrics")
-    private TweetPublicMetricsDTO    publicMetrics;
+    private TweetPublicMetricsDTO    publicMetrics = new TweetPublicMetricsDTO();
     @JsonProperty("possibly_sensitive")
     private boolean                  possiblySensitive;
     private String                   lang;
