@@ -2,6 +2,8 @@ package io.github.redouane59.twitter.dto.tweet;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.redouane59.twitter.dto.stream.StreamRules;
@@ -213,6 +215,7 @@ public class TweetV2 implements Tweet {
     private List<ReferencedTweetDTO> referencedTweets;
     private JsonNode                 entities;
     @JsonProperty("public_metrics")
+    @JsonInclude(Include.NON_NULL)
     private TweetPublicMetricsDTO    publicMetrics;
     @JsonProperty("possibly_sensitive")
     private boolean                  possiblySensitive;
@@ -227,21 +230,25 @@ public class TweetV2 implements Tweet {
     private Attachments              attachments;
 
     @Override
+    @JsonIgnore
     public int getRetweetCount() {
       return publicMetrics.getRetweetCount();
     }
 
     @Override
+    @JsonIgnore
     public int getLikeCount() {
       return publicMetrics.getLikeCount();
     }
 
     @Override
+    @JsonIgnore
     public int getReplyCount() {
       return publicMetrics.getReplyCount();
     }
 
     @Override
+    @JsonIgnore
     public int getQuoteCount() {
       return publicMetrics.getQuoteCount();
     }

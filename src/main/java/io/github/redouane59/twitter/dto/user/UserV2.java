@@ -1,6 +1,8 @@
 package io.github.redouane59.twitter.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
@@ -59,16 +61,19 @@ public class UserV2 implements User {
   }
 
   @Override
+  @JsonIgnore
   public int getFollowersCount() {
     return data.getPublicMetrics().getFollowersCount();
   }
 
   @Override
+  @JsonIgnore
   public int getFollowingCount() {
     return data.getPublicMetrics().getFollowingCount();
   }
 
   @Override
+  @JsonIgnore
   public int getTweetCount() {
     return data.getPublicMetrics().getTweetCount();
   }
@@ -149,6 +154,7 @@ public class UserV2 implements User {
     @JsonProperty("profile_image_url")
     private String            profileImageUrl;
     @JsonProperty("public_metrics")
+    @JsonInclude(Include.NON_NULL)
     private UserPublicMetrics publicMetrics;
     @JsonProperty("pinned_tweet_id")
     private String            pinnedTweetId;

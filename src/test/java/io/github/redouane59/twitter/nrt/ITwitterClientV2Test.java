@@ -20,6 +20,7 @@ import io.github.redouane59.twitter.dto.tweet.TweetV2;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserList;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +51,13 @@ public class ITwitterClientV2Test {
     String userName = "RedouaneBali";
     User   result   = twitterClient.getUserFromUserName(userName);
     assertEquals(userName, result.getName());
+  }
+
+  @Test
+  public void getAndSerializeUser() throws IOException {
+    String userName = "RedouaneBali";
+    User   result   = twitterClient.getUserFromUserName(userName);
+    assertNotNull(TwitterClient.OBJECT_MAPPER.writeValueAsString(result));
   }
 
   @Test
