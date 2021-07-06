@@ -36,9 +36,9 @@ public class TweetListDeserializerTest {
 
   @Test
   public void testIncludes() {
-    assertNotNull(tweetList.getIncudes());
-    assertEquals(10, tweetList.getIncudes().getUsers().length);
-    assertEquals(10, tweetList.getIncudes().getTweets().length);
+    assertNotNull(tweetList.getIncludes());
+    assertEquals(28, tweetList.getIncludes().getUsers().size());
+    assertEquals(8, tweetList.getIncludes().getTweets().size());
   }
 
 }

@@ -18,7 +18,7 @@ public class TweetList {
 
   private List<TweetV2.TweetData> data;
   private TweetMeta               meta;
-  private Includes                incudes;
+  private Includes                includes;
 
   @Getter
   @Setter

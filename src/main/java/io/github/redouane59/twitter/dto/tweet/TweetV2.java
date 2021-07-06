@@ -112,6 +112,14 @@ public class TweetV2 implements Tweet {
   }
 
   @Override
+  public String getSource() {
+    if (data == null) {
+      return null;
+    }
+    return data.getSource();
+  }
+
+  @Override
   public int getRetweetCount() {
     if (data == null) {
       return 0;
@@ -156,7 +164,7 @@ public class TweetV2 implements Tweet {
     if (includes == null) {
       return null;
     }
-    return includes.getUsers()[0];
+    return includes.getUsers().get(0);
   }
 
   @Override
@@ -320,8 +328,8 @@ public class TweetV2 implements Tweet {
   @AllArgsConstructor
   public static class Includes {
 
-    private UserV2.UserData[]   users;
-    private TweetV2.TweetData[] tweets;
+    private List<UserV2.UserData>   users;
+    private List<TweetV2.TweetData> tweets;
   }
 
 

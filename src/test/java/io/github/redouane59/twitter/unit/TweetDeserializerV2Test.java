@@ -130,6 +130,12 @@ public class TweetDeserializerV2Test {
   }
 
   @Test
+  public void testSource() {
+    assertNotNull(tweetv2.getSource());
+    assertEquals("Twitter for Android", tweetv2.getSource());
+  }
+
+  @Test
   public void testSerialization() throws JsonProcessingException {
     String tweetAsString = TwitterClient.OBJECT_MAPPER.writeValueAsString(tweetv2);
     assertNotNull(tweetAsString);

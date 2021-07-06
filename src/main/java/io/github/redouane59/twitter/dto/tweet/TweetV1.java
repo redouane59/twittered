@@ -95,6 +95,12 @@ public class TweetV1 implements Tweet {
   }
 
   @Override
+  public String getSource() {
+    LOGGER.error(NOT_IMPLEMENTED_EXECEPTION);
+    return null;
+  }
+
+  @Override
   public String getInReplyToStatusId(TweetType type) {
     return getInReplyToStatusId();
   }
