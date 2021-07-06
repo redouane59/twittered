@@ -177,6 +177,13 @@ public class ITwitterClientV1Test {
   }
 
   @Test
+  public void testGetFollowingIds() {
+    List<String> ids = twitterClient.getFollowingIds("786491");
+    assertNotNull(ids);
+    assertTrue(ids.size() > 1000);
+  }
+
+  @Test
   public void testGetDmListWithCountAndGetDm() {
     int                 count  = 55;
     List<DirectMessage> result = twitterClient.getDmList(count);
