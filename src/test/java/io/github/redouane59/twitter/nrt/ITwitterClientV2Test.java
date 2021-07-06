@@ -242,7 +242,7 @@ public class ITwitterClientV2Test {
   @Test
   public void testAllTweetsSearch() {
     TweetList result = twitterClient.searchAllTweets("@lequipe bonjour -RT", AdditionalParameters.builder()
-                                                                                                 .recursiveCall(false).build());
+                                                                                                 /*.recursiveCall(false)*/.build());
     assertTrue(result.getData().size() > 0);
     Tweet tweet = result.getData().get(0);
     assertNotNull(tweet.getId());
