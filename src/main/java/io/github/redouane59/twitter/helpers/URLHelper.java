@@ -19,6 +19,7 @@ public class URLHelper {
   private static final String SHOW_JSON                   = "/show.json?";
   private static final String RETWEETERS                  = "/retweeters";
   private static final String FOLLOWERS                   = "/followers";
+  private static final String FOLLOWING                   = "/friends";
   private static final String STATUSES                    = "/statuses";
   private static final String FRIENDSHIPS                 = "/friendships";
   private static final String TWEETS                      = "/tweets";
@@ -119,6 +120,12 @@ public class URLHelper {
 
   public String getFollowersIdsUrl(String userId) {
     return ROOT_URL_V1 + FOLLOWERS + IDS_JSON
+           + USER_ID + "=" + userId +
+           "&count=5000";
+  }
+
+  public String getFollowingIdsUrl(String userId) {
+    return ROOT_URL_V1 + FOLLOWING + IDS_JSON
            + USER_ID + "=" + userId +
            "&count=5000";
   }

@@ -283,6 +283,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return getUserIdsByRelation(url);
   }
 
+  @Override
+  public List<String> getFollowingIds(String userId) {
+    String url = urlHelper.getFollowingIdsUrl(userId);
+    return getUserIdsByRelation(url);
+  }
+
   @SneakyThrows
   @Override
   public UserActionResponse follow(String targetUserId) {
