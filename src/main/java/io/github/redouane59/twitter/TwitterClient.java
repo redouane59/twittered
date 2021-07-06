@@ -614,7 +614,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(500));
+      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
     }
     return getTweetsRecursively(url, parameters, getRequestHelperV2());
   }
