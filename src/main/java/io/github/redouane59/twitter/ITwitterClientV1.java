@@ -90,7 +90,8 @@ public interface ITwitterClientV1 {
   List<String> getFollowersIds(String userId);
 
   /**
-   * Returns a cursored collection of user IDs for every user the specified user is following (otherwise known as their "friends").
+   * Returns a cursored collection of user IDs for every user the specified user is following (otherwise known as their "friends") calling
+   * https://api.twitter.com/1.1/friends/ids.json
    *
    * @Deprecated <p> Use {@link ITwitterClientV2#getFollowing(String)} instead.
    */

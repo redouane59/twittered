@@ -35,6 +35,12 @@ public class UrlHelperTest {
   }
 
   @Test
+  public void testUrlFollowingIs() {
+    assertEquals("https://api.twitter.com/1.1/friends/ids.json?user_id=12345&count=5000",
+                 urlHelper.getFollowingIdsUrl("12345"));
+  }
+
+  @Test
   public void testUrlLastTweet() {
     assertEquals("https://api.twitter.com/1.1/statuses/user_timeline.json?",
                  URLHelper.LAST_TWEET_LIST_URL);
