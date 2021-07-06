@@ -607,7 +607,11 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public TweetList searchAllTweets(final String query, AdditionalParameters additionalParameters) {
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(QUERY, query);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    if (additionalParameters.getMaxResults() <= 100) {
+      parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    } else {
+      parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS.replace(",context_annotations", ""));
+    }
     parameters.put(EXPANSION, ALL_EXPANSIONS);
     String url = urlHelper.getSearchAllTweetsUrl();
     if (!additionalParameters.isRecursiveCall()) {
