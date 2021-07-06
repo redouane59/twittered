@@ -610,6 +610,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (additionalParameters.getMaxResults() <= 100) {
       parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     } else {
+      LOGGER.warn("removing context_annotations from tweet_fields because max_result is greater 500");
       parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS.replace(",context_annotations", ""));
     }
     parameters.put(EXPANSION, ALL_EXPANSIONS);
