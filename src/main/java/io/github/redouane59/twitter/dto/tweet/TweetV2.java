@@ -228,6 +228,7 @@ public class TweetV2 implements Tweet {
     private ReplySettings            replySettings;
     private Geo                      geo;
     private Attachments              attachments;
+    private String                   source;
 
     @Override
     @JsonIgnore
