@@ -16,25 +16,25 @@ import lombok.Setter;
 @Getter
 public class DirectMessage {
 
-  private String        id;
+  private final String        type = "message_create";
+  private       String        id;
   @JsonProperty("created_timestamp")
-  private String        createdTimeStamp;
-  private String        type = "message_create";
+  private       String        createdTimeStamp;
   @JsonProperty("message_create")
-  private MessageCreate messageCreate;
+  private       MessageCreate messageCreate;
 
   public DirectMessage(String text, String userId) {
-    this.messageCreate = new MessageCreate();
-    this.messageCreate.setMessageData(new MessageData(text, null));
-    this.messageCreate.setTarget(new Target(userId));
+    messageCreate = new MessageCreate();
+    messageCreate.setMessageData(new MessageData(text, null));
+    messageCreate.setTarget(new Target(userId));
   }
 
   @JsonIgnore
   public String getText() {
-    if (this.getMessageCreate() == null || this.getMessageCreate().getMessageData() == null) {
+    if (getMessageCreate() == null || getMessageCreate().getMessageData() == null) {
       return null;
     }
-    return this.getMessageCreate().getMessageData().getText();
+    return getMessageCreate().getMessageData().getText();
   }
 
   @lombok.Setter

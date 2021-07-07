@@ -83,8 +83,20 @@ public interface ITwitterClientV1 {
 
   /**
    * Returns a cursored collection of user IDs for every user following the specified user calling https://api.twitter.com/1.1/followers/ids.json
+   *
+   * @Deprecated <p> Use {@link ITwitterClientV2#getFollowers(String)} instead.
    */
+  @Deprecated
   List<String> getFollowersIds(String userId);
+
+  /**
+   * Returns a cursored collection of user IDs for every user the specified user is following (otherwise known as their "friends") calling
+   * https://api.twitter.com/1.1/friends/ids.json
+   *
+   * @Deprecated <p> Use {@link ITwitterClientV2#getFollowing(String)} instead.
+   */
+  @Deprecated
+  List<String> getFollowingIds(String userId);
 
   /**
    * Get the relation between two users calling https://api.twitter.com/1.1/friendships/
@@ -104,15 +116,6 @@ public interface ITwitterClientV1 {
   RateLimitStatus getRateLimitStatus();
 
   /**
-   * Get the most recent Tweets liked calling https://api.twitter.com/1.1/favorites/list.json
-   *
-   * @param userId id of the user
-   * @param count number of needed tweets
-   * @return a list of liked tweets
-   */
-  List<Tweet> getFavorites(String userId, int count);
-
-  /**
    * Search tweets from last 30 days calling https://api.twitter.com/1.1/tweets/search/30day/dev.json Your development environment name should be
    * "dev". See https://developer.twitter.com/en/account/environments
    *
@@ -121,7 +124,9 @@ public interface ITwitterClientV1 {
    * @param toDate the end date
    * @param envName name of the premium environment. See https://developer.twitter.com/en/account/environments
    * @return a list of tweets
+   * @Deprecated <p> Use {@link ITwitterClientV2#searchTweets(String)} instead.
    */
+  @Deprecated
   List<Tweet> searchForTweetsWithin30days(String query, LocalDateTime fromDate, LocalDateTime toDate, String envName);
 
   /**
@@ -133,6 +138,7 @@ public interface ITwitterClientV1 {
    * @param toDate the end date
    * @param envName name of the premium environment. See https://developer.twitter.com/en/account/environments
    * @return a list of tweets
+   * @Deprecated <p> Use {@link ITwitterClientV2#searchAllTweets(String)} instead.
    */
 
   List<Tweet> searchForTweetsArchive(String query, LocalDateTime fromDate, LocalDateTime toDate, String envName);

@@ -20,6 +20,7 @@ import io.github.redouane59.twitter.dto.tweet.TweetV2;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserList;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +51,13 @@ public class ITwitterClientV2Test {
     String userName = "RedouaneBali";
     User   result   = twitterClient.getUserFromUserName(userName);
     assertEquals(userName, result.getName());
+  }
+
+  @Test
+  public void getAndSerializeUser() throws IOException {
+    String userName = "RedouaneBali";
+    User   result   = twitterClient.getUserFromUserName(userName);
+    assertNotNull(TwitterClient.OBJECT_MAPPER.writeValueAsString(result));
   }
 
   @Test
@@ -187,6 +195,7 @@ public class ITwitterClientV2Test {
     assertThrows(LimitExceededException.class, () -> {
       twitterClient.getFollowers(userId, AdditionalParameters.builder().maxResults(20).build());
     });
+    twitterClient.setAutomaticRetry(true);
   }
 
   @Test
@@ -234,6 +243,22 @@ public class ITwitterClientV2Test {
   public void testAllTweetsSearch() {
     TweetList result = twitterClient.searchAllTweets("@lequipe bonjour -RT", AdditionalParameters.builder()
                                                                                                  .recursiveCall(false).build());
+    assertTrue(result.getData().size() > 0);
+    Tweet tweet = result.getData().get(0);
+    assertNotNull(tweet.getId());
+    assertNotNull(tweet.getText());
+    assertNotNull(tweet.getCreatedAt());
+    assertNotNull(tweet.getAuthorId());
+    assertTrue(tweet.getRetweetCount() >= 0);
+    assertTrue(tweet.getReplyCount() >= 0);
+    assertTrue(tweet.getLikeCount() >= 0);
+    assertNotNull(tweet.getLang());
+  }
+
+  @Test
+  public void testAllTweetsSearchMaxResult500() {
+    TweetList result = twitterClient.searchAllTweets("to:RedouaneBali", AdditionalParameters.builder()
+                                                                                            .maxResults(500).build());
     assertTrue(result.getData().size() > 0);
     Tweet tweet = result.getData().get(0);
     assertNotNull(tweet.getId());
@@ -393,14 +418,14 @@ public class ITwitterClientV2Test {
     String  tweetId = "1361010662714007557";
     TweetV2 tweet   = (TweetV2) twitterClient.getTweet(tweetId);
     assertNotNull(tweet);
-    assertEquals(3, tweet.getIncludes().getUsers().length);
-    Assertions.assertEquals("RedouaneBali", tweet.getIncludes().getUsers()[0].getName());
-    Assertions.assertEquals("TwitterDev", tweet.getIncludes().getUsers()[1].getName());
-    Assertions.assertEquals("jessicagarson", tweet.getIncludes().getUsers()[2].getName());
-    assertEquals(1, tweet.getIncludes().getTweets().length);
-    assertEquals("2244994945", tweet.getIncludes().getTweets()[0].getAuthorId());
-    assertEquals("1341761599976181763", tweet.getIncludes().getTweets()[0].getId());
-    assertNotNull(tweet.getIncludes().getTweets()[0].getEntities());
+    assertEquals(3, tweet.getIncludes().getUsers().size());
+    Assertions.assertEquals("RedouaneBali", tweet.getIncludes().getUsers().get(0).getName());
+    Assertions.assertEquals("TwitterDev", tweet.getIncludes().getUsers().get(1).getName());
+    Assertions.assertEquals("jessicagarson", tweet.getIncludes().getUsers().get(2).getName());
+    assertEquals(1, tweet.getIncludes().getTweets().size());
+    assertEquals("2244994945", tweet.getIncludes().getTweets().get(0).getAuthorId());
+    assertEquals("1341761599976181763", tweet.getIncludes().getTweets().get(0).getId());
+    assertNotNull(tweet.getIncludes().getTweets().get(0).getEntities());
   }
 
   @Test

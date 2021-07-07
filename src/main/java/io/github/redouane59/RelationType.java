@@ -4,5 +4,5 @@ public enum RelationType {
   FOLLOWER,
   FOLLOWING,
   FRIENDS,
-  NONE;
+  NONE
 }

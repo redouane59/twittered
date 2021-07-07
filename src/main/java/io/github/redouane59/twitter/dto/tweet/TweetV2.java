@@ -1,6 +1,9 @@
 package io.github.redouane59.twitter.dto.tweet;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.redouane59.twitter.dto.stream.StreamRules;
@@ -31,6 +34,175 @@ public class TweetV2 implements Tweet {
   @JsonProperty("matching_rules")
   private StreamRules.StreamRule[] matchingRules;
 
+  @Override
+  public String getInReplyToStatusId() {
+    if (data == null || data.getReferencedTweets() == null || data.getReferencedTweets().isEmpty()) {
+      return null;
+    }
+    return data.getReferencedTweets().get(0).getId();
+  }
+
+  @Override
+  public String getInReplyToStatusId(TweetType type) {
+    if (data == null || data.getReferencedTweets() == null || data.getReferencedTweets().isEmpty()) {
+      return null;
+    }
+    for (ReferencedTweetDTO referencedTweetDTO : data.getReferencedTweets()) {
+      if (referencedTweetDTO.getType() == type) {
+        return referencedTweetDTO.getId();
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public String getLang() {
+    if (data == null) {
+      return null;
+    }
+    return data.getLang();
+  }
+
+  @Override
+  public String getId() {
+    if (data == null) {
+      return null;
+    }
+    return data.getId();
+  }
+
+  @Override
+  public String getText() {
+    if (data == null) {
+      return null;
+    }
+    return data.getText();
+  }
+
+  @Override
+  public String getConversationId() {
+    if (data == null) {
+      return null;
+    }
+    return data.getConversationId();
+  }
+
+  @Override
+  public ReplySettings getReplySettings() {
+    if (data == null) {
+      return null;
+    }
+    return data.getReplySettings();
+  }
+
+  @Override
+  public Geo getGeo() {
+    if (data == null) {
+      return null;
+    }
+    return data.getGeo();
+  }
+
+  @Override
+  public Attachments getAttachments() {
+    if (data == null) {
+      return null;
+    }
+    return data.getAttachments();
+  }
+
+  @Override
+  public String getSource() {
+    if (data == null) {
+      return null;
+    }
+    return data.getSource();
+  }
+
+  @Override
+  public int getRetweetCount() {
+    if (data == null) {
+      return 0;
+    }
+    return data.getPublicMetrics().getRetweetCount();
+  }
+
+  @Override
+  public int getLikeCount() {
+    if (data == null) {
+      return 0;
+    }
+    return data.getPublicMetrics().getLikeCount();
+  }
+
+  @Override
+  public int getReplyCount() {
+    if (data == null) {
+      return 0;
+    }
+    return data.getPublicMetrics().getReplyCount();
+  }
+
+  @Override
+  public int getQuoteCount() {
+    if (data == null) {
+      return 0;
+    }
+    return data.getPublicMetrics().getQuoteCount();
+  }
+
+  @Override
+  public String getInReplyToUserId() {
+    if (data == null) {
+      return null;
+    }
+    return data.getInReplyToUserId();
+  }
+
+  @Override
+  public User getUser() {
+    if (includes == null) {
+      return null;
+    }
+    return includes.getUsers().get(0);
+  }
+
+  @Override
+  public String getAuthorId() {
+    if (data == null) {
+      return null;
+    }
+    return data.getAuthorId();
+  }
+
+  @Override
+  public LocalDateTime getCreatedAt() {
+    if (data == null) {
+      return null;
+    }
+    return data.getCreatedAt();
+  }
+
+  @Override
+  public List<ContextAnnotation> getContextAnnotations() {
+    if (data == null) {
+      return Arrays.asList();
+    }
+    return data.getContextAnnotations();
+  }
+
+  @Override
+  public TweetType getTweetType() {
+    if (data == null || data.referencedTweets == null || data.referencedTweets.isEmpty()) {
+      return TweetType.DEFAULT;
+    } else if (data.getReferencedTweets().size() > 1
+               && (data.getReferencedTweets().get(0).getType().equals(TweetType.RETWEETED)
+                   || data.getReferencedTweets().get(1).getType().equals(TweetType.RETWEETED))) {
+      return TweetType.RETWEETED;
+    }
+    return data.getReferencedTweets().get(0).getType();
+  }
+
   @Getter
   @Setter
   @Builder
@@ -51,6 +223,7 @@ public class TweetV2 implements Tweet {
     private List<ReferencedTweetDTO> referencedTweets;
     private JsonNode                 entities;
     @JsonProperty("public_metrics")
+    @JsonInclude(Include.NON_NULL)
     private TweetPublicMetricsDTO    publicMetrics;
     @JsonProperty("possibly_sensitive")
     private boolean                  possiblySensitive;
@@ -63,41 +236,46 @@ public class TweetV2 implements Tweet {
     private ReplySettings            replySettings;
     private Geo                      geo;
     private Attachments              attachments;
+    private String                   source;
 
     @Override
+    @JsonIgnore
     public int getRetweetCount() {
-      return this.publicMetrics.getRetweetCount();
+      return publicMetrics.getRetweetCount();
     }
 
     @Override
+    @JsonIgnore
     public int getLikeCount() {
-      return this.publicMetrics.getLikeCount();
+      return publicMetrics.getLikeCount();
     }
 
     @Override
+    @JsonIgnore
     public int getReplyCount() {
-      return this.publicMetrics.getReplyCount();
+      return publicMetrics.getReplyCount();
     }
 
     @Override
+    @JsonIgnore
     public int getQuoteCount() {
-      return this.publicMetrics.getQuoteCount();
+      return publicMetrics.getQuoteCount();
     }
 
     @Override
     public String getInReplyToStatusId() {
-      if (this.referencedTweets == null || this.referencedTweets.isEmpty()) {
+      if (referencedTweets == null || referencedTweets.isEmpty()) {
         return null;
       }
-      return this.referencedTweets.get(0).getId();
+      return referencedTweets.get(0).getId();
     }
 
     @Override
     public String getInReplyToStatusId(TweetType type) {
-      if (this.referencedTweets == null || this.referencedTweets.isEmpty()) {
+      if (referencedTweets == null || referencedTweets.isEmpty()) {
         return null;
       }
-      for (ReferencedTweetDTO referencedTweetDTO : this.referencedTweets) {
+      for (ReferencedTweetDTO referencedTweetDTO : referencedTweets) {
         if (referencedTweetDTO.getType() == type) {
           return referencedTweetDTO.getId();
         }
@@ -107,190 +285,32 @@ public class TweetV2 implements Tweet {
 
     @Override
     public TweetType getTweetType() {
-      if (this.referencedTweets == null || this.referencedTweets.isEmpty()) {
+      if (referencedTweets == null || referencedTweets.isEmpty()) {
         return TweetType.DEFAULT;
-      } else if (this.getReferencedTweets().size() > 1
-                 && (this.getReferencedTweets().get(0).getType().equals(TweetType.RETWEETED)
-                     || this.getReferencedTweets().get(1).getType().equals(TweetType.RETWEETED))) {
+      } else if (getReferencedTweets().size() > 1
+                 && (getReferencedTweets().get(0).getType().equals(TweetType.RETWEETED)
+                     || getReferencedTweets().get(1).getType().equals(TweetType.RETWEETED))) {
         return TweetType.RETWEETED;
       }
-      return this.getReferencedTweets().get(0).getType();
+      return getReferencedTweets().get(0).getType();
     }
 
     @Override
+    @JsonIgnore
     public User getUser() {
       throw new UnsupportedOperationException();
     }
 
     @Override
     public String getAuthorId() {
-      return this.authorId;
+      return authorId;
     }
 
     @Override
     public LocalDateTime getCreatedAt() {
-      return ConverterHelper.getDateFromTwitterStringV2(this.createdAt);
+      return ConverterHelper.getDateFromTwitterStringV2(createdAt);
     }
 
-  }
-
-  @Override
-  public String getInReplyToStatusId() {
-    if (this.data == null || this.data.getReferencedTweets() == null || this.data.getReferencedTweets().isEmpty()) {
-      return null;
-    }
-    return this.data.getReferencedTweets().get(0).getId();
-  }
-
-  @Override
-  public String getInReplyToStatusId(TweetType type) {
-    if (this.data == null || this.data.getReferencedTweets() == null || this.data.getReferencedTweets().isEmpty()) {
-      return null;
-    }
-    for (ReferencedTweetDTO referencedTweetDTO : this.data.getReferencedTweets()) {
-      if (referencedTweetDTO.getType() == type) {
-        return referencedTweetDTO.getId();
-      }
-    }
-    return null;
-  }
-
-  @Override
-  public String getLang() {
-    if (this.data == null) {
-      return null;
-    }
-    return this.data.getLang();
-  }
-
-  @Override
-  public String getId() {
-    if (this.data == null) {
-      return null;
-    }
-    return this.data.getId();
-  }
-
-  @Override
-  public String getText() {
-    if (this.data == null) {
-      return null;
-    }
-    return this.data.getText();
-  }
-
-  @Override
-  public String getConversationId() {
-    if (this.data == null) {
-      return null;
-    }
-    return this.data.getConversationId();
-  }
-
-  @Override
-  public ReplySettings getReplySettings() {
-    if (this.data == null) {
-      return null;
-    }
-    return this.data.getReplySettings();
-  }
-
-  @Override
-  public Geo getGeo() {
-    if (this.data == null) {
-      return null;
-    }
-    return this.data.getGeo();
-  }
-
-  @Override
-  public Attachments getAttachments() {
-    if (this.data == null) {
-      return null;
-    }
-    return this.data.getAttachments();
-  }
-
-  @Override
-  public int getRetweetCount() {
-    if (this.data == null) {
-      return 0;
-    }
-    return this.data.getPublicMetrics().getRetweetCount();
-  }
-
-  @Override
-  public int getLikeCount() {
-    if (this.data == null) {
-      return 0;
-    }
-    return this.data.getPublicMetrics().getLikeCount();
-  }
-
-  @Override
-  public int getReplyCount() {
-    if (this.data == null) {
-      return 0;
-    }
-    return this.data.getPublicMetrics().getReplyCount();
-  }
-
-  @Override
-  public int getQuoteCount() {
-    if (this.data == null) {
-      return 0;
-    }
-    return this.data.getPublicMetrics().getQuoteCount();
-  }
-
-  @Override
-  public String getInReplyToUserId() {
-    if (this.data == null) {
-      return null;
-    }
-    return this.data.getInReplyToUserId();
-  }
-
-  @Override
-  public User getUser() {
-    if (this.includes == null) {
-      return null;
-    }
-    return this.includes.getUsers()[0];
-  }
-
-  @Override
-  public String getAuthorId() {
-    if (this.data == null) {
-      return null;
-    }
-    return this.data.getAuthorId();
-  }
-
-  public LocalDateTime getCreatedAt() {
-    if (this.data == null) {
-      return null;
-    }
-    return this.data.getCreatedAt();
-  }
-
-  public List<ContextAnnotation> getContextAnnotations() {
-    if (this.data == null) {
-      return Arrays.asList();
-    }
-    return this.data.getContextAnnotations();
-  }
-
-  @Override
-  public TweetType getTweetType() {
-    if (this.data == null || this.data.referencedTweets == null || this.data.referencedTweets.isEmpty()) {
-      return TweetType.DEFAULT;
-    } else if (this.data.getReferencedTweets().size() > 1
-               && (this.data.getReferencedTweets().get(0).getType().equals(TweetType.RETWEETED)
-                   || this.data.getReferencedTweets().get(1).getType().equals(TweetType.RETWEETED))) {
-      return TweetType.RETWEETED;
-    }
-    return this.data.getReferencedTweets().get(0).getType();
   }
 
   @Getter
@@ -308,8 +328,8 @@ public class TweetV2 implements Tweet {
   @AllArgsConstructor
   public static class Includes {
 
-    private UserV2.UserData[]   users;
-    private TweetV2.TweetData[] tweets;
+    private List<UserV2.UserData>   users;
+    private List<TweetV2.TweetData> tweets;
   }
 
 

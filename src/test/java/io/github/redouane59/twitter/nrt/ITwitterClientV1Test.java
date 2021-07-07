@@ -134,14 +134,6 @@ public class ITwitterClientV1Test {
   }
 
   @Test
-  public void testGetFavorites() {
-    int         count     = 750;
-    List<Tweet> favorites = twitterClient.getFavorites("1120050519182016513", count);
-    assertNotNull(favorites);
-    assertTrue(favorites.size() > count);
-  }
-
-  @Test
   public void testSearchTweets30days() {
     List<Tweet>
         result =
@@ -182,6 +174,13 @@ public class ITwitterClientV1Test {
     List<String> ids = twitterClient.getFollowersIds("786491");
     assertNotNull(ids);
     assertTrue(ids.size() > 10000);
+  }
+
+  @Test
+  public void testGetFollowingIds() {
+    List<String> ids = twitterClient.getFollowingIds("786491");
+    assertNotNull(ids);
+    assertTrue(ids.size() > 1000);
   }
 
   @Test

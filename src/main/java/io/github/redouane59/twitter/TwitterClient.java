@@ -231,7 +231,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (additionalParameters.getMaxResults() <= 0) {
       parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(1000));
     }
-    return getUsersRecursively(url, parameters);
+    return getUsersRecursively(url, parameters, getRequestHelper());
   }
 
   @Override
@@ -250,7 +250,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (additionalParameters.getMaxResults() <= 0) {
       parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(1000));
     }
-    return getUsersRecursively(url, parameters);
+    return getUsersRecursively(url, parameters, getRequestHelper());
   }
 
   @Override
@@ -280,6 +280,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public List<String> getFollowersIds(String userId) {
     String url = urlHelper.getFollowersIdsUrl(userId);
+    return getUserIdsByRelation(url);
+  }
+
+  @Override
+  public List<String> getFollowingIds(String userId) {
+    String url = urlHelper.getFollowingIdsUrl(userId);
     return getUserIdsByRelation(url);
   }
 
@@ -434,7 +440,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (additionalParameters.getMaxResults() <= 0) {
       parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
     }
-    return getTweetsRecursively(url, parameters);
+    return getTweetsRecursively(url, parameters, getRequestHelper());
   }
 
   @Override
@@ -572,24 +578,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public List<Tweet> getFavorites(String userId, int count) {
-    List<Tweet>   favoriteTweets = new ArrayList<>();
-    List<TweetV1> result;
-    String        maxId          = null;
-    do {
-      result = Arrays.asList(
-          getRequestHelper().getRequest(getUrlHelper().getFavoriteTweetsUrl(userId, maxId), TweetV1[].class)
-                            .orElseThrow(NoSuchElementException::new));
-      if (result.isEmpty()) {
-        break;
-      }
-      maxId = result.get(result.size() - 1).getId();
-      favoriteTweets.addAll(result.subList(0, result.size() - 1)); // to avoid having duplicates
-    } while (favoriteTweets.size() < count && result.size() > 1);
-    return favoriteTweets;
-  }
-
-  @Override
   public TweetList searchTweets(String query) {
     return searchTweets(query, AdditionalParameters.builder().maxResults(100).build());
   }
@@ -607,7 +595,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (additionalParameters.getMaxResults() <= 0) {
       parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
     }
-    return getTweetsRecursively(url, parameters);
+    return getTweetsRecursively(url, parameters, getRequestHelper());
   }
 
   @Override
@@ -619,27 +607,32 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public TweetList searchAllTweets(final String query, AdditionalParameters additionalParameters) {
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(QUERY, query);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    if (additionalParameters.getMaxResults() <= 100) {
+      parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    } else {
+      LOGGER.warn("removing context_annotations from tweet_fields because max_result is greater 100");
+      parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS.replace(",context_annotations", ""));
+    }
     parameters.put(EXPANSION, ALL_EXPANSIONS);
     String url = urlHelper.getSearchAllTweetsUrl();
     if (!additionalParameters.isRecursiveCall()) {
       return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(500));
+      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
     }
-    return getTweetsRecursively(url, parameters);
+    return getTweetsRecursively(url, parameters, getRequestHelperV2());
   }
 
   /**
    * Call an endpoint related to tweets recursively until next_token is null to provide a full result
    */
-  private TweetList getTweetsRecursively(String url, Map<String, String> parameters) {
+  private TweetList getTweetsRecursively(String url, Map<String, String> parameters, AbstractRequestHelper requestHelper) {
     String    next;
     TweetList result   = TweetList.builder().data(new ArrayList<>()).meta(new TweetMeta()).build();
     String    newestId = null;
     do {
-      Optional<TweetList> tweetList = getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class);
+      Optional<TweetList> tweetList = requestHelper.getRequestWithParameters(url, parameters, TweetList.class);
       if (!tweetList.isPresent() || tweetList.get().getData() == null) {
         result.getMeta().setNextToken(null);
         break;
@@ -668,11 +661,11 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   /**
    * Call an endpoint related to users recursively until next_token is null to provide a full result
    */
-  private UserList getUsersRecursively(String url, Map<String, String> parameters) {
+  private UserList getUsersRecursively(String url, Map<String, String> parameters, AbstractRequestHelper requestHelper) {
     String   next;
     UserList result = UserList.builder().data(new ArrayList<>()).meta(new UserMeta()).build();
     do {
-      Optional<UserList> userList = getRequestHelper().getRequestWithParameters(url, parameters, UserList.class);
+      Optional<UserList> userList = requestHelper.getRequestWithParameters(url, parameters, UserList.class);
       if (!userList.isPresent() || userList.get().getData() == null) {
         result.getMeta().setNextToken(null);
         break;
@@ -873,7 +866,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (additionalParameters.getMaxResults() <= 0) {
       parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
     }
-    return getTweetsRecursively(url, parameters);
+    return getTweetsRecursively(url, parameters, getRequestHelperV2());
   }
 
   @Override
@@ -892,7 +885,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (additionalParameters.getMaxResults() <= 0) {
       parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
     }
-    return getTweetsRecursively(url, parameters);
+    return getTweetsRecursively(url, parameters, getRequestHelperV2());
   }
 
   @Override
@@ -904,7 +897,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
     List<TweetV1> result = new ArrayList<>();
     if (!file.exists()) {
-      LOGGER.error("file not found at : " + file.toURI().toString());
+      LOGGER.error("file not found at : " + file.toURI());
     } else {
       result = Arrays.asList(customObjectMapper.readValue(file, TweetV1[].class));
     }

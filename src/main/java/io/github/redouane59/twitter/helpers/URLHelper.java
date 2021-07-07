@@ -5,8 +5,12 @@ import lombok.Getter;
 
 public class URLHelper {
 
-  private static final String ROOT_URL_V1 = "https://api.twitter.com/1.1";
-
+  public static final  int    MAX_LOOKUP                  = 100;
+  public static final  String GET_BEARER_TOKEN_URL        = "https://api.twitter.com/oauth2/token";
+  public static final  String GET_OAUTH1_TOKEN_URL        = "https://api.twitter.com/oauth/request_token";
+  public static final  String GET_OAUTH1_ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
+  private static final String ROOT_URL_V1                 = "https://api.twitter.com/1.1";
+  public static final  String RATE_LIMIT_URL              = ROOT_URL_V1 + "/application/rate_limit_status.json";
   // v1 legacy
   private static final String IDS_JSON                    = "/ids.json?";
   private static final String ID                          = "id";
@@ -15,6 +19,7 @@ public class URLHelper {
   private static final String SHOW_JSON                   = "/show.json?";
   private static final String RETWEETERS                  = "/retweeters";
   private static final String FOLLOWERS                   = "/followers";
+  private static final String FOLLOWING                   = "/friends";
   private static final String STATUSES                    = "/statuses";
   private static final String FRIENDSHIPS                 = "/friendships";
   private static final String TWEETS                      = "/tweets";
@@ -23,17 +28,11 @@ public class URLHelper {
   private static final String FULL_ARCHIVE                = "/fullarchive";
   private static final String USER_ID                     = "user_id";
   private static final String USER_TIMELINE               = "/user_timeline.json?";
+  public static final  String LAST_TWEET_LIST_URL         = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
   private static final String JSON                        = ".json";
-  private static final String MAX_ID                      = "max_id";
+  public static final  String SEARCH_TWEET_STANDARD_URL   = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
   private static final String COLLECTIONS                 = "/collections";
   private static final int    RETWEET_MAX_COUNT           = 100;
-  public static final  int    MAX_LOOKUP                  = 100;
-  public static final  String LAST_TWEET_LIST_URL         = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
-  public static final  String RATE_LIMIT_URL              = ROOT_URL_V1 + "/application/rate_limit_status.json";
-  public static final  String SEARCH_TWEET_STANDARD_URL   = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
-  public static final  String GET_BEARER_TOKEN_URL        = "https://api.twitter.com/oauth2/token";
-  public static final  String GET_OAUTH1_TOKEN_URL        = "https://api.twitter.com/oauth/request_token";
-  public static final  String GET_OAUTH1_ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
   private static final String DIRECT_MESSAGE_EVENTS       = "/direct_messages/events";
 
   // v2
@@ -125,6 +124,12 @@ public class URLHelper {
            "&count=5000";
   }
 
+  public String getFollowingIdsUrl(String userId) {
+    return ROOT_URL_V1 + FOLLOWING + IDS_JSON
+           + USER_ID + "=" + userId +
+           "&count=5000";
+  }
+
   public String getFollowingUrl(String userId) {
     return followingUrl.replace(idVariable, userId);
   }
@@ -159,16 +164,6 @@ public class URLHelper {
 
   public String getDeleteTweetUrl(String tweetId) {
     return ROOT_URL_V1 + STATUSES + "/destroy/" + tweetId + JSON;
-  }
-
-  public String getFavoriteTweetsUrl(String userId, String maxId) {
-    String result;
-    if (maxId == null || maxId.length() == 0) {
-      result = "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id=" + userId;
-    } else {
-      result = "https://api.twitter.com/1.1/favorites/list.json?count=200&user_id=" + userId + "&" + MAX_ID + "=" + maxId;
-    }
-    return result.concat("&tweet_mode=extended");
   }
 
   public String getHideReplyUrl(final String tweetId) {

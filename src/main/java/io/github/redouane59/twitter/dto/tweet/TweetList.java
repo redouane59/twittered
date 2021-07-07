@@ -1,6 +1,7 @@
 package io.github.redouane59.twitter.dto.tweet;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.redouane59.twitter.dto.tweet.TweetV2.Includes;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +18,7 @@ public class TweetList {
 
   private List<TweetV2.TweetData> data;
   private TweetMeta               meta;
+  private Includes                includes;
 
   @Getter
   @Setter

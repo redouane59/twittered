@@ -7,6 +7,6 @@ import lombok.AllArgsConstructor;
 public class FollowBody {
 
   @JsonProperty("target_user_id")
-  private String targetUserId;
+  private final String targetUserId;
 
 }
