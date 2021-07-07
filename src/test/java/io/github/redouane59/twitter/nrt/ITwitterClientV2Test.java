@@ -256,6 +256,22 @@ public class ITwitterClientV2Test {
   }
 
   @Test
+  public void testAllTweetsSearchMaxResult500() {
+    TweetList result = twitterClient.searchAllTweets("to:RedouaneBali", AdditionalParameters.builder()
+                                                                                            .maxResults(500).build());
+    assertTrue(result.getData().size() > 0);
+    Tweet tweet = result.getData().get(0);
+    assertNotNull(tweet.getId());
+    assertNotNull(tweet.getText());
+    assertNotNull(tweet.getCreatedAt());
+    assertNotNull(tweet.getAuthorId());
+    assertTrue(tweet.getRetweetCount() >= 0);
+    assertTrue(tweet.getReplyCount() >= 0);
+    assertTrue(tweet.getLikeCount() >= 0);
+    assertNotNull(tweet.getLang());
+  }
+
+  @Test
   public void testAllTweetsSearchWithParams() {
     TweetList result = twitterClient.searchAllTweets("@lequipe bonjour -RT", AdditionalParameters.builder()
                                                                                                  .startTime(ConverterHelper.dayBeforeNow(50))
