@@ -86,12 +86,6 @@ public class ITwitterClientV1Test {
   }
 
   @Test
-  public void testGetRetweetersId() {
-    String tweetId = "1078358350000205824";
-    assertTrue(twitterClient.getRetweetersId(tweetId).size() > 10);
-  }
-
-  @Test
   public void testGetOauth1Token() {
     twitterClient.getTwitterCredentials().setAccessToken("");
     twitterClient.getTwitterCredentials().setAccessTokenSecret("");

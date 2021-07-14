@@ -191,7 +191,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   /**
    * Define the default behavior when Twitter API limits are reached (default value is true)
    *
-   * @param automaticRetry false will raise a LimitExceededException, true will wait and call the endpoint again once the limit is over
+   * @param automaticRetry false will raise a , true will wait and call the endpoint again once the limit is over
    */
   public void setAutomaticRetry(boolean automaticRetry) {
     requestHelperV1.setAutomaticRetry(automaticRetry);
@@ -269,12 +269,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     } else {
       return RelationType.FOLLOWING;
     }
-  }
-
-  @Override
-  public List<String> getRetweetersId(String tweetId) {
-    String url = urlHelper.getRetweetersUrl(tweetId);
-    return getUserIdsByRelation(url);
   }
 
   @Override
@@ -416,6 +410,15 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
         .orElseThrow(NoSuchElementException::new);
   }
 
+  @Override
+  public UserList getRetweetingUsers(String tweetId) {
+    String              url        = urlHelper.getRetweetersUrl(tweetId);
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(EXPANSION, PINNED_TWEET_ID);
+    return getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
+  }
+  
   @Override
   public UserList getLikingUsers(final String tweetId) {
     String              url        = getUrlHelper().getLikingUsersUrl(tweetId);

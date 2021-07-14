@@ -74,14 +74,6 @@ public interface ITwitterClientV1 {
   Tweet deleteTweet(String tweetId);
 
   /**
-   * Get a list of ids of the users who retweeted a tweet calling https://api.twitter.com/1.1/statuses/retweeters/
-   *
-   * @param tweetId the id of the tweet
-   * @return a list of the ids of the users who retweeted a tweet
-   */
-  List<String> getRetweetersId(String tweetId);
-
-  /**
    * Returns a cursored collection of user IDs for every user following the specified user calling https://api.twitter.com/1.1/followers/ids.json
    *
    * @Deprecated <p> Use {@link ITwitterClientV2#getFollowers(String)} instead.

@@ -496,4 +496,12 @@ public class ITwitterClientV2Test {
     assertTrue(result.getMeta().getTotalTweetCount() > 0);
   }
 
+  @Test
+  public void testGetRetweetingUsers() {
+    String   tweetId = "1415348607813832708";
+    UserList result  = twitterClient.getRetweetingUsers(tweetId);
+    assertNotNull(result.getData());
+    assertTrue(result.getData().size() > 10);
+  }
+
 }

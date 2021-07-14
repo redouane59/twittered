@@ -12,7 +12,7 @@ public class UrlHelperTest {
 
   @Test
   public void testUrlRetweetrs() {
-    assertEquals("https://api.twitter.com/1.1/statuses/retweeters/ids.json?id=12345&count=100", urlHelper.getRetweetersUrl("12345"));
+    assertEquals("https://api.twitter.com/2/tweets/12345/retweeted_by", urlHelper.getRetweetersUrl("12345"));
   }
 
   @Test
