@@ -6,6 +6,7 @@ import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
+import io.github.redouane59.twitter.dto.tweet.RetweetResponse;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetCountsList;
 import io.github.redouane59.twitter.dto.tweet.TweetList;
@@ -396,6 +397,20 @@ public interface ITwitterClientV2 {
    * @param tweetId the id of the tweet
    */
   UserList getRetweetingUsers(String tweetId);
+
+  /**
+   * Causes the user ID identified in the path parameter to Retweet the target Tweet calling https://api.twitter.com/2/users/:id/retweets
+   *
+   * @param tweetId the id of the tweet
+   */
+  RetweetResponse retweetTweet(String tweetId);
+
+  /**
+   * Allows a user or authenticated user ID to remove the Retweet of a Tweet calling https://api.twitter.com/2/users/:id/retweets/:source_tweet_id
+   *
+   * @param tweetId the id of the tweet
+   */
+  RetweetResponse unretweetTweet(String tweetId);
 
 }
 

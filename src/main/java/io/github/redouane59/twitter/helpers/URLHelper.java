@@ -17,7 +17,6 @@ public class URLHelper {
   private static final String COUNT                       = "count";
   private static final String LIST_JSON                   = "/list.json";
   private static final String SHOW_JSON                   = "/show.json?";
-  private static final String RETWEETERS                  = "/retweeters";
   private static final String FOLLOWERS                   = "/followers";
   private static final String FOLLOWING                   = "/friends";
   private static final String STATUSES                    = "/statuses";
@@ -32,7 +31,6 @@ public class URLHelper {
   private static final String JSON                        = ".json";
   public static final  String SEARCH_TWEET_STANDARD_URL   = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
   private static final String COLLECTIONS                 = "/collections";
-  private static final int    RETWEET_MAX_COUNT           = 100;
   private static final String DIRECT_MESSAGE_EVENTS       = "/direct_messages/events";
 
   // v2
@@ -77,6 +75,8 @@ public class URLHelper {
   private final String muteUserUrl            = "https://api.twitter.com/2/users/:id/muting";
   private final String unmuteUserUrl          = "https://api.twitter.com/2/users/:source_user_id/muting/:target_user_id";
   private final String retweetingUsersUrl     = "https://api.twitter.com/2/tweets/:id/retweeted_by";
+  private final String retweetTweetUrl        = "https://api.twitter.com/2/users/:id/retweets";
+  private final String unretweetTweetUrl      = "https://api.twitter.com/2/users/:id/retweets/:source_tweet_id";
 
   public String getSearchTweet30DaysUrl(String envName) {
     return ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + "/" + envName + JSON;
@@ -149,7 +149,11 @@ public class URLHelper {
   }
 
   public String getRetweetTweetUrl(final String tweetId) {
-    return ROOT_URL_V1 + STATUSES + "/retweet/" + tweetId + JSON;
+    return retweetTweetUrl.replace(idVariable, tweetId);
+  }
+
+  public String getUnretweetTweetUrl(final String userId, final String tweetId) {
+    return unretweetTweetUrl.replace(idVariable, userId).replace(":source_tweet_id", tweetId);
   }
 
   public String getPostTweetUrl() {
