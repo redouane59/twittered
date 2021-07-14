@@ -184,6 +184,7 @@ public class UserV2 implements User {
     }
 
     @Override
+    @JsonIgnore
     public Tweet getPinnedTweet() {
       LOGGER.error("Enable to access the data from here");
       return null;

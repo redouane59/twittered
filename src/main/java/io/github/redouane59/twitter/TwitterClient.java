@@ -31,6 +31,7 @@ import io.github.redouane59.twitter.dto.tweet.HiddenResponse;
 import io.github.redouane59.twitter.dto.tweet.HiddenResponse.HiddenData;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
+import io.github.redouane59.twitter.dto.tweet.RetweetResponse;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetCountsList;
 import io.github.redouane59.twitter.dto.tweet.TweetList;
@@ -272,12 +273,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public List<String> getRetweetersId(String tweetId) {
-    String url = urlHelper.getRetweetersUrl(tweetId);
-    return getUserIdsByRelation(url);
-  }
-
-  @Override
   public List<String> getFollowersIds(String userId) {
     String url = urlHelper.getFollowersIdsUrl(userId);
     return getUserIdsByRelation(url);
@@ -417,6 +412,15 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
+  public UserList getRetweetingUsers(String tweetId) {
+    String              url        = urlHelper.getRetweetersUrl(tweetId);
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(EXPANSION, PINNED_TWEET_ID);
+    return getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
   public UserList getLikingUsers(final String tweetId) {
     String              url        = getUrlHelper().getLikingUsersUrl(tweetId);
     Map<String, String> parameters = new HashMap<>();
@@ -483,14 +487,22 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public UserActionResponse unmuteUser(final String userId) {
     String url = urlHelper.getUnmuteUserUrl(getUserIdFromAccessToken(), userId);
-    return getRequestHelper().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, UserActionResponse.class)
-                             .orElseThrow(NoSuchElementException::new);
+    return requestHelperV1.makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, UserActionResponse.class)
+                          .orElseThrow(NoSuchElementException::new);
   }
 
   @Override
-  public Tweet retweetTweet(String tweetId) {
-    String url = getUrlHelper().getRetweetTweetUrl(tweetId);
-    return requestHelperV1.postRequest(url, new HashMap<>(), TweetV1.class).orElseThrow(NoSuchElementException::new);
+  public RetweetResponse retweetTweet(String tweetId) {
+    String url  = getUrlHelper().getRetweetTweetUrl(getUserIdFromAccessToken());
+    String body = "{\"tweet_id\": \"" + tweetId + "\"}";
+    return requestHelperV1.postRequestWithBodyJson(url, new HashMap<>(), body, RetweetResponse.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public RetweetResponse unretweetTweet(final String tweetId) {
+    String url = getUrlHelper().getUnretweetTweetUrl(getUserIdFromAccessToken(), tweetId);
+    return requestHelperV1.makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, RetweetResponse.class)
+                          .orElseThrow(NoSuchElementException::new);
   }
 
   @Override

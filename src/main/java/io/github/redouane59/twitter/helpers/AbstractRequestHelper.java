@@ -103,7 +103,7 @@ public abstract class AbstractRequestHelper {
         }
       }
       LOGGER.info("Rate limit exceeded, new retry in " + ConverterHelper.getSecondsAsText(retryAfter) + " at " + ConverterHelper.minutesBeforeNow(
-          -retryAfter / 60).format(DateTimeFormatter.ofPattern("HH:MM")));
+          -retryAfter / 60).format(DateTimeFormatter.ofPattern("HH:mm")));
       Thread.sleep(1000L * retryAfter);
       return makeRequest(request, false, classType); // We have already signed if it was requested
     } else if (response.getCode() < 200 || response.getCode() > 299) {
