@@ -18,14 +18,6 @@ import java.util.List;
 public interface ITwitterClientV1 {
 
   /**
-   * Retweet a tweet
-   *
-   * @param tweetId the id of the tweet
-   * @return the retweeted tweet
-   */
-  Tweet retweetTweet(String tweetId);
-
-  /**
    * Post a tweet calling https://api.twitter.com/1.1/statuses/update.json
    *
    * @param text the tweet text
@@ -72,14 +64,6 @@ public interface ITwitterClientV1 {
    * @return the deleted tweet
    */
   Tweet deleteTweet(String tweetId);
-
-  /**
-   * Get a list of ids of the users who retweeted a tweet calling https://api.twitter.com/1.1/statuses/retweeters/
-   *
-   * @param tweetId the id of the tweet
-   * @return a list of the ids of the users who retweeted a tweet
-   */
-  List<String> getRetweetersId(String tweetId);
 
   /**
    * Returns a cursored collection of user IDs for every user following the specified user calling https://api.twitter.com/1.1/followers/ids.json

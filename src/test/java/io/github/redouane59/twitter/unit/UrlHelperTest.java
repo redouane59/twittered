@@ -12,7 +12,7 @@ public class UrlHelperTest {
 
   @Test
   public void testUrlRetweetrs() {
-    assertEquals("https://api.twitter.com/1.1/statuses/retweeters/ids.json?id=12345&count=100", urlHelper.getRetweetersUrl("12345"));
+    assertEquals("https://api.twitter.com/2/tweets/12345/retweeted_by", urlHelper.getRetweetersUrl("12345"));
   }
 
   @Test
@@ -105,8 +105,7 @@ public class UrlHelperTest {
 
   @Test
   public void testRetweetTweetUrl() {
-    String tweetId = "12345";
-    assertEquals("https://api.twitter.com/1.1/statuses/retweet/12345.json", urlHelper.getRetweetTweetUrl(tweetId));
+    assertEquals("https://api.twitter.com/2/users/12345/retweets", urlHelper.getRetweetTweetUrl("12345"));
   }
 
   @Test
@@ -152,8 +151,8 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testDeleteTweetUrl() {
-    assertEquals("https://api.twitter.com/1.1/statuses/destroy/240854986559455234.json", urlHelper.getDeleteTweetUrl("240854986559455234"));
+  public void testUnretweetTweetUrl() {
+    assertEquals("https://api.twitter.com/2/users/12345/retweets/67890", urlHelper.getUnretweetTweetUrl("12345", "67890"));
   }
 
   @Test

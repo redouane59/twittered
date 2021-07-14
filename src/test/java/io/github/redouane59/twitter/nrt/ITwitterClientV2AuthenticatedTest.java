@@ -9,6 +9,7 @@ import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
+import io.github.redouane59.twitter.dto.tweet.RetweetResponse;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserActionResponse;
 import io.github.redouane59.twitter.dto.user.UserList;
@@ -87,7 +88,17 @@ public class ITwitterClientV2AuthenticatedTest {
 
   @Test
   public void testGetUserIdFromAccessToken() {
-    assertEquals(this.userId, twitterClient.getUserIdFromAccessToken());
+    assertEquals(userId, twitterClient.getUserIdFromAccessToken());
+  }
+
+  @Test
+  public void testRetweetAndUnretweetTweet() {
+    RetweetResponse resultRT = twitterClient.retweetTweet("1413515358766452738");
+    assertNotNull(resultRT);
+    assertTrue(resultRT.getData().isRetweeted());
+    resultRT = twitterClient.unretweetTweet("1413515358766452738");
+    assertNotNull(resultRT);
+    assertFalse(resultRT.getData().isRetweeted());
   }
 
 }

@@ -86,12 +86,6 @@ public class ITwitterClientV1Test {
   }
 
   @Test
-  public void testGetRetweetersId() {
-    String tweetId = "1078358350000205824";
-    assertTrue(twitterClient.getRetweetersId(tweetId).size() > 10);
-  }
-
-  @Test
   public void testGetOauth1Token() {
     twitterClient.getTwitterCredentials().setAccessToken("");
     twitterClient.getTwitterCredentials().setAccessTokenSecret("");
@@ -112,10 +106,6 @@ public class ITwitterClientV1Test {
     assertNotNull(resultPostAnswer);
     assertNotNull(resultPostAnswer.getId());
     assertEquals(resultPostAnswer.getInReplyToStatusId(), resultPost.getId());
-    Tweet resultRT = twitterClient.retweetTweet(resultPost.getId());
-    assertNotNull(resultRT);
-    assertNotNull(resultRT.getId());
-    assertEquals(resultPost.getAuthorId(), resultRT.getAuthorId());
     Tweet resultDelete = twitterClient.deleteTweet(resultPost.getId());
     assertNotNull(resultDelete);
     assertEquals(resultPost.getId(), resultDelete.getId());
