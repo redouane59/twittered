@@ -406,7 +406,7 @@ public interface ITwitterClientV2 {
   RetweetResponse retweetTweet(String tweetId);
 
   /**
-   * Allows a user or authenticated user ID to remove the Retweet of a Tweet calling https://api.twitter.com/2/users/:id/retweets/:source_tweet_id
+   * Allows the user or authenticated user to remove the Retweet of a Tweet calling https://api.twitter.com/2/users/:id/retweets/:source_tweet_id
    *
    * @param tweetId the id of the tweet
    */

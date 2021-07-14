@@ -92,13 +92,6 @@ public class ITwitterClientV2AuthenticatedTest {
   }
 
   @Test
-  public void testRetweetTweet() {
-    RetweetResponse resultRT = twitterClient.retweetTweet("1413515358766452738");
-    assertNotNull(resultRT);
-    assertTrue(resultRT.getData().isRetweeted());
-  }
-
-  @Test
   public void testRetweetAndUnretweetTweet() {
     RetweetResponse resultRT = twitterClient.retweetTweet("1413515358766452738");
     assertNotNull(resultRT);
