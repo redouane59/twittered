@@ -392,14 +392,14 @@ public interface ITwitterClientV2 {
   UserActionResponse unmuteUser(String userId);
 
   /**
-   * Allows you to get information about who has Retweeted a Tweet. calling https://api.twitter.com/2/tweets/:id/retweeted_by
+   * Allows you to get information about who has Retweeted a Tweet calling https://api.twitter.com/2/tweets/:id/retweeted_by
    *
    * @param tweetId the id of the tweet
    */
   UserList getRetweetingUsers(String tweetId);
 
   /**
-   * Causes the user ID identified in the path parameter to Retweet the target Tweet calling https://api.twitter.com/2/users/:id/retweets
+   * Causes the user identified to Retweet the target Tweet calling https://api.twitter.com/2/users/:id/retweets
    *
    * @param tweetId the id of the tweet
    */

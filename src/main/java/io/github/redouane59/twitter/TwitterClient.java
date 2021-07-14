@@ -192,7 +192,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   /**
    * Define the default behavior when Twitter API limits are reached (default value is true)
    *
-   * @param automaticRetry false will raise a , true will wait and call the endpoint again once the limit is over
+   * @param automaticRetry false will raise a LimitExceededException, true will wait and call the endpoint again once the limit is over
    */
   public void setAutomaticRetry(boolean automaticRetry) {
     requestHelperV1.setAutomaticRetry(automaticRetry);

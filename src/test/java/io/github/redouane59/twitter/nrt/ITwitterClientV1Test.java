@@ -11,7 +11,6 @@ import io.github.redouane59.twitter.dto.dm.DirectMessage;
 import io.github.redouane59.twitter.dto.dm.DmEvent;
 import io.github.redouane59.twitter.dto.others.RequestToken;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
-import io.github.redouane59.twitter.dto.tweet.RetweetResponse;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
@@ -107,8 +106,6 @@ public class ITwitterClientV1Test {
     assertNotNull(resultPostAnswer);
     assertNotNull(resultPostAnswer.getId());
     assertEquals(resultPostAnswer.getInReplyToStatusId(), resultPost.getId());
-    RetweetResponse resultRT = twitterClient.retweetTweet(resultPost.getId());
-    assertNotNull(resultRT);
     Tweet resultDelete = twitterClient.deleteTweet(resultPost.getId());
     assertNotNull(resultDelete);
     assertEquals(resultPost.getId(), resultDelete.getId());
