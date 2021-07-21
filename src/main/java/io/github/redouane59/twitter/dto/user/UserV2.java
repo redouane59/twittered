@@ -87,7 +87,7 @@ public class UserV2 implements User {
   @Override
   @JsonIgnore
   public boolean isProtectedAccount() {
-    throw new UnsupportedOperationException();
+    return data != null && data.protectedAccount;
   }
 
   @Override

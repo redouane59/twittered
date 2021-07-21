@@ -28,7 +28,7 @@
     "name": "Red'1",
     "pinned_tweet_id": "1035192987008020480",
     "profile_image_url": "https://pbs.twimg.com/profile_images/1162352850661445633/c1Rw5BI0_normal.jpg",
-    "protected": false,
+    "protected": true,
     "public_metrics": {
       "followers_count": 5708,
       "following_count": 2357,
