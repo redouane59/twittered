@@ -160,7 +160,8 @@ public class UserV2 implements User {
     private String            pinnedTweetId;
     private String            description;
     private String            lang;
-    private boolean           isProtectedAccount;
+    @JsonProperty("protected")
+    private boolean           protectedAccount;
     private boolean           following;
 
     @Override
