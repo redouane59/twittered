@@ -108,6 +108,11 @@ public class UserDeserializerV2Test {
     assertTrue(userAsString.contains("RedouaneBali"));
   }
 
+  @Test
+  public void testProtectedACcount() {
+    assertTrue(userV2.isProtectedAccount());
+  }
+
 }
 
 
