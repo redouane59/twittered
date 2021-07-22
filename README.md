@@ -87,18 +87,18 @@ page.
 
 See :
 
-- [ITwitterClientV2.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/ITwitterClientV2.java)
-- [ITwitterClientV1.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/ITwitterClientV1.java)
-- [Tweet.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/dto/tweet/Tweet.java)
-- [User.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/dto/user/User.java)
+- [ITwitterClientV2.java](https://github.com/redouane59/twittered/blob/develop/src/main/java/io/github/redouane59/twitter/ITwitterClientV2.java)
+- [ITwitterClientV1.java](https://github.com/redouane59/twittered/blob/develop/src/main/java/io/github/redouane59/twitter/ITwitterClientV1.java)
+- [Tweet.java](https://github.com/redouane59/twittered/blob/develop/src/main/java/io/github/redouane59/twitter/dto/tweet/Tweet.java)
+- [User.java](https://github.com/redouane59/twittered/blob/develop/src/main/java/io/github/redouane59/twitter/dto/user/User.java)
 
 ### Code samples
 
 See :
 
-- [ITwitterClientV2Test.java](https://github.com/redouane59/twittered/blob/master/src/test/java/com/github/redouane59/twitter/nrt/ITwitterClientV2Test.java)
-- [ITwitterClientV2AuthenticatedTest.java](https://github.com/redouane59/twittered/blob/master/src/test/java/com/github/redouane59/twitter/nrt/ITwitterClientV2AuthenticatedTest.java)
-- [ITwitterClientV1Test.java](https://github.com/redouane59/twittered/blob/master/src/test/java/com/github/redouane59/twitter/nrt/ITwitterClientV1Test.java)
+- [ITwitterClientV2Test.java](https://github.com/redouane59/twittered/blob/develop/src/test/java/io/github/redouane59/twitter/nrt/ITwitterClientV2Test.java)
+- [ITwitterClientV2AuthenticatedTest.java](https://github.com/redouane59/twittered/blob/develop/src/test/java/io/github/redouane59/twitter/nrt/ITwitterClientV2AuthenticatedTest.java)
+- [ITwitterClientV1Test.java](https://github.com/redouane59/twittered/blob/develop/src/test/java/io/github/redouane59/twitter/nrt/ITwitterClientV1Test.java)
 
 ### Basic examples
 
@@ -146,12 +146,12 @@ If you want to contribute to the project, don't hesitate to submit pull requests
 feature :
 
 - Create the interface method in the related interface (
-  e.g [ITwitterClientV2.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/ITwitterClientV2.java))
+  e.g [ITwitterClientV2.java](https://github.com/redouane59/twittered/blob/develop/src/main/java/io/github/redouane59/twitter/ITwitterClientV2.java))
 - If needed, add the endpoint URL
-  in [URLHelper.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/helpers/URLHelper.java)
+  in [URLHelper.java](https://github.com/redouane59/twittered/blob/develop/src/main/java/io/github/redouane59/twitter/helpers/URLHelper.java)
 - Implement your method in the child class (
-  e.g [TwitterClient.java](https://github.com/redouane59/twittered/blob/master/src/main/java/com/github/redouane59/twitter/TwitterClient.java))
-- Don't forget to add your unit tests in `src/test/java/com/github/redouane59/twitter/unit`
+  e.g [TwitterClient.java](https://github.com/redouane59/twittered/blob/develop/src/main/java/io/github/redouane59/twitter/TwitterClient.java))
+- Don't forget to add your unit tests in `src/test/java/io/github/redouane59/twitter/unit`
 
 Code style is also available in `.idea/codeStyles/GoogleStyle.xml` file.
 
