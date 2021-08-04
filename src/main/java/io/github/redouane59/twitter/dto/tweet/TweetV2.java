@@ -239,7 +239,6 @@ public class TweetV2 implements Tweet {
     private String                   inReplyToUserId;
     @JsonProperty("referenced_tweets")
     private List<ReferencedTweetDTO> referencedTweets;
-    @JsonProperty("entities")
     private EntitiesV2 entities;
     @JsonProperty("public_metrics")
     @JsonInclude(Include.NON_NULL)
