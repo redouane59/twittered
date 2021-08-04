@@ -41,12 +41,12 @@
         {
           "start": 0,
           "end": 13,
-          "tag": "RedouaneBali"
+          "username": "RedouaneBali"
         },
         {
           "start": 14,
           "end": 25,
-          "tag": "TwitterAPI"
+          "username": "TwitterAPI"
         }
       ],
       "urls": [

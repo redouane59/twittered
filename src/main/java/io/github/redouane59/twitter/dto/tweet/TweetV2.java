@@ -428,6 +428,18 @@ public class TweetV2 implements Tweet {
   @Getter
   @Setter
   public static class UserMentionEntityV2 extends TextBaseEntityV2 implements UserMentionEntity{
+    @JsonProperty("username")
+    private String username;
+
+    @Override
+    public String getText() {
+      return getUsername();
+    }
+
+    @Override
+    public String getTag() {
+      return getUsername();
+    }
   }
 
   @Getter
