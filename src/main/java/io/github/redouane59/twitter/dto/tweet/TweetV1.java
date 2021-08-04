@@ -169,7 +169,6 @@ public class TweetV1 implements Tweet {
     private String displayUrl;
     @JsonProperty("expanded_url")
     private String expandedUrl;
-    @JsonProperty("unwound")
     private UnwoundUrlEntity unwound;
 
     @Override
