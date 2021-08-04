@@ -5,11 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.ContextAnnotation;
+import io.github.redouane59.twitter.dto.tweet.entities.HashtagEntity;
 import io.github.redouane59.twitter.dto.tweet.ReplySettings;
+import io.github.redouane59.twitter.dto.tweet.entities.SymbolEntity;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetV2;
+import io.github.redouane59.twitter.dto.tweet.entities.UrlEntity;
+import io.github.redouane59.twitter.dto.tweet.entities.UserMentionEntity;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.io.File;
@@ -140,5 +145,69 @@ public class TweetDeserializerV2Test {
     String tweetAsString = TwitterClient.OBJECT_MAPPER.writeValueAsString(tweetv2);
     assertNotNull(tweetAsString);
     assertTrue(tweetAsString.contains("Try to use some function"));
+  }
+
+  @Test
+  public void testIncludesMedia() {
+    TweetV2 tweet = (TweetV2) tweetv2;
+    JsonNode media = tweet.getIncludes().getMedia();
+    assertNotNull(media);
+  }
+
+  @Test
+  public void testEntities() {
+    TweetV2 tweet = (TweetV2) tweetv2;
+    TweetV2.EntitiesV2 entities = tweet.getData().getEntities();
+    assertNotNull(entities);
+
+    List<? extends SymbolEntity> cashtags = entities.getSymbols();
+    assertNotNull(cashtags);
+    assertEquals(1,cashtags.size());
+
+    SymbolEntity e = cashtags.get(0);
+    assertNotNull(e);
+    assertEquals(18, e.getStart());
+    assertEquals(23, e.getEnd());
+    assertEquals("twtr", e.getText());
+
+    List<? extends HashtagEntity> hashtags = entities.getHashtags();
+    assertNotNull(hashtags);
+    assertEquals(1,hashtags.size());
+
+    HashtagEntity h = hashtags.get(0);
+    assertNotNull(h);
+    assertEquals(0, h.getStart());
+    assertEquals(17, h.getEnd());
+    assertEquals("blacklivesmatter", h.getText());
+
+    List<? extends UserMentionEntity> mentions = entities.getUserMentions();
+    assertNotNull(mentions);
+    assertEquals(2,mentions.size());
+
+    UserMentionEntity m = mentions.get(0);
+    assertNotNull(m);
+    assertEquals(0, m.getStart());
+    assertEquals(13, m.getEnd());
+    assertEquals("RedouaneBali", m.getText());
+
+    m = mentions.get(1);
+    assertNotNull(m);
+    assertEquals(14, m.getStart());
+    assertEquals(25, m.getEnd());
+    assertEquals("TwitterAPI", m.getText());
+
+    List<? extends UrlEntity> urls = entities.getUrls();
+    UrlEntity u = urls.get(0);
+    assertNotNull(u);
+    assertEquals(44, u.getStart());
+    assertEquals(67, u.getEnd());
+    assertEquals("https://t.co/crkYRdjUB0", u.getUrl());
+    assertEquals("https://twitter.com", u.getExpandedUrl());
+    assertEquals("https://twitter.com", u.getUnwoundedUrl());
+    assertEquals("twitter.com", u.getDisplayUrl());
+    assertEquals(200, u.getStatus());
+    assertEquals("From breaking news and entertainment to sports and politics, get the full story with all the live commentary.", u.getDescription());
+    assertEquals("bird", u.getTitle());
+
   }
 }

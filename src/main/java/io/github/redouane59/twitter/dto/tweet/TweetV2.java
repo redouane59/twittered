@@ -7,6 +7,13 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.redouane59.twitter.dto.stream.StreamRules;
+import io.github.redouane59.twitter.dto.tweet.entities.BaseEntity;
+import io.github.redouane59.twitter.dto.tweet.entities.Entities;
+import io.github.redouane59.twitter.dto.tweet.entities.HashtagEntity;
+import io.github.redouane59.twitter.dto.tweet.entities.SymbolEntity;
+import io.github.redouane59.twitter.dto.tweet.entities.TextBaseEntity;
+import io.github.redouane59.twitter.dto.tweet.entities.UrlEntity;
+import io.github.redouane59.twitter.dto.tweet.entities.UserMentionEntity;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserV2;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
@@ -18,6 +25,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @version labs
@@ -27,8 +35,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Slf4j
 public class TweetV2 implements Tweet {
 
+  private static final String  NOT_IMPLEMENTED_EXECEPTION = "not implemented";
   private TweetData                data;
   private Includes                 includes;
   @JsonProperty("matching_rules")
@@ -117,6 +127,14 @@ public class TweetV2 implements Tweet {
       return null;
     }
     return data.getSource();
+  }
+
+  @Override
+  public Entities getEntities() {
+    if (data == null) {
+      return null;
+    }
+    return data.getEntities();
   }
 
   @Override
@@ -221,7 +239,8 @@ public class TweetV2 implements Tweet {
     private String                   inReplyToUserId;
     @JsonProperty("referenced_tweets")
     private List<ReferencedTweetDTO> referencedTweets;
-    private JsonNode                 entities;
+    @JsonProperty("entities")
+    private EntitiesV2 entities;
     @JsonProperty("public_metrics")
     @JsonInclude(Include.NON_NULL)
     private TweetPublicMetricsDTO    publicMetrics;
@@ -330,6 +349,7 @@ public class TweetV2 implements Tweet {
 
     private List<UserV2.UserData>   users;
     private List<TweetV2.TweetData> tweets;
+    private JsonNode media; //TODO We should implement media objects accordingly
   }
 
 
@@ -347,4 +367,72 @@ public class TweetV2 implements Tweet {
     private int quoteCount;
   }
 
+  @Getter
+  @Setter
+  public static class EntitiesV2 implements Entities {
+
+    @JsonProperty("hashtags")
+    private List<HashtagEntityV2> hashtags;
+    @JsonProperty("urls")
+    private List<UrlEntityV2> urls;
+    @JsonProperty("mentions")
+    private List<UserMentionEntityV2> userMentions;
+    @JsonProperty("cashtags")
+    private List<CashtagEntityV2> symbols;
+  }
+
+  @Getter
+  @Setter
+  public static class BaseEntityV2 implements BaseEntity {
+    @JsonProperty("start")
+    private int start;
+    @JsonProperty("end")
+    private int end;
+  }
+
+  @Getter
+  @Setter
+  public static class TextBaseEntityV2 extends BaseEntityV2 implements TextBaseEntity {
+    @JsonProperty("tag")
+    private String tag;
+
+    @Override
+    public String getText() {
+      return tag;
+    }
+  }
+
+  @Getter
+  @Setter
+  public static class UrlEntityV2 extends BaseEntityV2 implements UrlEntity {
+    @JsonProperty("url")
+    private String url;
+    @JsonProperty("display_url")
+    private String displayUrl;
+    @JsonProperty("expanded_url")
+    private String expandedUrl;
+    @JsonProperty("status")
+    private int status;
+    @JsonProperty("description")
+    private String description;
+    @JsonProperty("title")
+    private String title;
+    @JsonProperty("unwound_url")
+    private String unwoundedUrl;
+  }
+
+  @Getter
+  @Setter
+  public static class HashtagEntityV2 extends TextBaseEntityV2 implements HashtagEntity{
+  }
+
+  @Getter
+  @Setter
+  public static class UserMentionEntityV2 extends TextBaseEntityV2 implements UserMentionEntity{
+  }
+
+  @Getter
+  @Setter
+  public static class CashtagEntityV2 extends TextBaseEntityV2 implements SymbolEntity{
+  }
 }

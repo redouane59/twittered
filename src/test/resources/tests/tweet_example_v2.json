@@ -23,16 +23,43 @@
       }
     ],
     "entities": {
+      "cashtags": [
+        {
+          "start": 18,
+          "end": 23,
+          "tag": "twtr"
+        }
+      ],
+      "hashtags": [
+        {
+          "start": 0,
+          "end": 17,
+          "tag": "blacklivesmatter"
+        }
+      ],
       "mentions": [
         {
           "start": 0,
           "end": 13,
-          "username": "RedouaneBali"
+          "tag": "RedouaneBali"
         },
         {
           "start": 14,
           "end": 25,
-          "username": "TwitterAPI"
+          "tag": "TwitterAPI"
+        }
+      ],
+      "urls": [
+        {
+          "start": 44,
+          "end": 67,
+          "url": "https://t.co/crkYRdjUB0",
+          "expanded_url": "https://twitter.com",
+          "display_url": "twitter.com",
+          "status": "200",
+          "title": "bird",
+          "description": "From breaking news and entertainment to sports and politics, get the full story with all the live commentary.",
+          "unwound_url": "https://twitter.com"
         }
       ]
     },
@@ -79,6 +106,19 @@
     }
   },
   "includes": {
+    "media": [
+      {
+        "height": 720,
+        "duration_ms": 34875,
+        "media_key": "3_1365362339449561088",
+        "type": "video",
+        "preview_image_url": "https://pbs.twimg.com/ext_tw_video_thumb/1293565706408038401/pu/img/66P2dvbU4a02jYbV.jpg",
+        "public_metrics": {
+          "view_count": 279438
+        },
+        "width": 1280
+      }
+    ],
     "users": [
       {
         "protected": false,

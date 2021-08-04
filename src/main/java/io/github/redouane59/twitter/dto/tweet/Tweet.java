@@ -1,5 +1,6 @@
 package io.github.redouane59.twitter.dto.tweet;
 
+import io.github.redouane59.twitter.dto.tweet.entities.Entities;
 import io.github.redouane59.twitter.dto.user.User;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -134,8 +135,14 @@ public interface Tweet {
    */
   Attachments getAttachments();
 
-  /*
+  /**
    * Get the source label of the tweet
    */
   String getSource();
+
+  /**
+   * Get the entities of the tweet
+   */
+  Entities getEntities();
+
 }

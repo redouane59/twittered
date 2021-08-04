@@ -64,7 +64,55 @@
       "reply_count":3,
       "retweet_count":2,
       "favorite_count":1,
-      "entities":{  },
+      "entities": {
+        "hashtags": [
+          {
+            "text": "TwitterAPI",
+            "indices": [
+              178,
+              189
+            ]
+          }
+        ],
+        "symbols": [
+          {
+            "indices": [
+              12,
+              17
+            ],
+            "text": "twtr"
+          }
+        ],
+        "user_mentions": [
+          {
+            "screen_name": "PennMedCDH",
+            "name": "Penn Med CDH",
+            "id": 1615654896,
+            "id_str": "1615654896",
+            "indices": [
+              8,
+              19
+            ]
+          }
+        ],
+        "urls": [
+          {
+            "url": "https://t.co/D0n7a53c2l",
+            "expanded_url": "http://bit.ly/18gECvy",
+            "display_url": "bit.ly/18gECvy",
+            "unwound": {
+              "url": "https://www.youtube.com/watch?v=oHg5SJYRHA0",
+              "status": 200,
+              "title": "RickRoll'D",
+              "description": "http://www.facebook.com/rickroll548 As long as trolls are still trolling, the Rick will never stop rolling."
+            },
+            "indices": [
+              62,
+              85
+            ]
+          }
+        ]
+      },
       "favorited":false,
       "retweeted":false,
       "filter_level":"low",
