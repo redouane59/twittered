@@ -370,9 +370,7 @@ public class TweetV2 implements Tweet {
   @Setter
   public static class EntitiesV2 implements Entities {
 
-    @JsonProperty("hashtags")
     private List<HashtagEntityV2> hashtags;
-    @JsonProperty("urls")
     private List<UrlEntityV2> urls;
     @JsonProperty("mentions")
     private List<UserMentionEntityV2> userMentions;
@@ -383,16 +381,13 @@ public class TweetV2 implements Tweet {
   @Getter
   @Setter
   public static class BaseEntityV2 implements BaseEntity {
-    @JsonProperty("start")
     private int start;
-    @JsonProperty("end")
     private int end;
   }
 
   @Getter
   @Setter
   public static class TextBaseEntityV2 extends BaseEntityV2 implements TextBaseEntity {
-    @JsonProperty("tag")
     private String tag;
 
     @Override
@@ -404,17 +399,13 @@ public class TweetV2 implements Tweet {
   @Getter
   @Setter
   public static class UrlEntityV2 extends BaseEntityV2 implements UrlEntity {
-    @JsonProperty("url")
     private String url;
     @JsonProperty("display_url")
     private String displayUrl;
     @JsonProperty("expanded_url")
     private String expandedUrl;
-    @JsonProperty("status")
     private int status;
-    @JsonProperty("description")
     private String description;
-    @JsonProperty("title")
     private String title;
     @JsonProperty("unwound_url")
     private String unwoundedUrl;
@@ -428,7 +419,6 @@ public class TweetV2 implements Tweet {
   @Getter
   @Setter
   public static class UserMentionEntityV2 extends TextBaseEntityV2 implements UserMentionEntity{
-    @JsonProperty("username")
     private String username;
 
     @Override
