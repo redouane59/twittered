@@ -110,11 +110,6 @@ public class TweetV1 implements Tweet {
   }
 
   @Override
-  public Entities getEntities() {
-    return entities;
-  }
-
-  @Override
   public String getInReplyToStatusId(TweetType type) {
     return getInReplyToStatusId();
   }
@@ -131,13 +126,10 @@ public class TweetV1 implements Tweet {
   @Getter
   @Setter
   public static class EntitiesV1 implements Entities {
-    @JsonProperty("hashtags")
     private List<HashtagEntityV1> hashtags;
-    @JsonProperty("urls")
     private List<UrlEntityV1> urls;
     @JsonProperty("user_mentions")
     private List<UserMentionEntityV1> userMentions;
-    @JsonProperty("symbols")
     private List<SymbolEntityV1> symbols;
     private JsonNode media; //TODO We should implement media objects accordingly
   }
@@ -145,7 +137,6 @@ public class TweetV1 implements Tweet {
   @Getter
   @Setter
   public static class BaseEntityV1 implements BaseEntity {
-    @JsonProperty("indices")
     private int[] indices;
 
     @Override
@@ -162,7 +153,6 @@ public class TweetV1 implements Tweet {
   @Getter
   @Setter
   public static class TextBaseEntityV1 extends BaseEntityV1 implements TextBaseEntity {
-    @JsonProperty("text")
     private String text;
 
     @Override
@@ -174,7 +164,6 @@ public class TweetV1 implements Tweet {
   @Getter
   @Setter
   public static class UrlEntityV1 extends BaseEntityV1 implements UrlEntity {
-    @JsonProperty("url")
     private String url;
     @JsonProperty("display_url")
     private String displayUrl;
@@ -219,13 +208,9 @@ public class TweetV1 implements Tweet {
   @Getter
   @Setter
   public static class UnwoundUrlEntity {
-    @JsonProperty("url")
     private String url;
-    @JsonProperty("status")
     private int status;
-    @JsonProperty("title")
     private String title;
-    @JsonProperty("description")
     private String description;
   }
 
@@ -237,11 +222,9 @@ public class TweetV1 implements Tweet {
   @Getter
   @Setter
   public static class UserMentionEntityV1 extends TextBaseEntityV1 implements UserMentionEntity{
-    @JsonProperty("name")
     private String name;
     @JsonProperty("screen_name")
     private String screenName;
-    @JsonProperty("id")
     private long id;
 
     @Override
