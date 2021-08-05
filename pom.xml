@@ -85,6 +85,11 @@
       <version>2.12.3</version>
     </dependency>
     <dependency>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <version>2.12.3</version>
+    </dependency>
+    <dependency>
       <artifactId>jackson-dataformat-yaml</artifactId>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <version>2.12.3</version>
