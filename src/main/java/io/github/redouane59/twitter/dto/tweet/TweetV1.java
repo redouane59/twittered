@@ -15,6 +15,7 @@ import io.github.redouane59.twitter.dto.user.UserV1;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -115,7 +116,7 @@ public class TweetV1 implements Tweet {
     if(entities != null) {
       return entities.getMedia();
     }
-    return null;
+    return Collections.emptyList();
   }
 
   @Override

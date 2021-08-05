@@ -18,7 +18,7 @@ import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserV2;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -140,7 +140,7 @@ public class TweetV2 implements Tweet {
   @Override
   public List<MediaEntityV2> getMedia() {
     if (includes == null) {
-      return null;
+      return Collections.emptyList();
     }
     return includes.getMedia();
   }
@@ -212,7 +212,7 @@ public class TweetV2 implements Tweet {
   @Override
   public List<ContextAnnotation> getContextAnnotations() {
     if (data == null) {
-      return Arrays.asList();
+      return Collections.emptyList();
     }
     return data.getContextAnnotations();
   }
@@ -324,7 +324,7 @@ public class TweetV2 implements Tweet {
     @Override
     public List<MediaEntityV2> getMedia() {
       LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
-      return null;
+      return Collections.emptyList();
     }
 
     @Override
