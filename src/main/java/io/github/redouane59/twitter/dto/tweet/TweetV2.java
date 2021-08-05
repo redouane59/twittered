@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
 import io.github.redouane59.twitter.dto.stream.StreamRules;
 import io.github.redouane59.twitter.dto.tweet.entities.BaseEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.Entities;
 import io.github.redouane59.twitter.dto.tweet.entities.HashtagEntity;
+import io.github.redouane59.twitter.dto.tweet.entities.MediaEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.SymbolEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.TextBaseEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.UrlEntity;
@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TweetV2 implements Tweet {
 
-  private static final String  NOT_IMPLEMENTED_EXECEPTION = "not implemented";
+  private static final String  NOT_IMPLEMENTED_EXCEPTION = "not implemented";
   private TweetData                data;
   private Includes                 includes;
   @JsonProperty("matching_rules")
@@ -135,6 +135,14 @@ public class TweetV2 implements Tweet {
       return null;
     }
     return data.getEntities();
+  }
+
+  @Override
+  public List<MediaEntityV2> getMedia() {
+    if (includes == null) {
+      return null;
+    }
+    return includes.getMedia();
   }
 
   @Override
@@ -314,6 +322,12 @@ public class TweetV2 implements Tweet {
     }
 
     @Override
+    public List<MediaEntityV2> getMedia() {
+      LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
+      return null;
+    }
+
+    @Override
     @JsonIgnore
     public User getUser() {
       throw new UnsupportedOperationException();
@@ -348,7 +362,7 @@ public class TweetV2 implements Tweet {
 
     private List<UserV2.UserData>   users;
     private List<TweetV2.TweetData> tweets;
-    private JsonNode media; //TODO We should implement media objects accordingly
+    private List<TweetV2.MediaEntityV2> media;
   }
 
 
@@ -376,6 +390,7 @@ public class TweetV2 implements Tweet {
     private List<UserMentionEntityV2> userMentions;
     @JsonProperty("cashtags")
     private List<CashtagEntityV2> symbols;
+
   }
 
   @Getter
@@ -435,5 +450,64 @@ public class TweetV2 implements Tweet {
   @Getter
   @Setter
   public static class CashtagEntityV2 extends TextBaseEntityV2 implements SymbolEntity{
+  }
+
+  @Getter
+  @Setter
+  public static class MediaEntityV2 implements MediaEntity {
+
+    @JsonProperty("media_key")
+    private String key;
+    private String type;
+    @JsonProperty("duration_ms")
+    private int duration;
+    private int height;
+    private int width;
+    private String url;
+    @JsonProperty("preview_image_url")
+    private String previewImageUrl;
+    @JsonProperty("public_metrics")
+    private MediaPublicMetricsDTO publicMetrics;
+
+    @Override
+    public int getStart() {
+      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION);
+      return -1;
+    }
+
+    @Override
+    public int getEnd() {
+      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION);
+      return -1;
+    }
+
+    @Override
+    public String getDisplayUrl() {
+      return getUrl();
+    }
+
+    @Override
+    public String getExpandedUrl() {
+      return getUrl();
+    }
+
+    @Override
+    public String getMediaUrl() {
+      return getUrl();
+    }
+
+    @Override
+    public long getId() {
+      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION);
+      return -1;
+    }
+  }
+
+  @Getter
+  @Setter
+  public static class MediaPublicMetricsDTO {
+
+    @JsonProperty("view_count")
+    private int viewCount;
   }
 }

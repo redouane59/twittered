@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetV1;
-import io.github.redouane59.twitter.dto.tweet.TweetV2;
 import io.github.redouane59.twitter.dto.tweet.entities.Entities;
 import io.github.redouane59.twitter.dto.tweet.entities.HashtagEntity;
+import io.github.redouane59.twitter.dto.tweet.entities.MediaEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.SymbolEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.UrlEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.UserMentionEntity;
@@ -16,6 +16,7 @@ import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -83,6 +84,7 @@ public class TweetDeserializerV1Test {
     assertEquals(83425, tweetV1.getUser().getTweetCount());
     assertEquals(ConverterHelper.getDateFromTwitterString("Sun Jul 29 13:24:02 +0000 2012"), tweetV1.getUser().getDateOfCreation());
   }
+
   @Test
   public void testEntities() {
     Entities entities = tweetV1.getEntities();
@@ -133,5 +135,40 @@ public class TweetDeserializerV1Test {
     assertEquals("http://www.facebook.com/rickroll548 As long as trolls are still trolling, the Rick will never stop rolling.", u.getDescription());
     assertEquals("RickRoll'D", u.getTitle());
 
+  }
+
+  @Test
+  public void testEntitiesMedia() {
+    List<? extends MediaEntity> media = tweetV1.getMedia();
+    assertNotNull(media);
+    assertEquals(1,media.size());
+
+    MediaEntity e = media.get(0);
+    assertNotNull(e);
+    assertEquals(219, e.getStart());
+    assertEquals(242, e.getEnd());
+    assertEquals(1293565706408038401L, e.getId());
+    assertEquals("https://pbs.twimg.com/ext_tw_video_thumb/1293565706408038401/pu/img/66P2dvbU4a02jYbV.jpg", e.getMediaUrl());
+    assertEquals("https://t.co/KaFSbjWUA8", e.getUrl());
+    assertEquals("pic.twitter.com/KaFSbjWUA8", e.getDisplayUrl());
+    assertEquals("https://twitter.com/TwitterDev/status/1293593516040269825/video/1", e.getExpandedUrl());
+    assertEquals("photo", e.getType());
+
+    TweetV1.MediaEntityV1 ev1 = (TweetV1.MediaEntityV1) e;
+    assertNotNull(ev1);
+    assertNotNull(ev1.getSizes());
+
+    checkMediaSizeContent(ev1.getSizes(), "thumb", 150, 150, "crop");
+    checkMediaSizeContent(ev1.getSizes(), "medium", 1200, 675, "fit");
+    checkMediaSizeContent(ev1.getSizes(), "small", 680, 383, "fit");
+    checkMediaSizeContent(ev1.getSizes(), "large", 1280, 720, "fit");
+  }
+
+  private void checkMediaSizeContent(Map<String, TweetV1.MediaSize> map, String key, int w, int h, String resize) {
+    TweetV1.MediaSize ms = map.get(key);
+    assertNotNull(ms);
+    assertEquals(h, ms.getHeight());
+    assertEquals(w, ms.getWidth());
+    assertEquals(resize, ms.getResize());
   }
 }

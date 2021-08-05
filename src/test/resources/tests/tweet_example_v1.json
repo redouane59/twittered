@@ -111,6 +111,44 @@
               85
             ]
           }
+        ],
+        "media": [
+          {
+            "id": 1293565706408038401,
+            "id_str": "1293565706408038401",
+            "indices": [
+              219,
+              242
+            ],
+            "media_url": "http:\/\/pbs.twimg.com\/ext_tw_video_thumb\/1293565706408038401\/pu\/img\/66P2dvbU4a02jYbV.jpg",
+            "media_url_https": "https:\/\/pbs.twimg.com\/ext_tw_video_thumb\/1293565706408038401\/pu\/img\/66P2dvbU4a02jYbV.jpg",
+            "url": "https:\/\/t.co\/KaFSbjWUA8",
+            "display_url": "pic.twitter.com\/KaFSbjWUA8",
+            "expanded_url": "https:\/\/twitter.com\/TwitterDev\/status\/1293593516040269825\/video\/1",
+            "type": "photo",
+            "sizes": {
+              "thumb": {
+                "w": 150,
+                "h": 150,
+                "resize": "crop"
+              },
+              "medium": {
+                "w": 1200,
+                "h": 675,
+                "resize": "fit"
+              },
+              "small": {
+                "w": 680,
+                "h": 383,
+                "resize": "fit"
+              },
+              "large": {
+                "w": 1280,
+                "h": 720,
+                "resize": "fit"
+              }
+            }
+          }
         ]
       },
       "favorited":false,
