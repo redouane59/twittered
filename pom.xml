@@ -99,6 +99,13 @@
       <artifactId>scribejava-apis</artifactId>
       <groupId>com.github.scribejava</groupId>
       <version>8.3.1</version>
+      <exclusions>
+        <!-- we include our own version -->
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <artifactId>slf4j-api</artifactId>
@@ -129,7 +136,7 @@
       <version>1.2.3</version>
     </dependency>
   </dependencies>
-  <description>Java Client for th Twitter API</description>
+  <description>Java Client for the Twitter API</description>
   <developers>
     <developer>
       <email>bali.redouane@gmail.com</email>
