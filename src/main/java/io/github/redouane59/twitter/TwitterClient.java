@@ -86,7 +86,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   public static final  ObjectMapper       OBJECT_MAPPER                        = new ObjectMapper()
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-      .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+      .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+      .findAndRegisterModules();
   public static final  String             TWEET_FIELDS                         = "tweet.fields";
   public static final  String
                                           ALL_TWEET_FIELDS                     =
@@ -916,6 +917,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     module.addDeserializer(TweetV1.class, new TweetV1Deserializer());
     ObjectMapper customObjectMapper = new ObjectMapper();
     customObjectMapper.registerModule(module);
+    customObjectMapper.findAndRegisterModules();
 
     List<TweetV1> result = new ArrayList<>();
     if (!file.exists()) {
