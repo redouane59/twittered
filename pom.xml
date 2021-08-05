@@ -82,12 +82,12 @@
     <dependency>
       <artifactId>jackson-databind</artifactId>
       <groupId>com.fasterxml.jackson.core</groupId>
-      <version>2.11.2</version>
+      <version>2.12.3</version>
     </dependency>
     <dependency>
       <artifactId>jackson-dataformat-yaml</artifactId>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
-      <version>2.11.2</version>
+      <version>2.12.3</version>
     </dependency>
     <dependency>
       <artifactId>lombok</artifactId>
