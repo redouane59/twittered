@@ -8,8 +8,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.ContextAnnotation;
+import io.github.redouane59.twitter.dto.tweet.TweetV1;
 import io.github.redouane59.twitter.dto.tweet.entities.HashtagEntity;
 import io.github.redouane59.twitter.dto.tweet.ReplySettings;
+import io.github.redouane59.twitter.dto.tweet.entities.MediaEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.SymbolEntity;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetV2;
@@ -19,6 +21,7 @@ import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -148,13 +151,6 @@ public class TweetDeserializerV2Test {
   }
 
   @Test
-  public void testIncludesMedia() {
-    TweetV2 tweet = (TweetV2) tweetv2;
-    JsonNode media = tweet.getIncludes().getMedia();
-    assertNotNull(media);
-  }
-
-  @Test
   public void testEntities() {
     TweetV2 tweet = (TweetV2) tweetv2;
     TweetV2.EntitiesV2 entities = tweet.getData().getEntities();
@@ -208,6 +204,31 @@ public class TweetDeserializerV2Test {
     assertEquals(200, u.getStatus());
     assertEquals("From breaking news and entertainment to sports and politics, get the full story with all the live commentary.", u.getDescription());
     assertEquals("bird", u.getTitle());
+  }
 
+  @Test
+  public void testEntitiesMedia() {
+    List<? extends MediaEntity> media = tweetv2.getMedia();
+    assertNotNull(media);
+    assertEquals(1,media.size());
+
+    MediaEntity e = media.get(0);
+    assertNotNull(e);
+    assertEquals(-1, e.getStart());
+    assertEquals(-1, e.getEnd());
+    assertEquals(-1, e.getId());
+    assertEquals("https://pbs.twimg.com/ext_tw_video_thumb/1293565706408038401/pu/img/66P2dvbU4a02jYbV.jpg", e.getMediaUrl());
+    assertEquals("https://pbs.twimg.com/ext_tw_video_thumb/1293565706408038401/pu/img/66P2dvbU4a02jYbV.jpg", e.getUrl());
+    assertEquals("https://pbs.twimg.com/ext_tw_video_thumb/1293565706408038401/pu/img/66P2dvbU4a02jYbV.jpg", e.getDisplayUrl());
+    assertEquals("https://pbs.twimg.com/ext_tw_video_thumb/1293565706408038401/pu/img/66P2dvbU4a02jYbV.jpg", e.getExpandedUrl());
+    assertEquals("video", e.getType());
+
+    TweetV2.MediaEntityV2 ev2 = (TweetV2.MediaEntityV2) e;
+    assertNotNull(ev2);
+    assertEquals("3_1365362339449561088", ev2.getKey());
+    assertTrue(Arrays.asList(tweetv2.getAttachments().getMediaKeys()).contains(ev2.getKey()));
+    assertEquals(34875, ev2.getDuration());
+    assertEquals(720, ev2.getHeight());
+    assertEquals(1280, ev2.getWidth());
   }
 }

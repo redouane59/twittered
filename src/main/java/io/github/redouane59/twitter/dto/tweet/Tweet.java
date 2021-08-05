@@ -1,6 +1,7 @@
 package io.github.redouane59.twitter.dto.tweet;
 
 import io.github.redouane59.twitter.dto.tweet.entities.Entities;
+import io.github.redouane59.twitter.dto.tweet.entities.MediaEntity;
 import io.github.redouane59.twitter.dto.user.User;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -144,5 +145,10 @@ public interface Tweet {
    * Get the entities of the tweet
    */
   Entities getEntities();
+
+  /**
+   * Get the {@link MediaEntity media entities} of the tweet
+   */
+  List<? extends MediaEntity> getMedia();
 
 }

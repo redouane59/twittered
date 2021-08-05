@@ -3,10 +3,10 @@ package io.github.redouane59.twitter.dto.tweet;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
 import io.github.redouane59.twitter.dto.tweet.entities.BaseEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.Entities;
 import io.github.redouane59.twitter.dto.tweet.entities.HashtagEntity;
+import io.github.redouane59.twitter.dto.tweet.entities.MediaEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.SymbolEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.TextBaseEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.UrlEntity;
@@ -16,6 +16,8 @@ import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TweetV1 implements Tweet {
 
-  private static final String  NOT_IMPLEMENTED_EXECEPTION = "not implemented";
+  private static final String NOT_IMPLEMENTED_EXCEPTION = "not implemented";
   private              String  id;
   private              String  lang;
   @JsonProperty("retweet_count")
@@ -67,7 +69,7 @@ public class TweetV1 implements Tweet {
 
   @Override
   public List<ContextAnnotation> getContextAnnotations() {
-    LOGGER.error(NOT_IMPLEMENTED_EXECEPTION);
+    LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
     return Arrays.asList();
   }
 
@@ -81,31 +83,38 @@ public class TweetV1 implements Tweet {
 
   @Override
   public String getConversationId() {
-    LOGGER.error(NOT_IMPLEMENTED_EXECEPTION);
+    LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
     return null;
   }
 
   @Override
   public ReplySettings getReplySettings() {
-    LOGGER.error(NOT_IMPLEMENTED_EXECEPTION);
+    LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
     return null;
   }
 
   @Override
   public Geo getGeo() {
-    LOGGER.error(NOT_IMPLEMENTED_EXECEPTION);
+    LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
     return new Geo();
   }
 
   @Override
   public Attachments getAttachments() {
-    LOGGER.error(NOT_IMPLEMENTED_EXECEPTION);
+    LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
     return new Attachments();
   }
 
   @Override
   public String getSource() {
-    LOGGER.error(NOT_IMPLEMENTED_EXECEPTION);
+    LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
+    return null;
+  }
+  @Override
+  public List<MediaEntityV1> getMedia() {
+    if(entities != null) {
+      return entities.getMedia();
+    }
     return null;
   }
 
@@ -131,7 +140,7 @@ public class TweetV1 implements Tweet {
     @JsonProperty("user_mentions")
     private List<UserMentionEntityV1> userMentions;
     private List<SymbolEntityV1> symbols;
-    private JsonNode media; //TODO We should implement media objects accordingly
+    private List<MediaEntityV1> media;
   }
 
   @Getter
@@ -235,5 +244,30 @@ public class TweetV1 implements Tweet {
   @Getter
   @Setter
   public static class SymbolEntityV1 extends TextBaseEntityV1 implements SymbolEntity{
+  }
+
+  @Getter
+  @Setter
+  public static class MediaEntityV1 extends BaseEntityV1 implements MediaEntity {
+   private long id;
+   private String url;
+   @JsonProperty("display_url")
+   private String displayUrl;
+   @JsonProperty("expanded_url")
+   private String expandedUrl;
+   @JsonProperty("media_url_https")
+   private String mediaUrl;
+   private String type;
+   private Map<String, MediaSize> sizes;
+  }
+
+  @Getter
+  @Setter
+  public static class MediaSize {
+    @JsonProperty("w")
+    private int width;
+    @JsonProperty("h")
+    private int height;
+    private String resize;
   }
 }

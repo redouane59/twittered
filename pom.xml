@@ -135,7 +135,7 @@
       <email>bali.redouane@gmail.com</email>
       <name>Redouane Bali</name>
       <organization>Redouane59</organization>
-      <organizationUrl>http://github.com/Redouane59</organizationUrl>
+      <organizationUrl>https://github.com/Redouane59</organizationUrl>
     </developer>
   </developers>
   <distributionManagement>
@@ -149,7 +149,7 @@
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
 
@@ -177,10 +177,10 @@
     <connection>scm:git:git://github.com/Redouane59/twittered.git</connection>
     <developerConnection>scm:git:ssh://github.com:Redouane59/twittered.git
     </developerConnection>
-    <url>http://github.com/Redouane59/twittered</url>
+    <url>https://github.com/Redouane59/twittered</url>
   </scm>
 
-  <url>http://github.com/Redouane59/twittered</url>
+  <url>https://github.com/Redouane59/twittered</url>
 
-  <version>2.7</version>
+  <version>2.7-SNAPSHOT</version>
 </project>

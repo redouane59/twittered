@@ -94,10 +94,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public static final  String             EXPANSION                            = "expansions";
   public static final  String
                                           ALL_EXPANSIONS                       =
-      "author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id";
+      "author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id,attachments.media_keys";
   public static final  String             USER_FIELDS                          = "user.fields";
   public static final  String             ALL_USER_FIELDS                      =
       "id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
+  public static final  String             MEDIA_FIELD                          = "media.fields";
+  public static final  String ALL_MEDIA_FIELDS = "duration_ms,height,media_key,preview_image_url,public_metrics,type,url,width";
   private static final String             QUERY                                = "query";
   private static final String             CURSOR                               = "cursor";
   private static final String             NEXT                                 = "next";
@@ -552,6 +554,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(EXPANSION, ALL_EXPANSIONS);
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     return getRequestHelper().getRequestWithParameters(url, parameters, TweetV2.class).orElseThrow(NoSuchElementException::new);
   }
 
@@ -562,6 +565,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(EXPANSION, ALL_EXPANSIONS);
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     StringBuilder result = new StringBuilder();
     int           i      = 0;
     while (i < tweetIds.size() && i < URLHelper.MAX_LOOKUP) {
@@ -600,6 +604,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(QUERY, query);
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     parameters.put(EXPANSION, ALL_EXPANSIONS);
+    parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     String url = urlHelper.getSearchRecentTweetsUrl();
     if (!additionalParameters.isRecursiveCall()) {
       return getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
@@ -626,6 +631,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS.replace(",context_annotations", ""));
     }
     parameters.put(EXPANSION, ALL_EXPANSIONS);
+    parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     String url = urlHelper.getSearchAllTweetsUrl();
     if (!additionalParameters.isRecursiveCall()) {
       return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
@@ -758,6 +764,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(EXPANSION, ALL_EXPANSIONS);
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     return requestHelperV2.getAsyncRequest(url, parameters, consumer);
   }
 
@@ -773,6 +780,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(EXPANSION, ALL_EXPANSIONS);
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     if (backfillMinutes > 0) {
       parameters.put(BACKFILL_MINUTES, String.valueOf(backfillMinutes));
     }
@@ -841,6 +849,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(EXPANSION, ALL_EXPANSIONS);
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     return requestHelperV2.getAsyncRequest(url, parameters, consumer);
   }
 
@@ -856,6 +865,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(EXPANSION, ALL_EXPANSIONS);
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     if (backfillMinutes > 0) {
       parameters.put(BACKFILL_MINUTES, String.valueOf(backfillMinutes));
     }
@@ -1047,7 +1057,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
           DmEvent.builder().event(new DirectMessage(text, userId)).build());
       return getRequestHelperV1().postRequestWithBodyJson(url, null, body, DmEvent.class).orElseThrow(NoSuchElementException::new);
     } catch (JsonProcessingException e) {
-      LOGGER.error(e.getMessage(), e.getStackTrace());
+      LOGGER.error(e.getMessage(), e);
     }
     return null;
   }
