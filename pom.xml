@@ -110,7 +110,7 @@
     <dependency>
       <artifactId>slf4j-api</artifactId>
       <groupId>org.slf4j</groupId>
-      <version>1.7.30</version>
+      <version>1.7.32</version>
     </dependency>
     <dependency>
       <artifactId>httpclient</artifactId>
