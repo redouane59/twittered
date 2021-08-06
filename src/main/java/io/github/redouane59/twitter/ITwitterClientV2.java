@@ -3,6 +3,7 @@ package io.github.redouane59.twitter;
 import com.github.scribejava.core.model.Response;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
+import io.github.redouane59.twitter.dto.rules.FilteredStreamRulePredicate;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
@@ -179,6 +180,23 @@ public interface ITwitterClientV2 {
    * @return the created rules
    */
   StreamRule addFilteredStreamRule(String value, String tag);
+
+  /**
+   * add a filtered stream rule calling https://api.twitter.com/2/tweets/search/stream/rules
+   *
+   * @param value the rule value
+   * @param tag the rule associated tag
+   * @return the created rules
+   */
+  StreamRule addFilteredStreamRule(FilteredStreamRulePredicate value, String tag);
+
+  /**
+   * Delete a filtered stream rule calling https://api.twitter.com/2/tweets/search/stream/rules
+   *
+   * @param ruleValue the value of the rule to delete
+   * @return a StreamMeta object resuming the operation
+   */
+  StreamMeta deleteFilteredStreamRule(FilteredStreamRulePredicate ruleValue);
 
   /**
    * Delete a filtered stream rule calling https://api.twitter.com/2/tweets/search/stream/rules
