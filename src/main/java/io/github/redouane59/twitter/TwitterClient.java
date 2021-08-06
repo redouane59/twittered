@@ -24,6 +24,7 @@ import io.github.redouane59.twitter.dto.getrelationship.RelationshipObjectRespon
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.others.RateLimitStatus;
 import io.github.redouane59.twitter.dto.others.RequestToken;
+import io.github.redouane59.twitter.dto.rules.FilteredStreamRulePredicate;
 import io.github.redouane59.twitter.dto.stream.StreamRules;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
@@ -825,6 +826,16 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       LOGGER.error(e.getMessage(), e);
       throw new IllegalArgumentException();
     }
+  }
+
+  @Override
+  public StreamRule addFilteredStreamRule(FilteredStreamRulePredicate value, String tag) {
+    return this.addFilteredStreamRule(value.toString(), tag);
+  }
+
+  @Override
+  public StreamMeta deleteFilteredStreamRule(FilteredStreamRulePredicate ruleValue) {
+    return this.deleteFilteredStreamRule(ruleValue.toString());
   }
 
   @Override
