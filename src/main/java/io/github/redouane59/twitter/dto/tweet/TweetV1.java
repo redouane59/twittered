@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,29 +38,29 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TweetV1 implements Tweet {
 
-  private static final String NOT_IMPLEMENTED_EXCEPTION = "not implemented";
-  private              String  id;
-  private              String  lang;
+  private static final String     NOT_IMPLEMENTED_EXCEPTION = "not implemented";
+  private              String     id;
+  private              String     lang;
   @JsonProperty("retweet_count")
-  private              int     retweetCount;
+  private              int        retweetCount;
   @JsonProperty("favorite_count")
-  private              int     likeCount;
+  private              int        likeCount;
   @JsonProperty("reply_count")
-  private              int     replyCount;
+  private              int        replyCount;
   @JsonProperty("quote_count")
-  private              int     quoteCount;
+  private              int        quoteCount;
   @JsonAlias({"text", "full_text"})
-  private              String  text;
+  private              String     text;
   @JsonProperty("created_at")
-  private              String  createdAt;
-  private              UserV1  user;
+  private              String     createdAt;
+  private              UserV1     user;
   @JsonProperty("in_reply_to_status_id_str")
-  private              String  inReplyToStatusId;
+  private              String     inReplyToStatusId;
   @JsonProperty("in_reply_to_user_id_str")
-  private              String  inReplyToUserId;
+  private              String     inReplyToUserId;
   @JsonProperty("is_quote_status")
-  private              boolean isQuoteStatus;
-  private              EntitiesV1     entities;
+  private              boolean    isQuoteStatus;
+  private              EntitiesV1 entities;
 
   @Override
   public LocalDateTime getCreatedAt() {
@@ -111,9 +110,10 @@ public class TweetV1 implements Tweet {
     LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
     return null;
   }
+
   @Override
   public List<MediaEntityV1> getMedia() {
-    if(entities != null) {
+    if (entities != null) {
       return entities.getMedia();
     }
     return Collections.emptyList();
@@ -136,17 +136,19 @@ public class TweetV1 implements Tweet {
   @Getter
   @Setter
   public static class EntitiesV1 implements Entities {
-    private List<HashtagEntityV1> hashtags;
-    private List<UrlEntityV1> urls;
+
+    private List<HashtagEntityV1>     hashtags;
+    private List<UrlEntityV1>         urls;
     @JsonProperty("user_mentions")
     private List<UserMentionEntityV1> userMentions;
-    private List<SymbolEntityV1> symbols;
-    private List<MediaEntityV1> media;
+    private List<SymbolEntityV1>      symbols;
+    private List<MediaEntityV1>       media;
   }
 
   @Getter
   @Setter
   public static class BaseEntityV1 implements BaseEntity {
+
     private int[] indices;
 
     @Override
@@ -163,6 +165,7 @@ public class TweetV1 implements Tweet {
   @Getter
   @Setter
   public static class TextBaseEntityV1 extends BaseEntityV1 implements TextBaseEntity {
+
     private String text;
 
     @Override
@@ -174,16 +177,17 @@ public class TweetV1 implements Tweet {
   @Getter
   @Setter
   public static class UrlEntityV1 extends BaseEntityV1 implements UrlEntity {
-    private String url;
+
+    private String           url;
     @JsonProperty("display_url")
-    private String displayUrl;
+    private String           displayUrl;
     @JsonProperty("expanded_url")
-    private String expandedUrl;
+    private String           expandedUrl;
     private UnwoundUrlEntity unwound;
 
     @Override
     public int getStatus() {
-      if(unwound != null) {
+      if (unwound != null) {
         return unwound.getStatus();
       }
       return -1;
@@ -191,7 +195,7 @@ public class TweetV1 implements Tweet {
 
     @Override
     public String getDescription() {
-      if(unwound != null) {
+      if (unwound != null) {
         return unwound.getDescription();
       }
       return null;
@@ -199,7 +203,7 @@ public class TweetV1 implements Tweet {
 
     @Override
     public String getTitle() {
-      if(unwound != null) {
+      if (unwound != null) {
         return unwound.getTitle();
       }
       return null;
@@ -207,7 +211,7 @@ public class TweetV1 implements Tweet {
 
     @Override
     public String getUnwoundedUrl() {
-      if(unwound != null) {
+      if (unwound != null) {
         return unwound.getUrl();
       }
       return null;
@@ -217,24 +221,27 @@ public class TweetV1 implements Tweet {
   @Getter
   @Setter
   public static class UnwoundUrlEntity {
+
     private String url;
-    private int status;
+    private int    status;
     private String title;
     private String description;
   }
 
   @Getter
   @Setter
-  public static class HashtagEntityV1 extends TextBaseEntityV1 implements HashtagEntity{
+  public static class HashtagEntityV1 extends TextBaseEntityV1 implements HashtagEntity {
+
   }
 
   @Getter
   @Setter
-  public static class UserMentionEntityV1 extends TextBaseEntityV1 implements UserMentionEntity{
+  public static class UserMentionEntityV1 extends TextBaseEntityV1 implements UserMentionEntity {
+
     private String name;
     @JsonProperty("screen_name")
     private String screenName;
-    private long id;
+    private long   id;
 
     @Override
     public String getText() {
@@ -244,31 +251,34 @@ public class TweetV1 implements Tweet {
 
   @Getter
   @Setter
-  public static class SymbolEntityV1 extends TextBaseEntityV1 implements SymbolEntity{
+  public static class SymbolEntityV1 extends TextBaseEntityV1 implements SymbolEntity {
+
   }
 
   @Getter
   @Setter
   public static class MediaEntityV1 extends BaseEntityV1 implements MediaEntity {
-   private long id;
-   private String url;
-   @JsonProperty("display_url")
-   private String displayUrl;
-   @JsonProperty("expanded_url")
-   private String expandedUrl;
-   @JsonProperty("media_url_https")
-   private String mediaUrl;
-   private String type;
-   private Map<String, MediaSize> sizes;
+
+    private long                   id;
+    private String                 url;
+    @JsonProperty("display_url")
+    private String                 displayUrl;
+    @JsonProperty("expanded_url")
+    private String                 expandedUrl;
+    @JsonProperty("media_url_https")
+    private String                 mediaUrl;
+    private String                 type;
+    private Map<String, MediaSize> sizes;
   }
 
   @Getter
   @Setter
   public static class MediaSize {
+
     @JsonProperty("w")
-    private int width;
+    private int    width;
     @JsonProperty("h")
-    private int height;
+    private int    height;
     private String resize;
   }
 }

@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
 import org.junit.jupiter.api.Test;
 
 public class TweetDeserializerV1Test {
@@ -92,7 +91,7 @@ public class TweetDeserializerV1Test {
 
     List<? extends SymbolEntity> cashtags = entities.getSymbols();
     assertNotNull(cashtags);
-    assertEquals(1,cashtags.size());
+    assertEquals(1, cashtags.size());
 
     SymbolEntity e = cashtags.get(0);
     assertNotNull(e);
@@ -102,7 +101,7 @@ public class TweetDeserializerV1Test {
 
     List<? extends HashtagEntity> hashtags = entities.getHashtags();
     assertNotNull(hashtags);
-    assertEquals(1,hashtags.size());
+    assertEquals(1, hashtags.size());
 
     HashtagEntity h = hashtags.get(0);
     assertNotNull(h);
@@ -112,7 +111,7 @@ public class TweetDeserializerV1Test {
 
     List<? extends UserMentionEntity> mentions = entities.getUserMentions();
     assertNotNull(mentions);
-    assertEquals(1,mentions.size());
+    assertEquals(1, mentions.size());
 
     TweetV1.UserMentionEntityV1 m = (TweetV1.UserMentionEntityV1) mentions.get(0);
     assertNotNull(m);
@@ -123,7 +122,7 @@ public class TweetDeserializerV1Test {
     assertEquals(1615654896, m.getId());
 
     List<? extends UrlEntity> urls = entities.getUrls();
-    UrlEntity u = urls.get(0);
+    UrlEntity                 u    = urls.get(0);
     assertNotNull(u);
     assertEquals(62, u.getStart());
     assertEquals(85, u.getEnd());
@@ -141,7 +140,7 @@ public class TweetDeserializerV1Test {
   public void testEntitiesMedia() {
     List<? extends MediaEntity> media = tweetV1.getMedia();
     assertNotNull(media);
-    assertEquals(1,media.size());
+    assertEquals(1, media.size());
 
     MediaEntity e = media.get(0);
     assertNotNull(e);

@@ -220,7 +220,7 @@ public class TweetDeserializerV2Test {
     assertEquals("https://pbs.twimg.com/ext_tw_video_thumb/1293565706408038401/pu/img/66P2dvbU4a02jYbV.jpg", e.getDisplayUrl());
     assertEquals("https://pbs.twimg.com/ext_tw_video_thumb/1293565706408038401/pu/img/66P2dvbU4a02jYbV.jpg", e.getExpandedUrl());
     assertEquals("video", e.getType());
-        
+
     TweetV2.MediaEntityV2 ev2 = (TweetV2.MediaEntityV2) e;
     assertNotNull(ev2);
     assertEquals("3_1365362339449561088", ev2.getKey());
