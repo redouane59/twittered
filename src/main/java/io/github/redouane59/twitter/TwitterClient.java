@@ -1,5 +1,7 @@
 package io.github.redouane59.twitter;
 
+import static io.github.redouane59.twitter.dto.endpoints.AdditionalParameters.MAX_RESULTS;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -12,6 +14,7 @@ import com.github.scribejava.core.httpclient.HttpClientConfig;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
+import com.sun.deploy.util.StringUtils;
 import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.dto.collections.CollectionsResponse;
 import io.github.redouane59.twitter.dto.collections.TimeLineOrder;
@@ -26,6 +29,7 @@ import io.github.redouane59.twitter.dto.others.RateLimitStatus;
 import io.github.redouane59.twitter.dto.others.RequestToken;
 import io.github.redouane59.twitter.dto.rules.FilteredStreamRulePredicate;
 import io.github.redouane59.twitter.dto.space.Space;
+import io.github.redouane59.twitter.dto.space.SpaceList;
 import io.github.redouane59.twitter.dto.stream.StreamRules;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
@@ -242,7 +246,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(1000));
+      parameters.put(MAX_RESULTS, String.valueOf(1000));
     }
     return getUsersRecursively(url, parameters, getRequestHelper());
   }
@@ -261,7 +265,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(1000));
+      parameters.put(MAX_RESULTS, String.valueOf(1000));
     }
     return getUsersRecursively(url, parameters, getRequestHelper());
   }
@@ -454,7 +458,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
+      parameters.put(MAX_RESULTS, String.valueOf(100));
     }
     return getTweetsRecursively(url, parameters, getRequestHelper());
   }
@@ -521,10 +525,33 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public Space getSpace(final String spaceId) {
     String              url        = getUrlHelper().getSpaceUrl(spaceId);
     Map<String, String> parameters = new HashMap<>();
-    //parameters.put(EXPANSION, "invited_user_ids,speaker_ids,creator_id,host_ids");
-    //parameters.put(SPACE_FIELDS, ALL_SPACE_FIELDS);
+    parameters.put(EXPANSION, "invited_user_ids,speaker_ids,creator_id,host_ids");
+    parameters.put(SPACE_FIELDS, ALL_SPACE_FIELDS);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     return getRequestHelperV2().getRequestWithParameters(url, parameters, Space.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public SpaceList getSpaces(final List<String> spaceIds) {
+    String              url        = getUrlHelper().getSpacesUrl();
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(EXPANSION, "invited_user_ids,speaker_ids,creator_id,host_ids");
+    parameters.put(SPACE_FIELDS, ALL_SPACE_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put("ids", StringUtils.join(spaceIds, ","));
+    return getRequestHelperV2().getRequestWithParameters(url, parameters, SpaceList.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public SpaceList getSpacesByCreators(final List<String> creatorIds) {
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put("user_ids", StringUtils.join(creatorIds, ","));
+    parameters.put(EXPANSION, "invited_user_ids,speaker_ids,creator_id,host_ids");
+    parameters.put(SPACE_FIELDS, ALL_SPACE_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    //   parameters.put(MAX_RESULTS, "100");
+    return getRequestHelperV2().getRequestWithParameters(getUrlHelper().getSpaceByCreatorUrl(), parameters, SpaceList.class)
+                               .orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -630,7 +657,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
+      parameters.put(MAX_RESULTS, String.valueOf(100));
     }
     return getTweetsRecursively(url, parameters, getRequestHelper());
   }
@@ -657,7 +684,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
+      parameters.put(MAX_RESULTS, String.valueOf(100));
     }
     return getTweetsRecursively(url, parameters, getRequestHelperV2());
   }
@@ -758,7 +785,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     int                 count      = 100;
     Map<String, String> parameters = new HashMap<>();
     parameters.put(QUERY, query);
-    parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(count));
+    parameters.put(MAX_RESULTS, String.valueOf(count));
     parameters.put("fromDate", ConverterHelper.getStringFromDate(fromDate));
     parameters.put("toDate", ConverterHelper.getStringFromDate(toDate));
     String      next;
@@ -916,7 +943,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
+      parameters.put(MAX_RESULTS, String.valueOf(100));
     }
     return getTweetsRecursively(url, parameters, getRequestHelperV2());
   }
@@ -935,7 +962,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
-      parameters.put(AdditionalParameters.MAX_RESULTS, String.valueOf(100));
+      parameters.put(MAX_RESULTS, String.valueOf(100));
     }
     return getTweetsRecursively(url, parameters, getRequestHelperV2());
   }
