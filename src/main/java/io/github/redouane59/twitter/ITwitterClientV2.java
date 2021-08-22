@@ -5,6 +5,7 @@ import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.rules.FilteredStreamRulePredicate;
 import io.github.redouane59.twitter.dto.space.Space;
+import io.github.redouane59.twitter.dto.space.SpaceList;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
@@ -438,5 +439,14 @@ public interface ITwitterClientV2 {
    */
   Space getSpace(String spaceId);
 
+  /**
+   * Returns details about multiple Spaces. Up to 100 Spaces IDs can be looked up using this endpoint.
+   */
+  SpaceList getSpaces(List<String> spaceIds);
+
+  /**
+   * Returns live or scheduled Spaces created by the specified user IDs. Up to 100 IDs can be looked up using this endpoint.
+   */
+  SpaceList getSpacesByCreators(List<String> creatorIds);
 }
 
