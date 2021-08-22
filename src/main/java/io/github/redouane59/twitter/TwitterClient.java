@@ -14,7 +14,6 @@ import com.github.scribejava.core.httpclient.HttpClientConfig;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
-import com.sun.deploy.util.StringUtils;
 import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.dto.collections.CollectionsResponse;
 import io.github.redouane59.twitter.dto.collections.TimeLineOrder;
@@ -538,14 +537,14 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(EXPANSION, "invited_user_ids,speaker_ids,creator_id,host_ids");
     parameters.put(SPACE_FIELDS, ALL_SPACE_FIELDS);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
-    parameters.put("ids", StringUtils.join(spaceIds, ","));
+    parameters.put("ids", String.join(", ", spaceIds));
     return getRequestHelperV2().getRequestWithParameters(url, parameters, SpaceList.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public SpaceList getSpacesByCreators(final List<String> creatorIds) {
     Map<String, String> parameters = new HashMap<>();
-    parameters.put("user_ids", StringUtils.join(creatorIds, ","));
+    parameters.put("user_ids", String.join(", ", creatorIds));
     parameters.put(EXPANSION, "invited_user_ids,speaker_ids,creator_id,host_ids");
     parameters.put(SPACE_FIELDS, ALL_SPACE_FIELDS);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
