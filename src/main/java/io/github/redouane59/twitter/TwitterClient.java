@@ -25,6 +25,7 @@ import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.others.RateLimitStatus;
 import io.github.redouane59.twitter.dto.others.RequestToken;
 import io.github.redouane59.twitter.dto.rules.FilteredStreamRulePredicate;
+import io.github.redouane59.twitter.dto.space.Space;
 import io.github.redouane59.twitter.dto.stream.StreamRules;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
@@ -85,25 +86,30 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitterClientArchive {
 
-  public static final  ObjectMapper       OBJECT_MAPPER                        = new ObjectMapper()
+  public static final ObjectMapper OBJECT_MAPPER    = new ObjectMapper()
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
       .setSerializationInclusion(JsonInclude.Include.NON_NULL)
       .findAndRegisterModules();
-  public static final  String             TWEET_FIELDS                         = "tweet.fields";
-  public static final  String
-                                          ALL_TWEET_FIELDS                     =
+  public static final String       TWEET_FIELDS     = "tweet.fields";
+  public static final String
+                                   ALL_TWEET_FIELDS =
       "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id,reply_settings";
-  public static final  String             EXPANSION                            = "expansions";
-  public static final  String
-                                          ALL_EXPANSIONS                       =
+  public static final String       EXPANSION        = "expansions";
+  public static final String
+                                   ALL_EXPANSIONS   =
       "author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id,attachments.media_keys";
-  public static final  String             USER_FIELDS                          = "user.fields";
-  public static final  String             ALL_USER_FIELDS                      =
+  public static final String       USER_FIELDS      = "user.fields";
+  public static final String       ALL_USER_FIELDS  =
       "id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
-  public static final  String             MEDIA_FIELD                          = "media.fields";
-  public static final  String
-                                          ALL_MEDIA_FIELDS                     =
+  public static final String       MEDIA_FIELD      = "media.fields";
+  public static final String
+                                   ALL_MEDIA_FIELDS =
       "duration_ms,height,media_key,preview_image_url,public_metrics,type,url,width,alt_text";
+  public static final String       SPACE_FIELDS     = "space.fields";
+  public static final String
+                                   ALL_SPACE_FIELDS =
+      "host_ids,created_at,creator_id,id,lang,invited_user_ids,participant_count,speaker_ids,started_at,state,title,updated_at,scheduled_start,is_ticketed";
+
   private static final String             QUERY                                = "query";
   private static final String             CURSOR                               = "cursor";
   private static final String             NEXT                                 = "next";
@@ -509,6 +515,16 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String url = getUrlHelper().getUnretweetTweetUrl(getUserIdFromAccessToken(), tweetId);
     return requestHelperV1.makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, RetweetResponse.class)
                           .orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public Space getSpace(final String spaceId) {
+    String              url        = getUrlHelper().getSpaceUrl(spaceId);
+    Map<String, String> parameters = new HashMap<>();
+    //parameters.put(EXPANSION, "invited_user_ids,speaker_ids,creator_id,host_ids");
+    //parameters.put(SPACE_FIELDS, ALL_SPACE_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    return getRequestHelperV2().getRequestWithParameters(url, parameters, Space.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override

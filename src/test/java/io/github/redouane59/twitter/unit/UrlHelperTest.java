@@ -271,4 +271,9 @@ public class UrlHelperTest {
   public void testUnuteUserUrl() {
     assertEquals("https://api.twitter.com/2/users/12345/muting/67890", urlHelper.getUnmuteUserUrl("12345", "67890"));
   }
+
+  @Test
+  public void testGetSpaceUrl() {
+    assertEquals("https://api.twitter.com/2/spaces/12345", urlHelper.getSpaceUrl("12345"));
+  }
 }

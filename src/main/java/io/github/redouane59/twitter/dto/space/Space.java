@@ -14,8 +14,9 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Space {
 
-  private SpaceData data;
-  private Includes  includes;
+  private SpaceData    data;
+  private Includes     includes;
+  private SpaceError[] errors;
 
   @NoArgsConstructor
   @AllArgsConstructor
@@ -45,6 +46,23 @@ public class Space {
     private String       title;
     @JsonProperty("updated_at")
     private String       updatedAt;
+  }
+
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @Builder
+  @Getter
+  public static class SpaceError {
+
+    String value;
+    String detail;
+    String title;
+    @JsonProperty("resource_type")
+    String resourceType;
+    String parameter;
+    @JsonProperty("resource_id")
+    String resourceId;
+    String type;
   }
 
 }
