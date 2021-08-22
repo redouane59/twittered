@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.github.scribejava.core.model.Response;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
+import io.github.redouane59.twitter.dto.space.Space;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
@@ -506,6 +507,14 @@ public class ITwitterClientV2Test {
     assertNotNull(result.getData().get(0).getName());
     assertNotNull(result.getData().get(0).getDisplayedName());
     assertNotNull(result.getData().get(0).getDateOfCreation());
+  }
+
+  @Test
+  public void testGetSpace() {
+    String spaceId = "1OdJrVXnPWnJX";
+    Space  space   = twitterClient.getSpace(spaceId);
+    assertNotNull(space);
+    assertEquals(spaceId, space.getData().getId());
   }
 
 }

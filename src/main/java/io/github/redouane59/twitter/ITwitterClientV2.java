@@ -4,6 +4,7 @@ import com.github.scribejava.core.model.Response;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.rules.FilteredStreamRulePredicate;
+import io.github.redouane59.twitter.dto.space.Space;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
@@ -429,6 +430,13 @@ public interface ITwitterClientV2 {
    * @param tweetId the id of the tweet
    */
   RetweetResponse unretweetTweet(String tweetId);
+
+  /**
+   * Returns a variety of information about a single Space specified by the requested ID.
+   *
+   * @param spaceId Unique identifier of the Space to request.
+   */
+  Space getSpace(String spaceId);
 
 }
 
