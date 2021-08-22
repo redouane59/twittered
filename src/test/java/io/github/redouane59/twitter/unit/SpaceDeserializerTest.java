@@ -59,7 +59,7 @@ public class SpaceDeserializerTest {
 
   @Test
   public void testParticipantCount() {
-    assertEquals(420, spaceData.getParticipantcount());
+    assertEquals(420, spaceData.getParticipantCount());
   }
 
   @Test

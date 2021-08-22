@@ -35,7 +35,7 @@ public class Space {
     @JsonProperty("invited_user_ids")
     private List<String> invitedUserIds;
     @JsonProperty("participant_count")
-    private int          participantcount;
+    private int          participantCount;
     @JsonProperty("scheduled_start")
     private String       scheduledStart;
     @JsonProperty("speaker_ids")
