@@ -515,7 +515,6 @@ public class ITwitterClientV2Test {
     String spaceId = "1OdJrVXnPWnJX";
     Space  space   = twitterClient.getSpace(spaceId);
     assertNotNull(space);
-//    assertEquals(spaceId, space.getData().getId());
   }
 
   @Test
@@ -523,7 +522,6 @@ public class ITwitterClientV2Test {
     String    spaceId = "1OdJrVXnPWnJX";
     SpaceList spaces  = twitterClient.getSpaces(Arrays.asList(spaceId));
     assertNotNull(spaces);
-    // assertEquals(spaceId, spaces.getData().get(0).getId());
   }
 
   @Test
