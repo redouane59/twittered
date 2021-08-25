@@ -454,7 +454,7 @@ public interface ITwitterClientV2 {
    * Return live or scheduled Spaces matching your specified search terms
    *
    * @param query Your search term. This can be any text (including mentions and Hashtags) present in the title of the Space.
-   * @param state Determines the type of results to return. Use live to return live Spaces or scheduled to return upcoming Spaces.
+   * @param state Determines the type of results to return. Use LIVE to return live Spaces or SCHEDULED to return upcoming Spaces.
    */
   SpaceList searchSpaces(String query, SpaceState state);
 
