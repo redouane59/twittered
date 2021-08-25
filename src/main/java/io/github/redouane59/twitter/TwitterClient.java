@@ -548,7 +548,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(EXPANSION, "invited_user_ids,speaker_ids,creator_id,host_ids");
     parameters.put(SPACE_FIELDS, ALL_SPACE_FIELDS);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
-    //   parameters.put(MAX_RESULTS, "100");
     return getRequestHelperV2().getRequestWithParameters(getUrlHelper().getSpaceByCreatorUrl(), parameters, SpaceList.class)
                                .orElseThrow(NoSuchElementException::new);
   }
