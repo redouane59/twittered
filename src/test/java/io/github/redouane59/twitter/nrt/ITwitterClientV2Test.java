@@ -518,19 +518,27 @@ public class ITwitterClientV2Test {
     SpaceState expectedState = SpaceState.LIVE;
     SpaceList  result        = twitterClient.searchSpaces("hello", expectedState);
     assertNotNull(result.getData());
+    assertNotNull(result.getMeta().getResultCount() > 0);
     for (SpaceData spaceData : result.getData()) {
       String spaceId = spaceData.getId();
       Space  space   = twitterClient.getSpace(spaceId);
       assertNotNull(space.getData());
       SpaceList spaces = twitterClient.getSpaces(Arrays.asList(spaceId));
       assertNotNull(spaces.getData());
+      assertNotNull(spaceData);
       assertEquals(expectedState.getLabel(), space.getData().getState());
+      assertEquals(expectedState.getLabel(), spaceData.getState());
       assertFalse(space.getData().getHostIds().isEmpty());
+      assertFalse(spaceData.getHostIds().isEmpty());
       assertFalse(space.getData().getSpeakerIds().isEmpty());
+      assertFalse(spaceData.getSpeakerIds().isEmpty());
       assertFalse(space.getData().getTitle().isEmpty());
+      assertFalse(spaceData.getTitle().isEmpty());
       assertNotNull(space.getData().getCreatedAt());
       assertNotNull(space.getData().getLang());
+      assertNotNull(spaceData.getLang());
       assertTrue(space.getData().getParticipantCount() > 0);
+      assertTrue(spaceData.getParticipantCount() > 0);
       SpaceList spacesByCreators = twitterClient.getSpacesByCreators(Arrays.asList(space.getData().getHostIds().get(0)));
       assertNotNull(spacesByCreators.getData());
     }
