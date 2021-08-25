@@ -6,6 +6,7 @@ import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.rules.FilteredStreamRulePredicate;
 import io.github.redouane59.twitter.dto.space.Space;
 import io.github.redouane59.twitter.dto.space.SpaceList;
+import io.github.redouane59.twitter.dto.space.SpaceState;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
@@ -448,5 +449,14 @@ public interface ITwitterClientV2 {
    * Returns live or scheduled Spaces created by the specified user IDs. Up to 100 IDs can be looked up using this endpoint.
    */
   SpaceList getSpacesByCreators(List<String> creatorIds);
+
+  /**
+   * Return live or scheduled Spaces matching your specified search terms
+   *
+   * @param query Your search term. This can be any text (including mentions and Hashtags) present in the title of the Space.
+   * @param state Determines the type of results to return. Use live to return live Spaces or scheduled to return upcoming Spaces.
+   */
+  SpaceList searchSpaces(String query, SpaceState state);
+
 }
 
