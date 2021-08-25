@@ -59,7 +59,9 @@ public class URLHelper {
   private final String spacesUrl              = "https://api.twitter.com/2/spaces";
   @Getter
   private final String spaceByCreatorUrl      = "https://api.twitter.com/2/spaces/by/creator_ids";
-  
+  @Getter
+  private final String searchSpacesUrl        = "https://api.twitter.com/2/spaces/search";
+
   private final String followUrl          = "https://api.twitter.com/2/users/:id/following";
   private final String unfollowUrl        = "https://api.twitter.com/2/users/:sourceId/following/:targetId";
   private final String followersUrl       = "https://api.twitter.com/2/users/:id/followers";

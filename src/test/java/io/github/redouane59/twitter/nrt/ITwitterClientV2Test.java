@@ -1,6 +1,7 @@
 package io.github.redouane59.twitter.nrt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -11,7 +12,9 @@ import com.github.scribejava.core.model.Response;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.space.Space;
+import io.github.redouane59.twitter.dto.space.Space.SpaceData;
 import io.github.redouane59.twitter.dto.space.SpaceList;
+import io.github.redouane59.twitter.dto.space.SpaceState;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
@@ -511,24 +514,26 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  public void testGetSpace() {
-    String spaceId = "1OdJrVXnPWnJX";
-    Space  space   = twitterClient.getSpace(spaceId);
-    assertNotNull(space);
-  }
-
-  @Test
-  public void testGetSpaces() {
-    String    spaceId = "1OdJrVXnPWnJX";
-    SpaceList spaces  = twitterClient.getSpaces(Arrays.asList(spaceId));
-    assertNotNull(spaces);
-  }
-
-  @Test
-  public void testGetSpaceByCreators() {
-    List<String> creatorIds = Arrays.asList("2244994945", "6253282");
-    SpaceList    spaces     = twitterClient.getSpacesByCreators(creatorIds);
-    assertNotNull(spaces);
+  public void testSpacesSearchAndLookup() {
+    SpaceState expectedState = SpaceState.LIVE;
+    SpaceList  result        = twitterClient.searchSpaces("hello", expectedState);
+    assertNotNull(result.getData());
+    for (SpaceData spaceData : result.getData()) {
+      String spaceId = spaceData.getId();
+      Space  space   = twitterClient.getSpace(spaceId);
+      assertNotNull(space.getData());
+      SpaceList spaces = twitterClient.getSpaces(Arrays.asList(spaceId));
+      assertNotNull(spaces.getData());
+      assertEquals(expectedState.getLabel(), space.getData().getState());
+      assertFalse(space.getData().getHostIds().isEmpty());
+      assertFalse(space.getData().getSpeakerIds().isEmpty());
+      assertFalse(space.getData().getTitle().isEmpty());
+      assertNotNull(space.getData().getCreatedAt());
+      assertNotNull(space.getData().getLang());
+      assertTrue(space.getData().getParticipantCount() > 0);
+      SpaceList spacesByCreators = twitterClient.getSpacesByCreators(Arrays.asList(space.getData().getHostIds().get(0)));
+      assertNotNull(spacesByCreators.getData());
+    }
   }
 
 }
