@@ -212,10 +212,10 @@ public interface ITwitterClientV2 {
   /**
    * Delete a filtered stream from its rule tag calling https://api.twitter.com/2/tweets/search/stream/rules
    *
-   * @param ruleTag the tag name specified when using addFilteredStreamRule
+   * @param ruleId the id returned when using retrieveFilteredStreamRules
    * @return a StreamMeta object resuming the operation
    */
-  StreamMeta deleteFilteredStreamRuletag(String ruleTag);
+  StreamMeta deleteFilteredStreamRuleId(String ruleId);
 
   /**
    * Retrieve the filtered stream rules calling https://api.twitter.com/2/tweets/search/stream/rules

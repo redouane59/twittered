@@ -904,9 +904,9 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public StreamMeta deleteFilteredStreamRuletag(String ruleTag) {
+  public StreamMeta deleteFilteredStreamRuleId(String ruleId) {
     String      url    = urlHelper.getFilteredStreamRulesUrl();
-    String      body   = "{\"delete\": {\"ids\": [\"" + ruleTag + "\"]}}";
+    String      body   = "{\"delete\": {\"ids\": [\"" + ruleId + "\"]}}";
     StreamRules result = requestHelperV2.postRequest(url, body, StreamRules.class).orElseThrow(NoSuchElementException::new);
     return result.getMeta();
   }
