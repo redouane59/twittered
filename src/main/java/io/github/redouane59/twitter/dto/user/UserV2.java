@@ -115,6 +115,11 @@ public class UserV2 implements User {
   }
 
   @Override
+  public String getProfileImageUrl() {
+    return data == null ? null : data.profileImageUrl;
+  }
+
+  @Override
   public JsonNode getEntities() {
     return data == null ? null : data.getEntities();
   }

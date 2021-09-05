@@ -92,6 +92,11 @@ public interface User {
   String getUrl();
 
   /**
+   * Get the profile image url
+   */
+  String getProfileImageUrl();
+
+  /**
    * Get the entities user profile
    *
    * @return details about text that has a special meaning in the user's description.
