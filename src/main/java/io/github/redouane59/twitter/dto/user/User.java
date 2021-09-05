@@ -99,6 +99,11 @@ public interface User {
   JsonNode getEntities();
 
   /**
+   * Get the profile image url
+   */
+  String getProfileImageUrl();
+
+  /**
    * Get the protection level of the user account
    *
    * @return true if the account is protected, else false

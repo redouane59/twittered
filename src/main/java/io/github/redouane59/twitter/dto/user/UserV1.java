@@ -55,24 +55,31 @@ public class UserV1 implements User {
 
   @Override
   public boolean equals(Object o) {
-    if (o == null || (this.getClass() != o.getClass() && !User.class.isAssignableFrom(o.getClass()))) {
+    if (o == null || (getClass() != o.getClass() && !User.class.isAssignableFrom(o.getClass()))) {
       return false;
     }
     User otherUser = (User) o;
-    return (otherUser).getId().equals(this.getId());
+    return (otherUser).getId().equals(getId());
   }
 
   @Override
   public int hashCode() {
-    return this.id.hashCode();
+    return id.hashCode();
   }
 
+  @Override
   public LocalDateTime getDateOfCreation() {
-    return ConverterHelper.getDateFromTwitterString(this.dateOfCreation);
+    return ConverterHelper.getDateFromTwitterString(dateOfCreation);
   }
 
   @Override
   public Tweet getPinnedTweet() {
+    LOGGER.debug("UnsupportedOperation");
+    return null;
+  }
+
+  @Override
+  public String getProfileImageUrl() {
     LOGGER.debug("UnsupportedOperation");
     return null;
   }
@@ -84,6 +91,6 @@ public class UserV1 implements User {
   }
 
   public LocalDateTime getLastUpdate() {
-    return ConverterHelper.getDateFromTwitterString(this.lastUpdate);
+    return ConverterHelper.getDateFromTwitterString(lastUpdate);
   }
 }
