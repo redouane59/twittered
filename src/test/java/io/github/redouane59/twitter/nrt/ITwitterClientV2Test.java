@@ -518,7 +518,7 @@ public class ITwitterClientV2Test {
     SpaceState expectedState = SpaceState.LIVE;
     SpaceList  result        = twitterClient.searchSpaces("hello", expectedState);
     assertNotNull(result.getData());
-    assertTrue(result.getMeta().getResultCount() > 0);
+    assertNotNull(result.getMeta().getResultCount() > 0);
     for (SpaceData spaceData : result.getData()) {
       String spaceId = spaceData.getId();
       Space  space   = twitterClient.getSpace(spaceId);

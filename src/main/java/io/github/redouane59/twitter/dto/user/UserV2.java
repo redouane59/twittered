@@ -120,11 +120,6 @@ public class UserV2 implements User {
   }
 
   @Override
-  public String getProfileImageUrl() {
-    return data == null ? null : data.profileImageUrl;
-  }
-
-  @Override
   public boolean equals(Object o) {
     if (o == null || (getClass() != o.getClass() && !User.class.isAssignableFrom(o.getClass()))) {
       return false;
