@@ -210,7 +210,7 @@ public interface ITwitterClientV2 {
   StreamMeta deleteFilteredStreamRule(String ruleValue);
 
   /**
-   * Delete a filtered stream from its rule id calling https://api.twitter.com/2/tweets/search/stream/rules
+   * Delete a filtered stream from its rule tag calling https://api.twitter.com/2/tweets/search/stream/rules
    *
    * @param ruleId the id returned when using retrieveFilteredStreamRules
    * @return a StreamMeta object resuming the operation
