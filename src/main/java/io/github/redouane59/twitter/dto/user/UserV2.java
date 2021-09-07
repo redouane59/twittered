@@ -102,7 +102,7 @@ public class UserV2 implements User {
 
   @Override
   public Tweet getPinnedTweet() {
-    if (includes.getTweets().length < 1) {
+    if (includes == null || includes.getTweets() == null || includes.getTweets().length < 1) {
       LOGGER.error("No tweet found");
       return null;
     }
