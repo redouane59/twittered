@@ -662,6 +662,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(QUERY, query);
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(EXPANSION, ALL_EXPANSIONS);
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     String url = urlHelper.getSearchRecentTweetsUrl();
@@ -689,6 +690,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       LOGGER.warn("removing context_annotations from tweet_fields because max_result is greater 100");
       parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS.replace(",context_annotations", ""));
     }
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(EXPANSION, ALL_EXPANSIONS);
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     String url = urlHelper.getSearchAllTweetsUrl();
@@ -725,6 +727,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
                                 .nextToken(tweetList.get().getMeta().getNextToken())
                                 .build();
       result.setMeta(meta);
+      result.setIncludes(tweetList.get().getIncludes());
       next = tweetList.get().getMeta().getNextToken();
       if (url.contains("/search")) { // dirty
         parameters.put(AdditionalParameters.NEXT_TOKEN, next);

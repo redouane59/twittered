@@ -226,6 +226,7 @@ public class ITwitterClientV2Test {
     assertTrue(tweet.getReplyCount() >= 0);
     assertTrue(tweet.getLikeCount() >= 0);
     assertNotNull(tweet.getLang());
+    assertNotNull(result.getIncludes().getUsers().get(0).getCreatedAt());
   }
 
   @Test
@@ -242,6 +243,7 @@ public class ITwitterClientV2Test {
     assertTrue(tweet.getReplyCount() >= 0);
     assertTrue(tweet.getLikeCount() >= 0);
     assertNotNull(tweet.getLang());
+    assertNotNull(result.getIncludes().getUsers().get(0).getCreatedAt());
   }
 
   @Test
@@ -258,6 +260,7 @@ public class ITwitterClientV2Test {
     assertTrue(tweet.getReplyCount() >= 0);
     assertTrue(tweet.getLikeCount() >= 0);
     assertNotNull(tweet.getLang());
+    assertNotNull(result.getIncludes().getUsers().get(0).getCreatedAt());
   }
 
   @Test
@@ -274,6 +277,7 @@ public class ITwitterClientV2Test {
     assertTrue(tweet.getReplyCount() >= 0);
     assertTrue(tweet.getLikeCount() >= 0);
     assertNotNull(tweet.getLang());
+    assertNotNull(result.getIncludes().getUsers().get(0).getCreatedAt());
   }
 
   @Test
