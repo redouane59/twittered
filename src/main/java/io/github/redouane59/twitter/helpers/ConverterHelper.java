@@ -1,5 +1,6 @@
 package io.github.redouane59.twitter.helpers;
 
+import io.github.redouane59.twitter.dto.tweet.Tweet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -7,6 +8,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -98,4 +100,20 @@ public class ConverterHelper {
     }
     return str;
   }
+
+  public static String getTweetIdFromUrl(String tweetUrl) {
+    tweetUrl = tweetUrl.replace("?s=20", "");
+    if (tweetUrl.endsWith("/")) {
+      tweetUrl = tweetUrl.substring(0, tweetUrl.length() - 1);
+    }
+    return tweetUrl.substring(tweetUrl.lastIndexOf("/") + 1);
+  }
+
+  public static Optional<String> getTweetUrl(Tweet tweet) {
+    if (tweet.getUser() == null || tweet.getUser().getName() == null || tweet.getId() == null) {
+      return Optional.empty();
+    }
+    return Optional.of("https://twitter.com/" + tweet.getUser().getName() + "/status/" + tweet.getId());
+  }
+
 }
