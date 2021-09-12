@@ -114,14 +114,14 @@ public class ConverterHelper {
     return tweetUrl.substring(tweetUrl.lastIndexOf("/") + 1);
   }
 
-  public static Optional<String> getTweetUrl(Tweet tweet) {
+  public static Optional<String> getTweetUrlFromTweet(Tweet tweet) {
     if (tweet.getUser() == null || tweet.getUser().getName() == null || tweet.getId() == null) {
       return Optional.empty();
     }
     return Optional.of("https://twitter.com/" + tweet.getUser().getName() + "/status/" + tweet.getId());
   }
 
-  public static Tweet createTweet(String tweetId, String tweetText, String userId, String userName) {
+  public static Tweet buildTweet(String tweetId, String tweetText, String userId, String userName) {
     return TweetV2.builder()
                   .data(TweetData.builder()
                                  .id(tweetId)
