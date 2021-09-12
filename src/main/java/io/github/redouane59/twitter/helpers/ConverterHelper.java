@@ -106,12 +106,14 @@ public class ConverterHelper {
     return str;
   }
 
-  public static String getTweetIdFromUrl(String tweetUrl) {
-    tweetUrl = tweetUrl.replace("?s=20", "");
+  public static Optional<String> getTweetIdFromUrl(String tweetUrl) {
+    if (!tweetUrl.contains("twitter.com/")) {
+      return Optional.empty();
+    }
     if (tweetUrl.endsWith("/")) {
       tweetUrl = tweetUrl.substring(0, tweetUrl.length() - 1);
     }
-    return tweetUrl.substring(tweetUrl.lastIndexOf("/") + 1);
+    return Optional.of(tweetUrl.replace("?s=20", "").substring(tweetUrl.lastIndexOf("/") + 1));
   }
 
   public static Optional<String> getTweetUrlFromTweet(Tweet tweet) {
