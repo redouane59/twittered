@@ -35,8 +35,8 @@ public class ConverterHelperTest {
 
   @Test
   public void testGetTweetIdFromUrl() {
-    assertEquals("1435990839013126149", ConverterHelper.getTweetIdFromUrl("https://twitter.com/Twitter/status/1435990839013126149"));
-    assertEquals("1435990839013126149", ConverterHelper.getTweetIdFromUrl("https://twitter.com/Twitter/status/1435990839013126149/"));
+    assertEquals("1435990839013126149", ConverterHelper.getTweetIdFromUrl("https://twitter.com/Twitter/status/1435990839013126149").get());
+    assertEquals("1435990839013126149", ConverterHelper.getTweetIdFromUrl("https://twitter.com/Twitter/status/1435990839013126149/").get());
   }
 
   @Test
