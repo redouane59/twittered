@@ -41,13 +41,13 @@ public class ConverterHelperTest {
 
   @Test
   public void testGetTweetUrlFromId() {
-    assertEquals("https://twitter.com/Twitter/status/1435990839013126149", ConverterHelper.getTweetUrl(
-        ConverterHelper.createTweet("1435990839013126149", null, null, "Twitter")).get());
+    assertEquals("https://twitter.com/Twitter/status/1435990839013126149", ConverterHelper.getTweetUrlFromTweet(
+        ConverterHelper.buildTweet("1435990839013126149", null, null, "Twitter")).get());
   }
 
   @Test
   public void testCreateTweet() {
-    Tweet tweet = ConverterHelper.createTweet("12345", "hello", "00000", "me");
+    Tweet tweet = ConverterHelper.buildTweet("12345", "hello", "00000", "me");
     assertEquals("12345", tweet.getId());
     assertEquals("hello", tweet.getText());
     assertEquals("00000", tweet.getUser().getId());
