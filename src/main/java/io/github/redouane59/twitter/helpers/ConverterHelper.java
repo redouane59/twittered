@@ -1,11 +1,16 @@
 package io.github.redouane59.twitter.helpers;
 
 import io.github.redouane59.twitter.dto.tweet.Tweet;
+import io.github.redouane59.twitter.dto.tweet.TweetV2;
+import io.github.redouane59.twitter.dto.tweet.TweetV2.Includes;
+import io.github.redouane59.twitter.dto.tweet.TweetV2.TweetData;
+import io.github.redouane59.twitter.dto.user.UserV2.UserData;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Optional;
@@ -114,6 +119,21 @@ public class ConverterHelper {
       return Optional.empty();
     }
     return Optional.of("https://twitter.com/" + tweet.getUser().getName() + "/status/" + tweet.getId());
+  }
+
+  public static Tweet createTweet(String tweetId, String tweetText, String userId, String userName) {
+    return TweetV2.builder()
+                  .data(TweetData.builder()
+                                 .id(tweetId)
+                                 .text(tweetText)
+                                 .build())
+                  .includes(Includes.builder()
+                                    .users(Arrays.asList(UserData.builder()
+                                                                 .id(userId)
+                                                                 .name(userName)
+                                                                 .build()))
+                                    .build())
+                  .build();
   }
 
 }
