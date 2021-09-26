@@ -412,6 +412,11 @@ public interface ITwitterClientV2 {
    */
   UserActionResponse unmuteUser(String userId);
 
+  /*
+  Returns a list of users who are muted by the specified user ID calling https://api.twitter.com/2/users/:id/muting
+   */
+  UserList getMutedUsers();
+
   /**
    * Allows you to get information about who has Retweeted a Tweet calling https://api.twitter.com/2/tweets/:id/retweeted_by
    *

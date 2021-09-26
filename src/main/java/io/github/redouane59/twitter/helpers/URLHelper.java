@@ -81,6 +81,7 @@ public class URLHelper {
   private final String likedTweetsUrl     = "https://api.twitter.com/2/users/:id/liked_tweets";
   private final String muteUserUrl        = "https://api.twitter.com/2/users/:id/muting";
   private final String unmuteUserUrl      = "https://api.twitter.com/2/users/:source_user_id/muting/:target_user_id";
+  private final String mutedUsersUrl      = "https://api.twitter.com/2/users/:id/muting";
   private final String retweetingUsersUrl = "https://api.twitter.com/2/tweets/:id/retweeted_by";
   private final String retweetTweetUrl    = "https://api.twitter.com/2/users/:id/retweets";
   private final String unretweetTweetUrl  = "https://api.twitter.com/2/users/:id/retweets/:source_tweet_id";
@@ -264,4 +265,7 @@ public class URLHelper {
     return spaceUrl.replace(idVariable, id);
   }
 
+  public String getMutedUsersUrl(final String userId) {
+    return mutedUsersUrl.replace(idVariable, userId);
+  }
 }
