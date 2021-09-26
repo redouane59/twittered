@@ -508,6 +508,17 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
+  public UserList getMutedUsers() {
+    String              url        = urlHelper.getMutedUsersUrl(getUserIdFromAccessToken());
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(EXPANSION, PINNED_TWEET_ID);
+    parameters.put(MAX_RESULTS, "1000");
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    return requestHelperV1.getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
   public RetweetResponse retweetTweet(String tweetId) {
     String url  = getUrlHelper().getRetweetTweetUrl(getUserIdFromAccessToken());
     String body = "{\"tweet_id\": \"" + tweetId + "\"}";

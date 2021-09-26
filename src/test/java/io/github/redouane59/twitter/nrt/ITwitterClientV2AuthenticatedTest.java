@@ -87,6 +87,17 @@ public class ITwitterClientV2AuthenticatedTest {
   }
 
   @Test
+  public void testMuteLookup() {
+    UserList result = twitterClient.getMutedUsers();
+    assertNotNull(result.getData());
+    assertNotNull(result.getMeta());
+    assertNotNull(result.getData().get(0));
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getData().get(0).getName());
+    assertNotNull(result.getData().get(0).getCreatedAt());
+  }
+
+  @Test
   public void testGetUserIdFromAccessToken() {
     assertEquals(userId, twitterClient.getUserIdFromAccessToken());
   }
