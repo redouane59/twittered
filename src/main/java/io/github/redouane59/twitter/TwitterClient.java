@@ -1120,10 +1120,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       url = getUrlHelper().getDMListUrl(maxCount) + "&" + CURSOR + "=" + dmListAnswer.getNextCursor();
     }
     while (dmListAnswer.getNextCursor() != null && result.size() < count);
-    if (count == Integer.MAX_VALUE) {
-      return result;
-    }
-    return result.subList(0, count); // to fix the API bug which is not giving the right count
+    return result.subList(0, Math.min(count,result.size())); // to fix the API bug which is not giving the right count
   }
 
   @Override
