@@ -20,6 +20,19 @@ In your pom.xml, add the following dependency and replace `VERSION` with the ver
 </dependency>
 ```
 
+If you are using Gradle Kotlin DSL, make sure you have MavenCentral among the available repositories:
+```
+repositories {
+    mavenCentral()
+    [...]
+}
+```
+Then add the following line to your `dependencies` block:
+
+```
+implementation("io.github.redouane59.twitter:twittered:VERSION")
+```
+
 To be able to see library logs, also add sl4j references :
 
 ```
