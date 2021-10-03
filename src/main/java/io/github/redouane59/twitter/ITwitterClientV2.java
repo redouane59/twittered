@@ -3,6 +3,7 @@ package io.github.redouane59.twitter;
 import com.github.scribejava.core.model.Response;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.list.TwitterList;
+import io.github.redouane59.twitter.dto.list.TwitterListMember;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.rules.FilteredStreamRulePredicate;
 import io.github.redouane59.twitter.dto.space.Space;
@@ -479,5 +480,21 @@ public interface ITwitterClientV2 {
    * @param listId The ID of the List to be deleted.
    */
   TwitterList deleteList(String listId);
+
+  /**
+   * Enables the authenticated user to add a member to a List they own calling https://api.twitter.com/2/lists/:id/members
+   *
+   * @param listId The ID of the List you are adding a member to.
+   * @param userId The ID of the user you wish to add as a member of the List.
+   */
+  TwitterListMember addListMember(String listId, String userId);
+
+  /**
+   * Enables the authenticated user to remove a member from a List they own.
+   *
+   * @param listId The ID of the List you are removing a member from.
+   * @param userId The ID of the user you wish to remove as a member of the List.
+   */
+  TwitterListMember removeListMember(String listId, String userId);
 }
 
