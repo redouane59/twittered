@@ -2,6 +2,7 @@ package io.github.redouane59.twitter;
 
 import com.github.scribejava.core.model.Response;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
+import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.rules.FilteredStreamRulePredicate;
 import io.github.redouane59.twitter.dto.space.Space;
@@ -463,5 +464,20 @@ public interface ITwitterClientV2 {
    */
   SpaceList searchSpaces(String query, SpaceState state);
 
+  /**
+   * Enables the authenticated user to create a List calling https://api.twitter.com/2/lists
+   *
+   * @param listName The name of the List you wish to create.
+   * @param description Description of the List.
+   * @param isPrivate Determine whether the List should be private.
+   */
+  TwitterList createList(String listName, String description, boolean isPrivate);
+
+  /**
+   * Enables the authenticated user to delete a List that they own calling https://api.twitter.com/2/lists/:id
+   *
+   * @param listId The ID of the List to be deleted.
+   */
+  TwitterList deleteList(String listId);
 }
 

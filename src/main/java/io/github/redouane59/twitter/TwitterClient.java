@@ -23,6 +23,8 @@ import io.github.redouane59.twitter.dto.dm.DmListAnswer;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.getrelationship.IdList;
 import io.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
+import io.github.redouane59.twitter.dto.list.TwitterList;
+import io.github.redouane59.twitter.dto.list.TwitterList.TwitterListData;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.others.RateLimitStatus;
 import io.github.redouane59.twitter.dto.others.RequestToken;
@@ -577,6 +579,22 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
                                .orElseThrow(NoSuchElementException::new);
   }
 
+  @SneakyThrows
+  @Override
+  public TwitterList createList(final String listName, final String description, final boolean isPrivate) {
+    String          url  = getUrlHelper().getListUrl();
+    TwitterListData body = TwitterListData.builder().name(listName).description(description).isPrivate(isPrivate).build();
+    return getRequestHelperV1().postRequestWithBodyJson(url, null, TwitterClient.OBJECT_MAPPER.writeValueAsString(body), TwitterList.class)
+                               .orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public TwitterList deleteList(final String listId) {
+    String url = getUrlHelper().getListUrl() + "/" + listId;
+    return getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, TwitterList.class)
+                               .orElseThrow(NoSuchElementException::new);
+  }
+
   @Override
   public Tweet postTweet(String text) {
     return postTweet(text, null);
@@ -1120,7 +1138,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       url = getUrlHelper().getDMListUrl(maxCount) + "&" + CURSOR + "=" + dmListAnswer.getNextCursor();
     }
     while (dmListAnswer.getNextCursor() != null && result.size() < count);
-    return result.subList(0, Math.min(count,result.size())); // to fix the API bug which is not giving the right count
+    return result.subList(0, Math.min(count, result.size())); // to fix the API bug which is not giving the right count
   }
 
   @Override
