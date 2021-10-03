@@ -477,6 +477,7 @@ public interface ITwitterClientV2 {
    * Enables the authenticated user to delete a List that they own calling https://api.twitter.com/2/lists/:id
    *
    * @param listId The ID of the List to be deleted.
+   * @return false if the list is deleted
    */
   boolean deleteList(String listId);
 
@@ -485,6 +486,7 @@ public interface ITwitterClientV2 {
    *
    * @param listId The ID of the List you are adding a member to.
    * @param userId The ID of the user you wish to add as a member of the List.
+   * @return true if the member is added
    */
   boolean addListMember(String listId, String userId);
 
@@ -493,6 +495,7 @@ public interface ITwitterClientV2 {
    *
    * @param listId The ID of the List you are removing a member from.
    * @param userId The ID of the user you wish to remove as a member of the List.
+   * @return false if the member is removed
    */
   boolean removeListMember(String listId, String userId);
 
@@ -500,6 +503,7 @@ public interface ITwitterClientV2 {
    * Enables the authenticated user to pin a List calling https://api.twitter.com/2/users/:id/pinned_lists
    *
    * @param listId The ID of the List that you would like the user id to pin.
+   * @return true if the list is pinned
    */
   boolean pinList(String listId);
 
@@ -507,6 +511,7 @@ public interface ITwitterClientV2 {
    * Enables the authenticated user to unpin a List calling https://api.twitter.com/2/users/:id/pinned_lists/:list_id
    *
    * @param listId The ID of the List that you would like the user id to unpin.
+   * @return false if the list is unpinned
    */
   boolean unpinList(String listId);
 
