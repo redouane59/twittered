@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.list.TwitterList;
-import io.github.redouane59.twitter.dto.list.TwitterListMember;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
 import io.github.redouane59.twitter.dto.tweet.RetweetResponse;
@@ -115,7 +114,7 @@ public class ITwitterClientV2AuthenticatedTest {
   }
 
   @Test
-  public void testCreateListAndAddMemberAndRemoveMemberAndDeleteList() {
+  public void testCreateListAndAddRemoveMemberAndPinUnpinListAndDeleteList() {
     String listName = "Test";
     // create list
     TwitterList result = twitterClient.createList(listName, "desc", true);
@@ -123,15 +122,21 @@ public class ITwitterClientV2AuthenticatedTest {
     String listId = result.getData().getId();
     assertNotNull(listId);
     // add member
-    TwitterListMember result2 = twitterClient.addListMember(listId, userId);
-    assertTrue(result2.getData().isMember());
+    boolean result2 = twitterClient.addListMember(listId, userId);
+    assertTrue(result2);
     // remove member
     result2 = twitterClient.removeListMember(listId, userId);
-    assertFalse(result2.getData().isMember());
+    assertFalse(result2);
+    // pin list
+    result2 = twitterClient.pinList(listId);
+    assertTrue(result2);
+    // unpin list
+    result2 = twitterClient.unpinList(listId);
+    assertFalse(result2);
     // delete list
-    result = twitterClient.deleteList(listId);
-    assertTrue(result.getData().isDeleted());
+    result2 = twitterClient.deleteList(listId);
+    assertTrue(result2);
   }
-  
+
 
 }
