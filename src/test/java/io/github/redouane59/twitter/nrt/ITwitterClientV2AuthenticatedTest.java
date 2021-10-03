@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.list.TwitterList;
+import io.github.redouane59.twitter.dto.list.TwitterListMember;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
 import io.github.redouane59.twitter.dto.tweet.RetweetResponse;
@@ -114,15 +115,23 @@ public class ITwitterClientV2AuthenticatedTest {
   }
 
   @Test
-  public void testCreateAndDeleteList() {
-    String      listName = "Test";
-    TwitterList result   = twitterClient.createList(listName, "desc", true);
-    assertNotNull(result);
+  public void testCreateListAndAddMemberAndRemoveMemberAndDeleteList() {
+    String listName = "Test";
+    // create list
+    TwitterList result = twitterClient.createList(listName, "desc", true);
+    assertEquals(listName, result.getData().getName());
     String listId = result.getData().getId();
     assertNotNull(listId);
-    assertEquals(listName, result.getData().getName());
+    // add member
+    TwitterListMember result2 = twitterClient.addListMember(listId, userId);
+    assertTrue(result2.getData().isMember());
+    // remove member
+    result2 = twitterClient.removeListMember(listId, userId);
+    assertFalse(result2.getData().isMember());
+    // delete list
     result = twitterClient.deleteList(listId);
     assertTrue(result.getData().isDeleted());
   }
+  
 
 }

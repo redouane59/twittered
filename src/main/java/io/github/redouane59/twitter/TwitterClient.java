@@ -25,6 +25,8 @@ import io.github.redouane59.twitter.dto.getrelationship.IdList;
 import io.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
 import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.list.TwitterList.TwitterListData;
+import io.github.redouane59.twitter.dto.list.TwitterListMember;
+import io.github.redouane59.twitter.dto.list.TwitterListMember.TwitterListMemberData;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.others.RateLimitStatus;
 import io.github.redouane59.twitter.dto.others.RequestToken;
@@ -592,6 +594,22 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public TwitterList deleteList(final String listId) {
     String url = getUrlHelper().getListUrl() + "/" + listId;
     return getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, TwitterList.class)
+                               .orElseThrow(NoSuchElementException::new);
+  }
+
+  @SneakyThrows
+  @Override
+  public TwitterListMember addListMember(final String listId, final String userId) {
+    String                url  = getUrlHelper().getAddListMemberUrl(listId);
+    TwitterListMemberData body = TwitterListMemberData.builder().userId(userId).build();
+    return getRequestHelperV1().postRequestWithBodyJson(url, null, TwitterClient.OBJECT_MAPPER.writeValueAsString(body), TwitterListMember.class)
+                               .orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public TwitterListMember removeListMember(final String listId, final String userId) {
+    String url = getUrlHelper().getRemoveListMemberUrl(listId, userId);
+    return getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, TwitterListMember.class)
                                .orElseThrow(NoSuchElementException::new);
   }
 
