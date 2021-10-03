@@ -90,6 +90,8 @@ public class URLHelper {
   private final String spaceUrl            = "https://api.twitter.com/2/spaces/:id";
   private final String addListMemberUrl    = "https://api.twitter.com/2/lists/:id/members";
   private final String removeListMemberUrl = "https://api.twitter.com/2/lists/:id/members/:user_id";
+  private final String pinListUrl          = "https://api.twitter.com/2/users/:id/pinned_lists";
+  private final String unpinListUrl        = "https://api.twitter.com/2/users/:id/pinned_lists/:list_id";
 
   public String getSearchTweet30DaysUrl(String envName) {
     return ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + "/" + envName + JSON;
@@ -279,5 +281,13 @@ public class URLHelper {
 
   public String getRemoveListMemberUrl(final String listId, final String userId) {
     return removeListMemberUrl.replace(idVariable, listId).replace(":user_id", userId);
+  }
+
+  public String getPinListUrl(final String userId) {
+    return pinListUrl.replace(idVariable, userId);
+  }
+
+  public String getUnpinListUrl(final String userId, final String listId) {
+    return unpinListUrl.replace(idVariable, userId).replace(":list_id", listId);
   }
 }

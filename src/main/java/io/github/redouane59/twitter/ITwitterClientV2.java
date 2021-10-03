@@ -3,7 +3,6 @@ package io.github.redouane59.twitter;
 import com.github.scribejava.core.model.Response;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.list.TwitterList;
-import io.github.redouane59.twitter.dto.list.TwitterListMember;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.rules.FilteredStreamRulePredicate;
 import io.github.redouane59.twitter.dto.space.Space;
@@ -479,7 +478,7 @@ public interface ITwitterClientV2 {
    *
    * @param listId The ID of the List to be deleted.
    */
-  TwitterList deleteList(String listId);
+  boolean deleteList(String listId);
 
   /**
    * Enables the authenticated user to add a member to a List they own calling https://api.twitter.com/2/lists/:id/members
@@ -487,7 +486,7 @@ public interface ITwitterClientV2 {
    * @param listId The ID of the List you are adding a member to.
    * @param userId The ID of the user you wish to add as a member of the List.
    */
-  TwitterListMember addListMember(String listId, String userId);
+  boolean addListMember(String listId, String userId);
 
   /**
    * Enables the authenticated user to remove a member from a List they own.
@@ -495,6 +494,21 @@ public interface ITwitterClientV2 {
    * @param listId The ID of the List you are removing a member from.
    * @param userId The ID of the user you wish to remove as a member of the List.
    */
-  TwitterListMember removeListMember(String listId, String userId);
+  boolean removeListMember(String listId, String userId);
+
+  /**
+   * Enables the authenticated user to pin a List calling https://api.twitter.com/2/users/:id/pinned_lists
+   *
+   * @param listId The ID of the List that you would like the user id to pin.
+   */
+  boolean pinList(String listId);
+
+  /**
+   * Enables the authenticated user to unpin a List calling https://api.twitter.com/2/users/:id/pinned_lists/:list_id
+   *
+   * @param listId The ID of the List that you would like the user id to unpin.
+   */
+  boolean unpinList(String listId);
+
 }
 

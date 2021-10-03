@@ -5,6 +5,7 @@ import static io.github.redouane59.twitter.dto.endpoints.AdditionalParameters.MA
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.scribejava.apis.TwitterApi;
@@ -25,7 +26,6 @@ import io.github.redouane59.twitter.dto.getrelationship.IdList;
 import io.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
 import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.list.TwitterList.TwitterListData;
-import io.github.redouane59.twitter.dto.list.TwitterListMember;
 import io.github.redouane59.twitter.dto.list.TwitterListMember.TwitterListMemberData;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.others.RateLimitStatus;
@@ -591,26 +591,50 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public TwitterList deleteList(final String listId) {
+  public boolean deleteList(final String listId) {
     String url = getUrlHelper().getListUrl() + "/" + listId;
-    return getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, TwitterList.class)
-                               .orElseThrow(NoSuchElementException::new);
+    JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, JsonNode.class)
+                                            .orElseThrow(NoSuchElementException::new);
+    return jsonNode.get("data").get("deleted").asBoolean();
+
   }
 
   @SneakyThrows
   @Override
-  public TwitterListMember addListMember(final String listId, final String userId) {
+  public boolean addListMember(final String listId, final String userId) {
     String                url  = getUrlHelper().getAddListMemberUrl(listId);
     TwitterListMemberData body = TwitterListMemberData.builder().userId(userId).build();
-    return getRequestHelperV1().postRequestWithBodyJson(url, null, TwitterClient.OBJECT_MAPPER.writeValueAsString(body), TwitterListMember.class)
-                               .orElseThrow(NoSuchElementException::new);
+    JsonNode jsonNode =
+        getRequestHelperV1().postRequestWithBodyJson(url, null, TwitterClient.OBJECT_MAPPER.writeValueAsString(body), JsonNode.class)
+                            .orElseThrow(NoSuchElementException::new);
+    return jsonNode.get("data").get("is_member").asBoolean();
   }
 
   @Override
-  public TwitterListMember removeListMember(final String listId, final String userId) {
+  public boolean removeListMember(final String listId, final String userId) {
     String url = getUrlHelper().getRemoveListMemberUrl(listId, userId);
-    return getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, TwitterListMember.class)
-                               .orElseThrow(NoSuchElementException::new);
+    JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, JsonNode.class)
+                                            .orElseThrow(NoSuchElementException::new);
+    return jsonNode.get("data").get("is_member").asBoolean();
+  }
+
+  @SneakyThrows
+  @Override
+  public boolean pinList(final String listId) {
+    String url  = getUrlHelper().getPinListUrl(getUserIdFromAccessToken());
+    String body = "{\"list_id\": \"" + listId + "\"}";
+    JsonNode jsonNode = getRequestHelperV1().postRequestWithBodyJson(url, null, body, JsonNode.class)
+                                            .orElseThrow(NoSuchElementException::new);
+    return jsonNode.get("data").get("pinned").asBoolean();
+  }
+
+  @Override
+  public boolean unpinList(final String listId) {
+    String url = getUrlHelper().getUnpinListUrl(getUserIdFromAccessToken(), listId);
+    JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, JsonNode.class)
+                                            .orElseThrow(NoSuchElementException::new);
+    return jsonNode.get("data").get("pinned").asBoolean();
+
   }
 
   @Override

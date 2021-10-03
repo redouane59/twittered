@@ -29,5 +29,6 @@ public class TwitterList {
     @JsonProperty("private")
     boolean isPrivate;
     boolean deleted;
+    boolean pinned;
   }
 }
