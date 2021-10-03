@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
 import io.github.redouane59.twitter.dto.tweet.RetweetResponse;
@@ -110,6 +111,18 @@ public class ITwitterClientV2AuthenticatedTest {
     resultRT = twitterClient.unretweetTweet("1413515358766452738");
     assertNotNull(resultRT);
     assertFalse(resultRT.getData().isRetweeted());
+  }
+
+  @Test
+  public void testCreateAndDeleteList() {
+    String      listName = "Test";
+    TwitterList result   = twitterClient.createList(listName, "desc", true);
+    assertNotNull(result);
+    String listId = result.getData().getId();
+    assertNotNull(listId);
+    assertEquals(listName, result.getData().getName());
+    result = twitterClient.deleteList(listId);
+    assertTrue(result.getData().isDeleted());
   }
 
 }
