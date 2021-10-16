@@ -141,5 +141,14 @@ public class ITwitterClientV2AuthenticatedTest {
     assertTrue(result2);
   }
 
+  @Test
+  public void testFollowAndUnfollowList() {
+    String  listId = "1449313282892910592";
+    boolean result = twitterClient.followList(listId);
+    assertTrue(result);
+    result = twitterClient.unfollowList(listId);
+    assertFalse(result);
+  }
+
 
 }
