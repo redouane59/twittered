@@ -121,6 +121,9 @@ public class ITwitterClientV2AuthenticatedTest {
     assertEquals(listName, result.getData().getName());
     String listId = result.getData().getId();
     assertNotNull(listId);
+    // edit list
+    boolean updateResult = twitterClient.updateList(listId, listName + "X", "desc2", false);
+    assertTrue(updateResult);
     // add member
     boolean result2 = twitterClient.addListMember(listId, userId);
     assertTrue(result2);
