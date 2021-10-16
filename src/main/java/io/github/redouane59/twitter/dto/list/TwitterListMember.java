@@ -23,9 +23,7 @@ public class TwitterListMember {
   @JsonInclude(Include.NON_DEFAULT)
   public static class TwitterListMemberData {
 
-    @JsonProperty("is_member")
-    boolean isMember;
     @JsonProperty("user_id")
-    String  userId;
+    String userId;
   }
 }

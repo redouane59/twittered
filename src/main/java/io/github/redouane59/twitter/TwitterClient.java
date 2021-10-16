@@ -637,6 +637,17 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   }
 
+  @SneakyThrows
+  @Override
+  public boolean updateList(final String listId, final String listName, final String description, final boolean isPrivate) {
+    String url = getUrlHelper().getListUrl() + "/" + listId;
+    TwitterListData body = TwitterListData.builder()
+                                          .name(listName).description(description).isPrivate(isPrivate).build();
+    JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.PUT, url, new HashMap<>(), TwitterClient.OBJECT_MAPPER.writeValueAsString(body),
+                                                         true, JsonNode.class).orElseThrow(NoSuchElementException::new);
+    return jsonNode.get("updated").asBoolean();
+  }
+
   @Override
   public Tweet postTweet(String text) {
     return postTweet(text, null);

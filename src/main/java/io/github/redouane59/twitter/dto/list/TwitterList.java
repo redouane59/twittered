@@ -1,7 +1,5 @@
 package io.github.redouane59.twitter.dto.list;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +18,6 @@ public class TwitterList {
   @AllArgsConstructor
   @Builder
   @Getter
-  @JsonInclude(Include.NON_DEFAULT)
   public static class TwitterListData {
 
     String id;
@@ -28,7 +25,5 @@ public class TwitterList {
     String description;
     @JsonProperty("private")
     boolean isPrivate;
-    boolean deleted;
-    boolean pinned;
   }
 }

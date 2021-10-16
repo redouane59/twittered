@@ -515,5 +515,16 @@ public interface ITwitterClientV2 {
    */
   boolean unpinList(String listId);
 
+  /**
+   * Enables the authenticated user to update the meta data of a specified List that they own calling https://api.twitter.com/2/lists/:id
+   *
+   * @param listId The ID of the List to be updated.
+   * @param description Updates the description of the List.
+   * @param listName Updates the name of the List.
+   * @param isPrivate Determines whether the List should be private.
+   * @return true if the list was updated
+   */
+  boolean updateList(String listId, String listName, String description, boolean isPrivate);
+
 }
 
