@@ -649,6 +649,23 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
+  public boolean followList(final String listId) {
+    String url  = getUrlHelper().getFollowListUrl(getUserIdFromAccessToken());
+    String body = "{\"list_id\": \"" + listId + "\"}";
+    JsonNode jsonNode = getRequestHelperV1().postRequestWithBodyJson(url, null, body, JsonNode.class)
+                                            .orElseThrow(NoSuchElementException::new);
+    return jsonNode.get("data").get("following").asBoolean();
+  }
+
+  @Override
+  public boolean unfollowList(final String listId) {
+    String url = getUrlHelper().getUnfollowListUrl(getUserIdFromAccessToken(), listId);
+    JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null,
+                                                         true, JsonNode.class).orElseThrow(NoSuchElementException::new);
+    return jsonNode.get("data").get("following").asBoolean();
+  }
+
+  @Override
   public Tweet postTweet(String text) {
     return postTweet(text, null);
   }

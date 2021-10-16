@@ -526,5 +526,21 @@ public interface ITwitterClientV2 {
    */
   boolean updateList(String listId, String listName, String description, boolean isPrivate);
 
+  /**
+   * Enables the authenticated user to follow a List calling /2/users/:id/followed_lists
+   *
+   * @param listId The ID of the List that you would like the user id to follow.
+   * @return the following status
+   */
+  boolean followList(String listId);
+
+  /**
+   * Enables the authenticated user to unfollow a List calling https://api.twitter.com/2/users/:id/followed_lists/:list_id
+   *
+   * @param listId The ID of the List that you would like the user id to unfollow.
+   * @return the following status
+   */
+  boolean unfollowList(String listId);
+
 }
 
