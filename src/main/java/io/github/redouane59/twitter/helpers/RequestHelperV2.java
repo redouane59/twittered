@@ -23,8 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RequestHelperV2 extends AbstractRequestHelper {
 
-  private String bearerToken;
-
   public RequestHelperV2(TwitterCredentials twitterCredentials) {
     super(twitterCredentials);
   }
@@ -123,7 +121,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
   }
 
   public String getBearerToken() {
-    if (bearerToken == null) {
+    if (getTwitterCredentials().getBearerToken() == null) {
       String url = URLHelper.GET_BEARER_TOKEN_URL;
       String valueToCrypt = getTwitterCredentials().getApiKey()
                             + ":" + getTwitterCredentials().getApiSecretKey();
@@ -133,8 +131,8 @@ public class RequestHelperV2 extends AbstractRequestHelper {
       headers.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
       String                body   = "grant_type=client_credentials";
       Optional<BearerToken> result = makeRequest(Verb.POST, url, headers, null, body, false, BearerToken.class);
-      bearerToken = result.orElseThrow(NoSuchElementException::new).getAccessToken();
+      getTwitterCredentials().setBearerToken(result.orElseThrow(NoSuchElementException::new).getAccessToken());
     }
-    return bearerToken;
+    return getTwitterCredentials().getBearerToken();
   }
 }
