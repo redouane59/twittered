@@ -18,6 +18,7 @@ public class TwitterCredentials {
   private String apiSecretKey;
   private String accessToken;
   private String accessTokenSecret;
+  private String bearerToken;
 
   public OAuth1AccessToken asAccessToken() {
     return new OAuth1AccessToken(getAccessToken(), getAccessTokenSecret());
