@@ -666,8 +666,33 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
+  public Tweet postTweet(final String text) {
+    // @todo to implement
+    return null;
+  }
+
+  @Override
+  public Tweet postTweet(final String text, final AdditionalParameters additionalParameters) {
+    // @todo to implement
+    return null;
+  }
+
+  @Override
+  public boolean deleteTweet(final String tweetId) {
+    // @todo to implement
+    return false;
+  }
+
+    /*
+  @Override
   public Tweet postTweet(String text) {
     return postTweet(text, null);
+  }
+
+  @Override
+  public Tweet postTweet(final String text, final AdditionalParameters additionalParameters) {
+    // to implement
+    return null;
   }
 
   @Override
@@ -703,7 +728,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String              url        = getUrlHelper().getDeleteTweetUrl(tweetId);
     Map<String, String> parameters = new HashMap<>();
     return requestHelperV1.postRequest(url, parameters, TweetV1.class).orElseThrow(NoSuchElementException::new);
-  }
+  } */
 
   @Override
   public Tweet getTweet(String tweetId) {
