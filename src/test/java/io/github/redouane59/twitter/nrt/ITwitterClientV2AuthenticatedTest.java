@@ -12,6 +12,8 @@ import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
 import io.github.redouane59.twitter.dto.tweet.RetweetResponse;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
+import io.github.redouane59.twitter.dto.tweet.TweetParameters;
+import io.github.redouane59.twitter.dto.tweet.TweetParameters.Reply;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserActionResponse;
 import io.github.redouane59.twitter.dto.user.UserList;
@@ -153,7 +155,7 @@ public class ITwitterClientV2AuthenticatedTest {
   }
 
   @Test
-  public void testPostAndRTandDeleteTweet() {
+  public void testPostAndDeleteTweet() {
     String text       = "Test post Tweet V2 at " + LocalDateTime.now() + " #TwitterAPI";
     Tweet  resultPost = twitterClient.postTweet(text);
     assertNotNull(resultPost);
@@ -163,5 +165,38 @@ public class ITwitterClientV2AuthenticatedTest {
     assertTrue(result);
   }
 
+  @Test
+  public void testPostQuoteTweetAndDeleteTweet() {
+    String text = "Test postTweet v2 with parameters";
+    TweetParameters parameters = TweetParameters.builder()
+                                                .text(text)
+                                                .quoteTweetId("1456359240768045059")
+                                                .build();
+    Tweet resultPost = twitterClient.postTweet(parameters);
+    assertNotNull(resultPost);
+    assertNotNull(resultPost.getId());
+    assertEquals(text, resultPost.getText());
+    boolean result = twitterClient.deleteTweet(resultPost.getId());
+    assertTrue(result);
+  }
+
+  @Test
+  public void testPostReplyTweetAndDeleteTweet() {
+    String text = "Test postTweet v2 with parameters";
+    TweetParameters parameters = TweetParameters.builder()
+                                                .text(text)
+                                                .reply(
+                                                    Reply.builder()
+                                                         .inReplyToTweetId("1456359240768045059")
+                                                         .build()
+                                                )
+                                                .build();
+    Tweet resultPost = twitterClient.postTweet(parameters);
+    assertNotNull(resultPost);
+    assertNotNull(resultPost.getId());
+    assertEquals(text, resultPost.getText());
+    boolean result = twitterClient.deleteTweet(resultPost.getId());
+    assertTrue(result);
+  }
 
 }

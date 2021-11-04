@@ -146,11 +146,6 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testPostNewTweetUrl() {
-    assertEquals("https://api.twitter.com/1.1/statuses/update.json", urlHelper.getPostTweetUrl());
-  }
-
-  @Test
   public void testUnretweetTweetUrl() {
     assertEquals("https://api.twitter.com/2/users/12345/retweets/67890", urlHelper.getUnretweetTweetUrl("12345", "67890"));
   }

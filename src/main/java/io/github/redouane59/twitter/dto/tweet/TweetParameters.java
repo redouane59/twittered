@@ -33,7 +33,7 @@ public class TweetParameters {
     @JsonProperty("exclude_reply_user_ids")
     private List<String> excludeReplyUserIds;
     @JsonProperty("in_reply_to_tweet_id")
-    private List<String> inReplyToTweetId;
+    private String       inReplyToTweetId;
 
   }
 
