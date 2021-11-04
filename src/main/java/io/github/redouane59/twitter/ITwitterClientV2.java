@@ -542,5 +542,29 @@ public interface ITwitterClientV2 {
    */
   boolean unfollowList(String listId);
 
-}
+  /**
+   * Creates a Tweet on behalf of an authenticated user calling https://api.twitter.com/2/tweets
+   *
+   * @param text Text of the Tweet being created. This field is required if `media.media_ids` is not present
+   * @return the tweet created
+   */
+  Tweet postTweet(String text);
 
+  /**
+   * Creates a Tweet on behalf of an authenticated user calling https://api.twitter.com/2/tweets
+   *
+   * @param text Text of the Tweet being created. This field is required if `media.media_ids` is not present
+   * @param additionalParameters see https://developer.twitter.com/en/docs/twitter-api/tweets/manage-tweets/api-reference/post-tweets
+   * @return the tweet created
+   */
+  Tweet postTweet(String text, AdditionalParameters additionalParameters);
+
+  /**
+   * Allows a user or authenticated user ID to delete a Tweet calling https://api.twitter.com/2/tweets/:id
+   *
+   * @param tweetId The Tweet ID you are deleting.
+   */
+  boolean deleteTweet(String tweetId);
+
+
+}

@@ -18,54 +18,6 @@ import java.util.List;
 public interface ITwitterClientV1 {
 
   /**
-   * Post a tweet calling https://api.twitter.com/1.1/statuses/update.json
-   *
-   * @param text the tweet text
-   * @return the created tweet
-   */
-  Tweet postTweet(String text);
-
-  /**
-   * Post a tweet calling https://api.twitter.com/1.1/statuses/update.json
-   *
-   * @param text the tweet text
-   * @param inReplyToStatusId the id of the tweet to answer. Note: This parameter will be ignored unless the author of the Tweet this parameter
-   * references is mentioned within the status text. Therefore, you must include @username , where username is the author of the referenced Tweet,
-   * within the update.
-   * @return the created tweet
-   */
-  Tweet postTweet(String text, String inReplyToStatusId);
-
-  /**
-   * Post a tweet calling https://api.twitter.com/1.1/statuses/update.json
-   *
-   * @param text the tweet text
-   * @param inReplyToStatusId the id of the tweet to answer.
-   * @param mediaIds the ids of the media obtained calling the uploadMedia() method, separated by commas
-   * @return the created tweet
-   */
-  Tweet postTweet(String text, String inReplyToStatusId, String mediaIds);
-
-  /**
-   * Post a tweet calling https://api.twitter.com/1.1/statuses/update.json
-   *
-   * @param text the tweet text
-   * @param inReplyToStatusId the id of the tweet to answer.
-   * @param mediaIds the ids of the media obtained calling the uploadMedia() method, separated by commas
-   * @param attachmentUrl provide a URL as a Tweet attachment
-   * @return the created tweet
-   */
-  Tweet postTweet(String text, String inReplyToStatusId, String mediaIds, String attachmentUrl);
-
-  /**
-   * Delete a tweet calling https://api.twitter.com/1.1/statuses/destroy/:id.json
-   *
-   * @param tweetId the id of the tweet
-   * @return the deleted tweet
-   */
-  Tweet deleteTweet(String tweetId);
-
-  /**
    * Returns a cursored collection of user IDs for every user following the specified user calling https://api.twitter.com/1.1/followers/ids.json
    *
    * @Deprecated <p> Use {@link ITwitterClientV2#getFollowers(String)} instead.
@@ -235,4 +187,3 @@ public interface ITwitterClientV1 {
   DmEvent postDm(String text, String userId);
 
 }
-
