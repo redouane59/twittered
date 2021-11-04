@@ -11,9 +11,11 @@ import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
 import io.github.redouane59.twitter.dto.tweet.RetweetResponse;
+import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserActionResponse;
 import io.github.redouane59.twitter.dto.user.UserList;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -148,6 +150,15 @@ public class ITwitterClientV2AuthenticatedTest {
     assertTrue(result);
     result = twitterClient.unfollowList(listId);
     assertFalse(result);
+  }
+
+  @Test
+  public void testPostAndRTandDeleteTweet() {
+    String text       = "API Test " + LocalDateTime.now() + " #TwitterAPI";
+    Tweet  resultPost = twitterClient.postTweet(text);
+    assertNotNull(resultPost);
+    assertNotNull(resultPost.getId());
+    assertEquals(text, resultPost.getText());
   }
 
 

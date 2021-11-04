@@ -63,6 +63,8 @@ public class URLHelper {
   private final String searchSpacesUrl        = "https://api.twitter.com/2/spaces/search";
   @Getter
   private final String listUrl                = "https://api.twitter.com/2/lists";
+  @Getter
+  private final String postTweetUrl           = "https://api.twitter.com/2/tweets";
 
   private final String followUrl           = "https://api.twitter.com/2/users/:id/following";
   private final String unfollowUrl         = "https://api.twitter.com/2/users/:sourceId/following/:targetId";
@@ -171,10 +173,6 @@ public class URLHelper {
 
   public String getUnretweetTweetUrl(final String userId, final String tweetId) {
     return unretweetTweetUrl.replace(idVariable, userId).replace(":source_tweet_id", tweetId);
-  }
-
-  public String getPostTweetUrl() {
-    return ROOT_URL_V1 + STATUSES + "/update.json";
   }
 
   public String getDeleteTweetUrl(String tweetId) {

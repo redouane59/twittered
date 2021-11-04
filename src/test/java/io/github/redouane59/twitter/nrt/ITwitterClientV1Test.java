@@ -10,13 +10,8 @@ import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.dm.DirectMessage;
 import io.github.redouane59.twitter.dto.dm.DmEvent;
 import io.github.redouane59.twitter.dto.others.RequestToken;
-import io.github.redouane59.twitter.dto.tweet.MediaCategory;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
-import io.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -96,67 +91,11 @@ public class ITwitterClientV1Test {
   }
 
   @Test
-  public void testPostAndRTandDeleteTweet() {
-    String text       = "API Test " + LocalDateTime.now() + " #TwitterAPI";
-    Tweet  resultPost = twitterClient.postTweet(text);
-    assertNotNull(resultPost);
-    assertNotNull(resultPost.getId());
-    assertEquals(text, resultPost.getText());
-    Tweet resultPostAnswer = twitterClient.postTweet(text, resultPost.getId());
-    assertNotNull(resultPostAnswer);
-    assertNotNull(resultPostAnswer.getId());
-    assertEquals(resultPostAnswer.getInReplyToStatusId(), resultPost.getId());
-    Tweet resultDelete = twitterClient.deleteTweet(resultPost.getId());
-    assertNotNull(resultDelete);
-    assertEquals(resultPost.getId(), resultDelete.getId());
-    Tweet resultDelete2 = twitterClient.deleteTweet(resultPostAnswer.getId());
-    assertNotNull(resultDelete2);
-    assertEquals(resultPostAnswer.getId(), resultDelete2.getId());
-  }
-
-  @Test
-  public void postTweetWithUrl() {
-    Tweet resultPost = twitterClient.postTweet("test", null, null, "https://twitter.com/TwitterDev/status/1392465174708187137");
-    assertNotNull(resultPost);
-    assertNotNull(resultPost.getId());
-    Tweet resultDelete = twitterClient.deleteTweet(resultPost.getId());
-    assertNotNull(resultDelete);
-  }
-
-  @Test
   public void testSearchTweets30days() {
     List<Tweet>
         result =
         twitterClient.searchForTweetsWithin30days("Hello World!", ConverterHelper.dayBeforeNow(25), ConverterHelper.dayBeforeNow(1), "30days");
     assertTrue(result.size() > 0);
-  }
-
-  @Test
-  public void testUploadMedia() throws Exception {
-
-    try (InputStream is = ITwitterClientV1Test.class.getResourceAsStream("/twitter.png");
-         ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
-      byte[] buf = new byte[1024];
-      int    k;
-      while ((k = is.read(buf)) > 0) {
-        baos.write(buf, 0, k);
-      }
-      UploadMediaResponse response = twitterClient.uploadMedia("twitter.png", baos.toByteArray(), MediaCategory.TWEET_IMAGE);
-      assertNotNull(response);
-      assertNotNull(response.getMediaId());
-      Tweet tweet = twitterClient.postTweet("Test", null, response.getMediaId());
-      assertNotNull(tweet);
-      assertNotNull(tweet.getId());
-      twitterClient.deleteTweet(tweet.getId());
-    }
-  }
-
-  @Test
-  public void testAnswerToSeveralUsers() {
-    Tweet tweet = twitterClient.postTweet(".", "1396580851274682370");
-    assertNotNull(tweet);
-    assertNotNull(tweet.getId());
-    twitterClient.deleteTweet(tweet.getId());
   }
 
   @Test
