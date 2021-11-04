@@ -15,6 +15,7 @@ import io.github.redouane59.twitter.dto.tweet.RetweetResponse;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetCountsList;
 import io.github.redouane59.twitter.dto.tweet.TweetList;
+import io.github.redouane59.twitter.dto.tweet.TweetParameters;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserActionResponse;
 import io.github.redouane59.twitter.dto.user.UserList;
@@ -553,11 +554,10 @@ public interface ITwitterClientV2 {
   /**
    * Creates a Tweet on behalf of an authenticated user calling https://api.twitter.com/2/tweets
    *
-   * @param text Text of the Tweet being created. This field is required if `media.media_ids` is not present
-   * @param additionalParameters see https://developer.twitter.com/en/docs/twitter-api/tweets/manage-tweets/api-reference/post-tweets
+   * @param tweetParameters see https://developer.twitter.com/en/docs/twitter-api/tweets/manage-tweets/api-reference/post-tweets
    * @return the tweet created
    */
-  Tweet postTweet(String text, AdditionalParameters additionalParameters);
+  Tweet postTweet(TweetParameters tweetParameters);
 
   /**
    * Allows a user or authenticated user ID to delete a Tweet calling https://api.twitter.com/2/tweets/:id

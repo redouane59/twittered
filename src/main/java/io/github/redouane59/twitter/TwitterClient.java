@@ -46,6 +46,7 @@ import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetCountsList;
 import io.github.redouane59.twitter.dto.tweet.TweetList;
 import io.github.redouane59.twitter.dto.tweet.TweetList.TweetMeta;
+import io.github.redouane59.twitter.dto.tweet.TweetParameters;
 import io.github.redouane59.twitter.dto.tweet.TweetSearchResponseV1;
 import io.github.redouane59.twitter.dto.tweet.TweetV1;
 import io.github.redouane59.twitter.dto.tweet.TweetV1Deserializer;
@@ -667,14 +668,15 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public Tweet postTweet(final String text) {
-    // @todo to implement
-    return null;
+    return postTweet(TweetParameters.builder().text(text).build());
   }
 
+  @SneakyThrows
   @Override
-  public Tweet postTweet(final String text, final AdditionalParameters additionalParameters) {
-    // @todo to implement
-    return null;
+  public Tweet postTweet(final TweetParameters tweetParameters) {
+    String url  = getUrlHelper().getPostTweetUrl();
+    String body = OBJECT_MAPPER.writeValueAsString(tweetParameters);
+    return getRequestHelperV1().postRequestWithBodyJson(url, new HashMap<>(), body, Tweet.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
@@ -682,53 +684,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     // @todo to implement
     return false;
   }
-
-    /*
-  @Override
-  public Tweet postTweet(String text) {
-    return postTweet(text, null);
-  }
-
-  @Override
-  public Tweet postTweet(final String text, final AdditionalParameters additionalParameters) {
-    // to implement
-    return null;
-  }
-
-  @Override
-  public Tweet postTweet(String text, String inReplyToStatusId) {
-    return postTweet(text, inReplyToStatusId, null);
-  }
-
-  @Override
-  public Tweet postTweet(String text, String inReplyToStatusId, String mediaIds) {
-    return postTweet(text, inReplyToStatusId, mediaIds, null);
-  }
-
-  @Override
-  public Tweet postTweet(final String text, final String inReplyToStatusId, final String mediaIds, final String attachmentUrl) {
-    String              url        = getUrlHelper().getPostTweetUrl();
-    Map<String, String> parameters = new HashMap<>();
-    parameters.put("status", text);
-    if (inReplyToStatusId != null) {
-      parameters.put("in_reply_to_status_id", inReplyToStatusId);
-      parameters.put("auto_populate_reply_metadata", "true");
-    }
-    if (mediaIds != null) {
-      parameters.put("media_ids", mediaIds);
-    }
-    if (attachmentUrl != null) {
-      parameters.put("attachment_url", attachmentUrl);
-    }
-    return requestHelperV1.postRequest(url, parameters, TweetV1.class).orElseThrow(NoSuchElementException::new);
-  }
-
-  @Override
-  public Tweet deleteTweet(String tweetId) {
-    String              url        = getUrlHelper().getDeleteTweetUrl(tweetId);
-    Map<String, String> parameters = new HashMap<>();
-    return requestHelperV1.postRequest(url, parameters, TweetV1.class).orElseThrow(NoSuchElementException::new);
-  } */
 
   @Override
   public Tweet getTweet(String tweetId) {
