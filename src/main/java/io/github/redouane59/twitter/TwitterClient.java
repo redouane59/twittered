@@ -676,13 +676,15 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public Tweet postTweet(final TweetParameters tweetParameters) {
     String url  = getUrlHelper().getPostTweetUrl();
     String body = OBJECT_MAPPER.writeValueAsString(tweetParameters);
-    return getRequestHelperV1().postRequestWithBodyJson(url, new HashMap<>(), body, Tweet.class).orElseThrow(NoSuchElementException::new);
+    return getRequestHelperV1().postRequestWithBodyJson(url, new HashMap<>(), body, TweetV2.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
   public boolean deleteTweet(final String tweetId) {
-    // @todo to implement
-    return false;
+    String url = getUrlHelper().getPostTweetUrl() + "/" + tweetId;
+    JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, JsonNode.class)
+                                            .orElseThrow(NoSuchElementException::new);
+    return jsonNode.get("data").get("deleted").asBoolean();
   }
 
   @Override
