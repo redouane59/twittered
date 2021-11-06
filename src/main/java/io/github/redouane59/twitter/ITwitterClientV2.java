@@ -546,16 +546,16 @@ public interface ITwitterClientV2 {
   /**
    * Creates a Tweet on behalf of an authenticated user calling https://api.twitter.com/2/tweets
    *
-   * @param text Text of the Tweet being created. This field is required if `media.media_ids` is not present
-   * @return the tweet created
+   * @param text Text of the Tweet being created.
+   * @return the created tweet, only with id and text fields
    */
   Tweet postTweet(String text);
 
   /**
    * Creates a Tweet on behalf of an authenticated user calling https://api.twitter.com/2/tweets
    *
-   * @param tweetParameters see https://developer.twitter.com/en/docs/twitter-api/tweets/manage-tweets/api-reference/post-tweets
-   * @return the tweet created
+   * @param tweetParameters object containing additional parameters. See https://developer.twitter.com/en/docs/twitter-api/tweets/manage-tweets/api-reference/post-tweets
+   * @return the created tweet, only with id and text fields
    */
   Tweet postTweet(TweetParameters tweetParameters);
 
@@ -563,6 +563,7 @@ public interface ITwitterClientV2 {
    * Allows a user or authenticated user ID to delete a Tweet calling https://api.twitter.com/2/tweets/:id
    *
    * @param tweetId The Tweet ID you are deleting.
+   * @return true if the tweet was deleted
    */
   boolean deleteTweet(String tweetId);
 
