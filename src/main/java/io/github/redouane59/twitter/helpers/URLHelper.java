@@ -19,15 +19,12 @@ public class URLHelper {
   private static final String SHOW_JSON                   = "/show.json?";
   private static final String FOLLOWERS                   = "/followers";
   private static final String FOLLOWING                   = "/friends";
-  private static final String STATUSES                    = "/statuses";
   private static final String FRIENDSHIPS                 = "/friendships";
   private static final String TWEETS                      = "/tweets";
   private static final String SEARCH                      = "/search";
   private static final String THIRTY_DAYS                 = "/30day";
   private static final String FULL_ARCHIVE                = "/fullarchive";
   private static final String USER_ID                     = "user_id";
-  private static final String USER_TIMELINE               = "/user_timeline.json?";
-  public static final  String LAST_TWEET_LIST_URL         = ROOT_URL_V1 + STATUSES + USER_TIMELINE;
   private static final String JSON                        = ".json";
   public static final  String SEARCH_TWEET_STANDARD_URL   = ROOT_URL_V1 + SEARCH + TWEETS + JSON;
   private static final String COLLECTIONS                 = "/collections";
@@ -173,10 +170,6 @@ public class URLHelper {
 
   public String getUnretweetTweetUrl(final String userId, final String tweetId) {
     return unretweetTweetUrl.replace(idVariable, userId).replace(":source_tweet_id", tweetId);
-  }
-
-  public String getDeleteTweetUrl(String tweetId) {
-    return ROOT_URL_V1 + STATUSES + "/destroy/" + tweetId + JSON;
   }
 
   public String getHideReplyUrl(final String tweetId) {

@@ -125,6 +125,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   private static final String             PAGINATION_TOKEN                     = "pagination_token";
   private static final String             PINNED_TWEET_ID                      = "pinned_tweet_id";
   private static final String             BACKFILL_MINUTES                     = "backfill_minutes";
+  private static final String             DATA                                 = "data";
+  private static final String             DELETED                              = "deleted";
   private static final String[]           DEFAULT_VALID_CREDENTIALS_FILE_NAMES = {"test-twitter-credentials.json",
                                                                                   "twitter-credentials.json"};
   private              URLHelper          urlHelper                            = new URLHelper();
@@ -596,7 +598,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String url = getUrlHelper().getListUrl() + "/" + listId;
     JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, JsonNode.class)
                                             .orElseThrow(NoSuchElementException::new);
-    return jsonNode.get("data").get("deleted").asBoolean();
+    return jsonNode.get(DATA).get(DELETED).asBoolean();
 
   }
 
@@ -608,7 +610,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     JsonNode jsonNode =
         getRequestHelperV1().postRequestWithBodyJson(url, null, TwitterClient.OBJECT_MAPPER.writeValueAsString(body), JsonNode.class)
                             .orElseThrow(NoSuchElementException::new);
-    return jsonNode.get("data").get("is_member").asBoolean();
+    return jsonNode.get(DATA).get("is_member").asBoolean();
   }
 
   @Override
@@ -616,7 +618,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String url = getUrlHelper().getRemoveListMemberUrl(listId, userId);
     JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, JsonNode.class)
                                             .orElseThrow(NoSuchElementException::new);
-    return jsonNode.get("data").get("is_member").asBoolean();
+    return jsonNode.get(DATA).get("is_member").asBoolean();
   }
 
   @SneakyThrows
@@ -626,7 +628,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String body = "{\"list_id\": \"" + listId + "\"}";
     JsonNode jsonNode = getRequestHelperV1().postRequestWithBodyJson(url, null, body, JsonNode.class)
                                             .orElseThrow(NoSuchElementException::new);
-    return jsonNode.get("data").get("pinned").asBoolean();
+    return jsonNode.get(DATA).get("pinned").asBoolean();
   }
 
   @Override
@@ -634,7 +636,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String url = getUrlHelper().getUnpinListUrl(getUserIdFromAccessToken(), listId);
     JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, JsonNode.class)
                                             .orElseThrow(NoSuchElementException::new);
-    return jsonNode.get("data").get("pinned").asBoolean();
+    return jsonNode.get(DATA).get("pinned").asBoolean();
 
   }
 
@@ -655,7 +657,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String body = "{\"list_id\": \"" + listId + "\"}";
     JsonNode jsonNode = getRequestHelperV1().postRequestWithBodyJson(url, null, body, JsonNode.class)
                                             .orElseThrow(NoSuchElementException::new);
-    return jsonNode.get("data").get("following").asBoolean();
+    return jsonNode.get(DATA).get("following").asBoolean();
   }
 
   @Override
@@ -663,7 +665,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String url = getUrlHelper().getUnfollowListUrl(getUserIdFromAccessToken(), listId);
     JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null,
                                                          true, JsonNode.class).orElseThrow(NoSuchElementException::new);
-    return jsonNode.get("data").get("following").asBoolean();
+    return jsonNode.get(DATA).get("following").asBoolean();
   }
 
   @Override
@@ -684,7 +686,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String url = getUrlHelper().getPostTweetUrl() + "/" + tweetId;
     JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, JsonNode.class)
                                             .orElseThrow(NoSuchElementException::new);
-    return jsonNode.get("data").get("deleted").asBoolean();
+    return jsonNode.get(DATA).get(DELETED).asBoolean();
   }
 
   @Override
