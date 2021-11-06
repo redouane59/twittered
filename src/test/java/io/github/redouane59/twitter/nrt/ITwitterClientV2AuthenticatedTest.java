@@ -9,15 +9,25 @@ import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
+import io.github.redouane59.twitter.dto.tweet.Geo;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
+import io.github.redouane59.twitter.dto.tweet.MediaCategory;
+import io.github.redouane59.twitter.dto.tweet.ReplySettings;
 import io.github.redouane59.twitter.dto.tweet.RetweetResponse;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetParameters;
+import io.github.redouane59.twitter.dto.tweet.TweetParameters.Media;
+import io.github.redouane59.twitter.dto.tweet.TweetParameters.Poll;
 import io.github.redouane59.twitter.dto.tweet.TweetParameters.Reply;
+import io.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserActionResponse;
 import io.github.redouane59.twitter.dto.user.UserList;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -167,10 +177,30 @@ public class ITwitterClientV2AuthenticatedTest {
 
   @Test
   public void testPostQuoteTweetAndDeleteTweet() {
-    String text = "Test postTweet v2 with parameters";
+    String text = "Test postTweet v2 quote at " + LocalDateTime.now() + " #TwitterAPI";
     TweetParameters parameters = TweetParameters.builder()
                                                 .text(text)
                                                 .quoteTweetId("1456359240768045059")
+                                                .build();
+    Tweet resultPost = twitterClient.postTweet(parameters);
+    assertNotNull(resultPost);
+    assertNotNull(resultPost.getId());
+    assertTrue(resultPost.getText().contains(text));
+    assertTrue(resultPost.getText().contains("https://t.co/"));
+    boolean result = twitterClient.deleteTweet(resultPost.getId());
+    assertTrue(result);
+  }
+
+  @Test
+  public void testPostReplyTweetAndDeleteTweet() {
+    String text = "Test postTweet v2 reply at " + LocalDateTime.now() + " #TwitterAPI";
+    TweetParameters parameters = TweetParameters.builder()
+                                                .text(text)
+                                                .reply(
+                                                    Reply.builder()
+                                                         .inReplyToTweetId("1456359240768045059")
+                                                         .build()
+                                                )
                                                 .build();
     Tweet resultPost = twitterClient.postTweet(parameters);
     assertNotNull(resultPost);
@@ -181,15 +211,94 @@ public class ITwitterClientV2AuthenticatedTest {
   }
 
   @Test
-  public void testPostReplyTweetAndDeleteTweet() {
-    String text = "Test postTweet v2 with parameters";
+  public void testPostTweetWithPollAndDeleteTweet() {
+    String text = "Test postTweet v2 with poll at " + LocalDateTime.now() + " #TwitterAPI";
     TweetParameters parameters = TweetParameters.builder()
                                                 .text(text)
-                                                .reply(
-                                                    Reply.builder()
-                                                         .inReplyToTweetId("1456359240768045059")
-                                                         .build()
+                                                .poll(
+                                                    Poll.builder()
+                                                        .durationMinutes(3600)
+                                                        .options(Arrays.asList("Option1", "Option2", "Option3"))
+                                                        .build()
                                                 )
+                                                .build();
+    Tweet resultPost = twitterClient.postTweet(parameters);
+    assertNotNull(resultPost);
+    assertNotNull(resultPost.getId());
+    assertEquals(text, resultPost.getText());
+    boolean result = twitterClient.deleteTweet(resultPost.getId());
+    assertTrue(result);
+  }
+
+  @Test
+  public void testPostTweetWithDeepLinkAndDeleteTweet() {
+    String text = "Test postTweet v2 with deep link at " + LocalDateTime.now() + " #TwitterAPI";
+    TweetParameters parameters = TweetParameters.builder()
+                                                .text(text)
+                                                .directMessageDeepLink("https://twitter.com/messages/compose?recipient_id=1120050519182016513")
+                                                .build();
+    Tweet resultPost = twitterClient.postTweet(parameters);
+    assertNotNull(resultPost);
+    assertNotNull(resultPost.getId());
+    assertTrue(resultPost.getText().contains(text));
+    assertTrue(resultPost.getText().contains("https://t.co/"));
+    boolean result = twitterClient.deleteTweet(resultPost.getId());
+    assertTrue(result);
+  }
+
+  @Test
+  public void testPostTweetWithGeoAndDeleteTweet() {
+    String text    = "Test postTweet v2 with geo at " + LocalDateTime.now() + " #TwitterAPI";
+    String placeId = "df51dec6f4ee2b2c";
+    TweetParameters parameters = TweetParameters.builder()
+                                                .text(text)
+                                                .geo(
+                                                    Geo.builder()
+                                                       .placeId(placeId)
+                                                       .build()
+                                                )
+                                                .build();
+    Tweet resultPost = twitterClient.postTweet(parameters);
+    assertNotNull(resultPost);
+    assertNotNull(resultPost.getId());
+    assertEquals(text, resultPost.getText());
+    // assertEquals(placeId, resultPost.getGeo().getPlaceId()); not working, API set up ?
+    boolean result = twitterClient.deleteTweet(resultPost.getId());
+    assertTrue(result);
+  }
+
+  @Test
+  public void testPostTweetWithMediaAndDeleteTweet() throws IOException {
+    String mediaName = "twitter.png";
+    try (InputStream is = ITwitterClientV1Test.class.getResourceAsStream("/" + mediaName);
+         ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
+      byte[] buf = new byte[1024];
+      int    k;
+      while ((k = is.read(buf)) > 0) {
+        baos.write(buf, 0, k);
+      }
+      UploadMediaResponse response = twitterClient.uploadMedia(mediaName, baos.toByteArray(), MediaCategory.TWEET_IMAGE);
+      assertNotNull(response);
+      assertNotNull(response.getMediaId());
+      TweetParameters parameters = TweetParameters.builder()
+                                                  .media(Media.builder()
+                                                              .mediaIds(Arrays.asList(response.getMediaId()))
+                                                              .build())
+                                                  .build();
+      Tweet resultPost = twitterClient.postTweet(parameters);
+      assertNotNull(resultPost);
+      assertNotNull(resultPost.getId());
+      boolean result = twitterClient.deleteTweet(resultPost.getId());
+      assertTrue(result);
+    }
+  }
+
+  @Test
+  public void testPostTweetWithReplySettingsAndDeleteTweet() {
+    String text = "Test post Tweet V2 with reply settings at " + LocalDateTime.now() + " #TwitterAPI";
+    TweetParameters parameters = TweetParameters.builder()
+                                                .text(text)
+                                                .replySettings(ReplySettings.MENTIONED_USERS)
                                                 .build();
     Tweet resultPost = twitterClient.postTweet(parameters);
     assertNotNull(resultPost);

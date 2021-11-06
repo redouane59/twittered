@@ -14,11 +14,14 @@ public class TweetParameters {
 
   private String        text;
   @JsonProperty("direct_message_deep_link")
+  /**
+   * https://twitter.com/messages/compose?recipient_id=<user_id>
+   */
   private String        directMessageDeepLink;
   @JsonProperty("for_super_followers_only")
   private boolean       forSuperFollowersOnly;
   private Geo           geo;
-  // private Media   media;
+  private Media         media;
   private Poll          poll;
   @JsonProperty("quote_tweet_id")
   private String        quoteTweetId;
@@ -41,9 +44,20 @@ public class TweetParameters {
   @Getter
   public static class Poll {
 
-    @JsonProperty("poll.duration_minutes")
+    @JsonProperty("duration_minutes")
     private int          durationMinutes;
     private List<String> options;
+  }
+
+  @Builder
+  @Getter
+  public static class Media {
+
+    @JsonProperty("media_ids")
+    private List<String> mediaIds;
+    @JsonProperty("tagged_user_ids")
+    private List<String> taggerUserIds;
+
   }
 
 
