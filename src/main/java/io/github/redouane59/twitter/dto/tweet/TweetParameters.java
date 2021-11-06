@@ -6,9 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Builder
 @Getter
+@Setter
 @JsonInclude(Include.NON_NULL)
 public class TweetParameters {
 
