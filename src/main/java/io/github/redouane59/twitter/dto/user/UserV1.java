@@ -51,6 +51,8 @@ public class UserV1 implements User {
   private String      dateOfCreation;
   private String      lastUpdate;
   private String      location;
+  @JsonProperty("profile_image_url")
+  private String      profileImageUrl;
   private boolean     following;
 
   @Override
@@ -74,12 +76,6 @@ public class UserV1 implements User {
 
   @Override
   public Tweet getPinnedTweet() {
-    LOGGER.debug("UnsupportedOperation");
-    return null;
-  }
-
-  @Override
-  public String getProfileImageUrl() {
     LOGGER.debug("UnsupportedOperation");
     return null;
   }
