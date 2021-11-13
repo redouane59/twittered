@@ -15,6 +15,7 @@ import io.github.redouane59.twitter.dto.tweet.RetweetResponse;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetCountsList;
 import io.github.redouane59.twitter.dto.tweet.TweetList;
+import io.github.redouane59.twitter.dto.tweet.TweetParameters;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserActionResponse;
 import io.github.redouane59.twitter.dto.user.UserList;
@@ -542,5 +543,29 @@ public interface ITwitterClientV2 {
    */
   boolean unfollowList(String listId);
 
-}
+  /**
+   * Creates a Tweet on behalf of an authenticated user calling https://api.twitter.com/2/tweets
+   *
+   * @param text Text of the Tweet being created.
+   * @return the created tweet, only with id and text fields
+   */
+  Tweet postTweet(String text);
 
+  /**
+   * Creates a Tweet on behalf of an authenticated user calling https://api.twitter.com/2/tweets
+   *
+   * @param tweetParameters object containing additional parameters. See https://developer.twitter.com/en/docs/twitter-api/tweets/manage-tweets/api-reference/post-tweets
+   * @return the created tweet, only with id and text fields
+   */
+  Tweet postTweet(TweetParameters tweetParameters);
+
+  /**
+   * Allows a user or authenticated user ID to delete a Tweet calling https://api.twitter.com/2/tweets/:id
+   *
+   * @param tweetId The Tweet ID you are deleting.
+   * @return true if the tweet was deleted
+   */
+  boolean deleteTweet(String tweetId);
+
+
+}

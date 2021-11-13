@@ -41,12 +41,6 @@ public class UrlHelperTest {
   }
 
   @Test
-  public void testUrlLastTweet() {
-    assertEquals("https://api.twitter.com/1.1/statuses/user_timeline.json?",
-                 URLHelper.LAST_TWEET_LIST_URL);
-  }
-
-  @Test
   public void testUrlFriendshipById() {
     assertEquals("https://api.twitter.com/1.1/friendships/show.json?source_id=12345&target_id=67890",
                  urlHelper.getFriendshipUrl("12345", "67890"));
@@ -143,11 +137,6 @@ public class UrlHelperTest {
     assertEquals(
         "https://api.twitter.com/oauth2/token",
         URLHelper.GET_BEARER_TOKEN_URL);
-  }
-
-  @Test
-  public void testPostNewTweetUrl() {
-    assertEquals("https://api.twitter.com/1.1/statuses/update.json", urlHelper.getPostTweetUrl());
   }
 
   @Test
