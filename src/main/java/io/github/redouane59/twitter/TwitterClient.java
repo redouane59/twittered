@@ -590,7 +590,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @SneakyThrows
   @Override
   public TwitterList createList(final String listName, final String description, final boolean isPrivate) {
-    String          url  = getUrlHelper().getListUrl();
+    String          url  = getUrlHelper().getListUrlV2();
     TwitterListData body = TwitterListData.builder().name(listName).description(description).isPrivate(isPrivate).build();
     return getRequestHelperV1().postRequestWithBodyJson(url, null, TwitterClient.OBJECT_MAPPER.writeValueAsString(body), TwitterList.class)
                                .orElseThrow(NoSuchElementException::new);
@@ -598,7 +598,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public boolean deleteList(final String listId) {
-    String url = getUrlHelper().getListUrl() + "/" + listId;
+    String url = getUrlHelper().getListUrlV2() + "/" + listId;
     JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null, true, JsonNode.class)
                                             .orElseThrow(NoSuchElementException::new);
     return jsonNode.get(DATA).get(DELETED).asBoolean();
@@ -646,7 +646,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @SneakyThrows
   @Override
   public boolean updateList(final String listId, final String listName, final String description, final boolean isPrivate) {
-    String url = getUrlHelper().getListUrl() + "/" + listId;
+    String url = getUrlHelper().getListUrlV2() + "/" + listId;
     TwitterListData body = TwitterListData.builder()
                                           .name(listName).description(description).isPrivate(isPrivate).build();
     JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.PUT, url, new HashMap<>(), TwitterClient.OBJECT_MAPPER.writeValueAsString(body),
@@ -669,6 +669,19 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.DELETE, url, new HashMap<>(), null,
                                                          true, JsonNode.class).orElseThrow(NoSuchElementException::new);
     return jsonNode.get(DATA).get(FOLLOWING).asBoolean();
+  }
+
+  @SneakyThrows
+  @Override
+  public TwitterListData[] getUserTwitterLists() {
+    String url = getUrlHelper().getListUrlV1();
+
+    Map<String, String> requestParameters = new HashMap<>();
+    requestParameters.put("user_id", getUserIdFromAccessToken());
+
+    return getRequestHelper()
+            .makeRequest(Verb.GET, url, requestParameters, null, true, TwitterListData[].class)
+            .orElseThrow(NoSuchElementException::new);
   }
 
   @Override
