@@ -544,6 +544,20 @@ public interface ITwitterClientV2 {
   boolean unfollowList(String listId);
 
   /**
+   * Returns the details of a specified List calling https://api.twitter.com/2/lists/:id
+   *
+   * @param listId The ID of the List to lookup.
+   */
+  TwitterList getList(String listId);
+
+  /**
+   * Returns all Lists owned by the specified user.
+   *
+   * @param userId The user ID whose owned Lists you would like to retrieve.
+   */
+  List<TwitterList> getUserList(String userId);
+
+  /**
    * Creates a Tweet on behalf of an authenticated user calling https://api.twitter.com/2/tweets
    *
    * @param text Text of the Tweet being created.
