@@ -26,6 +26,7 @@ import io.github.redouane59.twitter.dto.getrelationship.IdList;
 import io.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
 import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.list.TwitterList.TwitterListData;
+import io.github.redouane59.twitter.dto.list.TwitterListList;
 import io.github.redouane59.twitter.dto.list.TwitterListMember.TwitterListMemberData;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.others.RateLimitStatus;
@@ -677,7 +678,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public TwitterList getList(final String listId) {
-    String              url        = getUrlHelper().getGetListUrl(listId);
+    String              url        = getUrlHelper().getListUrlV2() + "/" + listId;
     Map<String, String> parameters = new HashMap<>();
     parameters.put(EXPANSION, "owner_id");
     parameters.put(LIST_FIELDS, ALL_LIST_FIELDS);
@@ -686,10 +687,15 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public List<TwitterList> getUserList(final String userId) {
-    return null;
+  public TwitterListList getUserOwnedLists(final String userId) {
+    String              url        = getUrlHelper().getOwnedListUrl(userId);
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(EXPANSION, "owner_id");
+    parameters.put(LIST_FIELDS, ALL_LIST_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    return getRequestHelperV1().getRequestWithParameters(url, parameters, TwitterListList.class).orElseThrow(NoSuchElementException::new);
   }
-  
+
   @Override
   public Tweet postTweet(final String text) {
     return postTweet(TweetParameters.builder().text(text).build());
