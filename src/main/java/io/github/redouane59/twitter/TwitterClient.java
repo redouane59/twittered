@@ -121,7 +121,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       "host_ids,created_at,creator_id,id,lang,invited_user_ids,participant_count,speaker_ids,started_at,state,title,updated_at,scheduled_start,is_ticketed";
   public static final String       LIST_FIELDS      = "list.fields";
   public static final String
-                                   ALL_LIST_FIELDS  = "created_at, follower_count, member_count, private, description, owner_id";
+                                   ALL_LIST_FIELDS  = "created_at,follower_count,member_count,private,description,owner_id";
 
   public static final  String             ALL_SPACE_EXPANSIONS                 = "invited_user_ids,speaker_ids,creator_id,host_ids";
   private static final String             QUERY                                = "query";
