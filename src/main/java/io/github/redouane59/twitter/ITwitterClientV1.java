@@ -6,7 +6,6 @@ import io.github.redouane59.twitter.dto.collections.CollectionsResponse.Response
 import io.github.redouane59.twitter.dto.collections.TimeLineOrder;
 import io.github.redouane59.twitter.dto.dm.DirectMessage;
 import io.github.redouane59.twitter.dto.dm.DmEvent;
-import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.others.RateLimitStatus;
 import io.github.redouane59.twitter.dto.others.RequestToken;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
@@ -186,12 +185,5 @@ public interface ITwitterClientV1 {
    * @param userId The ID of the user who should receive the direct message.
    */
   DmEvent postDm(String text, String userId);
-
-  /**
-   * Returns all the Twitter Lists that the User is current following.
-   * https://developer.twitter.com/en/docs/twitter-api/v1/accounts-and-users/create-manage-lists/api-reference/get-lists-list
-   *
-   */
-  TwitterList.TwitterListData[] getUserTwitterLists();
 
 }

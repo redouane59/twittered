@@ -1,7 +1,7 @@
 package io.github.redouane59.twitter.dto.list;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.redouane59.twitter.dto.user.UserV1;
+import io.github.redouane59.twitter.dto.tweet.TweetV2.Includes;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class TwitterList {
 
   private TwitterListData data;
+  private Includes        includes;
 
   @NoArgsConstructor
   @AllArgsConstructor
@@ -24,11 +25,11 @@ public class TwitterList {
     String id;
     String name;
     String description;
-    @JsonProperty("member_count")
-    int memberCount;
+    @JsonProperty("follower_count")
+    int     followerCount;
     @JsonProperty("private")
     boolean isPrivate;
-    @JsonProperty("user")
-    UserV1 owner;
+    @JsonProperty("owner_id")
+    String  ownerId;
   }
 }

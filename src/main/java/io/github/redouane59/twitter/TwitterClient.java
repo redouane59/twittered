@@ -95,29 +95,33 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitterClientArchive {
 
-  public static final  ObjectMapper       OBJECT_MAPPER                        = new ObjectMapper()
+  public static final ObjectMapper OBJECT_MAPPER    = new ObjectMapper()
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
       .setSerializationInclusion(JsonInclude.Include.NON_NULL)
       .findAndRegisterModules();
-  public static final  String             TWEET_FIELDS                         = "tweet.fields";
-  public static final  String
-                                          ALL_TWEET_FIELDS                     =
+  public static final String       TWEET_FIELDS     = "tweet.fields";
+  public static final String
+                                   ALL_TWEET_FIELDS =
       "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id,reply_settings";
-  public static final  String             EXPANSION                            = "expansions";
-  public static final  String
-                                          ALL_EXPANSIONS                       =
+  public static final String       EXPANSION        = "expansions";
+  public static final String
+                                   ALL_EXPANSIONS   =
       "author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id,attachments.media_keys";
-  public static final  String             USER_FIELDS                          = "user.fields";
-  public static final  String             ALL_USER_FIELDS                      =
+  public static final String       USER_FIELDS      = "user.fields";
+  public static final String       ALL_USER_FIELDS  =
       "id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
-  public static final  String             MEDIA_FIELD                          = "media.fields";
-  public static final  String
-                                          ALL_MEDIA_FIELDS                     =
+  public static final String       MEDIA_FIELD      = "media.fields";
+  public static final String
+                                   ALL_MEDIA_FIELDS =
       "duration_ms,height,media_key,preview_image_url,public_metrics,type,url,width,alt_text";
-  public static final  String             SPACE_FIELDS                         = "space.fields";
-  public static final  String
-                                          ALL_SPACE_FIELDS                     =
+  public static final String       SPACE_FIELDS     = "space.fields";
+  public static final String
+                                   ALL_SPACE_FIELDS =
       "host_ids,created_at,creator_id,id,lang,invited_user_ids,participant_count,speaker_ids,started_at,state,title,updated_at,scheduled_start,is_ticketed";
+  public static final String       LIST_FIELDS      = "list.fields";
+  public static final String
+                                   ALL_LIST_FIELDS  = "created_at, follower_count, member_count, private, description, owner_id";
+
   public static final  String             ALL_SPACE_EXPANSIONS                 = "invited_user_ids,speaker_ids,creator_id,host_ids";
   private static final String             QUERY                                = "query";
   private static final String             CURSOR                               = "cursor";
@@ -671,19 +675,21 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return jsonNode.get(DATA).get(FOLLOWING).asBoolean();
   }
 
-  @SneakyThrows
   @Override
-  public TwitterListData[] getUserTwitterLists() {
-    String url = getUrlHelper().getListUrlV1();
-
-    Map<String, String> requestParameters = new HashMap<>();
-    requestParameters.put("user_id", getUserIdFromAccessToken());
-
-    return getRequestHelper()
-            .makeRequest(Verb.GET, url, requestParameters, null, true, TwitterListData[].class)
-            .orElseThrow(NoSuchElementException::new);
+  public TwitterList getList(final String listId) {
+    String              url        = getUrlHelper().getGetListUrl(listId);
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(EXPANSION, "owner_id");
+    parameters.put(LIST_FIELDS, ALL_LIST_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    return getRequestHelperV1().getRequestWithParameters(url, parameters, TwitterList.class).orElseThrow(NoSuchElementException::new);
   }
 
+  @Override
+  public List<TwitterList> getUserList(final String userId) {
+    return null;
+  }
+  
   @Override
   public Tweet postTweet(final String text) {
     return postTweet(TweetParameters.builder().text(text).build());

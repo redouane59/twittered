@@ -1,0 +1,17 @@
+{
+  "data": {
+    "follower_count": 906,
+    "id": "84839422",
+    "name": "Official Twitter Accounts",
+    "owner_id": "783214"
+  },
+  "includes": {
+    "users": [
+      {
+        "id": "783214",
+        "name": "Twitter",
+        "username": "TWITTER"
+      }
+    ]
+  }
+}
