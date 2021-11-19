@@ -3,6 +3,7 @@ package io.github.redouane59.twitter;
 import com.github.scribejava.core.model.Response;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.list.TwitterList;
+import io.github.redouane59.twitter.dto.list.TwitterListList;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.rules.FilteredStreamRulePredicate;
 import io.github.redouane59.twitter.dto.space.Space;
@@ -555,7 +556,7 @@ public interface ITwitterClientV2 {
    *
    * @param userId The user ID whose owned Lists you would like to retrieve.
    */
-  List<TwitterList> getUserList(String userId);
+  TwitterListList getUserOwnedLists(String userId);
 
   /**
    * Creates a Tweet on behalf of an authenticated user calling https://api.twitter.com/2/tweets

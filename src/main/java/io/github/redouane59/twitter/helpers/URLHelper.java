@@ -93,7 +93,7 @@ public class URLHelper {
   private final String unpinListUrl        = "https://api.twitter.com/2/users/:id/pinned_lists/:list_id";
   private final String followListUrl       = "https://api.twitter.com/2/users/:id/followed_lists";
   private final String unfollowListUrl     = "https://api.twitter.com/2/users/:id/followed_lists/:list_id";
-  private final String getlistUrl          = "https://api.twitter.com/2/lists/:id";
+  private final String ownedListUrl        = "https://api.twitter.com/2/users/:id/owned_lists";
 
   public String getSearchTweet30DaysUrl(String envName) {
     return ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + "/" + envName + JSON;
@@ -293,7 +293,7 @@ public class URLHelper {
     return unfollowListUrl.replace(idVariable, userId).replace(":list_id", listId);
   }
 
-  public String getGetListUrl(String id) {
-    return getlistUrl.replace(idVariable, id);
+  public String getOwnedListUrl(String userId) {
+    return ownedListUrl.replace(idVariable, userId);
   }
 }
