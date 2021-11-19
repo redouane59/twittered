@@ -557,7 +557,7 @@ public class ITwitterClientV2Test {
     assertEquals(listId, twitterList.getData().getId());
     assertEquals("API test list", twitterList.getData().getName());
     assertEquals("test", twitterList.getData().getDescription());
-    assertEquals(2, twitterList.getData().getFollowerCount());
+    assertEquals(1, twitterList.getData().getFollowerCount());
     assertEquals(userId, twitterList.getData().getOwnerId());
     assertNotNull(twitterList.getIncludes().getUsers());
     assertNotNull(twitterList.getIncludes().getUsers().get(0).getId());
