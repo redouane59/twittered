@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.github.scribejava.core.model.Response;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
+import io.github.redouane59.twitter.dto.list.TwitterList;
+import io.github.redouane59.twitter.dto.list.TwitterListList;
 import io.github.redouane59.twitter.dto.space.Space;
 import io.github.redouane59.twitter.dto.space.Space.SpaceData;
 import io.github.redouane59.twitter.dto.space.SpaceList;
@@ -546,6 +548,38 @@ public class ITwitterClientV2Test {
       SpaceList spacesByCreators = twitterClient.getSpacesByCreators(Arrays.asList(space.getData().getHostIds().get(0)));
       assertNotNull(spacesByCreators.getData());
     }
+  }
+
+  @Test
+  public void testGetList() {
+    String      listId      = "1449313282892910592";
+    TwitterList twitterList = twitterClient.getList(listId);
+    assertEquals(listId, twitterList.getData().getId());
+    assertEquals("API test list", twitterList.getData().getName());
+    assertEquals("test", twitterList.getData().getDescription());
+    assertEquals(2, twitterList.getData().getFollowerCount());
+    assertEquals(userId, twitterList.getData().getOwnerId());
+    assertNotNull(twitterList.getIncludes().getUsers());
+    assertNotNull(twitterList.getIncludes().getUsers().get(0).getId());
+    assertNotNull(twitterList.getIncludes().getUsers().get(0).getName());
+    assertNotNull(twitterList.getIncludes().getUsers().get(0).getDisplayedName());
+    assertNotNull(twitterList.getIncludes().getUsers().get(0).getCreatedAt());
+  }
+
+  @Test
+  public void testGetUserOwnedList() {
+    TwitterListList lists = twitterClient.getUserOwnedLists(userId);
+    assertTrue(lists.getData().size() > 0);
+    assertNotNull(lists.getData().get(0).getId());
+    assertNotNull(lists.getData().get(0).getName());
+    assertNotNull(lists.getData().get(0).getDescription());
+    assertTrue(lists.getData().get(0).getFollowerCount() > 0);
+    assertNotNull(lists.getData().get(0).getOwnerId());
+    assertNotNull(lists.getIncludes().getUsers());
+    assertNotNull(lists.getIncludes().getUsers().get(0).getId());
+    assertNotNull(lists.getIncludes().getUsers().get(0).getName());
+    assertNotNull(lists.getIncludes().getUsers().get(0).getDisplayedName());
+    assertNotNull(lists.getIncludes().getUsers().get(0).getCreatedAt());
   }
 
 }
