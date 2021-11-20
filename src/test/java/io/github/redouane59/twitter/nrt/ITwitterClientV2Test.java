@@ -588,4 +588,12 @@ public class ITwitterClientV2Test {
     assertNotNull(lists.getIncludes().getUsers().get(0).getCreatedAt());
   }
 
+  public void testLookUpAndGetSpaceBuyers() {
+    SpaceList result  = twitterClient.searchSpaces("hello", SpaceState.LIVE);
+    String    spaceId = result.getData().get(0).getId();
+    UserList  buyers  = twitterClient.getSpaceBuyers(spaceId);
+    assertNotNull(buyers.getData());
+    assertNotNull(buyers.getMeta());
+  }
+
 }

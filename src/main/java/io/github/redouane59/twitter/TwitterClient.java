@@ -586,6 +586,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public SpaceList searchSpaces(final String query, final SpaceState state) {
+    String              url        = getUrlHelper().getSearchSpacesUrl();
     Map<String, String> parameters = new HashMap<>();
     parameters.put("query", query);
     parameters.put("state", state.getLabel());
@@ -593,7 +594,19 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(SPACE_FIELDS, ALL_SPACE_FIELDS);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(MAX_RESULTS, "100");
-    return getRequestHelperV2().getRequestWithParameters(getUrlHelper().getSearchSpacesUrl(), parameters, SpaceList.class)
+    return getRequestHelperV2().getRequestWithParameters(url, parameters, SpaceList.class)
+                               .orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public UserList getSpaceBuyers(final String spaceId) {
+    String              url        = getUrlHelper().getSpaceBuyersUrl(spaceId);
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(EXPANSION, ALL_SPACE_EXPANSIONS);
+    parameters.put(SPACE_FIELDS, ALL_SPACE_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    return getRequestHelperV2().getRequestWithParameters(url, parameters, UserList.class)
                                .orElseThrow(NoSuchElementException::new);
   }
 
