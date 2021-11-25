@@ -1128,7 +1128,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     Map<String, String> parameters = new HashMap<>();
     parameters.put("oauth_verifier", pinCode);
     parameters.put("oauth_token", requestToken.getOauthToken());
-    String stringResponse = requestHelperV1.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
+    String stringResponse = requestHelperV1.postRequestWithoutSign(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
     return new RequestToken(stringResponse);
   }
 

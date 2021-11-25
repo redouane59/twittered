@@ -31,6 +31,10 @@ public class RequestHelper extends AbstractRequestHelper {
     return postRequestWithBodyJson(url, parameters, null, classType);
   }
 
+  public <T> Optional<T> postRequestWithoutSign(String url, Map<String, String> parameters, Class<T> classType) {
+    return makeRequest(Verb.POST, url, parameters, null, false, classType);
+  }
+
   public <T> Optional<T> uploadMedia(String url, File file, Class<T> classType) {
     try {
       return uploadMedia(url, file.getName(), Files.readAllBytes(file.toPath()), classType);
