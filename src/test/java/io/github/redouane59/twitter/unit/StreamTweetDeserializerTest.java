@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetV2;
 import java.io.File;
 import java.io.IOException;
@@ -18,13 +19,13 @@ public class StreamTweetDeserializerTest {
   public void testReadMapper() throws JsonParseException, JsonMappingException, IOException {
     File tweetWithMatchingRule = new File(getClass().getClassLoader().getResource("tests/tweet_stream_example.json").getFile());
 
-    TweetV2 twitter = TwitterClient.OBJECT_MAPPER.readValue(tweetWithMatchingRule, TweetV2.class);
-    assertNotNull(twitter);
-    assertNotNull(twitter.getMatchingRules());
-    assertEquals(1, twitter.getMatchingRules().size());
-    assertEquals("test", twitter.getMatchingRules().get(0).getTag());
-    assertEquals("1359517181646635008", twitter.getMatchingRules().get(0).getId());
-    assertNull(twitter.getMatchingRules().get(0).getValue());
+    Tweet tweet = TwitterClient.OBJECT_MAPPER.readValue(tweetWithMatchingRule, TweetV2.class);
+    assertNotNull(tweet);
+    assertNotNull(tweet.getMatchingRules());
+    assertEquals(1, tweet.getMatchingRules().size());
+    assertEquals("test", tweet.getMatchingRules().get(0).getTag());
+    assertEquals("1359517181646635008", tweet.getMatchingRules().get(0).getId());
+    assertNull(tweet.getMatchingRules().get(0).getValue());
 
   }
 
@@ -32,11 +33,11 @@ public class StreamTweetDeserializerTest {
   public void testReadMapperWithoutMatchingRule() throws JsonParseException, JsonMappingException, IOException {
     File tweetWithMatchingRule = new File(getClass().getClassLoader().getResource("tests/tweet_example_v2.json").getFile());
 
-    TweetV2 twitter = TwitterClient.OBJECT_MAPPER.readValue(tweetWithMatchingRule, TweetV2.class);
-    assertNotNull(twitter);
-    assertNotNull(twitter.getData());
-    assertNotNull(twitter.getIncludes());
-    assertNull(twitter.getMatchingRules());
+    TweetV2 tweet = TwitterClient.OBJECT_MAPPER.readValue(tweetWithMatchingRule, TweetV2.class);
+    assertNotNull(tweet);
+    assertNotNull(tweet.getData());
+    assertNotNull(tweet.getIncludes());
+    assertNull(tweet.getMatchingRules());
 
   }
 }
