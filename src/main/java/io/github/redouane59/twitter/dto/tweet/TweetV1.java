@@ -121,9 +121,9 @@ public class TweetV1 implements Tweet {
   }
 
   @Override
-  public StreamRule[] getMatchingRules() {
+  public List<StreamRule> getMatchingRules() {
     LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
-    return new StreamRule[0];
+    return Collections.emptyList();
   }
 
   @Override

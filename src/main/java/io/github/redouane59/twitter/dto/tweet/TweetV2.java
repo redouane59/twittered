@@ -39,11 +39,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TweetV2 implements Tweet {
 
-  private static final String                   NOT_IMPLEMENTED_EXCEPTION = "not implemented";
-  private              TweetData                data;
-  private              Includes                 includes;
+  private static final String                       NOT_IMPLEMENTED_EXCEPTION = "not implemented";
+  private              TweetData                    data;
+  private              Includes                     includes;
   @JsonProperty("matching_rules")
-  private              StreamRules.StreamRule[] matchingRules;
+  private              List<StreamRules.StreamRule> matchingRules;
 
   @Override
   public String getInReplyToStatusId() {
@@ -329,9 +329,9 @@ public class TweetV2 implements Tweet {
     }
 
     @Override
-    public StreamRule[] getMatchingRules() {
+    public List<StreamRule> getMatchingRules() {
       LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
-      return new StreamRule[0];
+      return Collections.emptyList();
     }
 
     @Override

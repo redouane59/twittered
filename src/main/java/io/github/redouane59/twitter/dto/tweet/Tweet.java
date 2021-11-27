@@ -156,7 +156,7 @@ public interface Tweet {
    * When an activity is delivered through your filtered stream connection, in a matching_rules array, it contains which list of filters matched
    * against the Tweet delivered.
    */
-  StreamRules.StreamRule[] getMatchingRules();
+  List<StreamRules.StreamRule> getMatchingRules();
 
 
 }
