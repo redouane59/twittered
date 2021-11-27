@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.redouane59.twitter.dto.stream.StreamRules;
+import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import io.github.redouane59.twitter.dto.tweet.entities.BaseEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.Entities;
 import io.github.redouane59.twitter.dto.tweet.entities.HashtagEntity;
@@ -325,6 +326,12 @@ public class TweetV2 implements Tweet {
     public List<MediaEntityV2> getMedia() {
       LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
       return Collections.emptyList();
+    }
+
+    @Override
+    public StreamRule[] getMatchingRules() {
+      LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
+      return new StreamRule[0];
     }
 
     @Override

@@ -1,5 +1,6 @@
 package io.github.redouane59.twitter.dto.tweet;
 
+import io.github.redouane59.twitter.dto.stream.StreamRules;
 import io.github.redouane59.twitter.dto.tweet.entities.Entities;
 import io.github.redouane59.twitter.dto.tweet.entities.MediaEntity;
 import io.github.redouane59.twitter.dto.user.User;
@@ -150,5 +151,12 @@ public interface Tweet {
    * Get the {@link MediaEntity media entities} of the tweet
    */
   List<? extends MediaEntity> getMedia();
+
+  /**
+   * When an activity is delivered through your filtered stream connection, in a matching_rules array, it contains which list of filters matched
+   * against the Tweet delivered.
+   */
+  StreamRules.StreamRule[] getMatchingRules();
+
 
 }
