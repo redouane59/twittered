@@ -153,8 +153,8 @@ public interface Tweet {
   List<? extends MediaEntity> getMedia();
 
   /**
-   * When an activity is delivered through your filtered stream connection, in a matching_rules array, it contains which list of filters matched
-   * against the Tweet delivered.
+   * When an activity is delivered through a filtered stream connection, the matching_rules list contains which list of filters matched against the
+   * Tweet delivered.
    */
   List<StreamRules.StreamRule> getMatchingRules();
 
