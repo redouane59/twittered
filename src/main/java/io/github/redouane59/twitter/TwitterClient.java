@@ -990,6 +990,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       String      body   = "{\"add\": [" + TwitterClient.OBJECT_MAPPER.writeValueAsString(rule) + "]}";
       StreamRules result = requestHelperV2.postRequest(url, body, StreamRules.class).orElseThrow(NoSuchElementException::new);
       if (result.getData() == null || result.getData().isEmpty()) {
+        LOGGER.error("Could not add filtered stream rule. Rule maybe already exists.");
         throw new IllegalArgumentException();
       }
       return result.getData().get(0);

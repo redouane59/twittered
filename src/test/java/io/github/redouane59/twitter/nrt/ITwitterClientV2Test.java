@@ -321,7 +321,7 @@ public class ITwitterClientV2Test {
     StreamRule result   = twitterClient.addFilteredStreamRule(ruleName, "1");
     assertNotNull(result);
     assertNotNull(result.getId());
-    assertEquals("test_rule", result.getValue());
+    assertEquals(ruleName, result.getValue());
     assertEquals("1", result.getTag());
     List<StreamRule> rules = twitterClient.retrieveFilteredStreamRules();
     assertTrue(rules.size() > 0);
