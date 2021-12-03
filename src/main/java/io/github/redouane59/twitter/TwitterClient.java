@@ -22,6 +22,7 @@ import io.github.redouane59.twitter.dto.dm.DirectMessage;
 import io.github.redouane59.twitter.dto.dm.DmEvent;
 import io.github.redouane59.twitter.dto.dm.DmListAnswer;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
+import io.github.redouane59.twitter.dto.endpoints.ListTweetsAdditionalParameters;
 import io.github.redouane59.twitter.dto.getrelationship.IdList;
 import io.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
 import io.github.redouane59.twitter.dto.list.TwitterList;
@@ -119,6 +120,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
                                           ALL_SPACE_FIELDS                     =
       "host_ids,created_at,creator_id,id,lang,invited_user_ids,participant_count,speaker_ids,started_at,state,title,updated_at,scheduled_start,is_ticketed";
   public static final  String             ALL_SPACE_EXPANSIONS                 = "invited_user_ids,speaker_ids,creator_id,host_ids";
+  public static final  String             TWEET_MODE                           = "tweet_mode";
+  public static final  String             TWITTER_LIST_ID                      = "list_id";
   private static final String             QUERY                                = "query";
   private static final String             CURSOR                               = "cursor";
   private static final String             NEXT                                 = "next";
@@ -674,13 +677,28 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @SneakyThrows
   @Override
   public TwitterListData[] getUserTwitterLists() {
-    String url = getUrlHelper().getListUrlV1();
+    String url = getUrlHelper().getUserListsUrlV1();
 
     Map<String, String> requestParameters = new HashMap<>();
     requestParameters.put("user_id", getUserIdFromAccessToken());
 
     return getRequestHelper()
             .makeRequest(Verb.GET, url, requestParameters, null, true, TwitterListData[].class)
+            .orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public TweetV1[] getTweetsFromTwitterList(String listId, ListTweetsAdditionalParameters requestParameters) {
+    final String url = getUrlHelper().getListTweetsUrlV1();
+    Map<String, String> parameters = requestParameters.getMapFromParameters();
+    parameters.put(TWITTER_LIST_ID, listId);
+    //ensures the entire text is returned from the Tweet response (otherwise truncated for V1 API)
+    parameters.put(TWEET_MODE, "extended");
+    if (requestParameters.getCount() <= 0) {
+      parameters.put("count", String.valueOf(100));
+    }
+    return getRequestHelperV1()
+            .getRequestWithParameters(url, parameters, TweetV1[].class)
             .orElseThrow(NoSuchElementException::new);
   }
 

@@ -61,7 +61,11 @@ public class URLHelper {
   @Getter
   private final String listUrlV2 = "https://api.twitter.com/2/lists";
   @Getter
-  private final String listUrlV1 = "https://api.twitter.com/1.1/lists/list.json";
+  private final String listUrlV1 = "https://api.twitter.com/1.1/lists";
+  @Getter
+  private final String userListsUrlV1 = listUrlV1 + "/list.json";
+  @Getter
+  private final String listTweetsUrlV1 = listUrlV1 + "/statuses.json";
   @Getter
   private final String postTweetUrl           = "https://api.twitter.com/2/tweets";
 

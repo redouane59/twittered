@@ -6,12 +6,12 @@ import io.github.redouane59.twitter.dto.collections.CollectionsResponse.Response
 import io.github.redouane59.twitter.dto.collections.TimeLineOrder;
 import io.github.redouane59.twitter.dto.dm.DirectMessage;
 import io.github.redouane59.twitter.dto.dm.DmEvent;
+import io.github.redouane59.twitter.dto.endpoints.ListTweetsAdditionalParameters;
 import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.others.RateLimitStatus;
 import io.github.redouane59.twitter.dto.others.RequestToken;
-import io.github.redouane59.twitter.dto.tweet.MediaCategory;
-import io.github.redouane59.twitter.dto.tweet.Tweet;
-import io.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
+import io.github.redouane59.twitter.dto.tweet.*;
+
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -193,5 +193,14 @@ public interface ITwitterClientV1 {
    *
    */
   TwitterList.TwitterListData[] getUserTwitterLists();
+
+  /**
+   * Returns all Tweets from Users in a provided Twitter List
+   * https://developer.twitter.com/en/docs/twitter-api/v1/accounts-and-users/create-manage-lists/api-reference/get-lists-statuses
+   *
+   * @param twitterListId id of the List for which we want to fetch Tweets
+   * @param requestParameters optional request parameters for fetching the Tweets from a list
+   */
+  TweetV1[] getTweetsFromTwitterList(String twitterListId, ListTweetsAdditionalParameters requestParameters);
 
 }
