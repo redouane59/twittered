@@ -1,0 +1,528 @@
+{
+  "data": [
+    {
+      "possibly_sensitive": false,
+      "entities": {
+        "hashtags": [
+          {
+            "start": 210,
+            "end": 215,
+            "tag": "java"
+          },
+          {
+            "start": 216,
+            "end": 224,
+            "tag": "twitter"
+          },
+          {
+            "start": 225,
+            "end": 229,
+            "tag": "api"
+          },
+          {
+            "start": 230,
+            "end": 241,
+            "tag": "twitterapi"
+          },
+          {
+            "start": 242,
+            "end": 246,
+            "tag": "dev"
+          },
+          {
+            "start": 247,
+            "end": 255,
+            "tag": "backend"
+          },
+          {
+            "start": 256,
+            "end": 276,
+            "tag": "softwaredevelopment"
+          }
+        ],
+        "mentions": [
+          {
+            "start": 42,
+            "end": 53,
+            "username": "TwitterAPI",
+            "id": "6253282"
+          }
+        ],
+        "urls": [
+          {
+            "start": 184,
+            "end": 207,
+            "url": "https://t.co/20S8ScRohV",
+            "expanded_url": "https://github.com/redouane59/twitter-client",
+            "display_url": "github.com/redouane59/twi…",
+            "images": [
+              {
+                "url": "https://pbs.twimg.com/news_img/1446864972219404293/J1SnM-Dl?format=jpg&name=orig",
+                "width": 1200,
+                "height": 600
+              },
+              {
+                "url": "https://pbs.twimg.com/news_img/1446864972219404293/J1SnM-Dl?format=jpg&name=150x150",
+                "width": 150,
+                "height": 150
+              }
+            ],
+            "status": 200,
+            "title": "GitHub - redouane59/twittered: Twitter API client for Java developers",
+            "description": "Twitter API client for Java developers. Contribute to redouane59/twittered development by creating an account on GitHub.",
+            "unwound_url": "https://github.com/redouane59/twittered"
+          }
+        ]
+      },
+      "author_id": "1120050519182016513",
+      "source": "Twitter Web App",
+      "conversation_id": "1224041905333379073",
+      "lang": "en",
+      "created_at": "2020-02-02T18:48:26.000Z",
+      "public_metrics": {
+        "retweet_count": 5,
+        "reply_count": 6,
+        "like_count": 26,
+        "quote_count": 1
+      },
+      "reply_settings": "everyone",
+      "context_annotations": [
+        {
+          "domain": {
+            "id": "46",
+            "name": "Brand Category",
+            "description": "Categories within Brand Verticals that narrow down the scope of Brands"
+          },
+          "entity": {
+            "id": "781974596752842752",
+            "name": "Services"
+          }
+        },
+        {
+          "domain": {
+            "id": "47",
+            "name": "Brand",
+            "description": "Brands and Companies"
+          },
+          "entity": {
+            "id": "10045225402",
+            "name": "Twitter"
+          }
+        },
+        {
+          "domain": {
+            "id": "65",
+            "name": "Interests and Hobbies Vertical",
+            "description": "Top level interests and hobbies groupings, like Food or Travel"
+          },
+          "entity": {
+            "id": "848920371311001600",
+            "name": "Technology",
+            "description": "Technology and computing"
+          }
+        },
+        {
+          "domain": {
+            "id": "66",
+            "name": "Interests and Hobbies Category",
+            "description": "A grouping of interests and hobbies entities, like Novelty Food or Destinations"
+          },
+          "entity": {
+            "id": "848921413196984320",
+            "name": "Computer programming",
+            "description": "Computer programming"
+          }
+        }
+      ],
+      "id": "1224041905333379073",
+      "text": "If some JAVA developers want to play with @TwitterAPI , I'm developing a library to consume their different endpoints including the most recent ones from Labs. Any feedback welcome\uD83D\uDE01\n\uD83D\uDC49 https://t.co/20S8ScRohV \uD83D\uDC48\n#java #twitter #api #twitterapi #dev #backend #softwaredevelopment"
+    },
+    {
+      "possibly_sensitive": false,
+      "author_id": "2244994945",
+      "source": "Twitter Web App",
+      "attachments": {
+        "media_keys": [
+          "7_1460322142680072196"
+        ]
+      },
+      "conversation_id": "1460323737035677698",
+      "lang": "en",
+      "entities": {
+        "annotations": [
+          {
+            "start": 30,
+            "end": 55,
+            "probability": 0.3294,
+            "type": "Product",
+            "normalized_text": "Twitter Developer Platform"
+          },
+          {
+            "start": 66,
+            "end": 79,
+            "probability": 0.3974,
+            "type": "Product",
+            "normalized_text": "Twitter API v2"
+          }
+        ],
+        "urls": [
+          {
+            "start": 247,
+            "end": 270,
+            "url": "https://t.co/Hrm15bkBWJ",
+            "expanded_url": "https://blog.twitter.com/developer/en_us/topics/tools/2021/build-whats-next-with-the-new-twitter-developer-platform",
+            "display_url": "blog.twitter.com/developer/en_u…",
+            "images": [
+              {
+                "url": "https://pbs.twimg.com/news_img/1466627145078214660/ImgME80O?format=jpg&name=orig",
+                "width": 768,
+                "height": 401
+              },
+              {
+                "url": "https://pbs.twimg.com/news_img/1466627145078214660/ImgME80O?format=jpg&name=150x150",
+                "width": 150,
+                "height": 150
+              }
+            ],
+            "status": 200,
+            "title": "Build what’s next with the new Twitter Developer Platform",
+            "description": "We’re making some major updates to the Twitter Developer Platform.",
+            "unwound_url": "https://blog.twitter.com/developer/en_us/topics/tools/2021/build-whats-next-with-the-new-twitter-developer-platform"
+          },
+          {
+            "start": 271,
+            "end": 294,
+            "url": "https://t.co/YFfCDErHsg",
+            "expanded_url": "https://twitter.com/TwitterDev/status/1460323737035677698/video/1",
+            "display_url": "pic.twitter.com/YFfCDErHsg"
+          }
+        ]
+      },
+      "created_at": "2021-11-15T19:08:05.000Z",
+      "public_metrics": {
+        "retweet_count": 217,
+        "reply_count": 75,
+        "like_count": 753,
+        "quote_count": 97
+      },
+      "reply_settings": "everyone",
+      "context_annotations": [
+        {
+          "domain": {
+            "id": "46",
+            "name": "Brand Category",
+            "description": "Categories within Brand Verticals that narrow down the scope of Brands"
+          },
+          "entity": {
+            "id": "781974596752842752",
+            "name": "Services"
+          }
+        },
+        {
+          "domain": {
+            "id": "47",
+            "name": "Brand",
+            "description": "Brands and Companies"
+          },
+          "entity": {
+            "id": "10045225402",
+            "name": "Twitter"
+          }
+        }
+      ],
+      "id": "1460323737035677698",
+      "text": "Introducing a new era for the Twitter Developer Platform! \n\n\uD83D\uDCE3The Twitter API v2 is now the primary API and full of new features\n⏱Immediate access for most use cases, or apply to get more access for free\n\uD83D\uDCD6Removed certain restrictions in the Policy\nhttps://t.co/Hrm15bkBWJ https://t.co/YFfCDErHsg"
+    },
+    {
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "start": 17,
+            "end": 24,
+            "username": "github",
+            "id": "13334762"
+          }
+        ],
+        "urls": [
+          {
+            "start": 27,
+            "end": 50,
+            "url": "https://t.co/VjOawWkmo8",
+            "expanded_url": "https://twitter.com/RedouaneBali/status/1464697044006846474/photo/1",
+            "display_url": "pic.twitter.com/VjOawWkmo8"
+          },
+          {
+            "start": 27,
+            "end": 50,
+            "url": "https://t.co/VjOawWkmo8",
+            "expanded_url": "https://twitter.com/RedouaneBali/status/1464697044006846474/photo/1",
+            "display_url": "pic.twitter.com/VjOawWkmo8"
+          }
+        ]
+      },
+      "author_id": "1120050519182016513",
+      "source": "Twitter Web App",
+      "attachments": {
+        "media_keys": [
+          "3_1464696946564734980",
+          "3_1464696974645633034"
+        ]
+      },
+      "conversation_id": "1464697044006846474",
+      "lang": "en",
+      "created_at": "2021-11-27T20:46:02.000Z",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 1,
+        "like_count": 0,
+        "quote_count": 2
+      },
+      "reply_settings": "everyone",
+      "context_annotations": [
+        {
+          "domain": {
+            "id": "45",
+            "name": "Brand Vertical",
+            "description": "Top level entities that describe a Brands industry"
+          },
+          "entity": {
+            "id": "781974597226799105",
+            "name": "B2B"
+          }
+        },
+        {
+          "domain": {
+            "id": "46",
+            "name": "Brand Category",
+            "description": "Categories within Brand Verticals that narrow down the scope of Brands"
+          },
+          "entity": {
+            "id": "781974597172203520",
+            "name": "Services"
+          }
+        },
+        {
+          "domain": {
+            "id": "47",
+            "name": "Brand",
+            "description": "Brands and Companies"
+          },
+          "entity": {
+            "id": "10040692468",
+            "name": "GitHub"
+          }
+        }
+      ],
+      "id": "1464697044006846474",
+      "text": "What's happening @GitHub ? https://t.co/VjOawWkmo8"
+    }
+  ],
+  "includes": {
+    "users": [
+      {
+        "description": "IT & E-Commerce Leader @Decathlon \uD83C\uDDE9\uD83C\uDDFF • @TwitterAPI enthusiast developer • #Java • Laureate @areliEmergence",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "start": 0,
+                "end": 23,
+                "url": "https://t.co/Q2UVpV9Zlc",
+                "expanded_url": "http://www.github.com/Redouane59",
+                "display_url": "github.com/Redouane59"
+              }
+            ]
+          },
+          "description": {
+            "hashtags": [
+              {
+                "start": 74,
+                "end": 79,
+                "tag": "Java"
+              }
+            ],
+            "mentions": [
+              {
+                "start": 23,
+                "end": 33,
+                "username": "Decathlon"
+              },
+              {
+                "start": 39,
+                "end": 50,
+                "username": "TwitterAPI"
+              },
+              {
+                "start": 91,
+                "end": 106,
+                "username": "areliEmergence"
+              }
+            ]
+          }
+        },
+        "name": "Redouane",
+        "id": "1120050519182016513",
+        "protected": false,
+        "verified": false,
+        "username": "RedouaneBali",
+        "public_metrics": {
+          "followers_count": 2018,
+          "following_count": 1251,
+          "tweet_count": 838,
+          "listed_count": 17
+        },
+        "location": "Algiers, Algeria",
+        "url": "https://t.co/Q2UVpV9Zlc",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1120050601679892480/27gd4otd_normal.jpg",
+        "created_at": "2019-04-21T19:43:48.000Z",
+        "pinned_tweet_id": "1224041905333379073"
+      },
+      {
+        "description": "Tweets about changes and service issues. Follow @TwitterDev for more.",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "start": 0,
+                "end": 23,
+                "url": "https://t.co/8IkCzCDr19",
+                "expanded_url": "https://developer.twitter.com",
+                "display_url": "developer.twitter.com"
+              }
+            ]
+          },
+          "description": {
+            "mentions": [
+              {
+                "start": 48,
+                "end": 59,
+                "username": "TwitterDev"
+              }
+            ]
+          }
+        },
+        "name": "Twitter API",
+        "id": "6253282",
+        "protected": false,
+        "verified": true,
+        "username": "TwitterAPI",
+        "public_metrics": {
+          "followers_count": 6035063,
+          "following_count": 38,
+          "tweet_count": 3721,
+          "listed_count": 12319
+        },
+        "url": "https://t.co/8IkCzCDr19",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1445765299974795279/ExVMkDHG_normal.jpg",
+        "created_at": "2007-05-23T06:01:13.000Z",
+        "pinned_tweet_id": "1460324089726320643"
+      },
+      {
+        "description": "The voice of the #TwitterDev team and your official source for updates, news, and events, related to the #TwitterAPI.",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "start": 0,
+                "end": 23,
+                "url": "https://t.co/3ZX3TNiZCY",
+                "expanded_url": "https://developer.twitter.com/en/community",
+                "display_url": "developer.twitter.com/en/community"
+              }
+            ]
+          },
+          "description": {
+            "hashtags": [
+              {
+                "start": 17,
+                "end": 28,
+                "tag": "TwitterDev"
+              },
+              {
+                "start": 105,
+                "end": 116,
+                "tag": "TwitterAPI"
+              }
+            ]
+          }
+        },
+        "name": "Twitter Dev",
+        "id": "2244994945",
+        "protected": false,
+        "verified": true,
+        "username": "TwitterDev",
+        "public_metrics": {
+          "followers_count": 530991,
+          "following_count": 2020,
+          "tweet_count": 3835,
+          "listed_count": 1894
+        },
+        "location": "127.0.0.1",
+        "url": "https://t.co/3ZX3TNiZCY",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1445764922474827784/W2zEPN7U_normal.jpg",
+        "created_at": "2013-12-14T04:35:55.000Z",
+        "pinned_tweet_id": "1460323737035677698"
+      },
+      {
+        "description": "How people build software. \n\nNeed help? Send us a message at https://t.co/YU5nzbpDIg for support.",
+        "entities": {
+          "description": {
+            "urls": [
+              {
+                "start": 61,
+                "end": 84,
+                "url": "https://t.co/YU5nzbpDIg",
+                "expanded_url": "http://git.io/c",
+                "display_url": "git.io/c"
+              }
+            ]
+          }
+        },
+        "name": "GitHub",
+        "id": "13334762",
+        "protected": false,
+        "verified": true,
+        "username": "github",
+        "public_metrics": {
+          "followers_count": 2181431,
+          "following_count": 326,
+          "tweet_count": 6661,
+          "listed_count": 16808
+        },
+        "location": "San Francisco, CA",
+        "url": "",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1414990564408262661/r6YemvF9_normal.jpg",
+        "created_at": "2008-02-11T04:41:50.000Z",
+        "pinned_tweet_id": "1453760137005518848"
+      }
+    ],
+    "media": [
+      {
+        "media_key": "7_1460322142680072196",
+        "preview_image_url": "https://pbs.twimg.com/ext_tw_video_thumb/1460322142680072196/pu/img/Eg0iP3S7EWdFLjxk.jpg",
+        "width": 1600,
+        "duration_ms": 11093,
+        "type": "video",
+        "public_metrics": {
+          "view_count": 64061
+        },
+        "height": 900
+      },
+      {
+        "media_key": "3_1464696946564734980",
+        "width": 905,
+        "type": "photo",
+        "height": 417,
+        "url": "https://pbs.twimg.com/media/FFOmHNOXIAQfmd0.jpg"
+      },
+      {
+        "media_key": "3_1464696974645633034",
+        "width": 1320,
+        "type": "photo",
+        "height": 839,
+        "url": "https://pbs.twimg.com/media/FFOmI11XoAoOm41.jpg"
+      }
+    ]
+  }
+}

@@ -17,6 +17,7 @@ import io.github.redouane59.twitter.dto.tweet.entities.UrlEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.UserMentionEntity;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserV2;
+import io.github.redouane59.twitter.dto.user.UserV2.UserData;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -264,6 +265,7 @@ public class TweetV2 implements Tweet {
     private Geo                      geo;
     private Attachments              attachments;
     private String                   source;
+    private UserData                 user;
 
     @Override
     @JsonIgnore
@@ -337,7 +339,11 @@ public class TweetV2 implements Tweet {
     @Override
     @JsonIgnore
     public User getUser() {
-      throw new UnsupportedOperationException();
+      if (user == null) {
+        throw new UnsupportedOperationException();
+      } else {
+        return user;
+      }
     }
 
     @Override

@@ -207,7 +207,7 @@ public class ITwitterClientV2Test {
 
   @Test
   public void testGetTweetsByIds() {
-    List<String> tweetIds = Arrays.asList("1294174710624849921,1294380029430960128,1294375095746666496");
+    List<String> tweetIds = Arrays.asList("1224041905333379073,1460323737035677698,1464697044006846474");
     TweetList    tweets   = twitterClient.getTweets(tweetIds);
     assertTrue(tweets.getData().size() > 0);
     assertTrue(tweets.getData().get(0).getText().length() > 0);
