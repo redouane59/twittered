@@ -1,6 +1,7 @@
 package io.github.redouane59.twitter.dto.tweet;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.redouane59.twitter.dto.tweet.TweetV2.Includes;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonDeserialize(using = TweetListDeserializer.class)
 public class TweetList {
 
   private List<TweetV2.TweetData> data;
