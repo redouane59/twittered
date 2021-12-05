@@ -265,6 +265,7 @@ public class TweetV2 implements Tweet {
     private Geo                      geo;
     private Attachments              attachments;
     private String                   source;
+    @JsonIgnore
     private UserData                 user;
 
     @Override
@@ -334,16 +335,6 @@ public class TweetV2 implements Tweet {
     public List<StreamRule> getMatchingRules() {
       LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
       return Collections.emptyList();
-    }
-
-    @Override
-    @JsonIgnore
-    public User getUser() {
-      if (user == null) {
-        throw new UnsupportedOperationException();
-      } else {
-        return user;
-      }
     }
 
     @Override

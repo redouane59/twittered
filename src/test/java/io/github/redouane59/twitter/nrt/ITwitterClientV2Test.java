@@ -213,6 +213,9 @@ public class ITwitterClientV2Test {
     assertTrue(tweets.getData().get(0).getText().length() > 0);
     assertTrue(tweets.getData().get(1).getText().length() > 0);
     assertTrue(tweets.getData().get(2).getText().length() > 0);
+    assertNotNull(tweets.getData().get(0).getUser());
+    assertNotNull(tweets.getData().get(1).getUser());
+    assertNotNull(tweets.getData().get(2).getUser());
   }
 
   @Test
@@ -311,8 +314,8 @@ public class ITwitterClientV2Test {
   public void testGetTweetIdWithTwoTypes() {
     assertEquals("1264255917043920904",
                  twitterClient.getTweet("1264256827690270722").getInReplyToStatusId(TweetType.RETWEETED));
-    assertEquals("1263783602485157889",
-                 twitterClient.getTweet("1264255917043920904").getInReplyToStatusId(TweetType.QUOTED));
+    assertEquals("1455953449422516226",
+                 twitterClient.getTweet("1456903038136954883").getInReplyToStatusId(TweetType.QUOTED));
   }
 
   @Test

@@ -33,10 +33,10 @@ public class TweetListDeserializer extends StdDeserializer<TweetList> {
                                                 TwitterClient.OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, TweetData.class));
       if (node.has("includes")) {
         result.setIncludes(TwitterClient.OBJECT_MAPPER.readValue(node.get("includes").toString(), Includes.class));
+        // in order to enrich the TweetData object (from data field) adding the User object (instead of just the author_id)
         for (TweetData tweetData : list) {
-          List<UserData> includedUsers = result.getIncludes().getUsers();
-          Optional<UserData> matchingUser = includedUsers.stream().filter(p -> p.getId().equals(tweetData.getAuthorId())).
-                                                         findFirst();
+          Optional<UserData> matchingUser = result.getIncludes().getUsers().stream().filter(p -> p.getId().equals(tweetData.getAuthorId())).
+                                                  findFirst();
           matchingUser.ifPresent(tweetData::setUser);
         }
       }
