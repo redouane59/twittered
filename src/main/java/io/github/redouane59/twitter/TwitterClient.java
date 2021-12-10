@@ -119,6 +119,10 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public static final String
                                    ALL_SPACE_FIELDS =
       "host_ids,created_at,creator_id,id,lang,invited_user_ids,participant_count,speaker_ids,started_at,state,title,updated_at,scheduled_start,is_ticketed";
+  public static final String       PLACE_FIELDS     = "place.fields";
+  public static final String       ALL_PLACE_FIELDS = "contained_within,country,country_code,full_name,geo,id,name,place_type";
+  public static final String       POLL_FIELDS      = "poll.fields";
+  public static final String       ALL_POLL_FIELDS  = "duration_minutes,end_datetime,id,options,voting_status";
   public static final String       LIST_FIELDS      = "list.fields";
   public static final String
                                    ALL_LIST_FIELDS  = "created_at,follower_count,member_count,private,description,owner_id";
@@ -1065,8 +1069,11 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public TweetList getUserTimeline(String userId, AdditionalParameters additionalParameters) {
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
-    parameters.put(EXPANSION, ALL_EXPANSIONS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(PLACE_FIELDS, ALL_PLACE_FIELDS);
+    parameters.put(POLL_FIELDS, ALL_POLL_FIELDS);
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
+    parameters.put(EXPANSION, ALL_EXPANSIONS);
     String url = urlHelper.getUserTimelineUrl(userId);
     if (!additionalParameters.isRecursiveCall()) {
       return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
