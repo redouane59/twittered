@@ -363,6 +363,9 @@ public class ITwitterClientV2Test {
     assertNotNull(result.getMeta().getNewestId());
     assertNotNull(result.getMeta().getOldestId());
     assertEquals(result.getData().size(), result.getMeta().getResultCount());
+    assertNotNull(result.getIncludes().getMedia());
+    assertNotNull(result.getIncludes().getTweets());
+    assertNotNull(result.getIncludes().getUsers());
   }
 
   @Test

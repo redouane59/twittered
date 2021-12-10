@@ -1065,6 +1065,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public TweetList getUserTimeline(String userId, AdditionalParameters additionalParameters) {
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(EXPANSION, ALL_EXPANSIONS);
+    parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     String url = urlHelper.getUserTimelineUrl(userId);
     if (!additionalParameters.isRecursiveCall()) {
       return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
