@@ -6,7 +6,7 @@ import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.signature.Scope;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +16,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class RequestHelperV2Test {
+public class Oauth2PKCETest {
 
   private static TwitterClient twitterClient;
 
@@ -31,7 +31,7 @@ public class RequestHelperV2Test {
         expectedUrl =
         "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=M1M5R3BMVy13QmpScXkzTUt5OE46MTpjaQ&redirect_uri=https://www.example.com&scope=tweet.read%20users.read%20offline.access&state=state&code_challenge=challenge&code_challenge_method=plain";
 
-    List<NameValuePair> expectedParams = URLEncodedUtils.parse(new URI(expectedUrl), Charset.forName("UTF-8"));
+    List<NameValuePair> expectedParams = URLEncodedUtils.parse(new URI(expectedUrl), StandardCharsets.UTF_8);
 
     String responseUrl = twitterClient.getRequestHelperV2().getAuthorizeUrl("M1M5R3BMVy13QmpScXkzTUt5OE46MTpjaQ",
                                                                             "https://www.example.com",
@@ -39,7 +39,7 @@ public class RequestHelperV2Test {
                                                                             "challenge",
                                                                             "plain",
                                                                             Arrays.asList(Scope.TWEET_READ, Scope.USERS_READ, Scope.OFFLINE_ACCESS));
-    List<NameValuePair> responseParams = URLEncodedUtils.parse(new URI(responseUrl), Charset.forName("UTF-8"));
+    List<NameValuePair> responseParams = URLEncodedUtils.parse(new URI(responseUrl), StandardCharsets.UTF_8);
 
     Map<String, String> responseParamsMap = responseParams.stream().collect(
         Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));

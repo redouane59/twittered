@@ -148,7 +148,6 @@ public class RequestHelperV2 extends AbstractRequestHelper {
   }
 
   /**
-   * @param refreshToken .
    * @param clientId Can be found in the developer portal under the header "Client ID".
    * @param redirectUri Your callback URL. This value must correspond to one of the Callback URLs defined in your App’s settings. For OAuth 2.0, you
    * will need to have exact match validation for your callback URL.
@@ -187,21 +186,5 @@ public class RequestHelperV2 extends AbstractRequestHelper {
 
     return builder.build().toString();
   }
-
-  /*
-      Map<String, String> headers = new HashMap<>();
-    headers.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-    Map<String, String> params = new HashMap<>();
-    params.put("refresh_token", refreshToken);
-    params.put("grant_type", "refresh_token");
-    params.put("client_id", clientId);
-    params.put("response_type", "code");
-    params.put("redirect_uri", redirectUri);
-    params.put("state", state);
-    params.put("code_challenge", codeChallenge);
-    params.put("code_challenge_method", codeChallengeMethod);
-    Optional<BearerToken> result = makeRequest(Verb.POST, url, headers, params, null, false, BearerToken.class);
-
-   */
 
 }
