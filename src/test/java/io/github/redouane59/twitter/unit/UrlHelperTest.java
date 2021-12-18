@@ -136,7 +136,7 @@ public class UrlHelperTest {
   public void testGetBearerTokenUrl() {
     assertEquals(
         "https://api.twitter.com/oauth2/token",
-        URLHelper.GET_BEARER_TOKEN_URL);
+        URLHelper.GET_OAUTH2_TOKEN_URL);
   }
 
   @Test

@@ -1,7 +1,8 @@
 package io.github.redouane59.twitter.signature;
 
-public enum Scope {
+import lombok.Getter;
 
+public enum Scope {
 
   TWEET_READ("tweet.read"),
   TWEET_WRITE("tweet.write"),
@@ -19,7 +20,8 @@ public enum Scope {
   LIST_WRITE("list.write"),
   BLOCK_READ("block.read"),
   BLOCK_WRITE("block.write");
-  
+
+  @Getter
   private String name;
 
   Scope(String name) {
