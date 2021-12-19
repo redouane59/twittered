@@ -29,16 +29,17 @@ public class Oauth2PKCETest {
   public void testGetAuthorizeUrl() throws URISyntaxException {
     String
         expectedUrl =
-        "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=M1M5R3BMVy13QmpScXkzTUt5OE46MTpjaQ&redirect_uri=https://www.example.com&scope=tweet.read%20users.read%20offline.access&state=state&code_challenge=challenge&code_challenge_method=plain";
+        "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=Um5DbVM3d2dhMXViNHduOER0a2c6MTpjaQ&redirect_uri=https://twitter.com/RedouaneBali&scope=tweet.read%20users.read%20offline.access&state=state&code_challenge=challenge&code_challenge_method=plain";
 
     List<NameValuePair> expectedParams = URLEncodedUtils.parse(new URI(expectedUrl), StandardCharsets.UTF_8);
 
-    String responseUrl = twitterClient.getRequestHelperV2().getAuthorizeUrl("M1M5R3BMVy13QmpScXkzTUt5OE46MTpjaQ",
-                                                                            "https://www.example.com",
+    String responseUrl = twitterClient.getRequestHelperV2().getAuthorizeUrl("Um5DbVM3d2dhMXViNHduOER0a2c6MTpjaQ",
+                                                                            "https://twitter.com/RedouaneBali",
                                                                             "state",
                                                                             "challenge",
                                                                             "plain",
                                                                             Arrays.asList(Scope.TWEET_READ, Scope.USERS_READ, Scope.OFFLINE_ACCESS));
+    System.out.println("authorize url : " + responseUrl);
     List<NameValuePair> responseParams = URLEncodedUtils.parse(new URI(responseUrl), StandardCharsets.UTF_8);
 
     Map<String, String> responseParamsMap = responseParams.stream().collect(
@@ -47,8 +48,5 @@ public class Oauth2PKCETest {
     for (NameValuePair param : expectedParams) {
       assertEquals(param.getValue(), responseParamsMap.get(param.getName()));
     }
-
   }
-
-
 }

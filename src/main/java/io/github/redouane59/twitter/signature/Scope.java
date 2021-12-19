@@ -27,4 +27,13 @@ public enum Scope {
   Scope(String name) {
     this.name = name;
   }
+
+  public static Scope getValue(String value) {
+    for (Scope e : Scope.values()) {
+      if (e.name.equals(value)) {
+        return e;
+      }
+    }
+    return null;// not found
+  }
 }
