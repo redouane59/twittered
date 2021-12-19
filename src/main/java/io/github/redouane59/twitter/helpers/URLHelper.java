@@ -6,7 +6,7 @@ import lombok.Getter;
 public class URLHelper {
 
   public static final  int    MAX_LOOKUP                  = 100;
-  public static final  String GET_OAUTH2_TOKEN_URL        = "https://api.twitter.com/oauth2/token";
+  public static final  String GET_BEARER_TOKEN_URL        = "https://api.twitter.com/oauth2/token";
   public static final  String REFRESH_TOKEN_URL           = "https://api.twitter.com/2/oauth2/token";
   public static final  String GET_OAUTH1_TOKEN_URL        = "https://api.twitter.com/oauth/request_token";
   public static final  String GET_OAUTH1_ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";

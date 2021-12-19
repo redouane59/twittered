@@ -2,7 +2,6 @@ package io.github.redouane59.twitter.dto.others;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -40,11 +39,9 @@ public class BearerToken {
 
     @Override
     public List<Scope> deserialize(final JsonParser jsonParser, final DeserializationContext deserializationContext)
-    throws IOException, JsonProcessingException {
+    throws IOException {
       List<String> scopeStringList = new ArrayList<>(Arrays.asList(jsonParser.getText().split(" ")));
-
-      List<Scope> result = scopeStringList.stream().map(Scope::getValue).collect(Collectors.toList());
-      return result;
+      return scopeStringList.stream().map(Scope::getValue).collect(Collectors.toList());
     }
   }
 }

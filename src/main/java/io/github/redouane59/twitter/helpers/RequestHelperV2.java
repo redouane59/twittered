@@ -133,7 +133,7 @@ public class RequestHelperV2 extends AbstractRequestHelper {
 
   public String getBearerToken() {
     if (getTwitterCredentials().getBearerToken() == null) {
-      String url = URLHelper.GET_OAUTH2_TOKEN_URL;
+      String url = URLHelper.GET_BEARER_TOKEN_URL;
       String valueToCrypt = getTwitterCredentials().getApiKey()
                             + ":" + getTwitterCredentials().getApiSecretKey();
       String              cryptedValue = Base64.getEncoder().encodeToString(valueToCrypt.getBytes());
