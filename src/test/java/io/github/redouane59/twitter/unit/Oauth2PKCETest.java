@@ -1,8 +1,10 @@
 package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.others.BearerToken;
 import io.github.redouane59.twitter.signature.Scope;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,11 +16,13 @@ import java.util.stream.Collectors;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class Oauth2PKCETest {
 
   private static TwitterClient twitterClient;
+  private final  String        clientId = "Um5DbVM3d2dhMXViNHduOER0a2c6MTpjaQ";
 
   @BeforeAll
   public static void init() {
@@ -33,7 +37,7 @@ public class Oauth2PKCETest {
 
     List<NameValuePair> expectedParams = URLEncodedUtils.parse(new URI(expectedUrl), StandardCharsets.UTF_8);
 
-    String responseUrl = twitterClient.getRequestHelperV2().getAuthorizeUrl("Um5DbVM3d2dhMXViNHduOER0a2c6MTpjaQ",
+    String responseUrl = twitterClient.getRequestHelperV2().getAuthorizeUrl(clientId,
                                                                             "https://twitter.com/RedouaneBali",
                                                                             "state",
                                                                             "challenge",
@@ -48,5 +52,14 @@ public class Oauth2PKCETest {
     for (NameValuePair param : expectedParams) {
       assertEquals(param.getValue(), responseParamsMap.get(param.getName()));
     }
+  }
+
+  @Test
+  @Disabled
+  public void testRefreshToken() {
+    String      refreshToken = "*To replace by the obtained token in the redirect url*";
+    BearerToken result       = twitterClient.getNewAccessToken(refreshToken, clientId);
+    assertNotNull(result);
+    assertNotNull(result.getRefreshToken());
   }
 }

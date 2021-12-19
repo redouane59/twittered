@@ -28,6 +28,7 @@ import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.list.TwitterList.TwitterListData;
 import io.github.redouane59.twitter.dto.list.TwitterListList;
 import io.github.redouane59.twitter.dto.list.TwitterListMember.TwitterListMemberData;
+import io.github.redouane59.twitter.dto.others.BearerToken;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.others.RateLimitStatus;
 import io.github.redouane59.twitter.dto.others.RequestToken;
@@ -1126,6 +1127,18 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
+  public BearerToken getNewAccessToken(String refreshToken, String clientId) {
+    String              url     = URLHelper.REFRESH_TOKEN_URL;
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    Map<String, String> params = new HashMap<>();
+    params.put("refresh_token", refreshToken);
+    params.put("client_id", clientId);
+    params.put("grant_type", "refresh_token");
+    return requestHelperV2.makeRequest(Verb.POST, url, headers, params, null, false, BearerToken.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
   public RequestToken getOauth1Token() {
     return getOauth1Token(null);
   }
@@ -1152,23 +1165,6 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put("oauth_token", requestToken.getOauthToken());
     String stringResponse = requestHelperV1.postRequestWithoutSign(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
     return new RequestToken(stringResponse);
-  }
-
-  /**
-   * Refresh tokens allow an application to obtain a new access token without prompting the user via the refresh token flow.
-   *
-   * If the scope offline.access is applied an OAuth 2.0 refresh token will be issued. With this refresh token, you obtain an access token. If this
-   * scope is not passed, we will not generate a refresh token.
-   */
-  public String getNewAccessToken(String refreshToken, String clientId) {
-    String              url     = URLHelper.GET_OAUTH2_TOKEN_URL;
-    Map<String, String> headers = new HashMap<>();
-    headers.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-    Map<String, String> params = new HashMap<>();
-    params.put("refresh_token", refreshToken);
-    params.put("client_id", clientId);
-    params.put("grant_type", "refresh_token");
-    return requestHelperV2.makeRequest(Verb.POST, url, headers, params, null, false, String.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override

@@ -4,6 +4,7 @@ import com.github.scribejava.core.model.Response;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.list.TwitterListList;
+import io.github.redouane59.twitter.dto.others.BearerToken;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.rules.FilteredStreamRulePredicate;
 import io.github.redouane59.twitter.dto.space.Space;
@@ -233,6 +234,14 @@ public interface ITwitterClientV2 {
    * @return the generated token
    */
   String getBearerToken();
+
+  /**
+   * Refresh tokens allow an application to obtain a new access token without prompting the user via the refresh token flow.
+   *
+   * If the scope offline.access is applied an OAuth 2.0 refresh token will be issued. With this refresh token, you obtain an access token. If this
+   * scope is not passed, we will not generate a refresh token.
+   */
+  BearerToken getNewAccessToken(String refreshToken, String clientId);
 
   /**
    * Stream about 1% of all tweets calling https://api.twitter.com/2/tweets/sample/stream
