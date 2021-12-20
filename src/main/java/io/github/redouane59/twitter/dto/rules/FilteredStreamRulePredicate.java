@@ -200,7 +200,7 @@ public class FilteredStreamRulePredicate {
   }
 
   public FilteredStreamRulePredicate and(FilteredStreamRulePredicate other) {
-    predicate += " AND " + other.predicate;
+    predicate += " " + other.predicate;
     return this;
   }
 

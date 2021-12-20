@@ -233,7 +233,7 @@ class FilteredStreamRulePredicateTest {
     FilteredStreamRulePredicate p2 = FilteredStreamRulePredicate.withBioName("test");
     FilteredStreamRulePredicate p3 = FilteredStreamRulePredicate.withLanguage("de");
     FilteredStreamRulePredicate p4 = FilteredStreamRulePredicate.withLanguage("en").negate();
-    assertEquals("((\"test\" AND bio_name:test) OR lang:de) OR -(lang:en)", p.and(p2).capsule().or(p3).capsule().or(p4).toString());
+    assertEquals("((\"test\" bio_name:test) OR lang:de) OR -(lang:en)", p.and(p2).capsule().or(p3).capsule().or(p4).toString());
   }
 
   @Test
@@ -242,7 +242,7 @@ class FilteredStreamRulePredicateTest {
     FilteredStreamRulePredicate p2 = FilteredStreamRulePredicate.withBioName("test");
     FilteredStreamRulePredicate p3 = FilteredStreamRulePredicate.withLanguage("de");
     FilteredStreamRulePredicate p4 = FilteredStreamRulePredicate.withLanguage("en").negate();
-    assertEquals("((\"test\" AND bio_name:test) OR lang:de) OR -(lang:en) sample:15",
+    assertEquals("((\"test\" bio_name:test) OR lang:de) OR -(lang:en) sample:15",
                  FilteredStreamRulePredicate.doSampling(p.and(p2).capsule().or(p3).capsule().or(p4), 15).toString());
   }
 
