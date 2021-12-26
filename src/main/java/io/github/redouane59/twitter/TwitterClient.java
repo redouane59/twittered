@@ -1139,7 +1139,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public BearerToken getRefreshToken(String refreshToken, String clientId) {
+  public BearerToken getOAuth2RefreshToken(String refreshToken, String clientId) {
     String              url     = URLHelper.ACCESS_TOKEN_URL;
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");

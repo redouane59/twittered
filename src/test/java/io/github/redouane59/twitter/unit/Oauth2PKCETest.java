@@ -62,7 +62,7 @@ public class Oauth2PKCETest {
     assertNotNull(result);
     assertNotNull(result.getAccessToken());
     assertNotNull(result.getRefreshToken());
-    result = twitterClient.getRefreshToken(result.getRefreshToken(), clientId);
+    result = twitterClient.getOAuth2RefreshToken(result.getRefreshToken(), clientId);
     assertNotNull(result);
     assertNotNull(result.getRefreshToken());
   }

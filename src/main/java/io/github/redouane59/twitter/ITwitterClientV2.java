@@ -241,7 +241,7 @@ public interface ITwitterClientV2 {
    * If the scope offline.access is applied an OAuth 2.0 refresh token will be issued. With this refresh token, you obtain an access token. If this
    * scope is not passed, we will not generate a refresh token.
    */
-  BearerToken getRefreshToken(String refreshToken, String clientId);
+  BearerToken getOAuth2RefreshToken(String refreshToken, String clientId);
 
   /**
    * Use the authorization code to create an access token. See https://developer.twitter.com/en/docs/authentication/oauth-2-0/user-access-token
