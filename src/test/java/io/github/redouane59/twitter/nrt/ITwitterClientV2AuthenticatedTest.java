@@ -327,7 +327,7 @@ public class ITwitterClientV2AuthenticatedTest {
 
     String code = "*to replace*";
 
-    BearerToken bearerToken = twitterClient.getAuthorizationCode(clientId, code, "challenge", "https://twitter.com/RedouaneBali");
+    BearerToken bearerToken = twitterClient.getAccessToken(clientId, code, "challenge", "https://twitter.com/RedouaneBali");
 
     TwitterClient twitterClientUserAuth = new TwitterClient(TwitterCredentials.builder()
                                                                               .bearerToken(bearerToken.getAccessToken()).build());

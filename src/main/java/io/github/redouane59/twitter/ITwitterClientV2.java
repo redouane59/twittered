@@ -244,9 +244,14 @@ public interface ITwitterClientV2 {
   BearerToken getRefreshToken(String refreshToken, String clientId);
 
   /**
-   * Sse the authorization code to create an access token. See https://developer.twitter.com/en/docs/authentication/oauth-2-0/user-access-token
+   * Use the authorization code to create an access token. See https://developer.twitter.com/en/docs/authentication/oauth-2-0/user-access-token
+   *
+   * @param clientId the clientId of the app you can find in the developer portal
+   * @param code the authorization code obtained previously from the user redirection url
+   * @param codeVerifier the code set before for the first call
+   * @param redirectUri the redirect uri set before
    */
-  BearerToken getAuthorizationCode(String clientId, String code, String codeVerifier, String redirectUri);
+  BearerToken getAccessToken(String clientId, String code, String codeVerifier, String redirectUri);
 
   /**
    * Stream about 1% of all tweets calling https://api.twitter.com/2/tweets/sample/stream
