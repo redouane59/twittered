@@ -1127,8 +1127,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public BearerToken getNewAccessToken(String refreshToken, String clientId) {
-    String              url     = URLHelper.REFRESH_TOKEN_URL;
+  public BearerToken getRefreshToken(String refreshToken, String clientId) {
+    String              url     = URLHelper.ACCESS_TOKEN_URL;
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
     Map<String, String> params = new HashMap<>();
@@ -1139,6 +1139,19 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
+  public BearerToken getAuthorizationCode(String clientId, String code, String codeVerifier, String redirectUri) {
+    String              url    = URLHelper.ACCESS_TOKEN_URL;
+    Map<String, String> params = new HashMap<>();
+    params.put("client_id", clientId);
+    params.put("code", code);
+    params.put("redirect_uri", redirectUri);
+    params.put("code_verifier", codeVerifier);
+    params.put("grant_type", "authorization_code");
+    return requestHelperV2.makeRequest(Verb.POST, url, null, params, null, false, BearerToken.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+
   public RequestToken getOauth1Token() {
     return getOauth1Token(null);
   }
