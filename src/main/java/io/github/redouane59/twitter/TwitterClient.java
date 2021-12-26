@@ -602,8 +602,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public UserList getSpaceBuyers(final String spaceId) {
     String              url        = getUrlHelper().getSpaceBuyersUrl(spaceId);
     Map<String, String> parameters = new HashMap<>();
-    parameters.put(EXPANSION, ALL_SPACE_EXPANSIONS);
-    parameters.put(SPACE_FIELDS, ALL_SPACE_FIELDS);
+    parameters.put(EXPANSION, PINNED_TWEET_ID);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     return getRequestHelperV2().getRequestWithParameters(url, parameters, UserList.class)

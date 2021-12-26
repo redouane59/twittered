@@ -8,7 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.list.TwitterList;
+import io.github.redouane59.twitter.dto.others.BearerToken;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
+import io.github.redouane59.twitter.dto.space.SpaceList;
+import io.github.redouane59.twitter.dto.space.SpaceState;
 import io.github.redouane59.twitter.dto.tweet.Geo;
 import io.github.redouane59.twitter.dto.tweet.LikeResponse;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
@@ -23,6 +26,8 @@ import io.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserActionResponse;
 import io.github.redouane59.twitter.dto.user.UserList;
+import io.github.redouane59.twitter.signature.Scope;
+import io.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -306,6 +311,32 @@ public class ITwitterClientV2AuthenticatedTest {
     assertEquals(text, resultPost.getText());
     boolean result = twitterClient.deleteTweet(resultPost.getId());
     assertTrue(result);
+  }
+
+  @Test
+  @Disabled
+  public void testLookUpAndGetSpaceBuyers() {
+    String clientId = "Um5DbVM3d2dhMXViNHduOER0a2c6MTpjaQ";
+    String responseUrl = twitterClient.getRequestHelperV2().getAuthorizeUrl(clientId,
+                                                                            "https://twitter.com/RedouaneBali",
+                                                                            "state",
+                                                                            "challenge",
+                                                                            "plain",
+                                                                            Arrays.asList(Scope.TWEET_READ, Scope.USERS_READ, Scope.SPACE_READ));
+    System.out.println("authorize url : " + responseUrl);
+
+    String code = "*to replace*";
+
+    BearerToken bearerToken = twitterClient.getAuthorizationCode(clientId, code, "challenge", "https://twitter.com/RedouaneBali");
+
+    TwitterClient twitterClientUserAuth = new TwitterClient(TwitterCredentials.builder()
+                                                                              .bearerToken(bearerToken.getAccessToken()).build());
+
+    SpaceList result  = twitterClient.searchSpaces("hello", SpaceState.LIVE);
+    String    spaceId = result.getData().get(0).getId();
+    UserList  buyers  = twitterClientUserAuth.getSpaceBuyers(spaceId);
+    assertNotNull(buyers.getData());
+    assertNotNull(buyers.getMeta());
   }
 
 }
