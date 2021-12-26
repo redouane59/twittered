@@ -251,7 +251,7 @@ public interface ITwitterClientV2 {
    * @param codeVerifier the code set before for the first call
    * @param redirectUri the redirect uri set before
    */
-  BearerToken getAccessToken(String clientId, String code, String codeVerifier, String redirectUri);
+  BearerToken getOAuth2AccessToken(String clientId, String code, String codeVerifier, String redirectUri);
 
   /**
    * Stream about 1% of all tweets calling https://api.twitter.com/2/tweets/sample/stream

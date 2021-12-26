@@ -1151,7 +1151,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public BearerToken getAccessToken(String clientId, String code, String codeVerifier, String redirectUri) {
+  public BearerToken getOAuth2AccessToken(String clientId, String code, String codeVerifier, String redirectUri) {
     String              url    = URLHelper.ACCESS_TOKEN_URL;
     Map<String, String> params = new HashMap<>();
     params.put("client_id", clientId);

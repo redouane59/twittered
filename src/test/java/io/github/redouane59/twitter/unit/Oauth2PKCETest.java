@@ -58,7 +58,7 @@ public class Oauth2PKCETest {
   @Disabled
   public void testAccessTokenAndRefreshToken() {
     String      code   = "*To replace by the obtained token in the redirect url*";
-    BearerToken result = twitterClient.getAccessToken(clientId, code, "challenge", "https://twitter.com/RedouaneBali");
+    BearerToken result = twitterClient.getOAuth2AccessToken(clientId, code, "challenge", "https://twitter.com/RedouaneBali");
     assertNotNull(result);
     assertNotNull(result.getAccessToken());
     assertNotNull(result.getRefreshToken());
