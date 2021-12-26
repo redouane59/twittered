@@ -28,6 +28,7 @@ import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.list.TwitterList.TwitterListData;
 import io.github.redouane59.twitter.dto.list.TwitterListList;
 import io.github.redouane59.twitter.dto.list.TwitterListMember.TwitterListMemberData;
+import io.github.redouane59.twitter.dto.others.BearerToken;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
 import io.github.redouane59.twitter.dto.others.RateLimitStatus;
 import io.github.redouane59.twitter.dto.others.RequestToken;
@@ -1123,6 +1124,18 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public String getBearerToken() {
     return requestHelperV2.getBearerToken();
+  }
+
+  @Override
+  public BearerToken getNewAccessToken(String refreshToken, String clientId) {
+    String              url     = URLHelper.REFRESH_TOKEN_URL;
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    Map<String, String> params = new HashMap<>();
+    params.put("refresh_token", refreshToken);
+    params.put("client_id", clientId);
+    params.put("grant_type", "refresh_token");
+    return requestHelperV2.makeRequest(Verb.POST, url, headers, params, null, false, BearerToken.class).orElseThrow(NoSuchElementException::new);
   }
 
   @Override
