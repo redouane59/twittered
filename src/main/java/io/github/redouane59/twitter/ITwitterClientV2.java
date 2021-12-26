@@ -246,10 +246,10 @@ public interface ITwitterClientV2 {
   /**
    * Use the authorization code to create an access token. See https://developer.twitter.com/en/docs/authentication/oauth-2-0/user-access-token
    *
-   * @param clientId the clientId of the app you can find in the developer portal
+   * @param clientId Can be found in the developer portal under the header "Client ID".
    * @param code the authorization code obtained previously from the user redirection url
-   * @param codeVerifier the code set before for the first call
-   * @param redirectUri the redirect uri set before
+   * @param codeVerifier the code set before when calling method getAuthorizeUrl()
+   * @param redirectUri the redirect URI set before when calling method getAuthorizeUrl()
    */
   BearerToken getOAuth2AccessToken(String clientId, String code, String codeVerifier, String redirectUri);
 
