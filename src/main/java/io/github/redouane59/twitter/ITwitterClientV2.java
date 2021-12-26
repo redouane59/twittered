@@ -481,6 +481,14 @@ public interface ITwitterClientV2 {
   SpaceList searchSpaces(String query, SpaceState state);
 
   /**
+   * Returns a list of user who purchased a ticket to the requested Space calling https://api.twitter.com/2/spaces/:id/buyers
+   *
+   * @param spaceId Unique identifier of the Space for which you want to request Tweets.
+   */
+
+  UserList getSpaceBuyers(String spaceId);
+
+  /**
    * Enables the authenticated user to create a List calling https://api.twitter.com/2/lists
    *
    * @param listName The name of the List you wish to create.

@@ -88,6 +88,7 @@ public class URLHelper {
   private final String retweetTweetUrl     = "https://api.twitter.com/2/users/:id/retweets";
   private final String unretweetTweetUrl   = "https://api.twitter.com/2/users/:id/retweets/:source_tweet_id";
   private final String spaceUrl            = "https://api.twitter.com/2/spaces/:id";
+  private final String spaceBuyersUrl      = "https://api.twitter.com/2/spaces/:id/buyers";
   private final String addListMemberUrl    = "https://api.twitter.com/2/lists/:id/members";
   private final String removeListMemberUrl = "https://api.twitter.com/2/lists/:id/members/:user_id";
   private final String pinListUrl          = "https://api.twitter.com/2/users/:id/pinned_lists";
@@ -264,6 +265,10 @@ public class URLHelper {
 
   public String getSpaceUrl(String id) {
     return spaceUrl.replace(idVariable, id);
+  }
+
+  public String getSpaceBuyersUrl(String spaceId) {
+    return spaceBuyersUrl.replace(idVariable, spaceId);
   }
 
   public String getMutedUsersUrl(final String userId) {

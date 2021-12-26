@@ -43,9 +43,13 @@ public class Space {
     private List<String> speakerIds;
     @JsonProperty("started_at")
     private String       startedAt;
+    @JsonProperty("ended_at")
+    private String       endedAt;
     private String       title;
     @JsonProperty("updated_at")
     private String       updatedAt;
+    @JsonProperty("topic_ids")
+    private List<String> topicIds;
   }
 
   @NoArgsConstructor
