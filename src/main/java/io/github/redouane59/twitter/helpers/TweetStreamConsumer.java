@@ -102,8 +102,7 @@ public class TweetStreamConsumer {
         try {
           listener.onTweetStreamed((TweetV2) TwitterClient.OBJECT_MAPPER.readValue(line, clazz));
         } catch (JsonProcessingException e) {
-          listener.onStreamError(response.getCode(), e.getMessage());
-          return false;
+          listener.onUnknownDataStreamed(line);
         }
       } else {
         listener.onUnknownDataStreamed(line);
