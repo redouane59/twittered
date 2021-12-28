@@ -36,14 +36,14 @@ public class TweetStreamConsumer {
     }
 
     // Check if the buffer is empty and we receive a valid json data
-    if (this.buffer.toString().isEmpty() && (!data.trim().startsWith("{"))) {
+    if (buffer.toString().isEmpty() && (!data.trim().startsWith("{"))) {
       LOGGER.warn("Invalid JSON Start Character. Ignoring : " + data);
       return false;
     }
     buffer.append(data);
 
     // If we detect a \r\n in the buffer, then at least a tweet is complete
-    return (this.buffer.indexOf("\r\n") != -1);
+    return (buffer.indexOf("\r\n") != -1);
   }
 
   /**
@@ -96,11 +96,14 @@ public class TweetStreamConsumer {
   /**
    * Returns true if the data received are not in error depending on the response.code
    */
-  private <T> boolean handleData(IAPIEventListener listener, final Response response, final Class<? extends T> clazz, String line)
-  throws JsonProcessingException {
+  private <T> boolean handleData(IAPIEventListener listener, final Response response, final Class<? extends T> clazz, String line) {
     if (response.getCode() == 200) {
       if (clazz == TweetV2.class) {
-        listener.onTweetStreamed((TweetV2) TwitterClient.OBJECT_MAPPER.readValue(line, clazz));
+        try {
+          listener.onTweetStreamed((TweetV2) TwitterClient.OBJECT_MAPPER.readValue(line, clazz));
+        } catch (JsonProcessingException e) {
+          listener.onUnknownDataStreamed(line);
+        }
       } else {
         listener.onUnknownDataStreamed(line);
       }
@@ -138,10 +141,10 @@ public class TweetStreamConsumer {
     String  lastJSON = result.get(result.size() - 1);
     boolean complete = isValidJSON(lastJSON);
     // Reinit the StringBuilder...
-    this.buffer = new StringBuilder();
+    buffer = new StringBuilder();
     // If not complete, reconsume the last buffer
     if (!complete) {
-      this.consumeBuffer(lastJSON);
+      consumeBuffer(lastJSON);
       result.remove(result.size() - 1);
     }
     return result.stream().toArray(String[]::new);
