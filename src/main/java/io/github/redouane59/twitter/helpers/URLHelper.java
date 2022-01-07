@@ -12,6 +12,7 @@ public class URLHelper {
   public static final  String GET_OAUTH1_ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
   private static final String ROOT_URL_V1                 = "https://api.twitter.com/1.1";
   public static final  String RATE_LIMIT_URL              = ROOT_URL_V1 + "/application/rate_limit_status.json";
+
   // v1 legacy
   private static final String IDS_JSON                    = "/ids.json?";
   private static final String ID                          = "id";
