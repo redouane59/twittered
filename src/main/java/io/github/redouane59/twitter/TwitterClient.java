@@ -108,7 +108,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public static final String       EXPANSION        = "expansions";
   public static final String
                                    ALL_EXPANSIONS   =
-      "author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id,attachments.media_keys";
+      "author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id,attachments.media_keys,geo.place_id";
   public static final String       USER_FIELDS      = "user.fields";
   public static final String       ALL_USER_FIELDS  =
       "id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
