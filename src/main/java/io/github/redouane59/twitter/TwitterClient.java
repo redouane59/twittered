@@ -459,7 +459,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   // @todo see if it cannot be mixed with other similar function
 
   /**
-   * Used for get liking users and get retweeting users endpoints recursively calls
+   * Used for get liking users, get retweeting users and get members endpoints recursively calls
    */
   private UserList getUsersRecursively(int maxResults, String url, Map<String, String> parameters) {
     UserList result = UserList.builder().data(new ArrayList<>()).meta(new UserMeta()).build();
