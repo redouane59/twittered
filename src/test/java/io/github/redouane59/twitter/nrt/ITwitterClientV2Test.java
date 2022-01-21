@@ -446,14 +446,31 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  public void testGetLikingUsers() {
+  public void testGetAllLikingUsers() {
     UserList result = twitterClient.getLikingUsers("1395447825366847488");
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getName());
     assertNotNull(result.getData().get(0).getDisplayedName());
     assertNotNull(result.getData().get(0).getProfileImageUrl());
     assertNotNull(result.getData().get(0).getCreatedAt());
-    assertTrue(result.getData().size() > 40);
+    assertTrue(result.getData().size() > 105);
+  }
+
+  @Test
+  public void testGetLikingUsersWithMaxResults() {
+    UserList result = twitterClient.getLikingUsers("1395447825366847488", 100);
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getData().get(0).getName());
+    assertNotNull(result.getData().get(0).getDisplayedName());
+    assertNotNull(result.getData().get(0).getProfileImageUrl());
+    assertNotNull(result.getData().get(0).getCreatedAt());
+    assertEquals(100, result.getData().size());
+    result = twitterClient.getLikingUsers("1395447825366847488", 50);
+    assertEquals(50, result.getData().size());
+    result = twitterClient.getLikingUsers("1395447825366847488", 999999);
+    assertTrue(result.getData().size() > 100);
+    assertTrue(result.getData().size() < 1000);
+
   }
 
   @Test
