@@ -361,7 +361,7 @@ public interface ITwitterClientV2 {
   LikeResponse unlikeTweet(String tweetId);
 
   /**
-   * Allows you to get information about a Tweet’s liking users calling https://api.twitter.com/2/tweets/:id/liking_users
+   * Allows you to get information about a Tweet’s all liking users calling https://api.twitter.com/2/tweets/:id/liking_users
    *
    * @param tweetId ID of the Tweet to request liking users of.
    */
@@ -456,7 +456,7 @@ public interface ITwitterClientV2 {
   UserList getRetweetingUsers(String tweetId, int maxResults);
 
   /**
-   * Allows you to get information about who has Retweeted a Tweet calling https://api.twitter.com/2/tweets/:id/retweeted_by
+   * Allows you to get information about all users who have Retweeted a Tweet calling https://api.twitter.com/2/tweets/:id/retweeted_by
    *
    * @param tweetId the id of the tweet
    */
