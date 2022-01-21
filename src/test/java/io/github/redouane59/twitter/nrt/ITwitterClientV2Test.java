@@ -531,15 +531,32 @@ public class ITwitterClientV2Test {
   }
 
   @Test
-  public void testGetRetweetingUsers() {
-    String   tweetId = "1415348607813832708";
+  public void testAllGetRetweetingUsers() {
+    String   tweetId = "1460323737035677698";
     UserList result  = twitterClient.getRetweetingUsers(tweetId);
     assertNotNull(result.getData());
-    assertTrue(result.getData().size() > 10);
+    assertTrue(result.getData().size() > 200);
+    assertTrue(result.getData().size() < 400);
     assertNotNull(result.getData().get(0).getId());
     assertNotNull(result.getData().get(0).getName());
     assertNotNull(result.getData().get(0).getDisplayedName());
     assertNotNull(result.getData().get(0).getDateOfCreation());
+  }
+
+  @Test
+  public void testGetRetweetingUsersWithMaxResults() {
+    String   tweetId = "1460323737035677698";
+    UserList result  = twitterClient.getRetweetingUsers(tweetId, 50);
+    assertNotNull(result.getData());
+    assertNotNull(result.getData().get(0).getId());
+    assertNotNull(result.getData().get(0).getName());
+    assertNotNull(result.getData().get(0).getDisplayedName());
+    assertNotNull(result.getData().get(0).getDateOfCreation());
+    assertEquals(50, result.getData().size());
+    result = twitterClient.getRetweetingUsers(tweetId, 150);
+    assertEquals(150, result.getData().size());
+
+
   }
 
   @Test

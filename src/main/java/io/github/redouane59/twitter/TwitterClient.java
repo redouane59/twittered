@@ -448,12 +448,38 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public UserList getRetweetingUsers(String tweetId) {
+  public UserList getRetweetingUsers(String tweetId, int maxResults) {
     String              url        = urlHelper.getRetweetersUrl(tweetId);
     Map<String, String> parameters = new HashMap<>();
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(EXPANSION, PINNED_TWEET_ID);
-    return getRequestHelper().getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
+    UserList result = UserList.builder().data(new ArrayList<>()).meta(new UserMeta()).build();
+    String   next;
+
+    do {
+      parameters.put(MAX_RESULTS, String.valueOf(Math.min(100, maxResults - result.getData().size())));
+      Optional<UserList> userList = getRequestHelper().getRequestWithParameters(url, parameters, UserList.class);
+      if (!userList.isPresent() || userList.get().getData() == null) {
+        result.getMeta().setNextToken(null);
+        break;
+      }
+      result.getData().addAll(userList.get().getData());
+
+      UserMeta meta = UserMeta.builder()
+                              .resultCount(result.getData().size())
+                              .nextToken(userList.get().getMeta().getNextToken())
+                              .build();
+      result.setMeta(meta);
+      next = userList.get().getMeta().getNextToken();
+      parameters.put(AdditionalParameters.PAGINATION_TOKEN, next);
+    } while (next != null && result.getData().size() < maxResults);
+
+    return result;
+  }
+
+  @Override
+  public UserList getRetweetingUsers(String tweetId) {
+    return getRetweetingUsers(tweetId, Integer.MAX_VALUE);
   }
 
   @Override
@@ -461,6 +487,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String              url        = getUrlHelper().getLikingUsersUrl(tweetId);
     Map<String, String> parameters = new HashMap<>();
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(EXPANSION, PINNED_TWEET_ID);
     UserList result = UserList.builder().data(new ArrayList<>()).meta(new UserMeta()).build();
     String   next;
 
