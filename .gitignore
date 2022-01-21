@@ -1,14 +1,9 @@
+test-twitter-credentials.json
 /.idea/libraries
 /.idea/*.xml
 /.target
 *.iml
 *.class
-src/main/resources/twitter-credentials.json
-src/main/resources/twitter-credentials2.json
-src/main/java/com/socialmediaraiser/okhttpCache/
-src/main/java/io/github/redouane59/okhttpCache/
-src/main/java/com/socialmediaraiser/okhttpCache/*
-src/main/java/io/github/redouane59/okhttpCache/*
 target/
 */target/**
 */target/*
@@ -17,8 +12,6 @@ target/
 /okhttpCache/*
 *.asc
 bundle.jar
-test-twitter-credentials.json 
-
 /.vscode
 /.settings
 .classpath
