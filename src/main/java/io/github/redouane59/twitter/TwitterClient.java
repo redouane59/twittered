@@ -449,18 +449,19 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public UserList getRetweetingUsers(String tweetId, int maxResults) {
-    String url = urlHelper.getRetweetersUrl(tweetId);
-    return getUsersRecursively(maxResults, url);
+    String              url        = urlHelper.getRetweetersUrl(tweetId);
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(EXPANSION, PINNED_TWEET_ID);
+    return getUsersRecursively(maxResults, url, parameters);
   }
 
+  // @todo see if it cannot be mixed with other similar function
 
   /**
    * Used for get liking users and get retweeting users endpoints recursively calls
    */
-  private UserList getUsersRecursively(int maxResults, String url) {
-    Map<String, String> parameters = new HashMap<>();
-    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
-    parameters.put(EXPANSION, PINNED_TWEET_ID);
+  private UserList getUsersRecursively(int maxResults, String url, Map<String, String> parameters) {
     UserList result = UserList.builder().data(new ArrayList<>()).meta(new UserMeta()).build();
     String   next;
 
@@ -493,8 +494,11 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public UserList getLikingUsers(final String tweetId, int maxResults) {
-    String url = getUrlHelper().getLikingUsersUrl(tweetId);
-    return getUsersRecursively(maxResults, url);
+    String              url        = getUrlHelper().getLikingUsersUrl(tweetId);
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(EXPANSION, PINNED_TWEET_ID);
+    return getUsersRecursively(maxResults, url, parameters);
   }
 
   @Override
@@ -739,6 +743,16 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(LIST_FIELDS, ALL_LIST_FIELDS);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     return getRequestHelperV1().getRequestWithParameters(url, parameters, TwitterList.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public UserList getListMembers(final String listId) {
+    String              url        = getUrlHelper().getAddListMemberUrl(listId);
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(EXPANSION, PINNED_TWEET_ID);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    return getUsersRecursively(Integer.MAX_VALUE, url, parameters);
   }
 
   @Override

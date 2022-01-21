@@ -607,6 +607,14 @@ public class ITwitterClientV2Test {
   }
 
   @Test
+  public void testGetListMembers() {
+    String   listId  = "1449313282892910592";
+    UserList members = twitterClient.getListMembers(listId);
+    assertNotNull(members);
+    assertTrue(members.getData().size() > 1);
+  }
+
+  @Test
   public void testGetUserOwnedList() {
     TwitterListList lists = twitterClient.getUserOwnedLists(userId);
     assertTrue(lists.getData().size() > 0);
