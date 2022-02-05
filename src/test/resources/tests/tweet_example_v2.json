@@ -139,6 +139,26 @@
         "created_at": "2007-11-03T17:51:40.000Z",
         "url": "https://t.co/VDTjQvcKXp"
       }
+    ],
+    "places": [
+      {
+        "geo": {
+          "type": "Feature",
+          "bbox": [
+            -74.026675,
+            40.683935,
+            -73.910408,
+            40.877483
+          ],
+          "properties": {}
+        },
+        "country_code": "US",
+        "name": "Manhattan",
+        "id": "01a9a39529b27f36",
+        "place_type": "city",
+        "country": "United States",
+        "full_name": "Manhattan, NY"
+      }
     ]
   }
 }
