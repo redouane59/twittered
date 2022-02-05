@@ -1,6 +1,7 @@
 package io.github.redouane59.twitter.dto.tweet;
 
 import io.github.redouane59.twitter.dto.stream.StreamRules;
+import io.github.redouane59.twitter.dto.tweet.TweetV2.Place;
 import io.github.redouane59.twitter.dto.tweet.entities.Entities;
 import io.github.redouane59.twitter.dto.tweet.entities.MediaEntity;
 import io.github.redouane59.twitter.dto.user.User;
@@ -151,6 +152,11 @@ public interface Tweet {
    * Get the {@link MediaEntity media entities} of the tweet
    */
   List<? extends MediaEntity> getMedia();
+
+  /**
+   * Get the {@link Place place} of the tweet
+   */
+  List<Place> getPlaces();
 
   /**
    * When an activity is delivered through a filtered stream connection, the matching_rules list contains which list of filters matched against the

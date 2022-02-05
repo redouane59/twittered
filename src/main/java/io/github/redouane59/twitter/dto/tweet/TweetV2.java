@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.github.redouane59.twitter.dto.stream.StreamRules;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
 import io.github.redouane59.twitter.dto.tweet.entities.BaseEntity;
@@ -145,6 +146,14 @@ public class TweetV2 implements Tweet {
       return Collections.emptyList();
     }
     return includes.getMedia();
+  }
+
+  @Override
+  public List<Place> getPlaces() {
+    if (includes == null) {
+      return Collections.emptyList();
+    }
+    return includes.getPlaces();
   }
 
   @Override
@@ -327,13 +336,19 @@ public class TweetV2 implements Tweet {
 
     @Override
     public List<MediaEntityV2> getMedia() {
-      LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
+      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION);
+      return Collections.emptyList();
+    }
+
+    @Override
+    public List<Place> getPlaces() {
+      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION);
       return Collections.emptyList();
     }
 
     @Override
     public List<StreamRule> getMatchingRules() {
-      LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
+      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION);
       return Collections.emptyList();
     }
 
@@ -367,6 +382,7 @@ public class TweetV2 implements Tweet {
     private List<UserV2.UserData>       users;
     private List<TweetV2.TweetData>     tweets;
     private List<TweetV2.MediaEntityV2> media;
+    private List<TweetV2.Place>         places;
   }
 
 
@@ -512,6 +528,31 @@ public class TweetV2 implements Tweet {
     public long getId() {
       LOGGER.info(NOT_IMPLEMENTED_EXCEPTION);
       return -1;
+    }
+  }
+
+  @Getter
+  @Setter
+  public static class Place {
+
+    private Geo    geo;
+    @JsonProperty("country_code")
+    private String countryCode;
+    private String name;
+    private String id;
+    @JsonProperty("place_type")
+    private String placeType;
+    private String country;
+    @JsonProperty("full_name")
+    private String fullName;
+
+    @Getter
+    @Setter
+    public static class Geo {
+
+      private String       type;
+      private List<Double> bbox;
+      private JsonNode     properties;
     }
   }
 
