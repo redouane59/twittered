@@ -595,6 +595,13 @@ public interface ITwitterClientV2 {
   TwitterList getList(String listId);
 
   /**
+   * Returns a list of users who are members of the specified List
+   *
+   * @param listId The ID of the List whose members you would like to retrieve.
+   */
+  UserList getListMembers(String listId);
+
+  /**
    * Returns all Lists owned by the specified user calling https://api.twitter.com/2/users/:id/owned_lists
    *
    * @param userId The user ID whose owned Lists you would like to retrieve.

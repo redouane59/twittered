@@ -10,6 +10,7 @@ import io.github.redouane59.twitter.dto.tweet.ContextAnnotation;
 import io.github.redouane59.twitter.dto.tweet.ReplySettings;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetV2;
+import io.github.redouane59.twitter.dto.tweet.TweetV2.Place;
 import io.github.redouane59.twitter.dto.tweet.entities.HashtagEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.MediaEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.SymbolEntity;
@@ -229,5 +230,19 @@ public class TweetDeserializerV2Test {
     assertEquals(720, ev2.getHeight());
     assertEquals(1280, ev2.getWidth());
     assertEquals("test", ev2.getAltText());
+  }
+
+  @Test
+  public void testIncludesPlace() {
+    List<Place> places = tweetv2.getPlaces();
+    Place       place  = places.get(0);
+    assertEquals("US", place.getCountryCode());
+    assertEquals("Manhattan", place.getName());
+    assertEquals("01a9a39529b27f36", place.getId());
+    assertEquals("city", place.getPlaceType());
+    assertEquals("United States", place.getCountry());
+    assertEquals("Manhattan, NY", place.getFullName());
+    assertEquals("Feature", place.getGeo().getType());
+    assertTrue(place.getGeo().getBbox().size() > 0);
   }
 }
