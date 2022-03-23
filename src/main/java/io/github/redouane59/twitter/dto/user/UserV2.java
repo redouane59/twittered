@@ -80,6 +80,18 @@ public class UserV2 implements User {
 
   @Override
   @JsonIgnore
+  public int getListedCount() {
+    return data.getPublicMetrics().getListedCount();
+  }
+
+  /* Returns whether the UserPublicMetrics object exists. Probably the field public_metrics was not requested if not. */
+  @Override
+  public boolean hasPublicMetrics() {
+    return data!=null && data.hasPublicMetrics();
+  }
+
+  @Override
+  @JsonIgnore
   public String getLang() {
     throw new UnsupportedOperationException();
   }
@@ -185,8 +197,18 @@ public class UserV2 implements User {
     }
 
     @Override
+    public int getListedCount() {
+      return publicMetrics.getListedCount();
+    }
+
+    @Override
     public int getTweetCount() {
       return publicMetrics.getTweetCount();
+    }
+
+    /* Returns whether the UserPublicMetrics object exists. Probably the field public_metrics was not requested if not. */
+    public boolean hasPublicMetrics() {
+      return publicMetrics!=null;
     }
 
     @Override

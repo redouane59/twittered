@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
 import javax.naming.LimitExceededException;
+import javax.naming.NoPermissionException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -108,6 +109,8 @@ public abstract class AbstractRequestHelper {
       return makeRequest(request, false, classType); // We have already signed if it was requested
     } else if (response.getCode() < 200 || response.getCode() > 299) {
       logApiError(request.getVerb().name(), request.getUrl(), stringResponse, response.getCode());
+    } else if (stringResponse != null && stringResponse.startsWith("{\"errors\":")) {
+      throw new NoPermissionException(stringResponse);
     }
     result = convert(stringResponse, classType);
     return Optional.ofNullable(result);

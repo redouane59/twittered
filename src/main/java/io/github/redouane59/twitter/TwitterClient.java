@@ -102,9 +102,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       .setSerializationInclusion(JsonInclude.Include.NON_NULL)
       .findAndRegisterModules();
   public static final String       TWEET_FIELDS     = "tweet.fields";
-  public static final String
-                                   ALL_TWEET_FIELDS =
-      "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id,reply_settings";
+  public static final String       ALL_TWEET_FIELDS_PUBLIC = 
+      "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,referenced_tweets,source,text,withheld,context_annotations,conversation_id,reply_settings,public_metrics";
+  public static final String       ALL_TWEET_FIELDS_NON_PUBLIC = 
+      ALL_TWEET_FIELDS_PUBLIC + ",non_public_metrics,organic_metrics";
+  public static final String       ALL_TWEET_FIELDS_NON_PUBLIC_PROMOTED = 
+      ALL_TWEET_FIELDS_NON_PUBLIC + ",promoted_metrics";
   public static final String       EXPANSION        = "expansions";
   public static final String
                                    ALL_EXPANSIONS   =
@@ -154,7 +157,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public TwitterClient(TwitterCredentials credentials) {
     this(credentials, new ServiceBuilder(credentials.getApiKey()).apiSecret(credentials.getApiSecretKey()));
   }
-
+  
+  public TwitterClient(TwitterCredentials credentials, boolean useConsumerKey) {
+    this(credentials, new ServiceBuilder(credentials.getApiKey()).apiSecret(credentials.getApiSecretKey()));
+    setUseConsumerKey(useConsumerKey);
+  }
+  
   public TwitterClient(TwitterCredentials credentials, HttpClient httpClient) {
     this(credentials,
          new ServiceBuilder(credentials.getApiKey()).apiSecret(credentials.getApiSecretKey()).httpClient(httpClient));
@@ -233,6 +241,15 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public void setAutomaticRetry(boolean automaticRetry) {
     requestHelperV1.setAutomaticRetry(automaticRetry);
     requestHelperV2.setAutomaticRetry(automaticRetry);
+  }
+
+  /**
+   * Set the behavior of authentication context used in requests. 
+   *
+   * @param useConsumerKey Using consumer key for user context if true; or else app-only bearer token. Default is false.
+   */
+  public void setUseConsumerKey(boolean useConsumerKey) {
+    requestHelperV2.setUseConsumerKey(useConsumerKey);
   }
 
   // can manage up to 5000 results / call . Max 15 calls / 15min ==> 75.000
@@ -515,7 +532,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public TweetList getLikedTweets(final String userId, AdditionalParameters additionalParameters) {
     String              url        = getUrlHelper().getLikedTweetsUrl(userId);
     Map<String, String> parameters = new HashMap<>();
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC);
     if (!additionalParameters.isRecursiveCall()) {
       return getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
@@ -576,7 +593,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(EXPANSION, PINNED_TWEET_ID);
     parameters.put(MAX_RESULTS, "1000");
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC);
     return requestHelperV1.getRequestWithParameters(url, parameters, UserList.class).orElseThrow(NoSuchElementException::new);
   }
 
@@ -646,7 +663,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     Map<String, String> parameters = new HashMap<>();
     parameters.put(EXPANSION, PINNED_TWEET_ID);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC);
     return getRequestHelperV2().getRequestWithParameters(url, parameters, UserList.class)
                                .orElseThrow(NoSuchElementException::new);
   }
@@ -751,7 +768,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     Map<String, String> parameters = new HashMap<>();
     parameters.put(EXPANSION, PINNED_TWEET_ID);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC);
     return getUsersRecursively(Integer.MAX_VALUE, url, parameters);
   }
 
@@ -788,10 +805,15 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public Tweet getTweet(String tweetId) {
+    return getTweet(tweetId, REQUEST_TWEET_FIELDS_SCOPE.PUBLIC);
+  }
+
+  @Override
+  public Tweet getTweet(String tweetId, REQUEST_TWEET_FIELDS_SCOPE requestTweetFieldsScope) {
     String              url        = getUrlHelper().getTweetUrl(tweetId);
     Map<String, String> parameters = new HashMap<>();
     parameters.put(EXPANSION, ALL_EXPANSIONS);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, getFieldsForRequestTweetFieldsScope(requestTweetFieldsScope));
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     return getRequestHelper().getRequestWithParameters(url, parameters, TweetV2.class).orElseThrow(NoSuchElementException::new);
@@ -799,10 +821,15 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public TweetList getTweets(List<String> tweetIds) {
+      return getTweets(tweetIds, REQUEST_TWEET_FIELDS_SCOPE.PUBLIC);
+  }
+
+  @Override
+  public TweetList getTweets(List<String> tweetIds, REQUEST_TWEET_FIELDS_SCOPE requestTweetFieldsScope) {
     String              url        = getUrlHelper().getTweetsUrl();
     Map<String, String> parameters = new HashMap<>();
     parameters.put(EXPANSION, ALL_EXPANSIONS);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, getFieldsForRequestTweetFieldsScope(requestTweetFieldsScope));
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     StringBuilder result = new StringBuilder();
@@ -841,7 +868,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public TweetList searchTweets(String query, AdditionalParameters additionalParameters) {
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(QUERY, query);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(EXPANSION, ALL_EXPANSIONS);
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
@@ -865,10 +892,10 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(QUERY, query);
     if (additionalParameters.getMaxResults() <= 100) {
-      parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+      parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC);
     } else {
       LOGGER.warn("removing context_annotations from tweet_fields because max_result is greater 100");
-      parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS.replace(",context_annotations", ""));
+      parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC.replace(",context_annotations", ""));
     }
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(EXPANSION, ALL_EXPANSIONS);
@@ -1004,7 +1031,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String              url        = urlHelper.getFilteredStreamUrl();
     Map<String, String> parameters = new HashMap<>();
     parameters.put(EXPANSION, ALL_EXPANSIONS);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     return requestHelperV2.getAsyncRequest(url, parameters, consumer);
@@ -1020,7 +1047,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String              url        = urlHelper.getFilteredStreamUrl();
     Map<String, String> parameters = new HashMap<>();
     parameters.put(EXPANSION, ALL_EXPANSIONS);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     if (backfillMinutes > 0) {
@@ -1100,7 +1127,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String              url        = urlHelper.getSampledStreamUrl();
     Map<String, String> parameters = new HashMap<>();
     parameters.put(EXPANSION, ALL_EXPANSIONS);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     return requestHelperV2.getAsyncRequest(url, parameters, consumer);
@@ -1116,7 +1143,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String              url        = urlHelper.getSampledStreamUrl();
     Map<String, String> parameters = new HashMap<>();
     parameters.put(EXPANSION, ALL_EXPANSIONS);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     if (backfillMinutes > 0) {
@@ -1127,13 +1154,23 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public TweetList getUserTimeline(final String userId) {
-    return getUserTimeline(userId, AdditionalParameters.builder().maxResults(100).build());
+    return getUserTimeline(userId, AdditionalParameters.builder().maxResults(100).build(), REQUEST_TWEET_FIELDS_SCOPE.PUBLIC);
   }
 
   @Override
-  public TweetList getUserTimeline(String userId, AdditionalParameters additionalParameters) {
+  public TweetList getUserTimeline(final String userId, AdditionalParameters additionalParameters) {
+    return getUserTimeline(userId, additionalParameters, REQUEST_TWEET_FIELDS_SCOPE.PUBLIC);
+  }
+
+  @Override
+  public TweetList getUserTimeline(final String userId, REQUEST_TWEET_FIELDS_SCOPE requestTweetFieldsScope) {
+    return getUserTimeline(userId, AdditionalParameters.builder().maxResults(100).build(), requestTweetFieldsScope);
+  }
+
+  @Override
+  public TweetList getUserTimeline(String userId, AdditionalParameters additionalParameters, REQUEST_TWEET_FIELDS_SCOPE requestTweetFieldsScope) {
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, getFieldsForRequestTweetFieldsScope(requestTweetFieldsScope));
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(PLACE_FIELDS, ALL_PLACE_FIELDS);
     parameters.put(POLL_FIELDS, ALL_POLL_FIELDS);
@@ -1157,7 +1194,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public TweetList getUserMentions(final String userId, AdditionalParameters additionalParameters) {
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC);
     String url = urlHelper.getUserMentionsUrl(userId);
     if (!additionalParameters.isRecursiveCall()) {
       return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
@@ -1378,4 +1415,18 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     }
     return accessToken.substring(0, accessToken.indexOf("-"));
   }
+
+  public String getFieldsForRequestTweetFieldsScope(REQUEST_TWEET_FIELDS_SCOPE requestTweetFieldsScope) {
+    switch (requestTweetFieldsScope) {
+      case NON_PUBLIC:
+        return ALL_TWEET_FIELDS_NON_PUBLIC;
+      case NON_PUBLIC_PROMOTED:
+        return ALL_TWEET_FIELDS_NON_PUBLIC_PROMOTED;
+      case PUBLIC:
+        return ALL_TWEET_FIELDS_PUBLIC;
+      default:
+        throw new RuntimeException("REQUEST_TWEET_FIELDS_SCOPE " + requestTweetFieldsScope + " not implemented.");
+    }
+  }
+
 }

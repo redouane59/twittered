@@ -69,6 +69,19 @@ public class UserV1 implements User {
     return id.hashCode();
   }
 
+  /* This is not supported in API v1. */
+  @Override
+  public int getListedCount() {
+    LOGGER.debug("UnsupportedOperation");
+    return 0;
+  }
+
+  /* Returns whether the users public metrics is included in the response. This is always the case in API v1. */
+  @Override
+  public boolean hasPublicMetrics() {
+    return true;
+  }
+
   @Override
   public LocalDateTime getDateOfCreation() {
     return ConverterHelper.getDateFromTwitterString(dateOfCreation);

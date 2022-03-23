@@ -189,6 +189,126 @@ public class TweetV2 implements Tweet {
   }
 
   @Override
+  public int getImpressionCount() {
+    if (data == null || data.getNonPublicMetrics() == null) {
+        return 0;
+    }
+    return data.getNonPublicMetrics().getImpressionCount();
+  }
+
+  @Override
+  public int getUrlLinkClicks() {
+    if (data == null || data.getNonPublicMetrics() == null) {
+        return 0;
+    }
+    return data.getNonPublicMetrics().getUrlLinkClicks();
+  }
+
+  @Override
+  public int getUserProfileClicks() {
+    if (data == null || data.getNonPublicMetrics() == null) {
+        return 0;
+    }
+    return data.getNonPublicMetrics().getUserProfileClicks();
+  }
+
+  @Override
+  public int getOrganicImpressionCount() {
+    if (data == null || data.getOrganicMetrics() == null) {
+        return 0;
+    }
+    return data.getOrganicMetrics().getImpressionCount();
+  }
+
+  @Override
+  public int getOrganicLikeCount() {
+    if (data == null || data.getOrganicMetrics() == null) {
+        return 0;
+    }
+    return data.getOrganicMetrics().getLikeCount();
+  }
+
+  @Override
+  public int getOrganicReplyCount() {
+    if (data == null || data.getOrganicMetrics() == null) {
+        return 0;
+    }
+    return data.getOrganicMetrics().getReplyCount();
+  }
+
+  @Override
+  public int getOrganicRetweetCount() {
+    if (data == null || data.getOrganicMetrics() == null) {
+        return 0;
+    }
+    return data.getOrganicMetrics().getRetweetCount();
+  }
+
+  @Override
+  public int getOrganicUrlLinkClicks() {
+    if (data == null || data.getOrganicMetrics() == null) {
+        return 0;
+    }
+    return data.getOrganicMetrics().getUrlLinkClicks();
+  }
+
+  @Override
+  public int getOrganicUserProfileClicks() {
+    if (data == null || data.getOrganicMetrics() == null) {
+        return 0;
+    }
+    return data.getOrganicMetrics().getUserProfileClicks();
+  }
+
+  @Override
+  public int getPromotedImpressionCount() {
+    if (data == null || data.getPromotedMetrics() == null) {
+        return 0;
+    }
+    return data.getPromotedMetrics().getImpressionCount();
+  }
+
+  @Override
+  public int getPromotedLikeCount() {
+    if (data == null || data.getPromotedMetrics() == null) {
+        return 0;
+    }
+    return data.getPromotedMetrics().getLikeCount();
+  }
+
+  @Override
+  public int getPromotedReplyCount() {
+    if (data == null || data.getPromotedMetrics() == null) {
+        return 0;
+    }
+    return data.getPromotedMetrics().getReplyCount();
+  }
+
+  @Override
+  public int getPromotedRetweetCount() {
+    if (data == null || data.getPromotedMetrics() == null) {
+        return 0;
+    }
+    return data.getPromotedMetrics().getRetweetCount();
+  }
+
+  @Override
+  public int getPromotedUrlLinkClicks() {
+    if (data == null || data.getPromotedMetrics() == null) {
+        return 0;
+    }
+    return data.getPromotedMetrics().getUrlLinkClicks();
+  }
+
+  @Override
+  public int getPromotedUserProfileClicks() {
+    if (data == null || data.getPromotedMetrics() == null) {
+        return 0;
+    }
+    return data.getPromotedMetrics().getUserProfileClicks();
+  }
+
+  @Override
   public String getInReplyToUserId() {
     if (data == null) {
       return null;
@@ -240,6 +360,26 @@ public class TweetV2 implements Tweet {
     return data.getReferencedTweets().get(0).getType();
   }
 
+  /** Returns whether the TweetPublicMetricsDTO object exists. Probably the field public_metrics was not requested if not. */
+  public boolean hasTweetPublicMetrics() {
+    return data!=null && data.hasPublicMetrics();
+  }
+
+  /** Returns whether the TweetNonPublicMetricsDTO object exists. Probably the field non_public_metrics was not requested if not. */
+  public boolean hasTweetNonPublicMetrics() {
+    return data!=null && data.hasNonPublicMetrics();
+  }
+  
+  /** Returns whether the TweetOrganicMetricsDTO object exists. Probably the field organic_metrics was not requested if not. */
+  public boolean hasTweetOrganicMetrics() {
+    return data!=null && data.hasOrganicMetrics();
+  }
+  
+  /** Returns whether the TweetPromotedMetricsDTO object exists. Probably the field promoted_metrics was not requested if not. */
+  public boolean hasTweetPromotedMetrics() {
+    return data!=null && data.hasPromotedMetrics();
+  }
+
   @Getter
   @Setter
   @Builder
@@ -262,6 +402,15 @@ public class TweetV2 implements Tweet {
     @JsonProperty("public_metrics")
     @JsonInclude(Include.NON_NULL)
     private TweetPublicMetricsDTO    publicMetrics;
+    @JsonProperty("non_public_metrics")
+    @JsonInclude(Include.NON_NULL)
+    private TweetNonPublicMetricsDTO nonPublicMetrics;
+    @JsonProperty("organic_metrics")
+    @JsonInclude(Include.NON_NULL)
+    private TweetOrganicMetricsDTO   organicMetrics;
+    @JsonProperty("promoted_metrics")
+    @JsonInclude(Include.NON_NULL)
+    private TweetPromotedMetricsDTO  promotedMetrics;
     @JsonProperty("possibly_sensitive")
     private boolean                  possiblySensitive;
     private String                   lang;
@@ -299,6 +448,115 @@ public class TweetV2 implements Tweet {
     @JsonIgnore
     public int getQuoteCount() {
       return publicMetrics.getQuoteCount();
+    }
+
+    /** Returns whether the TweetPublicMetricsDTO object exists. Probably the field public_metrics was not requested if not. */
+    public boolean hasPublicMetrics() {
+      return publicMetrics!=null;
+    }
+
+    @Override
+    @JsonIgnore
+    public int getImpressionCount() {
+      return nonPublicMetrics.getImpressionCount();
+    }
+
+    @Override
+    @JsonIgnore
+    public int getUrlLinkClicks() {
+      return nonPublicMetrics.getUrlLinkClicks();
+    }
+    @Override
+    @JsonIgnore
+    public int getUserProfileClicks() {
+      return nonPublicMetrics.getUserProfileClicks();
+    }
+
+    /** Returns whether the TweetNonPublicMetricsDTO object exists. Probably the field non_public_metrics was not requested if not. */
+    public boolean hasNonPublicMetrics() {
+      return nonPublicMetrics!=null;
+    }
+
+    @Override
+    @JsonIgnore
+    public int getOrganicImpressionCount() {
+      return organicMetrics.getImpressionCount();
+    }
+
+    @Override
+    @JsonIgnore
+    public int getOrganicLikeCount() {
+      return organicMetrics.getLikeCount();
+    }
+
+    @Override
+    @JsonIgnore
+    public int getOrganicReplyCount() {
+      return organicMetrics.getReplyCount();
+    }
+
+    @Override
+    @JsonIgnore
+    public int getOrganicRetweetCount() {
+      return organicMetrics.getRetweetCount();
+    }
+
+    @Override
+    @JsonIgnore
+    public int getOrganicUrlLinkClicks() {
+      return organicMetrics.getUrlLinkClicks();
+    }
+
+    @Override
+    @JsonIgnore
+    public int getOrganicUserProfileClicks() {
+      return organicMetrics.getUserProfileClicks();
+    }
+    
+    /** Returns whether the TweetOrganicMetricsDTO object exists. Probably the field organic_metrics was not requested if not. */
+    public boolean hasOrganicMetrics() {
+      return organicMetrics!=null;
+    }
+
+    @Override
+    @JsonIgnore
+    public int getPromotedImpressionCount() {
+      return promotedMetrics.getImpressionCount();
+    }
+
+    @Override
+    @JsonIgnore
+    public int getPromotedLikeCount() {
+      return promotedMetrics.getLikeCount();
+    }
+
+    @Override
+    @JsonIgnore
+    public int getPromotedReplyCount() {
+      return promotedMetrics.getReplyCount();
+    }
+
+    @Override
+    @JsonIgnore
+    public int getPromotedRetweetCount() {
+      return promotedMetrics.getRetweetCount();
+    }
+
+    @Override
+    @JsonIgnore
+    public int getPromotedUrlLinkClicks() {
+      return promotedMetrics.getUrlLinkClicks();
+    }
+
+    @Override
+    @JsonIgnore
+    public int getPromotedUserProfileClicks() {
+      return promotedMetrics.getUserProfileClicks();
+    }
+
+    /** Returns whether the TweetPromotedMetricsDTO object exists. Probably the field promoted_metrics was not requested if not. */
+    public boolean hasPromotedMetrics() {
+      return promotedMetrics!=null;
     }
 
     @Override
@@ -385,7 +643,6 @@ public class TweetV2 implements Tweet {
     private List<TweetV2.Place>         places;
   }
 
-
   @Getter
   @Setter
   public static class TweetPublicMetricsDTO {
@@ -400,6 +657,75 @@ public class TweetV2 implements Tweet {
     private int quoteCount;
   }
 
+  /** Non-public engagement metrics for the Tweet at the time of the request. This is a private metric, and requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication.
+   * To return this field, add tweet.fields=non_public_metrics in the request's query parameter.*/
+  @Getter
+  @Setter
+  public static class TweetNonPublicMetricsDTO {
+
+    /** Number of times the Tweet has been viewed. This is a private metric, and requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication. **/
+    @JsonProperty("impression_count")
+    private int impressionCount;
+    /** Number of times a user clicks on a URL link or URL preview card in a Tweet. This is a private metric, and requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication. */
+    @JsonProperty("url_link_clicks")
+    private int urlLinkClicks;
+    /** Number of times a user clicks the following portions of a Tweet - display name, user name, profile picture. This is a private metric, and requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication. */
+    @JsonProperty("user_profile_clicks")
+    private int userProfileClicks;
+  }
+
+  /** Organic engagement metrics for the Tweet at the time of the request. Requires user context authentication. */
+  @Getter
+  @Setter
+  public static class TweetOrganicMetricsDTO {
+
+    /** Number of times the Tweet has been viewed organically. This is a private metric, and requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication. */
+    @JsonProperty("impression_count")
+    private int impressionCount;
+    /** Number of times a user clicks on a URL link or URL preview card in a Tweet organically. This is a private metric, and requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication. */
+    @JsonProperty("url_link_clicks")
+    private int urlLinkClicks;
+    /** Number of times a user clicks the following portions of a Tweet organically - display name, user name, profile picture. This is a private metric, and requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication. */
+    @JsonProperty("user_profile_clicks")
+    private int userProfileClicks;
+    /** Number of times the Tweet has been Retweeted organically. */
+    @JsonProperty("retweet_count")
+    private int retweetCount;
+    /** Number of replies the Tweet has received organically. */
+    @JsonProperty("reply_count")
+    private int replyCount;
+    /** Number of likes the Tweet has received organically. */
+    @JsonProperty("like_count")
+    private int likeCount;
+
+  }
+
+  /** Engagement metrics for the Tweet at the time of the request in a promoted context. Requires user context authentication. */
+  @Getter
+  @Setter
+  public static class TweetPromotedMetricsDTO {
+
+    /** Number of times the Tweet has been viewed when that Tweet is being promoted. This is a private metric, and requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication. */
+    @JsonProperty("impression_count")
+    private int impressionCount;
+    /** Number of times a user clicks on a URL link or URL preview card in a Tweet when it is being promoted. This is a private metric, and requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication. */
+    @JsonProperty("url_link_clicks")
+    private int urlLinkClicks;
+    /** Number of times a user clicks the following portions of a Tweet when it is being promoted - display name, user name, profile picture. This is a private metric, and requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication. */
+    @JsonProperty("user_profile_clicks")
+    private int userProfileClicks;
+    /** Number of times this Tweet has been Retweeted when that Tweet is being promoted. */
+    @JsonProperty("retweet_count")
+    private int retweetCount;
+    /** Number of Replies to this Tweet when that Tweet is being promoted. */
+    @JsonProperty("reply_count")
+    private int replyCount;
+    /** Number of Likes of this Tweet when that Tweet is being promoted. */
+    @JsonProperty("like_count")
+    private int likeCount;
+
+  }
+  
   @Getter
   @Setter
   public static class EntitiesV2 implements Entities {

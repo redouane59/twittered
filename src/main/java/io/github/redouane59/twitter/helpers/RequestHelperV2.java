@@ -23,6 +23,8 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.NameValuePair;
@@ -32,14 +34,28 @@ import org.apache.http.message.BasicNameValuePair;
 @Slf4j
 public class RequestHelperV2 extends AbstractRequestHelper {
 
+  /**  Use consumer key for user context if true; or else app-only bearer token. Default is false. */
+  @Getter @Setter
+  private             boolean             useConsumerKey          = false;
+
   public RequestHelperV2(TwitterCredentials twitterCredentials) {
     super(twitterCredentials);
+  }
+
+  public RequestHelperV2(TwitterCredentials twitterCredentials, boolean useConsumerKey) {
+    this(twitterCredentials);
+    this.useConsumerKey = useConsumerKey;
   }
 
   public RequestHelperV2(TwitterCredentials twitterCredentials, OAuth10aService service) {
     super(twitterCredentials, service);
   }
 
+  public RequestHelperV2(TwitterCredentials twitterCredentials, OAuth10aService service, boolean useConsumerKey) {
+    this(twitterCredentials, service);
+    this.useConsumerKey = useConsumerKey;
+  }
+  
   @Override
   public <T> Optional<T> getRequest(String url, Class<T> classType) {
     return getRequestWithParameters(url, null, classType);
@@ -128,7 +144,11 @@ public class RequestHelperV2 extends AbstractRequestHelper {
 
   @Override
   protected void signRequest(OAuthRequest request) {
-    request.addHeader(OAuthConstants.HEADER, "Bearer " + getBearerToken());
+    if (useConsumerKey) {
+      getService().signRequest(getTwitterCredentials().asAccessToken(), request);
+    } else {
+      request.addHeader(OAuthConstants.HEADER, "Bearer " + getBearerToken());
+    }
   }
 
   public String getBearerToken() {

@@ -1,6 +1,7 @@
 package io.github.redouane59.twitter.dto.tweet;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
@@ -146,6 +147,110 @@ public class TweetV1 implements Tweet {
     return user.getId();
   }
 
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public int getImpressionCount() {
+    return 0;
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public int getUrlLinkClicks() {
+    return 0;
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public int getUserProfileClicks() {
+    return 0;
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public int getOrganicImpressionCount() {
+    return 0;
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public int getOrganicLikeCount() {
+    return 0;
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public int getOrganicReplyCount() {
+    return 0;
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public int getOrganicRetweetCount() {
+    return 0;
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public int getOrganicUrlLinkClicks() {
+    return 0;
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public int getOrganicUserProfileClicks() {
+    return 0;
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public int getPromotedImpressionCount() {
+    return 0;
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public int getPromotedLikeCount() {
+    return 0;
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public int getPromotedReplyCount() {
+    return 0;
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public int getPromotedRetweetCount() {
+    return 0;
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public int getPromotedUrlLinkClicks() {
+    return 0;
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public int getPromotedUserProfileClicks() {
+    return 0;
+  }
 
   @Getter
   @Setter
