@@ -12,7 +12,7 @@ This project is a JAVA library which allows you to consume the Twitter API.
 
 In your pom.xml, add the following dependency and replace `VERSION` with the version you wish:
 
-```
+```xml
 <dependency>
   <groupId>io.github.redouane59.twitter</groupId>
   <artifactId>twittered</artifactId>
@@ -21,21 +21,21 @@ In your pom.xml, add the following dependency and replace `VERSION` with the ver
 ```
 
 If you are using Gradle Kotlin DSL, make sure you have MavenCentral among the available repositories:
-```
+```kotlin
 repositories {
     mavenCentral()
-    [...]
+    // [...]
 }
 ```
 Then add the following line to your `dependencies` block:
 
-```
+```kotlin
 implementation("io.github.redouane59.twitter:twittered:VERSION")
 ```
 
 To be able to see library logs, also add sl4j references :
 
-```
+```xml
 <dependency>
   <groupId>org.slf4j</groupId>
   <artifactId>slf4j-api</artifactId>
@@ -54,7 +54,7 @@ In order to use your own developer credentials, you have several options :
 
 File example :
 
-```
+```json
 {
   "apiKey": "xxx",
   "apiSecretKey": "xxx",
@@ -68,7 +68,7 @@ File example :
 Pass through java argument your file path like `-Dtwitter.credentials.file.path=/your/path/to/json`
 . Then instantiate the client like
 
-```
+```java
 TwitterClient client = new TwitterClient();
 ```
 
@@ -76,14 +76,14 @@ or
 
 ##### Using deserialization in your code
 
-```
+```java
 TwitterClient twitterClient = new TwitterClient(TwitterClient.OBJECT_MAPPER
                                                     .readValue(new File("/your/path/to/json"), TwitterCredentials.class));
 ``` 
 
 #### With hard-coded values
 
-```
+```java
 TwitterClient twitterClient = new TwitterClient(TwitterCredentials.builder()
                                                             .accessToken("<access_token>")
                                                             .accessTokenSecret("<secret_token>")
@@ -117,14 +117,14 @@ See :
 
 #### 1. Init TwitterClient
 
-```
+```java
 TwitterClient twitterClient = new TwitterClient(TwitterClient.OBJECT_MAPPER
                                   .readValue(new File("/your/path/to/json"), TwitterCredentials.class));
 ```
 
 #### 2. Get Tweet object from tweet id and display some information
 
-```    
+```java
 Tweet  tweet   = twitterClient.getTweet("1224041905333379073");
 System.out.println(tweet.getText());
 System.out.println(tweet.getCreatedAt());
@@ -137,7 +137,7 @@ System.out.println(tweet.getUser().getName());
 
 #### 3. Get User object from username and display some information
 
-```    
+```java
 User   user   = twitterClient.getUserFromUserName("RedouaneBali");
 System.out.println(tweet.getUser().getName());
 System.out.println(tweet.getUser().getDisplayedName());
