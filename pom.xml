@@ -74,7 +74,7 @@
       <plugin>
         <artifactId>sonar-maven-plugin</artifactId>
         <groupId>org.codehaus.sonar</groupId>
-        <version>3.8.0.2131</version>
+        <version>3.7.0.1746</version>
       </plugin>
     </plugins>
   </build>
