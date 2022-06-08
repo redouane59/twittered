@@ -73,7 +73,7 @@ public abstract class AbstractRequestHelper {
       }
     }
     if (body != null && verb.isPermitBody()) {
-      request.setPayload(body);
+      request.setPayload(body.getBytes(StandardCharset.UTF_8));
       if (!request.getHeaders().containsKey("Content-Type")) {
         request.addHeader("Content-Type", "application/json");
       }
