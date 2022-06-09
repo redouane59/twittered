@@ -9,6 +9,7 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
+import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
@@ -73,7 +74,7 @@ public abstract class AbstractRequestHelper {
       }
     }
     if (body != null && verb.isPermitBody()) {
-      request.setPayload(body.getBytes(StandardCharset.UTF_8));
+      request.setPayload(body.getBytes(StandardCharsets.UTF_8));
       if (!request.getHeaders().containsKey("Content-Type")) {
         request.addHeader("Content-Type", "application/json");
       }
