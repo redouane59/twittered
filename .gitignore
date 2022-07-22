@@ -1,4 +1,5 @@
 test-twitter-credentials.json
+/test-twitter-credentials.json
 /.idea/libraries
 /.idea/*.xml
 /.target
