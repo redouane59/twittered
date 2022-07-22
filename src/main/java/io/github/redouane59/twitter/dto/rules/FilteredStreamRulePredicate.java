@@ -54,7 +54,7 @@ public class FilteredStreamRulePredicate {
     return build("", user, "to:");
   }
 
-  public static FilteredStreamRulePredicate witUrl(String url) {
+  public static FilteredStreamRulePredicate withUrl(String url) {
     return build("", withExactPhrase(url).toString(), "url:");
   }
 

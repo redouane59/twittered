@@ -75,7 +75,7 @@ class FilteredStreamRulePredicateTest {
   @Test
   void testWithUrl() {
     assertEquals("url:\"https://developer.twitter.com/en/docs/twitter-api/tweets/filtered-stream/integrate/build-a-rule\"",
-                 FilteredStreamRulePredicate.witUrl("https://developer.twitter.com/en/docs/twitter-api/tweets/filtered-stream/integrate/build-a-rule")
+                 FilteredStreamRulePredicate.withUrl("https://developer.twitter.com/en/docs/twitter-api/tweets/filtered-stream/integrate/build-a-rule")
                                             .toString());
   }
 
