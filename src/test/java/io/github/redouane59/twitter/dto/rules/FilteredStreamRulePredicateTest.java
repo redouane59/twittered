@@ -247,6 +247,17 @@ class FilteredStreamRulePredicateTest {
   }
 
   @Test
+  void testComplexQueries3() {
+    FilteredStreamRulePredicate p  = FilteredStreamRulePredicate.withExactPhrase("test");
+    FilteredStreamRulePredicate p2 = FilteredStreamRulePredicate.withBioName("test");
+    FilteredStreamRulePredicate p3 = FilteredStreamRulePredicate.withLanguage("de");
+    FilteredStreamRulePredicate p4 = FilteredStreamRulePredicate.withLanguage("en").negate();
+    assertEquals("(((\"test\" bio_name:test) OR lang:de) OR -(lang:en)) -(is:retweet)",
+            p.and(p2).capsule().or(p3).capsule().or(p4).capsule().and(FilteredStreamRulePredicate.isRetweet(FilteredStreamRulePredicate.empty()).negate()).toString());
+  }
+
+
+  @Test
   void testConjunctionOperatorsInvalid1() {
     FilteredStreamRulePredicate p = new FilteredStreamRulePredicate();
     Assertions.assertThrows(FilteredStreamRulePredicate.RuleBuilderException.class, () -> {
