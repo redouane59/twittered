@@ -14,7 +14,7 @@ public class FilteredStreamRulePredicate {
 
   private static FilteredStreamRulePredicate build(String one, String two, String operator) {
     FilteredStreamRulePredicate p = new FilteredStreamRulePredicate();
-    if (one.isEmpty()) {
+    if (one == null || one.isEmpty()) {
       p.predicate = operator + two;
     } else {
       p.predicate = one + " " + operator + two;
@@ -204,8 +204,12 @@ public class FilteredStreamRulePredicate {
     return this;
   }
 
+  public static FilteredStreamRulePredicate empty() {
+    return build("","","");
+  }
+
   public boolean isEmpty() {
-    return predicate == null || predicate.isEmpty();
+    return predicate == null;
   }
 
   @Override
