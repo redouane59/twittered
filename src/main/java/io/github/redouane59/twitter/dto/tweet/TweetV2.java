@@ -447,6 +447,8 @@ public class TweetV2 implements Tweet {
     private String title;
     @JsonProperty("unwound_url")
     private String unwoundedUrl;
+    @JsonProperty("media_key")
+    private String mediaKey;
   }
 
   @Getter
