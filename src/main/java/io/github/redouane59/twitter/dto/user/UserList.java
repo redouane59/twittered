@@ -17,6 +17,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserList {
 
+  @Builder.Default
   private List<UserData> data = new ArrayList<>();
   private UserMeta       meta;
 
