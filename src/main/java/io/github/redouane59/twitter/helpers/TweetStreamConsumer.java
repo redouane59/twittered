@@ -37,7 +37,7 @@ public class TweetStreamConsumer {
 
     // Check if the buffer is empty and we receive a valid json data
     if (buffer.toString().isEmpty() && (!data.trim().startsWith("{"))) {
-      LOGGER.warn("Invalid JSON Start Character. Ignoring : " + data);
+      LOGGER.warn("Invalid JSON Start Character. Ignoring : {}", data);
       return false;
     }
     buffer.append(data);
