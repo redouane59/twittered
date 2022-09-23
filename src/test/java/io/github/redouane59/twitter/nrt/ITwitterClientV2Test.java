@@ -620,6 +620,17 @@ public class ITwitterClientV2Test {
   }
 
   @Test
+  public void testGetListTweets() {
+    String   listId  = "1449313282892910592";
+    TweetList tweets = twitterClient.getListTweets(listId,  AdditionalParameters.builder().recursiveCall(false).maxResults(150).build());
+    assertNotNull(tweets);
+    assertTrue(tweets.getData().size() > 1);
+    assertNotNull(tweets.getData().get(0).getId());
+    assertNotNull(tweets.getData().get(0).getText());
+    assertNotNull(tweets.getData().get(0).getCreatedAt());
+  }
+
+  @Test
   public void testGetUserOwnedList() {
     TwitterListList lists = twitterClient.getUserOwnedLists(userId);
     assertTrue(lists.getData().size() > 0);

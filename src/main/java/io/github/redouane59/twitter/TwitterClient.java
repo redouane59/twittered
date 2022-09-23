@@ -67,6 +67,7 @@ import io.github.redouane59.twitter.helpers.RequestHelper;
 import io.github.redouane59.twitter.helpers.RequestHelperV2;
 import io.github.redouane59.twitter.helpers.URLHelper;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -87,6 +88,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -763,6 +765,26 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(LIST_FIELDS, ALL_LIST_FIELDS);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     return getRequestHelperV1().getRequestWithParameters(url, parameters, TwitterListList.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public TweetList getListTweets(String listId, AdditionalParameters additionalParameters) {
+    String              url        = getUrlHelper().getListTweetsUrl(listId);
+    Map<String, String> parameters = additionalParameters.getMapFromParameters();
+    parameters.put(EXPANSION, ALL_EXPANSIONS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
+
+    if (!additionalParameters.isRecursiveCall()) {
+      return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
+    }
+
+    if (additionalParameters.getMaxResults() <= 0) {
+      parameters.put(MAX_RESULTS, String.valueOf(100));
+    }
+
+    return getTweetsRecursively(url, parameters, getRequestHelper());
   }
 
   @Override
