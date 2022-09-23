@@ -595,7 +595,7 @@ public interface ITwitterClientV2 {
   TwitterList getList(String listId);
 
   /**
-   * Get a tweet list by list id calling https://api.twitter.com/2/tweets
+   * Get a tweet list by list id calling https://api.twitter.com/2/lists/:id/tweets
    *
    * @param listId The ID of the List to lookup.
    * @param additionalParameters accepted parameters are recursiveCall, sinceId, maxResults*
