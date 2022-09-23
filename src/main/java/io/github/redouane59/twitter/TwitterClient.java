@@ -67,7 +67,6 @@ import io.github.redouane59.twitter.helpers.RequestHelper;
 import io.github.redouane59.twitter.helpers.RequestHelperV2;
 import io.github.redouane59.twitter.helpers.URLHelper;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -88,7 +87,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -221,8 +219,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       }
       return twitterCredentials;
     } catch (Exception e) {
-      LOGGER.error("twitter credentials json file error in path " + twitterCredentialsFile.getAbsolutePath()
-                   + ". Use program argument -Dtwitter.credentials.file.path=/my/path/to/json . ", e);
+      LOGGER.error("Twitter credentials json file error in path {}. Use program argument -Dtwitter.credentials.file.path=/my/path/to/json.",
+                   twitterCredentialsFile.getAbsolutePath(), e);
       return null;
     }
   }
@@ -889,7 +887,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (additionalParameters.getMaxResults() <= 100) {
       parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
     } else {
-      LOGGER.warn("removing context_annotations from tweet_fields because max_result is greater 100");
+      LOGGER.warn("Removing context_annotations from tweet_fields because max_result is greater 100");
       parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS.replace(",context_annotations", ""));
     }
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
@@ -1011,7 +1009,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       Optional<TweetSearchResponseV1> tweetSearchV1DTO = getRequestHelper().getRequestWithParameters(
           urlHelper.getSearchTweetFullArchiveUrl(envName), parameters, TweetSearchResponseV1.class);
       if (!tweetSearchV1DTO.isPresent()) {
-        LOGGER.error("empty response on searchForTweetsArchive");
+        LOGGER.error("Empty response on searchForTweetsArchive");
         break;
       }
       result.addAll(tweetSearchV1DTO.get().getResults());
@@ -1200,7 +1198,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
     List<TweetV1> result = new ArrayList<>();
     if (!file.exists()) {
-      LOGGER.error("file not found at : " + file.toURI());
+      LOGGER.error("File not found at : {}", file.toURI());
     } else {
       result = Arrays.asList(customObjectMapper.readValue(file, TweetV1[].class));
     }
@@ -1252,7 +1250,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String       stringResponse = requestHelperV1.postRequest(url, parameters, String.class).orElseThrow(NoSuchElementException::new);
     RequestToken requestToken   = new RequestToken(stringResponse);
     LOGGER.info("Open the following URL to grant access to your account:");
-    LOGGER.info("https://twitter.com/oauth/authenticate?oauth_token=" + requestToken.getOauthToken());
+    LOGGER.info("https://twitter.com/oauth/authenticate?oauth_token={}", requestToken.getOauthToken());
     return requestToken;
   }
 
@@ -1395,7 +1393,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     if (accessToken == null
         || accessToken.isEmpty()
         || !accessToken.contains("-")) {
-      LOGGER.error("access token null, empty or incorrect");
+      LOGGER.error("Access token null, empty or incorrect");
       throw new IllegalArgumentException();
     }
     return accessToken.substring(0, accessToken.indexOf("-"));
