@@ -43,7 +43,7 @@ public abstract class AbstractRequestHelper {
   }
 
   public static void logApiError(String method, String url, String stringResponse, int code) {
-    LOGGER.error("({}}) Error calling {} {} - {}", method, url, stringResponse, code);
+    LOGGER.error("({}) Error calling {} {} - {}", method, url, stringResponse, code);
   }
 
   protected <T> T convert(String json, Class<? extends T> targetClass) throws JsonProcessingException {
