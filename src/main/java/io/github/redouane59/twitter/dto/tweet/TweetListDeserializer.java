@@ -11,7 +11,10 @@ import io.github.redouane59.twitter.dto.user.UserV2.UserData;
 import io.github.redouane59.twitter.helpers.JsonHelper;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class TweetListDeserializer extends StdDeserializer<TweetList> {
 
@@ -27,19 +30,19 @@ public class TweetListDeserializer extends StdDeserializer<TweetList> {
       result.setMeta(JsonHelper.fromJson(node.get("meta"), TweetMeta.class));
     }
     if (node.has("data")) {
-      List<TweetData>
-          list =
+      List<TweetData> list =
           JsonHelper.fromJson(node.get("data"), JsonHelper.OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, TweetData.class));
       if (node.has("includes")) {
-        result.setIncludes(JsonHelper.fromJson(node.get("includes"), Includes.class));
+        Includes includes = JsonHelper.fromJson(node.get("includes"), Includes.class);
+        result.setIncludes(includes);
+
+        Map<String, UserData> users = includes.getUsers()
+                                              .stream()
+                                              .collect(Collectors.toMap(UserData::getId, Function.identity()));
+
         // in order to enrich the TweetData object (from data field) adding the User object (instead of just the author_id)
         for (TweetData tweetData : list) {
-          Optional<UserData> matchingUser = result.getIncludes()
-                                                  .getUsers()
-                                                  .stream()
-                                                  .filter(p -> p.getId().equals(tweetData.getAuthorId())).
-                                                  findFirst();
-          matchingUser.ifPresent(tweetData::setUser);
+          Optional.ofNullable(users.get(tweetData.getAuthorId())).ifPresent(tweetData::setUser);
         }
       }
       result.setData(list);
