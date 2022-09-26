@@ -496,6 +496,8 @@ public class TweetV2 implements Tweet {
     private String                previewImageUrl;
     @JsonProperty("public_metrics")
     private MediaPublicMetricsDTO publicMetrics;
+    @JsonProperty("variants")
+    private List<Variant>         variants;
     @JsonProperty("alt_text")
     private String                altText;
 
@@ -564,5 +566,19 @@ public class TweetV2 implements Tweet {
 
     @JsonProperty("view_count")
     private int viewCount;
+  }
+
+  @Getter
+  @Setter
+  public static class Variant {
+
+    @JsonProperty("bit_rate")
+    private int bitRate;
+
+    @JsonProperty("content_type")
+    private String contentType;
+
+    @JsonProperty("url")
+    private String url;
   }
 }
