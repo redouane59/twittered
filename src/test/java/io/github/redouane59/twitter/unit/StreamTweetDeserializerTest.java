@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetV2;
+import io.github.redouane59.twitter.helpers.JsonHelper;
 import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ public class StreamTweetDeserializerTest {
   public void testReadMapper() throws JsonParseException, JsonMappingException, IOException {
     File tweetWithMatchingRule = new File(getClass().getClassLoader().getResource("tests/tweet_stream_example.json").getFile());
 
-    Tweet tweet = TwitterClient.OBJECT_MAPPER.readValue(tweetWithMatchingRule, TweetV2.class);
+    Tweet tweet = JsonHelper.OBJECT_MAPPER.readValue(tweetWithMatchingRule, TweetV2.class);
     assertNotNull(tweet);
     assertNotNull(tweet.getMatchingRules());
     assertEquals(1, tweet.getMatchingRules().size());
@@ -33,7 +33,7 @@ public class StreamTweetDeserializerTest {
   public void testReadMapperWithoutMatchingRule() throws JsonParseException, JsonMappingException, IOException {
     File tweetWithMatchingRule = new File(getClass().getClassLoader().getResource("tests/tweet_example_v2.json").getFile());
 
-    TweetV2 tweet = TwitterClient.OBJECT_MAPPER.readValue(tweetWithMatchingRule, TweetV2.class);
+    TweetV2 tweet = JsonHelper.OBJECT_MAPPER.readValue(tweetWithMatchingRule, TweetV2.class);
     assertNotNull(tweet);
     assertNotNull(tweet.getData());
     assertNotNull(tweet.getIncludes());

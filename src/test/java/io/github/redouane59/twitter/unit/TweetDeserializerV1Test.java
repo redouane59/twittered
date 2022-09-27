@@ -13,6 +13,7 @@ import io.github.redouane59.twitter.dto.tweet.entities.SymbolEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.UrlEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.UserMentionEntity;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
+import io.github.redouane59.twitter.helpers.JsonHelper;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +23,7 @@ import org.junit.jupiter.api.Test;
 public class TweetDeserializerV1Test {
 
   private File  tweetFile1 = new File(getClass().getClassLoader().getResource("tests/tweet_example_v1.json").getFile());
-  private Tweet tweetV1    = TwitterClient.OBJECT_MAPPER.readValue(tweetFile1, TweetV1.class);
+  private Tweet tweetV1    = JsonHelper.OBJECT_MAPPER.readValue(tweetFile1, TweetV1.class);
 
   public TweetDeserializerV1Test() throws IOException {
   }

@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.ContextAnnotation;
 import io.github.redouane59.twitter.dto.tweet.ReplySettings;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
@@ -18,6 +17,7 @@ import io.github.redouane59.twitter.dto.tweet.entities.UrlEntity;
 import io.github.redouane59.twitter.dto.tweet.entities.UserMentionEntity;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
+import io.github.redouane59.twitter.helpers.JsonHelper;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 public class TweetDeserializerV2Test {
 
   private File  tweetFile1 = new File(getClass().getClassLoader().getResource("tests/tweet_example_v2.json").getFile());
-  private Tweet tweetv2    = TwitterClient.OBJECT_MAPPER.readValue(tweetFile1, TweetV2.class);
+  private Tweet tweetv2    = JsonHelper.OBJECT_MAPPER.readValue(tweetFile1, TweetV2.class);
 
   public TweetDeserializerV2Test() throws IOException {
   }
@@ -144,7 +144,7 @@ public class TweetDeserializerV2Test {
 
   @Test
   public void testSerialization() throws JsonProcessingException {
-    String tweetAsString = TwitterClient.OBJECT_MAPPER.writeValueAsString(tweetv2);
+    String tweetAsString = JsonHelper.OBJECT_MAPPER.writeValueAsString(tweetv2);
     assertNotNull(tweetAsString);
     assertTrue(tweetAsString.contains("Try to use some function"));
   }

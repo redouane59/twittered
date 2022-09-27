@@ -2,10 +2,10 @@ package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserV1;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
+import io.github.redouane59.twitter.helpers.JsonHelper;
 import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 public class UserDeserializerV1Test {
 
   private File userFile1 = new File(getClass().getClassLoader().getResource("tests/user_example_v1.json").getFile());
-  private User userV1    = TwitterClient.OBJECT_MAPPER.readValue(userFile1, UserV1.class);
+  private User userV1    = JsonHelper.OBJECT_MAPPER.readValue(userFile1, UserV1.class);
 
   public UserDeserializerV1Test() throws IOException {
   }

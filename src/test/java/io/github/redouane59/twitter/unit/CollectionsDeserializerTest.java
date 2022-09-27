@@ -5,13 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.collections.CollectionsResponse;
 import io.github.redouane59.twitter.dto.collections.CollectionsResponse.Objects.Timelines.Timeline;
 import io.github.redouane59.twitter.dto.collections.CollectionsResponse.Response.Error;
 import io.github.redouane59.twitter.dto.collections.CollectionsResponse.Response.TimelineTweet;
 import io.github.redouane59.twitter.dto.tweet.TweetV1;
 import io.github.redouane59.twitter.dto.user.UserV1;
+import io.github.redouane59.twitter.helpers.JsonHelper;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
@@ -38,7 +38,7 @@ public class CollectionsDeserializerTest {
       new File(Objects.requireNonNull(getClass().getClassLoader().getResource("tests/collections_curate_example.json")).getFile());
   private final CollectionsResponse
       collectionsCurateResponse =
-      TwitterClient.OBJECT_MAPPER.readValue(collectionsCurateFile, CollectionsResponse.class);
+      JsonHelper.OBJECT_MAPPER.readValue(collectionsCurateFile, CollectionsResponse.class);
 
   // Example response from a call to get entries in a collection
   private final File
@@ -46,7 +46,7 @@ public class CollectionsDeserializerTest {
       new File(Objects.requireNonNull(getClass().getClassLoader().getResource("tests/collections_entries_example.json")).getFile());
   private final CollectionsResponse
       collectionsEntriesResponse =
-      TwitterClient.OBJECT_MAPPER.readValue(collectionsEntriesFile, CollectionsResponse.class);
+      JsonHelper.OBJECT_MAPPER.readValue(collectionsEntriesFile, CollectionsResponse.class);
 
   // Example response from a call to create a collection
   private final File
@@ -54,7 +54,7 @@ public class CollectionsDeserializerTest {
       new File(Objects.requireNonNull(getClass().getClassLoader().getResource("tests/collections_create_example.json")).getFile());
   private final CollectionsResponse
       collectionsCreateResponse =
-      TwitterClient.OBJECT_MAPPER.readValue(collectionsCreateFile, CollectionsResponse.class);
+      JsonHelper.OBJECT_MAPPER.readValue(collectionsCreateFile, CollectionsResponse.class);
 
   // Example response from a call to destroy a collection
   private final File
@@ -62,7 +62,7 @@ public class CollectionsDeserializerTest {
       new File(Objects.requireNonNull(getClass().getClassLoader().getResource("tests/collections_destroy_example.json")).getFile());
   private final CollectionsResponse
       collectionsDestroyResponse =
-      TwitterClient.OBJECT_MAPPER.readValue(collectionsDestroyFile, CollectionsResponse.class);
+      JsonHelper.OBJECT_MAPPER.readValue(collectionsDestroyFile, CollectionsResponse.class);
 
 
   public CollectionsDeserializerTest() throws IOException {

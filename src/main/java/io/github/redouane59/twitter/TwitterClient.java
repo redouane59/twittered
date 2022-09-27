@@ -2,9 +2,7 @@ package io.github.redouane59.twitter;
 
 import static io.github.redouane59.twitter.dto.endpoints.AdditionalParameters.MAX_RESULTS;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -63,6 +61,7 @@ import io.github.redouane59.twitter.dto.user.UserV2;
 import io.github.redouane59.twitter.dto.user.UserV2.UserData;
 import io.github.redouane59.twitter.helpers.AbstractRequestHelper;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
+import io.github.redouane59.twitter.helpers.JsonHelper;
 import io.github.redouane59.twitter.helpers.RequestHelper;
 import io.github.redouane59.twitter.helpers.RequestHelperV2;
 import io.github.redouane59.twitter.helpers.URLHelper;
@@ -97,36 +96,31 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitterClientArchive {
 
-  public static final ObjectMapper OBJECT_MAPPER    = new ObjectMapper()
-      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-      .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-      .findAndRegisterModules();
-  public static final String       TWEET_FIELDS     = "tweet.fields";
+  public static final String TWEET_FIELDS     = "tweet.fields";
   public static final String
-                                   ALL_TWEET_FIELDS =
+                             ALL_TWEET_FIELDS =
       "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,text,withheld,context_annotations,conversation_id,reply_settings";
-  public static final String       EXPANSION        = "expansions";
+  public static final String EXPANSION        = "expansions";
   public static final String
-                                   ALL_EXPANSIONS   =
+                             ALL_EXPANSIONS   =
       "author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id,attachments.media_keys,geo.place_id";
-  public static final String       USER_FIELDS      = "user.fields";
-  public static final String       ALL_USER_FIELDS  =
+  public static final String USER_FIELDS      = "user.fields";
+  public static final String ALL_USER_FIELDS  =
       "id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
-  public static final String       MEDIA_FIELD      = "media.fields";
-  public static final String
-                                   ALL_MEDIA_FIELDS =
+  public static final String MEDIA_FIELD      = "media.fields";
+  public static final String ALL_MEDIA_FIELDS =
       "duration_ms,height,media_key,preview_image_url,public_metrics,type,url,width,alt_text,variants";
-  public static final String       SPACE_FIELDS     = "space.fields";
+  public static final String SPACE_FIELDS     = "space.fields";
   public static final String
-                                   ALL_SPACE_FIELDS =
+                             ALL_SPACE_FIELDS =
       "host_ids,created_at,creator_id,id,lang,invited_user_ids,participant_count,speaker_ids,started_at,state,title,updated_at,scheduled_start,is_ticketed";
-  public static final String       PLACE_FIELDS     = "place.fields";
-  public static final String       ALL_PLACE_FIELDS = "contained_within,country,country_code,full_name,geo,id,name,place_type";
-  public static final String       POLL_FIELDS      = "poll.fields";
-  public static final String       ALL_POLL_FIELDS  = "duration_minutes,end_datetime,id,options,voting_status";
-  public static final String       LIST_FIELDS      = "list.fields";
+  public static final String PLACE_FIELDS     = "place.fields";
+  public static final String ALL_PLACE_FIELDS = "contained_within,country,country_code,full_name,geo,id,name,place_type";
+  public static final String POLL_FIELDS      = "poll.fields";
+  public static final String ALL_POLL_FIELDS  = "duration_minutes,end_datetime,id,options,voting_status";
+  public static final String LIST_FIELDS      = "list.fields";
   public static final String
-                                   ALL_LIST_FIELDS  = "created_at,follower_count,member_count,private,description,owner_id";
+                             ALL_LIST_FIELDS  = "created_at,follower_count,member_count,private,description,owner_id";
 
   public static final  String             ALL_SPACE_EXPANSIONS                 = "invited_user_ids,speaker_ids,creator_id,host_ids";
   private static final String             QUERY                                = "query";
@@ -204,7 +198,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   public static TwitterCredentials getAuthentication(File twitterCredentialsFile) {
     try {
-      TwitterCredentials twitterCredentials = TwitterClient.OBJECT_MAPPER.readValue(twitterCredentialsFile, TwitterCredentials.class);
+      TwitterCredentials twitterCredentials = JsonHelper.OBJECT_MAPPER.readValue(twitterCredentialsFile, TwitterCredentials.class);
       if (twitterCredentials.getAccessToken() == null) {
         LOGGER.error("Access token is null in twitter-credentials.json");
       }
@@ -324,7 +318,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public UserActionResponse follow(String targetUserId) {
     String url  = urlHelper.getFollowUrl(getUserIdFromAccessToken());
-    String body = OBJECT_MAPPER.writeValueAsString(new FollowBody(targetUserId));
+    String body = JsonHelper.toJson(new FollowBody(targetUserId));
     return requestHelperV1.postRequestWithBodyJson(url, new HashMap<>(), body, UserActionResponse.class)
                           .orElseThrow(NoSuchElementException::new);
   }
@@ -345,7 +339,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
         .makeRequest(Verb.POST,
                      url,
                      new HashMap<>(),
-                     OBJECT_MAPPER.writeValueAsString(new FollowBody(targetUserId)),
+                     JsonHelper.toJson(new FollowBody(targetUserId)),
                      true,
                      BlockResponse.class)
         .orElseThrow(NoSuchElementException::new);
@@ -557,7 +551,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public UserActionResponse muteUser(final String userId) {
     String url  = urlHelper.getMuteUserUrl(getUserIdFromAccessToken());
-    String body = OBJECT_MAPPER.writeValueAsString(new FollowBody(userId));
+    String body = JsonHelper.toJson(new FollowBody(userId));
     return requestHelperV1.postRequestWithBodyJson(url, new HashMap<>(), body, UserActionResponse.class)
                           .orElseThrow(NoSuchElementException::new);
   }
@@ -656,7 +650,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public TwitterList createList(final String listName, final String description, final boolean isPrivate) {
     String          url  = getUrlHelper().getListUrlV2();
     TwitterListData body = TwitterListData.builder().name(listName).description(description).isPrivate(isPrivate).build();
-    return getRequestHelperV1().postRequestWithBodyJson(url, null, TwitterClient.OBJECT_MAPPER.writeValueAsString(body), TwitterList.class)
+    return getRequestHelperV1().postRequestWithBodyJson(url, null, JsonHelper.toJson(body), TwitterList.class)
                                .orElseThrow(NoSuchElementException::new);
   }
 
@@ -675,7 +669,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String                url  = getUrlHelper().getAddListMemberUrl(listId);
     TwitterListMemberData body = TwitterListMemberData.builder().userId(userId).build();
     JsonNode jsonNode =
-        getRequestHelperV1().postRequestWithBodyJson(url, null, TwitterClient.OBJECT_MAPPER.writeValueAsString(body), JsonNode.class)
+        getRequestHelperV1().postRequestWithBodyJson(url, null, JsonHelper.toJson(body), JsonNode.class)
                             .orElseThrow(NoSuchElementException::new);
     return jsonNode.get(DATA).get(IS_MEMBER).asBoolean();
   }
@@ -713,7 +707,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String url = getUrlHelper().getListUrlV2() + "/" + listId;
     TwitterListData body = TwitterListData.builder()
                                           .name(listName).description(description).isPrivate(isPrivate).build();
-    JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.PUT, url, new HashMap<>(), TwitterClient.OBJECT_MAPPER.writeValueAsString(body),
+    JsonNode jsonNode = getRequestHelperV1().makeRequest(Verb.PUT, url, new HashMap<>(), JsonHelper.toJson(body),
                                                          true, JsonNode.class).orElseThrow(NoSuchElementException::new);
     return jsonNode.get("updated").asBoolean();
   }
@@ -794,7 +788,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   @Override
   public Tweet postTweet(final TweetParameters tweetParameters) {
     String url  = getUrlHelper().getPostTweetUrl();
-    String body = OBJECT_MAPPER.writeValueAsString(tweetParameters);
+    String body = JsonHelper.toJson(tweetParameters);
     return getRequestHelperV1().postRequestWithBodyJson(url, new HashMap<>(), body, TweetV2.class).orElseThrow(NoSuchElementException::new);
   }
 
@@ -842,7 +836,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public boolean hideReply(final String tweetId, final boolean hide) {
     String url = getUrlHelper().getHideReplyUrl(tweetId);
     try {
-      String body = TwitterClient.OBJECT_MAPPER.writeValueAsString(new HiddenData(hide));
+      String body = JsonHelper.toJson(new HiddenData(hide));
       HiddenResponse response = requestHelperV1.putRequest(url, body, HiddenResponse.class)
                                                .orElseThrow(NoSuchElementException::new);
       return response.getData().isHidden();
@@ -1076,7 +1070,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String     url  = urlHelper.getFilteredStreamRulesUrl();
     StreamRule rule = StreamRule.builder().value(value).tag(tag).build();
     try {
-      String      body   = "{\"add\": [" + TwitterClient.OBJECT_MAPPER.writeValueAsString(rule) + "]}";
+      String      body   = "{\"add\": [" + JsonHelper.toJson(rule) + "]}";
       StreamRules result = requestHelperV2.postRequest(url, body, StreamRules.class).orElseThrow(NoSuchElementException::new);
       if (result.getData() == null || result.getData().isEmpty()) {
         LOGGER.error("Could not add filtered stream rule. Rule maybe already exists.");
@@ -1354,7 +1348,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public DmEvent postDm(final String text, final String userId) {
     String url = urlHelper.getPostDmUrl();
     try {
-      String body = TwitterClient.OBJECT_MAPPER.writeValueAsString(
+      String body = JsonHelper.toJson(
           DmEvent.builder().event(new DirectMessage(text, userId)).build());
       return getRequestHelperV1().postRequestWithBodyJson(url, null, body, DmEvent.class).orElseThrow(NoSuchElementException::new);
     } catch (JsonProcessingException e) {

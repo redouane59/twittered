@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.TweetV2;
+import io.github.redouane59.twitter.helpers.JsonHelper;
 import io.github.redouane59.twitter.helpers.TweetStreamConsumer;
 import java.io.File;
 import java.nio.file.Files;
@@ -39,7 +39,7 @@ public class TweetStreamConsumerTest {
 
     for (String tweet : tweets) {
       assertFalse(tweet.trim().isEmpty());
-      TweetV2 tweet2 = TwitterClient.OBJECT_MAPPER.readValue(tweet, TweetV2.class);
+      TweetV2 tweet2 = JsonHelper.fromJson(tweet, TweetV2.class);
       assertNotNull(tweet2);
       assertNotNull(tweet2.getData());
       assertNotNull(tweet2.getIncludes());
