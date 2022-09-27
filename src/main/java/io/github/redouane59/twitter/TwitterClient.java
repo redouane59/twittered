@@ -108,9 +108,8 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public static final String ALL_USER_FIELDS  =
       "id,created_at,entities,username,name,location,url,verified,profile_image_url,public_metrics,pinned_tweet_id,description,protected";
   public static final String MEDIA_FIELD      = "media.fields";
-  public static final String
-                             ALL_MEDIA_FIELDS =
-      "duration_ms,height,media_key,preview_image_url,public_metrics,type,url,width,alt_text";
+  public static final String ALL_MEDIA_FIELDS =
+      "duration_ms,height,media_key,preview_image_url,public_metrics,type,url,width,alt_text,variants";
   public static final String SPACE_FIELDS     = "space.fields";
   public static final String
                              ALL_SPACE_FIELDS =
