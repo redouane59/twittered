@@ -82,6 +82,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -1044,18 +1046,30 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public boolean stopFilteredStream(Future<Response> response) {
+  public boolean stopFilteredStream(Future<Response> responseFuture, long timeout, TimeUnit unit) {
     try {
-      if (response.get() == null) {
+      Response response;
+      if (timeout > 0 && unit != null) {
+        response = responseFuture.get(timeout, unit);
+      } else {
+        response = responseFuture.get();
+      }
+
+      if (response == null) {
         return false;
       }
-      response.get().getStream().close();
+      response.getStream().close();
       return true;
-    } catch (IOException | InterruptedException | ExecutionException e) {
+    } catch (IOException | InterruptedException | ExecutionException | TimeoutException e) {
       LOGGER.error("Couldn't stopFilteredstream ", e);
       Thread.currentThread().interrupt();
     }
     return false;
+  }
+
+  @Override
+  public boolean stopFilteredStream(Future<Response> responseFuture) {
+    return stopFilteredStream(responseFuture, 0, null);
   }
 
   @Override

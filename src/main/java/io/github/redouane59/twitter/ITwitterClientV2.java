@@ -23,6 +23,7 @@ import io.github.redouane59.twitter.dto.user.UserActionResponse;
 import io.github.redouane59.twitter.dto.user.UserList;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public interface ITwitterClientV2 {
@@ -173,9 +174,19 @@ public interface ITwitterClientV2 {
   Future<Response> startFilteredStream(IAPIEventListener listener, int backfillMinutes);
 
   /**
+   * Stops the filtered stream with the result of the startFilteredStream. It'll wait a maximum of timeout
+   * before giving up and returning false.  If timeout isn't hit, it'll close the socket opened.
+   *
+   * @param responseFuture Future<Response> given by startFilteredStream
+   * @param timeout long How long to wait
+   * @param unit TimeUnit Units for timeout
+   */
+  boolean stopFilteredStream(Future<Response> response, long timeout, TimeUnit unit);
+
+  /**
    * Stops the filtered stream with the result of the startFilteredStream. It'll close the socket opened.
    *
-   * @param response Future<Response> given by startFilteredStream
+   * @param responseFuture Future<Response> given by startFilteredStream
    */
   boolean stopFilteredStream(Future<Response> response);
 
