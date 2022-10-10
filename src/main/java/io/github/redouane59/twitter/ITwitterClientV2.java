@@ -23,6 +23,7 @@ import io.github.redouane59.twitter.dto.user.UserActionResponse;
 import io.github.redouane59.twitter.dto.user.UserList;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public interface ITwitterClientV2 {
@@ -173,9 +174,19 @@ public interface ITwitterClientV2 {
   Future<Response> startFilteredStream(IAPIEventListener listener, int backfillMinutes);
 
   /**
+   * Stops the filtered stream with the result of the startFilteredStream. It'll wait a maximum of timeout
+   * before giving up and returning false.  If timeout isn't hit, it'll close the socket opened.
+   *
+   * @param responseFuture Future<Response> given by startFilteredStream
+   * @param timeout long How long to wait
+   * @param unit TimeUnit Units for timeout
+   */
+  boolean stopFilteredStream(Future<Response> response, long timeout, TimeUnit unit);
+
+  /**
    * Stops the filtered stream with the result of the startFilteredStream. It'll close the socket opened.
    *
-   * @param response Future<Response> given by startFilteredStream
+   * @param responseFuture Future<Response> given by startFilteredStream
    */
   boolean stopFilteredStream(Future<Response> response);
 
@@ -593,6 +604,14 @@ public interface ITwitterClientV2 {
    * @param listId The ID of the List to lookup.
    */
   TwitterList getList(String listId);
+
+  /**
+   * Get a tweet list by list id calling https://api.twitter.com/2/lists/:id/tweets
+   *
+   * @param listId The ID of the List to lookup.
+   * @param additionalParameters accepted parameters are recursiveCall, sinceId, maxResults*
+   */
+  TweetList getListTweets(String listId, AdditionalParameters additionalParameters);
 
   /**
    * Returns a list of users who are members of the specified List

@@ -5,11 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserV2;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
+import io.github.redouane59.twitter.helpers.JsonHelper;
 import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 public class UserDeserializerV2Test {
 
   private File userFile2 = new File(getClass().getClassLoader().getResource("tests/user_example_v2.json").getFile());
-  private User userV2    = TwitterClient.OBJECT_MAPPER.readValue(userFile2, UserV2.class);
+  private User userV2    = JsonHelper.OBJECT_MAPPER.readValue(userFile2, UserV2.class);
 
   public UserDeserializerV2Test() throws IOException {
   }
@@ -103,7 +103,7 @@ public class UserDeserializerV2Test {
 
   @Test
   public void testSerialization() throws JsonProcessingException {
-    String userAsString = TwitterClient.OBJECT_MAPPER.writeValueAsString(userV2);
+    String userAsString = JsonHelper.OBJECT_MAPPER.writeValueAsString(userV2);
     assertNotNull(userAsString);
     assertTrue(userAsString.contains("RedouaneBali"));
   }

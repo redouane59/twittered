@@ -4,21 +4,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.ReplySettings;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetList;
 import io.github.redouane59.twitter.dto.tweet.TweetV2.MediaEntityV2;
+import io.github.redouane59.twitter.dto.tweet.TweetV2.Variant;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
+import io.github.redouane59.twitter.helpers.JsonHelper;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class TweetListDeserializerTest {
 
   private File      tweetListFile = new File(getClass().getClassLoader().getResource("tests/tweet_list_v2_example.json").getFile());
-  private TweetList tweetList     = TwitterClient.OBJECT_MAPPER.readValue(tweetListFile, TweetList.class);
+  private TweetList tweetList     = JsonHelper.OBJECT_MAPPER.readValue(tweetListFile, TweetList.class);
 
   public TweetListDeserializerTest() throws IOException {
   }
@@ -68,13 +70,17 @@ public class TweetListDeserializerTest {
 
   @Test
   public void testMedia0() {
-    MediaEntityV2 media = tweetList.getIncludes().getMedia().get(0);
+    MediaEntityV2 media    = tweetList.getIncludes().getMedia().get(0);
+    List<Variant> variants = media.getVariants();
     assertEquals("7_1460322142680072196", media.getKey());
     assertEquals(900, media.getHeight());
     assertEquals("video", media.getType());
     assertEquals(11093, media.getDuration());
     assertEquals(64061, media.getPublicMetrics().getViewCount());
     assertEquals(1600, media.getWidth());
+    assertNotNull(variants);
+    assertEquals(2176000, variants.get(0).getBitRate());
+    assertEquals("https://video.twimg.com/ext_tw_video/1572885321980731394/pu/vid/720x1280/ieIyRb1_aPrsEAwy.mp4?tag=12", variants.get(0).getUrl());
   }
 
   @Test

@@ -2,8 +2,8 @@ package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.stream.StreamRules;
+import io.github.redouane59.twitter.helpers.JsonHelper;
 import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 public class StreamRulesDeserializerTest {
 
   private File        rulesFile = new File(getClass().getClassLoader().getResource("tests/stream_rules_example.json").getFile());
-  private StreamRules rules     = TwitterClient.OBJECT_MAPPER.readValue(rulesFile, StreamRules.class);
+  private StreamRules rules     = JsonHelper.OBJECT_MAPPER.readValue(rulesFile, StreamRules.class);
 
   public StreamRulesDeserializerTest() throws IOException {
   }
