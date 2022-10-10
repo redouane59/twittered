@@ -81,7 +81,7 @@ public abstract class AbstractRequestHelper {
       signRequest(request);
     }
     Response response       = getService().execute(request);
-    String   stringResponse = response.getBody();
+    try (Response response = getService().execute(request)) {
     if (response.getCode() == 429) {
       if (!automaticRetry) {
         throw new LimitExceededException(response.getHeader("x-rate-limit-reset"));
