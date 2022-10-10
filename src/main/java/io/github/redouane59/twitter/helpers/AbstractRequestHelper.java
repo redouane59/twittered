@@ -11,6 +11,7 @@ import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import javax.naming.LimitExceededException;
@@ -95,12 +96,15 @@ public abstract class AbstractRequestHelper {
         throw new LimitExceededException();
       }
       int    retryAfter    = DEFAULT_RETRY_AFTER_SEC;
-      String retryAfterStr = response.getHeader("Retry-After");
+      // Change retry header #409
+      String retryAfterStr = response.getHeader("x-rate-limit-reset");
       if (retryAfterStr != null) {
         try {
-          retryAfter = Integer.parseInt(retryAfterStr);
+          long resetTime = Long.parseLong(retryAfterStr);
+          long currentTime = (new Date().getTime()) / 1000;
+          retryAfter = Math.toIntExact(resetTime - currentTime);
         } catch (NumberFormatException e) {
-          LOGGER.error("Using default retry after because header format is invalid: " + retryAfterStr, e);
+          LOGGER.error("Using default retry after because header format is invalid: {}", retryAfterStr, e);
         }
       }
       LOGGER.info("Rate limit exceeded, new retry in " + ConverterHelper.getSecondsAsText(retryAfter) + " at " + ConverterHelper.minutesBeforeNow(
