@@ -7,9 +7,9 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import javax.naming.LimitExceededException;
@@ -41,7 +41,7 @@ public abstract class AbstractRequestHelper {
   }
 
   public static void logApiError(String method, String url, String stringResponse, int code) {
-    LOGGER.error("({}) Error calling {} {} - {}", method, url, stringResponse, code);
+    LOGGER.error("(" + method + ") Error calling " + url + " " + stringResponse + " - " + code);
   }
 
   protected abstract void signRequest(OAuthRequest request);
@@ -79,33 +79,32 @@ public abstract class AbstractRequestHelper {
     if (signRequired) {
       signRequest(request);
     }
-    try (Response response = getService().execute(request)) {
-      String stringResponse = response.getBody();
-      if (response.getCode() == 429) {
-        if (!automaticRetry) {
-          throw new LimitExceededException();
-        }
-        int    retryAfter    = DEFAULT_RETRY_AFTER_SEC;
-        String retryAfterStr = response.getHeader("Retry-After");
-        if (retryAfterStr != null) {
-          try {
-            retryAfter = Integer.parseInt(retryAfterStr);
-          } catch (NumberFormatException e) {
-            LOGGER.error("Using default retry after because header format is invalid: {}", retryAfterStr, e);
-          }
-        }
-        LOGGER.info("Rate limit exceeded, new retry in {} at {}", ConverterHelper.getSecondsAsText(retryAfter), ConverterHelper.minutesBeforeNow(
-            -retryAfter / 60).format(DateTimeFormatter.ofPattern("HH:mm")));
-        Thread.sleep(1000L * retryAfter);
-        return makeRequest(request, false, classType); // We have already signed if it was requested
-      } else if (response.getCode() < 200 || response.getCode() > 299) {
-        logApiError(request.getVerb().name(), request.getUrl(), stringResponse, response.getCode());
+    Response response       = getService().execute(request);
+    String   stringResponse = response.getBody();
+    if (response.getCode() == 429) {
+      if (!automaticRetry) {
+        throw new LimitExceededException(response.getHeader("x-rate-limit-reset"));
       }
-      result = JsonHelper.fromJson(stringResponse, classType);
-    } catch (IOException ex) {
-      LOGGER.error("Error occupied on executing request", ex);
+      int retryAfter = DEFAULT_RETRY_AFTER_SEC;
+      // Change retry header #409
+      String retryAfterStr = response.getHeader("x-rate-limit-reset");
+      if (retryAfterStr != null) {
+        try {
+          long resetTime   = Long.parseLong(retryAfterStr);
+          long currentTime = (new Date().getTime()) / 1000;
+          retryAfter = Math.toIntExact(resetTime - currentTime);
+        } catch (NumberFormatException e) {
+          LOGGER.error("Using default retry after because header format is invalid: {}", retryAfterStr, e);
+        }
+      }
+      LOGGER.info("Rate limit exceeded, new retry in " + ConverterHelper.getSecondsAsText(retryAfter) + " at " + ConverterHelper.minutesBeforeNow(
+          -retryAfter / 60).format(DateTimeFormatter.ofPattern("HH:mm")));
+      Thread.sleep(1000L * retryAfter);
+      return makeRequest(request, false, classType); // We have already signed if it was requested
+    } else if (response.getCode() < 200 || response.getCode() > 299) {
+      logApiError(request.getVerb().name(), request.getUrl(), stringResponse, response.getCode());
     }
-
+    result = JsonHelper.fromJson(stringResponse, classType);
     return Optional.ofNullable(result);
   }
 
