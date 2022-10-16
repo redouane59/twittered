@@ -86,8 +86,7 @@ public abstract class AbstractRequestHelper {
         if (!automaticRetry) {
           throw new LimitExceededException(response.getHeader("x-rate-limit-reset"));
         }
-        int retryAfter = DEFAULT_RETRY_AFTER_SEC;
-        // Change retry header #409
+        int    retryAfter    = DEFAULT_RETRY_AFTER_SEC;
         String retryAfterStr = response.getHeader("x-rate-limit-reset");
         if (retryAfterStr != null) {
           try {
