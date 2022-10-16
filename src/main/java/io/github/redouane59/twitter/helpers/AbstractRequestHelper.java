@@ -41,7 +41,7 @@ public abstract class AbstractRequestHelper {
   }
 
   public static void logApiError(String method, String url, String stringResponse, int code) {
-    LOGGER.error("(" + method + ") Error calling " + url + " " + stringResponse + " - " + code);
+    LOGGER.error("({}) Error calling {} {} - {}", method, url, stringResponse, code);
   }
 
   protected abstract void signRequest(OAuthRequest request);
@@ -97,7 +97,7 @@ public abstract class AbstractRequestHelper {
           LOGGER.error("Using default retry after because header format is invalid: {}", retryAfterStr, e);
         }
       }
-      LOGGER.info("Rate limit exceeded, new retry in " + ConverterHelper.getSecondsAsText(retryAfter) + " at " + ConverterHelper.minutesBeforeNow(
+      LOGGER.info("Rate limit exceeded, new retry in {} at {}", ConverterHelper.getSecondsAsText(retryAfter), ConverterHelper.minutesBeforeNow(
           -retryAfter / 60).format(DateTimeFormatter.ofPattern("HH:mm")));
       Thread.sleep(1000L * retryAfter);
       return makeRequest(request, false, classType); // We have already signed if it was requested
