@@ -71,14 +71,15 @@
         <groupId>org.apache.maven.plugins</groupId>
         <version>3.2.0</version>
       </plugin>
-      <plugin>
-        <artifactId>sonar-maven-plugin</artifactId>
-        <groupId>org.codehaus.sonar</groupId>
-        <version>3.9.1.2184</version>
-      </plugin>
     </plugins>
   </build>
   <dependencies>
+    <dependency>
+      <artifactId>sonar-packaging-maven-plugin</artifactId>
+      <groupId>org.codehaus.sonar</groupId>
+      <type>maven-plugin</type>
+      <version>1.13</version>
+    </dependency>
     <dependency>
       <artifactId>jackson-databind</artifactId>
       <groupId>com.fasterxml.jackson.core</groupId>
