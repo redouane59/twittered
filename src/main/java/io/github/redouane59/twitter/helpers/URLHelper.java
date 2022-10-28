@@ -99,6 +99,7 @@ public class URLHelper {
   private final String followListUrl       = "https://api.twitter.com/2/users/:id/followed_lists";
   private final String unfollowListUrl     = "https://api.twitter.com/2/users/:id/followed_lists/:list_id";
   private final String ownedListUrl        = "https://api.twitter.com/2/users/:id/owned_lists";
+  private final String dmLookupUrl         = "https://api.twitter.com/2/dm_conversations/:dm_conversation_id/dm_events";
 
   public String getSearchTweet30DaysUrl(String envName) {
     return ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + "/" + envName + JSON;
@@ -246,14 +247,17 @@ public class URLHelper {
     return likedTweetsUrl.replace(idVariable, userId);
   }
 
+  @Deprecated
   public String getDMListUrl(int count) {
     return ROOT_URL_V1 + DIRECT_MESSAGE_EVENTS + LIST_JSON + "?" + COUNT + "=" + count;
   }
 
+  @Deprecated
   public String getDmUrl(String id) {
     return ROOT_URL_V1 + DIRECT_MESSAGE_EVENTS + SHOW_JSON + ID + "=" + id;
   }
 
+  @Deprecated
   public String getPostDmUrl() {
     return ROOT_URL_V1 + DIRECT_MESSAGE_EVENTS + "/new.json";
   }
@@ -308,5 +312,9 @@ public class URLHelper {
 
   public String getOwnedListUrl(String userId) {
     return ownedListUrl.replace(idVariable, userId);
+  }
+
+  public String getDmLookupUrl(String conversationId) {
+    return dmLookupUrl.replace(":dm_conversation_id", conversationId);
   }
 }

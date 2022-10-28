@@ -364,7 +364,27 @@ public class ITwitterClientV2AuthenticatedTest {
     assertTrue(dmEvents.getMeta().getResultCount() > 0);
     dmEvents = twitterClient.getDirectMessageEvents(AdditionalParameters.builder().maxResults(2).build());
     assertTrue(dmEvents.getData().size() < 3);
+  }
 
+  @Test
+  @Disabled
+  public void testGetDirectMessages() {
+    String        conversationId = "108209516-1120050519182016513";
+    DirectMessage dmEvents       = twitterClient.getDirectMessages(conversationId);
+    assertNotNull(dmEvents);
+    assertNotNull(dmEvents.getData());
+    assertTrue(dmEvents.getData().size() > 0);
+    assertNotNull(dmEvents.getData().get(0).getId());
+    assertNotNull(dmEvents.getData().get(0).getText());
+    assertNotNull(dmEvents.getData().get(0).getEventType());
+    assertNotNull(dmEvents.getData().get(0).getSenderId());
+    assertNotNull(dmEvents.getData().get(0).getDmConversationId());
+    assertNotNull(dmEvents.getData().get(0).getCreatedAt());
+    assertNotNull(dmEvents.getIncludes());
+    assertNotNull(dmEvents.getIncludes().getUsers());
+    assertTrue(dmEvents.getMeta().getResultCount() > 0);
+    dmEvents = twitterClient.getDirectMessages(conversationId, AdditionalParameters.builder().maxResults(2).build());
+    assertTrue(dmEvents.getData().size() < 3);
   }
 
 }
