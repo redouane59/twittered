@@ -663,4 +663,16 @@ public interface ITwitterClientV2 {
    * events are returned in reverse chronological order. Supports retrieving events from the previous 30 days.
    */
   DirectMessage getDirectMessageEvents(AdditionalParameters additionalParameters);
+
+  /**
+   * Returns a list of Direct Messages within a conversation specified in the dm_conversation_id path parameter calling
+   * https://api.twitter.com/2/dm_conversations/:dm_conversation_id/dm_events. Messages are returned in reverse chronological order.
+   */
+  DirectMessage getDirectMessages(String conversationId);
+
+  /**
+   * Returns a list of Direct Messages within a conversation specified in the dm_conversation_id path parameter calling
+   * https://api.twitter.com/2/dm_conversations/:dm_conversation_id/dm_events. Messages are returned in reverse chronological order.
+   */
+  DirectMessage getDirectMessages(String conversationId, AdditionalParameters additionalParameters);
 }
