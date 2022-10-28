@@ -827,12 +827,12 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public DirectMessage getDirectMessages(String conversationId) {
-    return getDirectMessages(conversationId, AdditionalParameters.builder().maxResults(100).build());
+  public DirectMessage getDirectMessagesByConversation(String conversationId) {
+    return getDirectMessagesByConversation(conversationId, AdditionalParameters.builder().maxResults(100).build());
   }
 
   @Override
-  public DirectMessage getDirectMessages(String conversationId, final AdditionalParameters additionalParameters) {
+  public DirectMessage getDirectMessagesByConversation(String conversationId, final AdditionalParameters additionalParameters) {
     String              url        = getUrlHelper().getDmLookupUrl(conversationId);
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(DM_FIELDS, ALL_DM_FIELDS);
@@ -841,6 +841,24 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     return getRequestHelperV1().getRequestWithParameters(url, parameters, DirectMessage.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public DirectMessage getDirectMessagesByUser(final String participantId) {
+    return getDirectMessagesByUser(participantId, AdditionalParameters.builder().maxResults(100).build());
+  }
+
+  @Override
+  public DirectMessage getDirectMessagesByUser(final String participantId, final AdditionalParameters additionalParameters) {
+    String              url        = getUrlHelper().getDmUserLookupUrl(participantId);
+    Map<String, String> parameters = additionalParameters.getMapFromParameters();
+    parameters.put(DM_FIELDS, ALL_DM_FIELDS);
+    parameters.put(EXPANSION, ALL_DM_EXPANSIONS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
+    return getRequestHelperV1().getRequestWithParameters(url, parameters, DirectMessage.class).orElseThrow(NoSuchElementException::new);
+
   }
 
 

@@ -100,6 +100,7 @@ public class URLHelper {
   private final String unfollowListUrl     = "https://api.twitter.com/2/users/:id/followed_lists/:list_id";
   private final String ownedListUrl        = "https://api.twitter.com/2/users/:id/owned_lists";
   private final String dmLookupUrl         = "https://api.twitter.com/2/dm_conversations/:dm_conversation_id/dm_events";
+  private final String dmUserLookupUrl     = "https://api.twitter.com/2/dm_conversations/with/:participant_id/dm_events";
 
   public String getSearchTweet30DaysUrl(String envName) {
     return ROOT_URL_V1 + TWEETS + SEARCH + THIRTY_DAYS + "/" + envName + JSON;
@@ -316,5 +317,9 @@ public class URLHelper {
 
   public String getDmLookupUrl(String conversationId) {
     return dmLookupUrl.replace(":dm_conversation_id", conversationId);
+  }
+
+  public String getDmUserLookupUrl(String conversationId) {
+    return dmUserLookupUrl.replace(":participant_id", conversationId);
   }
 }

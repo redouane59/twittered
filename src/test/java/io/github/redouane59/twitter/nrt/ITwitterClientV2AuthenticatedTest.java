@@ -368,9 +368,9 @@ public class ITwitterClientV2AuthenticatedTest {
 
   @Test
   @Disabled
-  public void testGetDirectMessages() {
+  public void testGetDirectMessagesByConversation() {
     String        conversationId = "108209516-1120050519182016513";
-    DirectMessage dmEvents       = twitterClient.getDirectMessages(conversationId);
+    DirectMessage dmEvents       = twitterClient.getDirectMessagesByConversation(conversationId);
     assertNotNull(dmEvents);
     assertNotNull(dmEvents.getData());
     assertTrue(dmEvents.getData().size() > 0);
@@ -383,7 +383,28 @@ public class ITwitterClientV2AuthenticatedTest {
     assertNotNull(dmEvents.getIncludes());
     assertNotNull(dmEvents.getIncludes().getUsers());
     assertTrue(dmEvents.getMeta().getResultCount() > 0);
-    dmEvents = twitterClient.getDirectMessages(conversationId, AdditionalParameters.builder().maxResults(2).build());
+    dmEvents = twitterClient.getDirectMessagesByConversation(conversationId, AdditionalParameters.builder().maxResults(2).build());
+    assertTrue(dmEvents.getData().size() < 3);
+  }
+
+  @Test
+  @Disabled
+  public void testGetDirectMessagesByUser() {
+    String        userId   = "108209516";
+    DirectMessage dmEvents = twitterClient.getDirectMessagesByUser(userId);
+    assertNotNull(dmEvents);
+    assertNotNull(dmEvents.getData());
+    assertTrue(dmEvents.getData().size() > 0);
+    assertNotNull(dmEvents.getData().get(0).getId());
+    assertNotNull(dmEvents.getData().get(0).getText());
+    assertNotNull(dmEvents.getData().get(0).getEventType());
+    assertNotNull(dmEvents.getData().get(0).getSenderId());
+    assertNotNull(dmEvents.getData().get(0).getDmConversationId());
+    assertNotNull(dmEvents.getData().get(0).getCreatedAt());
+    assertNotNull(dmEvents.getIncludes());
+    assertNotNull(dmEvents.getIncludes().getUsers());
+    assertTrue(dmEvents.getMeta().getResultCount() > 0);
+    dmEvents = twitterClient.getDirectMessagesByUser(userId, AdditionalParameters.builder().maxResults(2).build());
     assertTrue(dmEvents.getData().size() < 3);
   }
 
