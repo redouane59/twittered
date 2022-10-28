@@ -3,9 +3,9 @@ package io.github.redouane59.twitter.unit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.github.redouane59.twitter.dto.dm.DirectMessage;
-import io.github.redouane59.twitter.dto.dm.DmEvent;
-import io.github.redouane59.twitter.dto.dm.DmListAnswer;
+import io.github.redouane59.twitter.dto.dm.deprecatedV1.DirectMessage;
+import io.github.redouane59.twitter.dto.dm.deprecatedV1.DmEvent;
+import io.github.redouane59.twitter.dto.dm.deprecatedV1.DmListAnswer;
 import io.github.redouane59.twitter.helpers.JsonHelper;
 import java.io.File;
 import java.io.IOException;

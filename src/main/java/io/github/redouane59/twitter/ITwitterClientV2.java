@@ -1,6 +1,7 @@
 package io.github.redouane59.twitter;
 
 import com.github.scribejava.core.model.Response;
+import io.github.redouane59.twitter.dto.dm.DirectMessage;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.list.TwitterListList;
@@ -174,8 +175,8 @@ public interface ITwitterClientV2 {
   Future<Response> startFilteredStream(IAPIEventListener listener, int backfillMinutes);
 
   /**
-   * Stops the filtered stream with the result of the startFilteredStream. It'll wait a maximum of timeout
-   * before giving up and returning false.  If timeout isn't hit, it'll close the socket opened.
+   * Stops the filtered stream with the result of the startFilteredStream. It'll wait a maximum of timeout before giving up and returning false.  If
+   * timeout isn't hit, it'll close the socket opened.
    *
    * @param responseFuture Future<Response> given by startFilteredStream
    * @param timeout long How long to wait
@@ -651,5 +652,10 @@ public interface ITwitterClientV2 {
    */
   boolean deleteTweet(String tweetId);
 
+  /**
+   * Returns a list of Direct Messages for the authenticated user, both sent and received calling https://api.twitter.com/2/dm_events. Direct Message
+   * events are returned in reverse chronological order. Supports retrieving events from the previous 30 days.
+   */
+  DirectMessage getDirectMessageEvents();
 
 }

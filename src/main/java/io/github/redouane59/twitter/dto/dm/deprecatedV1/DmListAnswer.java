@@ -1,4 +1,4 @@
-package io.github.redouane59.twitter.dto.dm;
+package io.github.redouane59.twitter.dto.dm.deprecatedV1;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
