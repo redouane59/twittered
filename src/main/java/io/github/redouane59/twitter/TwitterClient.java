@@ -811,9 +811,13 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public DirectMessage getDirectMessageEvents() {
-    String url = getUrlHelper().getDmEventsUrl();
-    // @todo add extensions
-    Map<String, String> parameters = new HashMap<>();
+    return getDirectMessageEvents(AdditionalParameters.builder().maxResults(100).build());
+  }
+
+  @Override
+  public DirectMessage getDirectMessageEvents(final AdditionalParameters additionalParameters) {
+    String              url        = getUrlHelper().getDmEventsUrl();
+    Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(DM_FIELDS, ALL_DM_FIELDS);
     parameters.put(EXPANSION, ALL_DM_EXPANSIONS);
     parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);

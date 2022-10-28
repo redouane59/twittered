@@ -658,4 +658,9 @@ public interface ITwitterClientV2 {
    */
   DirectMessage getDirectMessageEvents();
 
+  /**
+   * Returns a list of Direct Messages for the authenticated user, both sent and received calling https://api.twitter.com/2/dm_events. Direct Message
+   * events are returned in reverse chronological order. Supports retrieving events from the previous 30 days.
+   */
+  DirectMessage getDirectMessageEvents(AdditionalParameters additionalParameters);
 }
