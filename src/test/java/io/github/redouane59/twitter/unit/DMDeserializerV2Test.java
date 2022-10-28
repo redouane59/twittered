@@ -1,6 +1,7 @@
 package io.github.redouane59.twitter.unit;
 
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.github.redouane59.twitter.dto.dm.DirectMessage;
 import io.github.redouane59.twitter.dto.dm.DmEvent;
@@ -19,7 +20,6 @@ public class DMDeserializerV2Test {
   }
 
 
-  @Test
   public void testData() {
     DmEvent event = dmList.getData().get(0);
     assertEquals("1580705921830768647", event.getId());
