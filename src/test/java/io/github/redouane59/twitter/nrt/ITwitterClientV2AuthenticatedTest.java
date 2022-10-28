@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.dm.DirectMessage;
+import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.others.BearerToken;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
@@ -361,6 +362,9 @@ public class ITwitterClientV2AuthenticatedTest {
     assertNotNull(dmEvents.getIncludes().getUsers());
     assertNotNull(dmEvents.getIncludes().getMedia());
     assertTrue(dmEvents.getMeta().getResultCount() > 0);
+    dmEvents = twitterClient.getDirectMessageEvents(AdditionalParameters.builder().maxResults(2).build());
+    assertTrue(dmEvents.getData().size() < 3);
+
   }
 
 }

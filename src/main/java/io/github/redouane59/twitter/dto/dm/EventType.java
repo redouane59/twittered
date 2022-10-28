@@ -4,7 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum EventType {
   @JsonProperty("MessageCreate")
-  MESSAGE_CREATE;
+  MESSAGE_CREATE,
+  @JsonProperty("ParticipantsJoin")
+  PARTICIPANTS_JOIN,
+  @JsonProperty("ParticipantsLeave")
+  PARTICIPANTS_LEAVE;
 
 
 }
