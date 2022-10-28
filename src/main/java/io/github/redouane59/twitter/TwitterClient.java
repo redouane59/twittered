@@ -17,8 +17,8 @@ import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.dto.collections.CollectionsResponse;
 import io.github.redouane59.twitter.dto.collections.TimeLineOrder;
 import io.github.redouane59.twitter.dto.dm.DirectMessage;
-import io.github.redouane59.twitter.dto.dm.DmEvent;
-import io.github.redouane59.twitter.dto.dm.DmListAnswer;
+import io.github.redouane59.twitter.dto.dm.deprecatedV1.DmEvent;
+import io.github.redouane59.twitter.dto.dm.deprecatedV1.DmListAnswer;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.getrelationship.IdList;
 import io.github.redouane59.twitter.dto.getrelationship.RelationshipObjectResponse;
@@ -125,6 +125,13 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
                              ALL_LIST_FIELDS  = "created_at,follower_count,member_count,private,description,owner_id";
 
   public static final  String             ALL_SPACE_EXPANSIONS                 = "invited_user_ids,speaker_ids,creator_id,host_ids";
+  public static final  String             DM_FIELDS                            = "dm_event.fields";
+  public static final  String
+                                          ALL_DM_FIELDS                        =
+      "id,text,event_type,created_at,dm_conversation_id,sender_id,participant_ids,referenced_tweets,attachments";
+  private static final String
+                                          ALL_DM_EXPANSIONS                    =
+      "attachments.media_keys,referenced_tweets.id,sender_id,participant_ids";
   private static final String             QUERY                                = "query";
   private static final String             CURSOR                               = "cursor";
   private static final String             NEXT                                 = "next";
@@ -803,6 +810,19 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
+  public DirectMessage getDirectMessageEvents() {
+    String url = getUrlHelper().getDmEventsUrl();
+    // @todo add extensions
+    Map<String, String> parameters = new HashMap<>();
+    parameters.put(DM_FIELDS, ALL_DM_FIELDS);
+    parameters.put(EXPANSION, ALL_DM_EXPANSIONS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
+    return getRequestHelperV1().getRequestWithParameters(url, parameters, DirectMessage.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
   public Tweet getTweet(String tweetId) {
     String              url        = getUrlHelper().getTweetUrl(tweetId);
     Map<String, String> parameters = new HashMap<>();
@@ -1331,17 +1351,18 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return requestHelperV1.postRequest(url, Collections.emptyMap(), CollectionsResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
+  @Deprecated
   @Override
-  public List<DirectMessage> getDmList() {
+  public List<io.github.redouane59.twitter.dto.dm.deprecatedV1.DirectMessage> getDmList() {
     return getDmList(Integer.MAX_VALUE);
   }
 
   @Override
-  public List<DirectMessage> getDmList(int count) {
-    List<DirectMessage> result   = new ArrayList<>();
-    int                 maxCount = 50;
-    String              url      = getUrlHelper().getDMListUrl(maxCount);
-    DmListAnswer        dmListAnswer;
+  public List<io.github.redouane59.twitter.dto.dm.deprecatedV1.DirectMessage> getDmList(int count) {
+    List<io.github.redouane59.twitter.dto.dm.deprecatedV1.DirectMessage> result   = new ArrayList<>();
+    int                                                                  maxCount = 50;
+    String                                                               url      = getUrlHelper().getDMListUrl(maxCount);
+    DmListAnswer                                                         dmListAnswer;
     do {
       dmListAnswer = requestHelperV1.getRequest(url, DmListAnswer.class).orElseThrow(NoSuchElementException::new);
       result.addAll(dmListAnswer.getDirectMessages());
@@ -1352,7 +1373,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   }
 
   @Override
-  public DirectMessage getDm(String dmId) {
+  public io.github.redouane59.twitter.dto.dm.deprecatedV1.DirectMessage getDm(String dmId) {
     String  url    = urlHelper.getDmUrl(dmId);
     DmEvent result = getRequestHelper().getRequest(url, DmEvent.class).orElseThrow(NoSuchElementException::new);
     return result.getEvent();
@@ -1363,7 +1384,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String url = urlHelper.getPostDmUrl();
     try {
       String body = JsonHelper.toJson(
-          DmEvent.builder().event(new DirectMessage(text, userId)).build());
+          DmEvent.builder().event(new io.github.redouane59.twitter.dto.dm.deprecatedV1.DirectMessage(text, userId)).build());
       return getRequestHelperV1().postRequestWithBodyJson(url, null, body, DmEvent.class).orElseThrow(NoSuchElementException::new);
     } catch (JsonProcessingException e) {
       LOGGER.error(e.getMessage(), e);

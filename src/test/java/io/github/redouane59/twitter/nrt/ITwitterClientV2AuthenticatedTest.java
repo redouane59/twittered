@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.dm.DirectMessage;
 import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.others.BearerToken;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
@@ -342,6 +343,24 @@ public class ITwitterClientV2AuthenticatedTest {
     UserList  buyers  = twitterClientUserAuth.getSpaceBuyers(spaceId);
     assertNotNull(buyers.getData());
     assertNotNull(buyers.getMeta());
+  }
+
+  @Test
+  public void testGetDMEvents() {
+    DirectMessage dmEvents = twitterClient.getDirectMessageEvents();
+    assertNotNull(dmEvents);
+    assertNotNull(dmEvents.getData());
+    assertTrue(dmEvents.getData().size() > 0);
+    assertNotNull(dmEvents.getData().get(0).getId());
+    assertNotNull(dmEvents.getData().get(0).getText());
+    assertNotNull(dmEvents.getData().get(0).getEventType());
+    assertNotNull(dmEvents.getData().get(0).getSenderId());
+    assertNotNull(dmEvents.getData().get(0).getDmConversationId());
+    assertNotNull(dmEvents.getData().get(0).getCreatedAt());
+    assertNotNull(dmEvents.getIncludes());
+    assertNotNull(dmEvents.getIncludes().getUsers());
+    assertNotNull(dmEvents.getIncludes().getMedia());
+    assertTrue(dmEvents.getMeta().getResultCount() > 0);
   }
 
 }
