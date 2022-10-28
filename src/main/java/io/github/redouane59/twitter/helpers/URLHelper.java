@@ -63,6 +63,8 @@ public class URLHelper {
   private final String listUrlV2              = "https://api.twitter.com/2/lists";
   @Getter
   private final String postTweetUrl           = "https://api.twitter.com/2/tweets";
+  @Getter
+  private final String dmEventsUrl            = "https://api.twitter.com/2/dm_events";
 
   private final String followUrl           = "https://api.twitter.com/2/users/:id/following";
   private final String unfollowUrl         = "https://api.twitter.com/2/users/:sourceId/following/:targetId";

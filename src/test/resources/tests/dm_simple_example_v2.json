@@ -1,0 +1,17 @@
+{
+  "data": [
+    {
+      "text": "hello to you two, this is a new group conversation.",
+      "id": "1580705921830768647",
+      "dm_conversation_id": "1580705921830768643",
+      "event_type": "MessageCreate",
+      "sender_id": "17200003",
+      "created_at": "2022-10-13T23:43:54.000Z"
+    }
+  ],
+  "meta": {
+    "result_count": 1,
+    "next_token": "18LAA5FFPEKJA52G0G00ZZZZ",
+    "previous_token": "1BLC45FFPEKJA52G0S00ZZZZ"
+  }
+}

@@ -314,6 +314,11 @@ public class ITwitterClientV2AuthenticatedTest {
   }
 
   @Test
+  public void testGetDmEventsByUser() {
+
+  }
+
+  @Test
   @Disabled
   public void testLookUpAndGetSpaceBuyers() {
     String clientId = "Um5DbVM3d2dhMXViNHduOER0a2c6MTpjaQ";
