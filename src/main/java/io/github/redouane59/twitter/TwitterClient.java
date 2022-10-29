@@ -17,7 +17,9 @@ import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.dto.collections.CollectionsResponse;
 import io.github.redouane59.twitter.dto.collections.TimeLineOrder;
 import io.github.redouane59.twitter.dto.dm.DirectMessage;
-import io.github.redouane59.twitter.dto.dm.deprecatedV1.DmEvent;
+import io.github.redouane59.twitter.dto.dm.DmParameters;
+import io.github.redouane59.twitter.dto.dm.DmParameters.DmMessage;
+import io.github.redouane59.twitter.dto.dm.PostDmResponse;
 import io.github.redouane59.twitter.dto.dm.deprecatedV1.DmListAnswer;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.getrelationship.IdList;
@@ -861,6 +863,59 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   }
 
+  @Override
+  public PostDmResponse createDirectMessage(final String conversationId, String text) {
+    return createDirectMessage(conversationId, DmMessage.builder().text(text).build());
+  }
+
+  @Override
+  public PostDmResponse createDirectMessage(final String conversationId, DmMessage message) {
+    String url = getUrlHelper().getPostConversationDmUrl(conversationId);
+    String body;
+    try {
+      body = JsonHelper.toJson(message);
+    } catch (JsonProcessingException e) {
+      LOGGER.error(e.getMessage(), e);
+      throw new IllegalArgumentException();
+    }
+    return getRequestHelperV1().postRequestWithBodyJson(url, null, body, PostDmResponse.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  public PostDmResponse createGroupDmConversation(List<String> participantIds, String text) {
+    return createGroupDmConversation(DmParameters.builder()
+                                                 .participantIds(participantIds)
+                                                 .message(DmMessage.builder().text(text).build())
+                                                 .build());
+  }
+
+  public PostDmResponse createGroupDmConversation(DmParameters parameters) {
+    String url = getUrlHelper().getCreateDmConversationUrl();
+    String body;
+    try {
+      body = JsonHelper.toJson(parameters);
+    } catch (JsonProcessingException e) {
+      LOGGER.error(e.getMessage(), e);
+      throw new IllegalArgumentException();
+    }
+    return getRequestHelperV1().postRequestWithBodyJson(url, null, body, PostDmResponse.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  public PostDmResponse createUserDmConversation(String participantId, String text) {
+    return createUserDmConversation(participantId, DmMessage.builder().text(text).build());
+  }
+
+  public PostDmResponse createUserDmConversation(String participantId, DmMessage message) {
+    String url = getUrlHelper().getPostUserDmUrl(participantId);
+    String body;
+    try {
+      body = JsonHelper.toJson(message);
+    } catch (JsonProcessingException e) {
+      LOGGER.error(e.getMessage(), e);
+      throw new IllegalArgumentException();
+    }
+    return getRequestHelperV1().postRequestWithBodyJson(url, null, body, PostDmResponse.class).orElseThrow(NoSuchElementException::new);
+  }
+
 
   @Override
   public Tweet getTweet(String tweetId) {
@@ -1414,18 +1469,24 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
 
   @Override
   public io.github.redouane59.twitter.dto.dm.deprecatedV1.DirectMessage getDm(String dmId) {
-    String  url    = urlHelper.getDmUrl(dmId);
-    DmEvent result = getRequestHelper().getRequest(url, DmEvent.class).orElseThrow(NoSuchElementException::new);
+    String url = urlHelper.getDmUrl(dmId);
+    io.github.redouane59.twitter.dto.dm.deprecatedV1.DmEvent
+        result =
+        getRequestHelper().getRequest(url, io.github.redouane59.twitter.dto.dm.deprecatedV1.DmEvent.class).orElseThrow(NoSuchElementException::new);
     return result.getEvent();
   }
 
   @Override
-  public DmEvent postDm(final String text, final String userId) {
-    String url = urlHelper.getPostDmUrl();
+  public io.github.redouane59.twitter.dto.dm.deprecatedV1.DmEvent postDm(final String text, final String userId) {
+    String url = urlHelper.getPostConversationDmUrl();
     try {
       String body = JsonHelper.toJson(
-          DmEvent.builder().event(new io.github.redouane59.twitter.dto.dm.deprecatedV1.DirectMessage(text, userId)).build());
-      return getRequestHelperV1().postRequestWithBodyJson(url, null, body, DmEvent.class).orElseThrow(NoSuchElementException::new);
+          io.github.redouane59.twitter.dto.dm.deprecatedV1.DmEvent.builder()
+                                                                  .event(new io.github.redouane59.twitter.dto.dm.deprecatedV1.DirectMessage(text,
+                                                                                                                                            userId))
+                                                                  .build());
+      return getRequestHelperV1().postRequestWithBodyJson(url, null, body, io.github.redouane59.twitter.dto.dm.deprecatedV1.DmEvent.class)
+                                 .orElseThrow(NoSuchElementException::new);
     } catch (JsonProcessingException e) {
       LOGGER.error(e.getMessage(), e);
     }

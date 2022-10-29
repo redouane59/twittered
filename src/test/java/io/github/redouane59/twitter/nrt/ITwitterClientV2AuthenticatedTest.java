@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.dm.DirectMessage;
+import io.github.redouane59.twitter.dto.dm.PostDmResponse;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.others.BearerToken;
@@ -406,6 +407,31 @@ public class ITwitterClientV2AuthenticatedTest {
     assertTrue(dmEvents.getMeta().getResultCount() > 0);
     dmEvents = twitterClient.getDirectMessagesByUser(userId, AdditionalParameters.builder().maxResults(2).build());
     assertTrue(dmEvents.getData().size() < 3);
+  }
+
+  @Test
+  public void testSendDmInConversation() {
+    String         conversationId = "92073489-1120050519182016513";
+    PostDmResponse response       = twitterClient.createDirectMessage(conversationId, "testSendDmInConversation()");
+    assertNotNull(response.getData().getDmConversationId());
+    assertNotNull(response.getData().getDmEventId());
+  }
+
+  @Test
+  public void testCreateDmGroupConversation() {
+    PostDmResponse
+        response =
+        twitterClient.createGroupDmConversation(Arrays.asList("1307302673318895621", "92073489"),
+                                                "testCreateDmGroupConversation()");
+    assertNotNull(response.getData().getDmConversationId());
+    assertNotNull(response.getData().getDmEventId());
+  }
+
+  @Test
+  public void testCreateDmUserConversation() {
+    PostDmResponse response = twitterClient.createUserDmConversation("1307302673318895621", "testCreateDmUserConversation()");
+    assertNotNull(response.getData().getDmConversationId());
+    assertNotNull(response.getData().getDmEventId());
   }
 
 }
