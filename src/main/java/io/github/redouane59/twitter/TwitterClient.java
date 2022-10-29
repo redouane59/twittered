@@ -881,6 +881,13 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     return getRequestHelperV1().postRequestWithBodyJson(url, null, body, PostDmResponse.class).orElseThrow(NoSuchElementException::new);
   }
 
+  public PostDmResponse createGroupDmConversation(List<String> participantIds, String text) {
+    return createGroupDmConversation(DmParameters.builder()
+                                                 .participantIds(participantIds)
+                                                 .message(DmMessage.builder().text(text).build())
+                                                 .build());
+  }
+
   public PostDmResponse createGroupDmConversation(DmParameters parameters) {
     String url = getUrlHelper().getCreateDmConversationUrl();
     String body;

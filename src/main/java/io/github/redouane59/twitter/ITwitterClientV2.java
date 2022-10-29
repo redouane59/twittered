@@ -710,6 +710,12 @@ public interface ITwitterClientV2 {
   PostDmResponse createGroupDmConversation(DmParameters parameters);
 
   /**
+   * Creates a new group conversation and adds a Direct Message to it on behalf of an authenticated user calling
+   * https://api.twitter.com/2/dm_conversations
+   */
+  PostDmResponse createGroupDmConversation(List<String> participantIds, String text);
+
+  /**
    * Creates a one-to-one Direct Message and adds it to the one-to-one conversation. This method either creates a new one-to-one conversation or
    * retrieves the current conversation and adds the Direct Message to it calling https://api.twitter.com/2/dm_conversations/with/:participant_id/messages.
    */
@@ -720,4 +726,5 @@ public interface ITwitterClientV2 {
    * retrieves the current conversation and adds the Direct Message to it calling https://api.twitter.com/2/dm_conversations/with/:participant_id/messages.
    */
   PostDmResponse createUserDmConversation(String participantId, DmMessage message);
+
 }

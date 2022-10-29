@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.dm.DirectMessage;
-import io.github.redouane59.twitter.dto.dm.DmParameters;
 import io.github.redouane59.twitter.dto.dm.PostDmResponse;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.list.TwitterList;
@@ -422,8 +421,8 @@ public class ITwitterClientV2AuthenticatedTest {
   public void testCreateDmGroupConversation() {
     PostDmResponse
         response =
-        twitterClient.createGroupDmConversation(new DmParameters(Arrays.asList("1307302673318895621", "92073489"),
-                                                                 "testCreateDmGroupConversation()"));
+        twitterClient.createGroupDmConversation(Arrays.asList("1307302673318895621", "92073489"),
+                                                "testCreateDmGroupConversation()");
     assertNotNull(response.getData().getDmConversationId());
     assertNotNull(response.getData().getDmEventId());
   }
