@@ -27,6 +27,7 @@ import io.github.redouane59.twitter.dto.tweet.TweetV2;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserList;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
+import io.github.redouane59.twitter.helpers.JsonHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,7 +65,7 @@ public class ITwitterClientV2Test {
   public void getAndSerializeUser() throws IOException {
     String userName = "RedouaneBali";
     User   result   = twitterClient.getUserFromUserName(userName);
-    assertNotNull(TwitterClient.OBJECT_MAPPER.writeValueAsString(result));
+    assertNotNull(JsonHelper.toJson(result));
   }
 
   @Test
@@ -617,6 +618,17 @@ public class ITwitterClientV2Test {
     assertNotNull(members.getData().get(0).getCreatedAt());
     assertTrue(members.getData().get(0).getFollowersCount() > 0);
     assertTrue(members.getData().get(0).getFollowingCount() > 0);
+  }
+
+  @Test
+  public void testGetListTweets() {
+    String   listId  = "1449313282892910592";
+    TweetList tweets = twitterClient.getListTweets(listId,  AdditionalParameters.builder().recursiveCall(false).maxResults(150).build());
+    assertNotNull(tweets);
+    assertTrue(tweets.getData().size() > 1);
+    assertNotNull(tweets.getData().get(0).getId());
+    assertNotNull(tweets.getData().get(0).getText());
+    assertNotNull(tweets.getData().get(0).getCreatedAt());
   }
 
   @Test

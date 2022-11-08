@@ -3,7 +3,6 @@ package io.github.redouane59.twitter.helpers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.scribejava.core.model.Response;
 import io.github.redouane59.twitter.IAPIEventListener;
-import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.TweetV2;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,7 +36,7 @@ public class TweetStreamConsumer {
 
     // Check if the buffer is empty and we receive a valid json data
     if (buffer.toString().isEmpty() && (!data.trim().startsWith("{"))) {
-      LOGGER.warn("Invalid JSON Start Character. Ignoring : " + data);
+      LOGGER.warn("Invalid JSON Start Character. Ignoring : {}", data);
       return false;
     }
     buffer.append(data);
@@ -100,7 +99,7 @@ public class TweetStreamConsumer {
     if (response.getCode() == 200) {
       if (clazz == TweetV2.class) {
         try {
-          listener.onTweetStreamed((TweetV2) TwitterClient.OBJECT_MAPPER.readValue(line, clazz));
+          listener.onTweetStreamed((TweetV2) JsonHelper.OBJECT_MAPPER.readValue(line, clazz));
         } catch (JsonProcessingException e) {
           listener.onUnknownDataStreamed(line);
         }
@@ -110,19 +109,6 @@ public class TweetStreamConsumer {
       return true;
     } else {
       listener.onStreamError(response.getCode(), line);
-      return false;
-    }
-  }
-
-
-  /**
-   * Check if the string supplied is valid
-   */
-  private boolean isValidJSON(String json) {
-    try {
-      TwitterClient.OBJECT_MAPPER.readTree(json);
-      return true;
-    } catch (IOException e) {
       return false;
     }
   }
@@ -139,8 +125,8 @@ public class TweetStreamConsumer {
 
     // Check if the last result is complete...
     String  lastJSON = result.get(result.size() - 1);
-    boolean complete = isValidJSON(lastJSON);
-    // Reinit the StringBuilder...
+    boolean complete = JsonHelper.isValidJSON(lastJSON);
+    // Re init the StringBuilder...
     buffer = new StringBuilder();
     // If not complete, reconsume the last buffer
     if (!complete) {

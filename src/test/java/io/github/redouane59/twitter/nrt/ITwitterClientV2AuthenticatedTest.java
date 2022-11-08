@@ -7,6 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.dm.DirectMessage;
+import io.github.redouane59.twitter.dto.dm.PostDmResponse;
+import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.others.BearerToken;
 import io.github.redouane59.twitter.dto.others.BlockResponse;
@@ -314,6 +317,11 @@ public class ITwitterClientV2AuthenticatedTest {
   }
 
   @Test
+  public void testGetDmEventsByUser() {
+
+  }
+
+  @Test
   @Disabled
   public void testLookUpAndGetSpaceBuyers() {
     String clientId = "Um5DbVM3d2dhMXViNHduOER0a2c6MTpjaQ";
@@ -337,6 +345,93 @@ public class ITwitterClientV2AuthenticatedTest {
     UserList  buyers  = twitterClientUserAuth.getSpaceBuyers(spaceId);
     assertNotNull(buyers.getData());
     assertNotNull(buyers.getMeta());
+  }
+
+  @Test
+  public void testGetDMEvents() {
+    DirectMessage dmEvents = twitterClient.getDirectMessageEvents();
+    assertNotNull(dmEvents);
+    assertNotNull(dmEvents.getData());
+    assertTrue(dmEvents.getData().size() > 0);
+    assertNotNull(dmEvents.getData().get(0).getId());
+    assertNotNull(dmEvents.getData().get(0).getText());
+    assertNotNull(dmEvents.getData().get(0).getEventType());
+    assertNotNull(dmEvents.getData().get(0).getSenderId());
+    assertNotNull(dmEvents.getData().get(0).getDmConversationId());
+    assertNotNull(dmEvents.getData().get(0).getCreatedAt());
+    assertNotNull(dmEvents.getIncludes());
+    assertNotNull(dmEvents.getIncludes().getUsers());
+    assertNotNull(dmEvents.getIncludes().getMedia());
+    assertTrue(dmEvents.getMeta().getResultCount() > 0);
+    dmEvents = twitterClient.getDirectMessageEvents(AdditionalParameters.builder().maxResults(2).build());
+    assertTrue(dmEvents.getData().size() < 3);
+  }
+
+  @Test
+  @Disabled
+  public void testGetDirectMessagesByConversation() {
+    String        conversationId = "108209516-1120050519182016513";
+    DirectMessage dmEvents       = twitterClient.getDirectMessagesByConversation(conversationId);
+    assertNotNull(dmEvents);
+    assertNotNull(dmEvents.getData());
+    assertTrue(dmEvents.getData().size() > 0);
+    assertNotNull(dmEvents.getData().get(0).getId());
+    assertNotNull(dmEvents.getData().get(0).getText());
+    assertNotNull(dmEvents.getData().get(0).getEventType());
+    assertNotNull(dmEvents.getData().get(0).getSenderId());
+    assertNotNull(dmEvents.getData().get(0).getDmConversationId());
+    assertNotNull(dmEvents.getData().get(0).getCreatedAt());
+    assertNotNull(dmEvents.getIncludes());
+    assertNotNull(dmEvents.getIncludes().getUsers());
+    assertTrue(dmEvents.getMeta().getResultCount() > 0);
+    dmEvents = twitterClient.getDirectMessagesByConversation(conversationId, AdditionalParameters.builder().maxResults(2).build());
+    assertTrue(dmEvents.getData().size() < 3);
+  }
+
+  @Test
+  @Disabled
+  public void testGetDirectMessagesByUser() {
+    String        userId   = "108209516";
+    DirectMessage dmEvents = twitterClient.getDirectMessagesByUser(userId);
+    assertNotNull(dmEvents);
+    assertNotNull(dmEvents.getData());
+    assertTrue(dmEvents.getData().size() > 0);
+    assertNotNull(dmEvents.getData().get(0).getId());
+    assertNotNull(dmEvents.getData().get(0).getText());
+    assertNotNull(dmEvents.getData().get(0).getEventType());
+    assertNotNull(dmEvents.getData().get(0).getSenderId());
+    assertNotNull(dmEvents.getData().get(0).getDmConversationId());
+    assertNotNull(dmEvents.getData().get(0).getCreatedAt());
+    assertNotNull(dmEvents.getIncludes());
+    assertNotNull(dmEvents.getIncludes().getUsers());
+    assertTrue(dmEvents.getMeta().getResultCount() > 0);
+    dmEvents = twitterClient.getDirectMessagesByUser(userId, AdditionalParameters.builder().maxResults(2).build());
+    assertTrue(dmEvents.getData().size() < 3);
+  }
+
+  @Test
+  public void testSendDmInConversation() {
+    String         conversationId = "92073489-1120050519182016513";
+    PostDmResponse response       = twitterClient.createDirectMessage(conversationId, "testSendDmInConversation()");
+    assertNotNull(response.getData().getDmConversationId());
+    assertNotNull(response.getData().getDmEventId());
+  }
+
+  @Test
+  public void testCreateDmGroupConversation() {
+    PostDmResponse
+        response =
+        twitterClient.createGroupDmConversation(Arrays.asList("1307302673318895621", "92073489"),
+                                                "testCreateDmGroupConversation()");
+    assertNotNull(response.getData().getDmConversationId());
+    assertNotNull(response.getData().getDmEventId());
+  }
+
+  @Test
+  public void testCreateDmUserConversation() {
+    PostDmResponse response = twitterClient.createUserDmConversation("1307302673318895621", "testCreateDmUserConversation()");
+    assertNotNull(response.getData().getDmConversationId());
+    assertNotNull(response.getData().getDmEventId());
   }
 
 }

@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.space.Space;
 import io.github.redouane59.twitter.dto.space.Space.SpaceData;
+import io.github.redouane59.twitter.helpers.JsonHelper;
 import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 public class SpaceDeserializerTest {
 
   private final File      spaceFile1 = new File(getClass().getClassLoader().getResource("tests/space_example.json").getFile());
-  private final Space     space      = TwitterClient.OBJECT_MAPPER.readValue(spaceFile1, Space.class);
+  private final Space     space      = JsonHelper.OBJECT_MAPPER.readValue(spaceFile1, Space.class);
   private final SpaceData spaceData  = space.getData();
 
   public SpaceDeserializerTest() throws IOException {

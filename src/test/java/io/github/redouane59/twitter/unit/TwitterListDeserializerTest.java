@@ -3,9 +3,9 @@ package io.github.redouane59.twitter.unit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.list.TwitterList;
 import io.github.redouane59.twitter.dto.list.TwitterList.TwitterListData;
+import io.github.redouane59.twitter.helpers.JsonHelper;
 import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
@@ -18,8 +18,7 @@ public class TwitterListDeserializerTest {
           .getResource("tests/twitter_list_example_v2.json")
           .getFile()
   );
-  private TwitterList twitterList       =
-      TwitterClient.OBJECT_MAPPER.readValue(twitterListFileV2, TwitterList.class);
+  private TwitterList twitterList       = JsonHelper.OBJECT_MAPPER.readValue(twitterListFileV2, TwitterList.class);
 
   public TwitterListDeserializerTest() throws IOException {
   }

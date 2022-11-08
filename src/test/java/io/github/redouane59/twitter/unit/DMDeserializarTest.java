@@ -3,10 +3,10 @@ package io.github.redouane59.twitter.unit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.github.redouane59.twitter.TwitterClient;
-import io.github.redouane59.twitter.dto.dm.DirectMessage;
-import io.github.redouane59.twitter.dto.dm.DmEvent;
-import io.github.redouane59.twitter.dto.dm.DmListAnswer;
+import io.github.redouane59.twitter.dto.dm.deprecatedV1.DirectMessage;
+import io.github.redouane59.twitter.dto.dm.deprecatedV1.DmEvent;
+import io.github.redouane59.twitter.dto.dm.deprecatedV1.DmListAnswer;
+import io.github.redouane59.twitter.helpers.JsonHelper;
 import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 public class DMDeserializarTest {
 
   private File         dmListFile = new File(getClass().getClassLoader().getResource("tests/dm_list_example.json").getFile());
-  private DmListAnswer dmList     = TwitterClient.OBJECT_MAPPER.readValue(dmListFile, DmListAnswer.class);
+  private DmListAnswer dmList     = JsonHelper.OBJECT_MAPPER.readValue(dmListFile, DmListAnswer.class);
 
   public DMDeserializarTest() throws IOException {
   }
@@ -57,6 +57,6 @@ public class DMDeserializarTest {
     String
         expectingString =
         "{\"event\":{\"type\":\"message_create\",\"message_create\":{\"target\":{\"recipient_id\":\"12345\"},\"message_data\":{\"text\":\"Hello World!\"}}}}";
-    assertEquals(expectingString, TwitterClient.OBJECT_MAPPER.writeValueAsString(DmEvent.builder().event(new DirectMessage(text, userId)).build()));
+    assertEquals(expectingString, JsonHelper.toJson(DmEvent.builder().event(new DirectMessage(text, userId)).build()));
   }
 }

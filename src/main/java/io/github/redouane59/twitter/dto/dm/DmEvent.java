@@ -1,16 +1,20 @@
 package io.github.redouane59.twitter.dto.dm;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Getter
 public class DmEvent {
 
-  private DirectMessage event;
+  @JsonProperty("event_type")
+  private EventType eventType;
+  private String    id;
+  private String    text;
+  @JsonProperty("sender_id")
+  private String    senderId;
+  @JsonProperty("created_at")
+  private String    createdAt;
+  @JsonProperty("dm_conversation_id")
+  private String    dmConversationId;
 
 }

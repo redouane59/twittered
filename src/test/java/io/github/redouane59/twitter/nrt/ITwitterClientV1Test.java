@@ -7,8 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.github.redouane59.RelationType;
 import io.github.redouane59.twitter.TwitterClient;
-import io.github.redouane59.twitter.dto.dm.DirectMessage;
-import io.github.redouane59.twitter.dto.dm.DmEvent;
+import io.github.redouane59.twitter.dto.dm.deprecatedV1.DirectMessage;
+import io.github.redouane59.twitter.dto.dm.deprecatedV1.DmEvent;
 import io.github.redouane59.twitter.dto.others.RequestToken;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.helpers.ConverterHelper;

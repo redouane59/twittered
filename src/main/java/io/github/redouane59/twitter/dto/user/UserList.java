@@ -2,6 +2,7 @@ package io.github.redouane59.twitter.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.redouane59.twitter.dto.user.UserV2.UserData;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserList {
 
-  private List<UserData> data;
+  @Builder.Default
+  private List<UserData> data = new ArrayList<>();
   private UserMeta       meta;
 
   @Getter

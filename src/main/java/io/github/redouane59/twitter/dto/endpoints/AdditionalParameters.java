@@ -14,20 +14,22 @@ import lombok.Setter;
 @Setter
 public class AdditionalParameters {
 
-  public static final String  SINCE_ID          = "since_id";
-  public static final String  UNTIL_ID          = "until_id";
-  public static final String  START_TIME        = "start_time";
-  public static final String  END_TIME          = "end_time";
-  public static final String  MAX_RESULTS       = "max_results";
-  public static final String  NEXT_TOKEN        = "next_token";
-  public static final String  PAGINATION_TOKEN  = "pagination_token";
-  public static final String  GRANULARITY_COUNT = "granularity";
+  public static final String SINCE_ID          = "since_id";
+  public static final String UNTIL_ID          = "until_id";
+  public static final String START_TIME        = "start_time";
+  public static final String END_TIME          = "end_time";
+  public static final String MAX_RESULTS       = "max_results";
+  public static final String NEXT_TOKEN        = "next_token";
+  public static final String PAGINATION_TOKEN  = "pagination_token";
+  public static final String GRANULARITY_COUNT = "granularity";
+  public static final String EVENT_TYPES       = "event_types";
+
   @Builder.Default
   /**
    * If set to true, will loop the call until next_token is null to provide a full answer.
    * If set to false, will make just one call and return the next_token if it exists
    */
-  private             boolean recursiveCall     = true;
+  private boolean recursiveCall = true;
 
   @JsonProperty("start_time")
   /**
@@ -78,6 +80,12 @@ public class AdditionalParameters {
    */
   private int           maxResults;
 
+  @JsonProperty("event_types")
+  /**
+   * The type of Direct Message event to returm. If not included, all types are returned.
+   */
+  private String eventTypes;
+
   public Map<String, String> getMapFromParameters() {
     Map<String, String> parameters = new HashMap<>();
     if (getGranularity() != null) {
@@ -103,6 +111,9 @@ public class AdditionalParameters {
     }
     if (getMaxResults() > 0) {
       parameters.put(MAX_RESULTS, String.valueOf(getMaxResults()));
+    }
+    if (getEventTypes() != null) {
+      parameters.put(EVENT_TYPES, getEventTypes());
     }
     return parameters;
   }

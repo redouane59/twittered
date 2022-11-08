@@ -507,6 +507,27 @@
         "public_metrics": {
           "view_count": 64061
         },
+        "variants": [
+          {
+            "bit_rate": 2176000,
+            "content_type": "video/mp4",
+            "url": "https://video.twimg.com/ext_tw_video/1572885321980731394/pu/vid/720x1280/ieIyRb1_aPrsEAwy.mp4?tag=12"
+          },
+          {
+            "content_type": "application/x-mpegURL",
+            "url": "https://video.twimg.com/ext_tw_video/1572885321980731394/pu/pl/Cjl2_HqO6UVWd7ay.m3u8?tag=12&container=fmp4"
+          },
+          {
+            "bit_rate": 632000,
+            "content_type": "video/mp4",
+            "url": "https://video.twimg.com/ext_tw_video/1572885321980731394/pu/vid/320x568/WK7e4ol6eVW-fP5x.mp4?tag=12"
+          },
+          {
+            "bit_rate": 950000,
+            "content_type": "video/mp4",
+            "url": "https://video.twimg.com/ext_tw_video/1572885321980731394/pu/vid/480x852/23EP3iqOrVLt8BUD.mp4?tag=12"
+          }
+        ],
         "height": 900
       },
       {
