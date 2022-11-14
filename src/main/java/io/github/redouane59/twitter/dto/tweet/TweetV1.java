@@ -150,106 +150,106 @@ public class TweetV1 implements Tweet {
   /* Not available in API v1! */
   @Override
   @JsonIgnore
-  public int getImpressionCount() {
-    return 0;
+  public Integer getImpressionCount() {
+    throw new RuntimeException("Mectric Impression is not vailable in Twitter API v1.");
   }
 
   /* Not available in API v1! */
   @Override
   @JsonIgnore
-  public int getUrlLinkClicks() {
-    return 0;
+  public Integer getUrlLinkClicks() {
+    throw new RuntimeException("Mectric UrlLinkClicks is not vailable in Twitter API v1.");
   }
 
   /* Not available in API v1! */
   @Override
   @JsonIgnore
-  public int getUserProfileClicks() {
-    return 0;
+  public Integer getUserProfileClicks() {
+    throw new RuntimeException("Mectric UserProfileClicks is not vailable in Twitter API v1.");
   }
 
   /* Not available in API v1! */
   @Override
   @JsonIgnore
-  public int getOrganicImpressionCount() {
-    return 0;
+  public Integer getOrganicImpressionCount() {
+    throw new RuntimeException("Mectric OrganicImpressionCount is not vailable in Twitter API v1.");
   }
 
   /* Not available in API v1! */
   @Override
   @JsonIgnore
-  public int getOrganicLikeCount() {
-    return 0;
+  public Integer getOrganicLikeCount() {
+    throw new RuntimeException("Mectric OrganicLikeCount is not vailable in Twitter API v1.");
   }
 
   /* Not available in API v1! */
   @Override
   @JsonIgnore
-  public int getOrganicReplyCount() {
-    return 0;
+  public Integer getOrganicReplyCount() {
+    throw new RuntimeException("Mectric OrganicReplyCount is not vailable in Twitter API v1.");
   }
 
   /* Not available in API v1! */
   @Override
   @JsonIgnore
-  public int getOrganicRetweetCount() {
-    return 0;
+  public Integer getOrganicRetweetCount() {
+    throw new RuntimeException("Mectric OrganicRetweetCount is not vailable in Twitter API v1.");
   }
 
   /* Not available in API v1! */
   @Override
   @JsonIgnore
-  public int getOrganicUrlLinkClicks() {
-    return 0;
+  public Integer getOrganicUrlLinkClicks() {
+    throw new RuntimeException("Mectric OrganicUrlLinkClicks is not vailable in Twitter API v1.");
   }
 
   /* Not available in API v1! */
   @Override
   @JsonIgnore
-  public int getOrganicUserProfileClicks() {
-    return 0;
+  public Integer getOrganicUserProfileClicks() {
+    throw new RuntimeException("Mectric OrganicUserProfileClicks is not vailable in Twitter API v1.");
   }
 
   /* Not available in API v1! */
   @Override
   @JsonIgnore
-  public int getPromotedImpressionCount() {
-    return 0;
+  public Integer getPromotedImpressionCount() {
+    throw new RuntimeException("Mectric PromotedImpressionCount is not vailable in Twitter API v1.");
   }
 
   /* Not available in API v1! */
   @Override
   @JsonIgnore
-  public int getPromotedLikeCount() {
-    return 0;
+  public Integer getPromotedLikeCount() {
+    throw new RuntimeException("Mectric PromotedLikeCount is not vailable in Twitter API v1.");
   }
 
   /* Not available in API v1! */
   @Override
   @JsonIgnore
-  public int getPromotedReplyCount() {
-    return 0;
+  public Integer getPromotedReplyCount() {
+    throw new RuntimeException("Mectric PromotedReplyCount is not vailable in Twitter API v1.");
   }
 
   /* Not available in API v1! */
   @Override
   @JsonIgnore
-  public int getPromotedRetweetCount() {
-    return 0;
+  public Integer getPromotedRetweetCount() {
+    throw new RuntimeException("Mectric PromotedRetweetCount is not vailable in Twitter API v1.");
   }
 
   /* Not available in API v1! */
   @Override
   @JsonIgnore
-  public int getPromotedUrlLinkClicks() {
-    return 0;
+  public Integer getPromotedUrlLinkClicks() {
+    throw new RuntimeException("Mectric PromotedUrlLinkClicks is not vailable in Twitter API v1.");
   }
 
   /* Not available in API v1! */
   @Override
   @JsonIgnore
-  public int getPromotedUserProfileClicks() {
-    return 0;
+  public Integer getPromotedUserProfileClicks() {
+    throw new RuntimeException("Mectric PromotedUserProfileClicks is not vailable in Twitter API v1.");
   }
 
   @Getter

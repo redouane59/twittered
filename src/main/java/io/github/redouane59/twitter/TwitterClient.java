@@ -100,12 +100,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitterClientArchive {
 
-  public static final ObjectMapper OBJECT_MAPPER    = new ObjectMapper()
-      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-      .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-      .findAndRegisterModules();
   public static final String TWEET_FIELDS     = "tweet.fields";
-  public static final String ALL_TWEET_FIELDS_PUBLIC = 
+  public static final String 
+                              ALL_TWEET_FIELDS_PUBLIC = 
       "attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,referenced_tweets,source,text,withheld,context_annotations,conversation_id,reply_settings,public_metrics";
   public static final String ALL_TWEET_FIELDS_NON_PUBLIC = ALL_TWEET_FIELDS_PUBLIC + ",non_public_metrics,organic_metrics";
   public static final String ALL_TWEET_FIELDS_NON_PUBLIC_PROMOTED = ALL_TWEET_FIELDS_NON_PUBLIC + ",promoted_metrics";
@@ -794,7 +791,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     String              url        = getUrlHelper().getListTweetsUrl(listId);
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(EXPANSION, ALL_EXPANSIONS);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
 
@@ -841,7 +838,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(DM_FIELDS, ALL_DM_FIELDS);
     parameters.put(EXPANSION, ALL_DM_EXPANSIONS);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     return getRequestHelperV1().getRequestWithParameters(url, parameters, DirectMessage.class).orElseThrow(NoSuchElementException::new);
@@ -858,7 +855,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(DM_FIELDS, ALL_DM_FIELDS);
     parameters.put(EXPANSION, ALL_DM_EXPANSIONS);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     return getRequestHelperV1().getRequestWithParameters(url, parameters, DirectMessage.class).orElseThrow(NoSuchElementException::new);
@@ -875,7 +872,7 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     Map<String, String> parameters = additionalParameters.getMapFromParameters();
     parameters.put(DM_FIELDS, ALL_DM_FIELDS);
     parameters.put(EXPANSION, ALL_DM_EXPANSIONS);
-    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS_PUBLIC);
     parameters.put(USER_FIELDS, ALL_USER_FIELDS);
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     return getRequestHelperV1().getRequestWithParameters(url, parameters, DirectMessage.class).orElseThrow(NoSuchElementException::new);

@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import javax.naming.LimitExceededException;
-import javax.naming.NoPermissionException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;

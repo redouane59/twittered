@@ -189,121 +189,121 @@ public class TweetV2 implements Tweet {
   }
 
   @Override
-  public int getImpressionCount() {
+  public Integer getImpressionCount() {
     if (data == null || data.getNonPublicMetrics() == null) {
-        return 0;
+      return null;
     }
     return data.getNonPublicMetrics().getImpressionCount();
   }
 
   @Override
-  public int getUrlLinkClicks() {
+  public Integer getUrlLinkClicks() {
     if (data == null || data.getNonPublicMetrics() == null) {
-        return 0;
+      return null;
     }
     return data.getNonPublicMetrics().getUrlLinkClicks();
   }
 
   @Override
-  public int getUserProfileClicks() {
+  public Integer getUserProfileClicks() {
     if (data == null || data.getNonPublicMetrics() == null) {
-        return 0;
+      return null;
     }
     return data.getNonPublicMetrics().getUserProfileClicks();
   }
 
   @Override
-  public int getOrganicImpressionCount() {
+  public Integer getOrganicImpressionCount() {
     if (data == null || data.getOrganicMetrics() == null) {
-        return 0;
+      return null;
     }
     return data.getOrganicMetrics().getImpressionCount();
   }
 
   @Override
-  public int getOrganicLikeCount() {
+  public Integer getOrganicLikeCount() {
     if (data == null || data.getOrganicMetrics() == null) {
-        return 0;
+      return null;
     }
     return data.getOrganicMetrics().getLikeCount();
   }
 
   @Override
-  public int getOrganicReplyCount() {
+  public Integer getOrganicReplyCount() {
     if (data == null || data.getOrganicMetrics() == null) {
-        return 0;
+      return null;
     }
     return data.getOrganicMetrics().getReplyCount();
   }
 
   @Override
-  public int getOrganicRetweetCount() {
+  public Integer getOrganicRetweetCount() {
     if (data == null || data.getOrganicMetrics() == null) {
-        return 0;
+      return null;
     }
     return data.getOrganicMetrics().getRetweetCount();
   }
 
   @Override
-  public int getOrganicUrlLinkClicks() {
+  public Integer getOrganicUrlLinkClicks() {
     if (data == null || data.getOrganicMetrics() == null) {
-        return 0;
+      return null;
     }
     return data.getOrganicMetrics().getUrlLinkClicks();
   }
 
   @Override
-  public int getOrganicUserProfileClicks() {
+  public Integer getOrganicUserProfileClicks() {
     if (data == null || data.getOrganicMetrics() == null) {
-        return 0;
+      return null;
     }
     return data.getOrganicMetrics().getUserProfileClicks();
   }
 
   @Override
-  public int getPromotedImpressionCount() {
+  public Integer getPromotedImpressionCount() {
     if (data == null || data.getPromotedMetrics() == null) {
-        return 0;
+      return null;
     }
     return data.getPromotedMetrics().getImpressionCount();
   }
 
   @Override
-  public int getPromotedLikeCount() {
+  public Integer getPromotedLikeCount() {
     if (data == null || data.getPromotedMetrics() == null) {
-        return 0;
+      return null;
     }
     return data.getPromotedMetrics().getLikeCount();
   }
 
   @Override
-  public int getPromotedReplyCount() {
+  public Integer getPromotedReplyCount() {
     if (data == null || data.getPromotedMetrics() == null) {
-        return 0;
+      return null;
     }
     return data.getPromotedMetrics().getReplyCount();
   }
 
   @Override
-  public int getPromotedRetweetCount() {
+  public Integer getPromotedRetweetCount() {
     if (data == null || data.getPromotedMetrics() == null) {
-        return 0;
+      return null;
     }
     return data.getPromotedMetrics().getRetweetCount();
   }
 
   @Override
-  public int getPromotedUrlLinkClicks() {
+  public Integer getPromotedUrlLinkClicks() {
     if (data == null || data.getPromotedMetrics() == null) {
-        return 0;
+      return null;
     }
     return data.getPromotedMetrics().getUrlLinkClicks();
   }
 
   @Override
-  public int getPromotedUserProfileClicks() {
+  public Integer getPromotedUserProfileClicks() {
     if (data == null || data.getPromotedMetrics() == null) {
-        return 0;
+      return null;
     }
     return data.getPromotedMetrics().getUserProfileClicks();
   }
@@ -457,18 +457,27 @@ public class TweetV2 implements Tweet {
 
     @Override
     @JsonIgnore
-    public int getImpressionCount() {
+    public Integer getImpressionCount() {
+      if (nonPublicMetrics == null) {
+        return null;
+      }
       return nonPublicMetrics.getImpressionCount();
     }
 
     @Override
     @JsonIgnore
-    public int getUrlLinkClicks() {
+    public Integer getUrlLinkClicks() {
+      if (nonPublicMetrics == null) {
+        return null;
+      }
       return nonPublicMetrics.getUrlLinkClicks();
     }
     @Override
     @JsonIgnore
-    public int getUserProfileClicks() {
+    public Integer getUserProfileClicks() {
+      if (nonPublicMetrics == null) {
+        return null;
+      }
       return nonPublicMetrics.getUserProfileClicks();
     }
 
@@ -479,37 +488,55 @@ public class TweetV2 implements Tweet {
 
     @Override
     @JsonIgnore
-    public int getOrganicImpressionCount() {
+    public Integer getOrganicImpressionCount() {
+      if (organicMetrics == null) {
+        return null;
+      }
       return organicMetrics.getImpressionCount();
     }
 
     @Override
     @JsonIgnore
-    public int getOrganicLikeCount() {
+    public Integer getOrganicLikeCount() {
+      if (organicMetrics == null) {
+        return null;
+      }
       return organicMetrics.getLikeCount();
     }
 
     @Override
     @JsonIgnore
-    public int getOrganicReplyCount() {
+    public Integer getOrganicReplyCount() {
+      if (organicMetrics == null) {
+        return null;
+      }
       return organicMetrics.getReplyCount();
     }
 
     @Override
     @JsonIgnore
-    public int getOrganicRetweetCount() {
+    public Integer getOrganicRetweetCount() {
+      if (organicMetrics == null) {
+        return null;
+      }
       return organicMetrics.getRetweetCount();
     }
 
     @Override
     @JsonIgnore
-    public int getOrganicUrlLinkClicks() {
+    public Integer getOrganicUrlLinkClicks() {
+      if (organicMetrics == null) {
+        return null;
+      }
       return organicMetrics.getUrlLinkClicks();
     }
 
     @Override
     @JsonIgnore
-    public int getOrganicUserProfileClicks() {
+    public Integer getOrganicUserProfileClicks() {
+      if (organicMetrics == null) {
+        return null;
+      }
       return organicMetrics.getUserProfileClicks();
     }
     
@@ -520,37 +547,55 @@ public class TweetV2 implements Tweet {
 
     @Override
     @JsonIgnore
-    public int getPromotedImpressionCount() {
+    public Integer getPromotedImpressionCount() {
+      if (promotedMetrics == null) {
+        return null;
+      }
       return promotedMetrics.getImpressionCount();
     }
 
     @Override
     @JsonIgnore
-    public int getPromotedLikeCount() {
+    public Integer getPromotedLikeCount() {
+      if (promotedMetrics == null) {
+        return null;
+      }
       return promotedMetrics.getLikeCount();
     }
 
     @Override
     @JsonIgnore
-    public int getPromotedReplyCount() {
+    public Integer getPromotedReplyCount() {
+      if (promotedMetrics == null) {
+        return null;
+      }
       return promotedMetrics.getReplyCount();
     }
 
     @Override
     @JsonIgnore
-    public int getPromotedRetweetCount() {
+    public Integer getPromotedRetweetCount() {
+      if (promotedMetrics == null) {
+        return null;
+      }
       return promotedMetrics.getRetweetCount();
     }
 
     @Override
     @JsonIgnore
-    public int getPromotedUrlLinkClicks() {
+    public Integer getPromotedUrlLinkClicks() {
+      if (promotedMetrics == null) {
+        return null;
+      }
       return promotedMetrics.getUrlLinkClicks();
     }
 
     @Override
     @JsonIgnore
-    public int getPromotedUserProfileClicks() {
+    public Integer getPromotedUserProfileClicks() {
+      if (promotedMetrics == null) {
+        return null;
+      }
       return promotedMetrics.getUserProfileClicks();
     }
 
