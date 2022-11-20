@@ -7,11 +7,13 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.jackson.Jacksonized;
 
 @Builder
 @Getter
 @Setter
 @JsonInclude(Include.NON_NULL)
+@Jacksonized
 public class TweetParameters {
 
   private String        text;
@@ -33,6 +35,7 @@ public class TweetParameters {
 
   @Builder
   @Getter
+  @Jacksonized
   public static class Reply {
 
     @JsonProperty("exclude_reply_user_ids")
@@ -44,6 +47,7 @@ public class TweetParameters {
 
   @Builder
   @Getter
+  @Jacksonized
   public static class Poll {
 
     @JsonProperty("duration_minutes")
@@ -53,6 +57,7 @@ public class TweetParameters {
 
   @Builder
   @Getter
+  @Jacksonized
   public static class Media {
 
     @JsonProperty("media_ids")

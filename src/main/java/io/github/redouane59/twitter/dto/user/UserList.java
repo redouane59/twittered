@@ -9,12 +9,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.jackson.Jacksonized;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Jacksonized
 public class UserList {
 
   @Builder.Default
@@ -26,6 +28,7 @@ public class UserList {
   @Builder
   @NoArgsConstructor
   @AllArgsConstructor
+  @Jacksonized
   public static class UserMeta {
 
     @JsonProperty("result_count")

@@ -26,6 +26,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import lombok.extern.jackson.Jacksonized;
 
 /**
  * @version current
@@ -38,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Slf4j
+@Jacksonized
 public class TweetV1 implements Tweet {
 
   private static final String     NOT_IMPLEMENTED_EXCEPTION = "not implemented";

@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.jackson.Jacksonized;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -25,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @NoArgsConstructor
 @Slf4j
+@Jacksonized
 public class UserV2 implements User {
 
   private UserData          data;
@@ -143,6 +145,7 @@ public class UserV2 implements User {
   @NoArgsConstructor
   @AllArgsConstructor
   @Builder
+  @Jacksonized
   public static class UserData implements User {
 
     private String            id;
@@ -201,6 +204,7 @@ public class UserV2 implements User {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    @Jacksonized
     public static class Includes {
 
       private TweetData[] tweets;

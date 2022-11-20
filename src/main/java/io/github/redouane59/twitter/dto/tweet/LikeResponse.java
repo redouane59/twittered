@@ -5,12 +5,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.jackson.Jacksonized;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Jacksonized
 public class LikeResponse {
 
   DataLikeResponse data;
@@ -20,6 +22,7 @@ public class LikeResponse {
   @Builder
   @AllArgsConstructor
   @NoArgsConstructor
+  @Jacksonized
   public static class DataLikeResponse {
 
     private boolean liked;

@@ -8,10 +8,12 @@ import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.jackson.Jacksonized;
 
 @Builder
 @Getter
 @Setter
+@Jacksonized
 public class AdditionalParameters {
 
   public static final String SINCE_ID          = "since_id";
