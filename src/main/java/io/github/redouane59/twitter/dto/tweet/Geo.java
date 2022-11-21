@@ -6,12 +6,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.jackson.Jacksonized;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Jacksonized
 public class Geo {
 
   @JsonProperty("place_id")
@@ -20,6 +22,7 @@ public class Geo {
 
   @Getter
   @Setter
+  @Jacksonized
   public static class Coordinates {
 
     private String   type;

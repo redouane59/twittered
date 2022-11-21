@@ -28,6 +28,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.jackson.Jacksonized;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -39,6 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @Builder
 @Slf4j
+@Jacksonized
 public class TweetV2 implements Tweet {
 
   private static final String                       NOT_IMPLEMENTED_EXCEPTION = "not implemented";
@@ -245,6 +247,7 @@ public class TweetV2 implements Tweet {
   @Builder
   @NoArgsConstructor
   @AllArgsConstructor
+  @Jacksonized
   public static class TweetData implements Tweet {
 
     private String                   id;
@@ -377,6 +380,7 @@ public class TweetV2 implements Tweet {
   @Builder
   @NoArgsConstructor
   @AllArgsConstructor
+  @Jacksonized
   public static class Includes {
 
     private List<UserV2.UserData>       users;

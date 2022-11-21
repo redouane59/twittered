@@ -13,11 +13,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.jackson.Jacksonized;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
+@Jacksonized
 public class TweetCountsList {
 
   private List<TweetCountData> data;
@@ -27,6 +29,7 @@ public class TweetCountsList {
   @NoArgsConstructor
   @Builder
   @Getter
+  @Jacksonized
   public static class TweetCountData {
 
     @JsonProperty("tweet_count")
@@ -57,6 +60,7 @@ public class TweetCountsList {
   @NoArgsConstructor
   @Builder
   @Getter
+  @Jacksonized
   public static class TweetCountMeta {
 
     @JsonProperty("total_tweet_count")

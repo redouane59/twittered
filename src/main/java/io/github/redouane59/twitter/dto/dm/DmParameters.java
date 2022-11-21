@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.jackson.Jacksonized;
 
 @Builder
+@Jacksonized
 public class DmParameters {
 
   @JsonProperty("conversation_type")
@@ -18,6 +20,7 @@ public class DmParameters {
 
   @Builder
   @Getter
+  @Jacksonized
   public static class DmMessage {
 
     private String text;

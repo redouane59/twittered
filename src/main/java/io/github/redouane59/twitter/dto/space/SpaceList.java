@@ -7,11 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.jackson.Jacksonized;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
+@Jacksonized
 public class SpaceList {
 
   List<SpaceData> data;
@@ -22,6 +24,7 @@ public class SpaceList {
   @AllArgsConstructor
   @Builder
   @Getter
+  @Jacksonized
   public static class SpaceMeta {
 
     @JsonProperty("result_count")

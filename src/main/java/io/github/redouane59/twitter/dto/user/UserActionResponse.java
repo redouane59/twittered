@@ -5,11 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.jackson.Jacksonized;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Jacksonized
 public class UserActionResponse {
 
   private FollowData data;
@@ -18,6 +20,7 @@ public class UserActionResponse {
   @AllArgsConstructor
   @NoArgsConstructor
   @Getter
+  @Jacksonized
   public static class FollowData {
 
     boolean muting;
