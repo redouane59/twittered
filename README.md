@@ -139,18 +139,18 @@ System.out.println(tweet.getUser().getName());
 
 ```java
 User   user   = twitterClient.getUserFromUserName("RedouaneBali");
-System.out.println(tweet.getUser().getName());
-System.out.println(tweet.getUser().getDisplayedName());
-System.out.println(tweet.getUser().getDateOfCreation());
-System.out.println(tweet.getUser().getDescription());
-System.out.println(tweet.getUser().getTweetCount());
-System.out.println(tweet.getUser().getFollowersCount());
-System.out.println(tweet.getUser().getFollowingCount());
-System.out.println(tweet.getUser().getPinnedTweet());
-System.out.println(tweet.getUser().getPinnedTweet());
-System.out.println(tweet.getUser().getLocation());
-System.out.println(tweet.getUser().getId());
-System.out.println(tweet.getUser().getUrl());
+System.out.println(user.getName());
+System.out.println(user.getDisplayedName());
+System.out.println(user.getDateOfCreation());
+System.out.println(user.getDescription());
+System.out.println(user.getTweetCount());
+System.out.println(user.getFollowersCount());
+System.out.println(user.getFollowingCount());
+System.out.println(user.getPinnedTweet());
+System.out.println(user.getPinnedTweet());
+System.out.println(user.getLocation());
+System.out.println(user.getId());
+System.out.println(user.getUrl());
 ```
 
 ### Contribution
