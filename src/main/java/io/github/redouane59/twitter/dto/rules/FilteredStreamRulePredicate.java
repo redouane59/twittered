@@ -12,6 +12,10 @@ public class FilteredStreamRulePredicate {
   FilteredStreamRulePredicate() {
   }
 
+  private FilteredStreamRulePredicate(String predicate) {
+    this.predicate = predicate;
+  }
+
   private static FilteredStreamRulePredicate build(String one, String two, String operator) {
     FilteredStreamRulePredicate p = new FilteredStreamRulePredicate();
     if (one == null || one.isEmpty()) {
@@ -27,194 +31,196 @@ public class FilteredStreamRulePredicate {
   }
 
   public static FilteredStreamRulePredicate withEmoji(String emoji) {
-    return build("", emoji, "");
+    return new FilteredStreamRulePredicate(emoji);
   }
 
   public static FilteredStreamRulePredicate withExactPhrase(String phrase) {
-    return build("", "\"" + phrase + "\"", "");
+    return new FilteredStreamRulePredicate(quote(phrase));
   }
 
   public static FilteredStreamRulePredicate withHashtag(String hashtag) {
-    return build("", hashtag.startsWith("#") ? hashtag : "#" + hashtag, "");
+    String predicate = hashtag.startsWith("#") ? hashtag : "#" + hashtag;
+    return new FilteredStreamRulePredicate(predicate);
   }
 
   public static FilteredStreamRulePredicate withMention(String mention) {
-    return build("", mention.startsWith("@") ? mention : "@" + mention, "");
+    String predicate = mention.startsWith("@") ? mention : "@" + mention;
+    return new FilteredStreamRulePredicate(predicate);
   }
 
   public static FilteredStreamRulePredicate withCashtag(String cashtag) {
-    return build("", cashtag.startsWith("$") ? cashtag : "$" + cashtag, "");
+    String predicate = cashtag.startsWith("$") ? cashtag : "$" + cashtag;
+    return new FilteredStreamRulePredicate(predicate);
   }
 
   public static FilteredStreamRulePredicate withUser(String user) {
-    return build("", user, "from:");
+    return new FilteredStreamRulePredicate("from:" + user);
   }
 
   public static FilteredStreamRulePredicate withReplyTo(String user) {
-    return build("", user, "to:");
+    return new FilteredStreamRulePredicate("to:" + user);
   }
 
   public static FilteredStreamRulePredicate withUrl(String url) {
-    return build("", withExactPhrase(url).toString(), "url:");
+    return new FilteredStreamRulePredicate("url:" + quote(url));
   }
 
   public static FilteredStreamRulePredicate withRetweetsOf(String user) {
-    return build("", user, "retweets_of:");
+    return new FilteredStreamRulePredicate("retweets_of:" + user);
   }
 
   public static FilteredStreamRulePredicate withContext(String context) {
-    return build("", context, "context:");
+    return new FilteredStreamRulePredicate("context:" + context);
   }
 
   public static FilteredStreamRulePredicate withEntity(String entity) {
-    return build("", withExactPhrase(entity).toString(), "entity:");
+    return new FilteredStreamRulePredicate("entity:" + quote(entity));
   }
 
   public static FilteredStreamRulePredicate withConversationId(String conversationId) {
-    return build("", conversationId, "conversation_id:");
+    return new FilteredStreamRulePredicate("conversation_id:" + conversationId);
   }
 
   public static FilteredStreamRulePredicate withBio(String bio) {
-    return build("", bio, "bio:");
+    return new FilteredStreamRulePredicate("bio:" + bio);
   }
 
   public static FilteredStreamRulePredicate withBioName(String bioName) {
-    return build("", bioName, "bio_name:");
+    return new FilteredStreamRulePredicate("bio_name:" + bioName);
   }
 
   public static FilteredStreamRulePredicate withBioLocation(String bioLocation) {
-    return build("", bioLocation, "bio_location:");
+    return new FilteredStreamRulePredicate("bio_location:" + bioLocation);
   }
 
   public static FilteredStreamRulePredicate withPlace(String place) {
-    return build("", place, "place:");
+    return new FilteredStreamRulePredicate("place:" + place);
   }
 
   public static FilteredStreamRulePredicate withPlaceCountry(String alpha2IsoCode) {
-    return build("", alpha2IsoCode, "place_country:");
+    return new FilteredStreamRulePredicate("place_country:" + alpha2IsoCode);
   }
 
   public static FilteredStreamRulePredicate withPointRadius(double longitude, double latitude, String radius) {
     //mi or km
-    return build("", "[" + longitude + " " + latitude + " " + radius + "]", "point_radius:");
+    String pointRadius = "[" + longitude + " " + latitude + " " + radius + "]";
+    return new FilteredStreamRulePredicate("point_radius:" + pointRadius);
   }
 
   public static FilteredStreamRulePredicate withBoundingBox(double westLongitude, double southLatitude, double eastLongitude, double northLatitude) {
     //mi or km
-    return build("", "[" + westLongitude + " " + southLatitude + " " + eastLongitude + " " + northLatitude + "]", "bounding_box:");
+    String boundingBox = "[" + westLongitude + " " + southLatitude + " " + eastLongitude + " " + northLatitude + "]";
+    return new FilteredStreamRulePredicate("bounding_box:" + boundingBox);
   }
 
   public static FilteredStreamRulePredicate withLanguage(String language) {
-    return build("", language, "lang:");
+    return new FilteredStreamRulePredicate("lang:" + language);
   }
 
-  public static FilteredStreamRulePredicate isRetweet(FilteredStreamRulePredicate predicate) {
-    checkConjunction(predicate);
-    return build(predicate.toString(), "", "is:retweet");
+  public static FilteredStreamRulePredicate isRetweet() {
+    return new FilteredStreamRulePredicate("is:retweet");
   }
 
-  public static FilteredStreamRulePredicate isReply(FilteredStreamRulePredicate predicate) {
-    checkConjunction(predicate);
-    return build(predicate.toString(), "", "is:reply");
+  public static FilteredStreamRulePredicate isReply() {
+    return new FilteredStreamRulePredicate("is:reply");
   }
 
-  public static FilteredStreamRulePredicate isQuote(FilteredStreamRulePredicate predicate) {
-    checkConjunction(predicate);
-    return build(predicate.toString(), "", "is:quote");
+  public static FilteredStreamRulePredicate isQuote() {
+    return new FilteredStreamRulePredicate("is:quote");
   }
 
-  public static FilteredStreamRulePredicate isVerified(FilteredStreamRulePredicate predicate) {
-    checkConjunction(predicate);
-    return build(predicate.toString(), "", "is:verified");
+  public static FilteredStreamRulePredicate isVerified() {
+    return new FilteredStreamRulePredicate("is:verified");
   }
 
-  public static FilteredStreamRulePredicate isNullcast(FilteredStreamRulePredicate predicate) {
-    checkConjunction(predicate);
-    return build(predicate.toString(), "", "-is:nullcast");
+  public static FilteredStreamRulePredicate isNullcast() {
+    return new FilteredStreamRulePredicate("-is:nullcast");
   }
 
-  public static FilteredStreamRulePredicate hasHashtags(FilteredStreamRulePredicate predicate) {
-    checkConjunction(predicate);
-    return build(predicate.toString(), "", "has:hashtags");
+  public static FilteredStreamRulePredicate hasHashtags() {
+    return new FilteredStreamRulePredicate("has:hashtags");
   }
 
-  public static FilteredStreamRulePredicate hasCashtags(FilteredStreamRulePredicate predicate) {
-    checkConjunction(predicate);
-    return build(predicate.toString(), "", "has:cashtags");
+  public static FilteredStreamRulePredicate hasCashtags() {
+    return new FilteredStreamRulePredicate("has:cashtags");
   }
 
-  public static FilteredStreamRulePredicate hasLinks(FilteredStreamRulePredicate predicate) {
-    checkConjunction(predicate);
-    return build(predicate.toString(), "", "has:links");
+  public static FilteredStreamRulePredicate hasLinks() {
+    return new FilteredStreamRulePredicate("has:links");
   }
 
-  public static FilteredStreamRulePredicate hasMentions(FilteredStreamRulePredicate predicate) {
-    checkConjunction(predicate);
-    return build(predicate.toString(), "", "has:mentions");
+  public static FilteredStreamRulePredicate hasMentions() {
+    return new FilteredStreamRulePredicate("has:mentions");
   }
 
-  public static FilteredStreamRulePredicate hasMedia(FilteredStreamRulePredicate predicate) {
-    checkConjunction(predicate);
-    return build(predicate.toString(), "", "has:media");
+  public static FilteredStreamRulePredicate hasMedia() {
+    return new FilteredStreamRulePredicate("has:media");
   }
 
-  public static FilteredStreamRulePredicate hasImages(FilteredStreamRulePredicate predicate) {
-    checkConjunction(predicate);
-    return build(predicate.toString(), "", "has:images");
+  public static FilteredStreamRulePredicate hasImages() {
+    return new FilteredStreamRulePredicate("has:images");
   }
 
-  public static FilteredStreamRulePredicate hasVideos(FilteredStreamRulePredicate predicate) {
-    checkConjunction(predicate);
-    return build(predicate.toString(), "", "has:videos");
+  public static FilteredStreamRulePredicate hasVideos() {
+    return new FilteredStreamRulePredicate("has:videos");
   }
 
-  public static FilteredStreamRulePredicate hasGeo(FilteredStreamRulePredicate predicate, String geo) {
-    checkConjunction(predicate);
-    return build(predicate.toString(), " " + geo, "has:geo");
+  public static FilteredStreamRulePredicate hasGeo(String geo) {
+    return new FilteredStreamRulePredicate("has:geo " + geo);
   }
 
-  public static FilteredStreamRulePredicate doSampling(FilteredStreamRulePredicate predicate, int sampleSize) {
-    checkConjunction(predicate);
-    return build(predicate.toString(), Integer.toString(sampleSize), "sample:");
-  }
-
-  private static void checkConjunction(FilteredStreamRulePredicate predicate) {
-    if (predicate == null || predicate.isEmpty()) {
-      throw new RuleBuilderException("Given operator can only be used in an conjunction");
-    }
+  public static FilteredStreamRulePredicate doSampling(int sampleSize) {
+    return new FilteredStreamRulePredicate("sample:" + sampleSize);
   }
 
   public FilteredStreamRulePredicate negate() {
+    if (predicate == null) {
+      throw new RuleBuilderException("Cannot negate empty predicate");
+    }
     predicate = "-" + capsule();
     return this;
   }
 
   public FilteredStreamRulePredicate capsule() {
-    predicate = "(" + predicate + ")";
+    if (predicate != null) {
+      predicate = "(" + predicate + ")";
+    }
     return this;
   }
 
   public FilteredStreamRulePredicate or(FilteredStreamRulePredicate other) {
-    predicate += " OR " + other.predicate;
+    applyOperator(" OR ", other);
     return this;
   }
 
   public FilteredStreamRulePredicate and(FilteredStreamRulePredicate other) {
-    predicate += " " + other.predicate;
+    applyOperator(" ", other);
     return this;
   }
 
   public static FilteredStreamRulePredicate empty() {
-    return build("", "", "");
+    return new FilteredStreamRulePredicate(null);
   }
 
   public boolean isEmpty() {
     return predicate == null;
   }
 
+  private void applyOperator(String operator, FilteredStreamRulePredicate right) {
+    if (this.predicate == null) {
+      this.predicate = right.predicate;
+    } else if (right != null && !right.isEmpty()) {
+      this.predicate = this.predicate + operator + right.predicate;
+    }
+  }
+
+  private static String quote(String phrase) {
+    return "\"" + phrase + "\"";
+  }
+
   @Override
   public String toString() {
-    return predicate;
+    return (predicate != null ? predicate : "");
   }
 
   public static class RuleBuilderException extends RuntimeException {
