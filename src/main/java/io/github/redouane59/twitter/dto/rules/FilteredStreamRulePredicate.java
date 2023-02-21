@@ -205,7 +205,7 @@ public class FilteredStreamRulePredicate {
   }
 
   public static FilteredStreamRulePredicate empty() {
-    return build("","","");
+    return build("", "", "");
   }
 
   public boolean isEmpty() {

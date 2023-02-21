@@ -253,7 +253,14 @@ class FilteredStreamRulePredicateTest {
     FilteredStreamRulePredicate p3 = FilteredStreamRulePredicate.withLanguage("de");
     FilteredStreamRulePredicate p4 = FilteredStreamRulePredicate.withLanguage("en").negate();
     assertEquals("(((\"test\" bio_name:test) OR lang:de) OR -(lang:en)) -(is:retweet)",
-            p.and(p2).capsule().or(p3).capsule().or(p4).capsule().and(FilteredStreamRulePredicate.isRetweet(FilteredStreamRulePredicate.empty()).negate()).toString());
+                 p.and(p2)
+                  .capsule()
+                  .or(p3)
+                  .capsule()
+                  .or(p4)
+                  .capsule()
+                  .and(FilteredStreamRulePredicate.isRetweet(FilteredStreamRulePredicate.empty()).negate())
+                  .toString());
   }
 
 
