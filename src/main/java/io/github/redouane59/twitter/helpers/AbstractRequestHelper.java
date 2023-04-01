@@ -31,6 +31,8 @@ public abstract class AbstractRequestHelper {
   private final       OAuth10aService     service;
   @Setter
   private             boolean             automaticRetry          = true;
+  
+  private long lastCallTs;
 
   protected AbstractRequestHelper(TwitterCredentials twitterCredentials) {
     this(twitterCredentials, new ServiceBuilder(twitterCredentials.getApiKey())
@@ -82,19 +84,42 @@ public abstract class AbstractRequestHelper {
     if (signRequired) {
       signRequest(request);
     }
+    // endpoint /2/tweets/search/all has a one request per second rate limit, see https://developer.twitter.com/en/docs/twitter-api/tweets/search/api-reference/get-tweets-search-all
+    if(request.getUrl().contains("/2/tweets/search/all")) {
+    	long now = System.currentTimeMillis();
+    	if(now < (lastCallTs+1000)) {
+    		int sleepTime= 1000-Math.toIntExact(now-lastCallTs);
+    		LOGGER.trace("sleep {}ms between two calls on /search/all", sleepTime);
+    		Thread.sleep(sleepTime);
+    		lastCallTs = now+sleepTime;
+    	} else {
+    		lastCallTs = now;
+    	}
+    	
+    }
     try (Response response = getService().execute(request)) {
       String stringResponse = response.getBody();
+      LOGGER.debug("Response code: {} to url: '{}' headers: x-rate-limit-reset: {} x-rate-limit-remaining: {}", response.getCode(), request.getUrl(), response.getHeader("x-rate-limit-reset"), response.getHeader("x-rate-limit-remaining"));
+
       if (response.getCode() == 429) {
         if (!automaticRetry) {
           throw new LimitExceededException(response.getHeader("x-rate-limit-reset"));
         }
         int    retryAfter    = DEFAULT_RETRY_AFTER_SEC;
         String retryAfterStr = response.getHeader("x-rate-limit-reset");
-        if (retryAfterStr != null) {
+        String rateRemainingStr = response.getHeader("x-rate-limit-remaining");
+        LOGGER.trace("Rate limit exceeded, x-rate-limit-reset: {} x-rate-limit-remaining: {}, x-rate-limit-limit:  {}", retryAfterStr, response.getHeader("x-rate-limit-remaining"), response.getHeader("x-rate-limit-limit"));
+        if (retryAfterStr != null && rateRemainingStr != null) {
           try {
-            long resetTime   = Long.parseLong(retryAfterStr);
-            long currentTime = (new Date().getTime()) / 1000;
-            retryAfter = Math.toIntExact(resetTime - currentTime);
+       		int remaining  = Integer.parseInt(rateRemainingStr);
+       		if(remaining>0) { //if we have remaining requests in this slot, the rate limit has been raised due to more calls than one per second. e.g. /search/all endpoint
+       			retryAfter=1; //wait one second
+       		} else {
+            	long resetTime   = Long.parseLong(retryAfterStr);
+                long currentTime = (new Date().getTime()) / 1000;
+                retryAfter = Math.toIntExact(resetTime - currentTime);
+                if(retryAfter<0) retryAfter=1; //issue #440 ( negative sleep time)
+       		}
           } catch (NumberFormatException e) {
             LOGGER.error("Using default retry after because header format is invalid: {}", retryAfterStr, e);
           }
