@@ -3,6 +3,10 @@ package io.github.redouane59.twitter.helpers;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
 import lombok.Getter;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 public class URLHelper {
 
   public static final  int    MAX_LOOKUP                  = 100;
@@ -11,6 +15,7 @@ public class URLHelper {
   public static final  String GET_OAUTH1_TOKEN_URL        = "https://api.twitter.com/oauth/request_token";
   public static final  String GET_OAUTH1_ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
   private static final String ROOT_URL_V1                 = "https://api.twitter.com/1.1";
+  private static final String UPLOAD_URL_V1               = "https://upload.twitter.com/1.1/media/upload.json";
   public static final  String RATE_LIMIT_URL              = ROOT_URL_V1 + "/application/rate_limit_status.json";
   // v1 legacy
   private static final String IDS_JSON                    = "/ids.json?";
@@ -197,7 +202,13 @@ public class URLHelper {
   }
 
   public String getUploadMediaUrl(MediaCategory mediaCategory) {
-    return "https://upload.twitter.com/1.1/media/upload.json?media_category=" + mediaCategory.label;
+    return UPLOAD_URL_V1 +
+            "?media_category=" +
+            mediaCategory.label;
+  }
+
+  public String getChunkedUploadMediaUrl() {
+    return UPLOAD_URL_V1;
   }
 
   public String getCollectionsCreateUrl() {

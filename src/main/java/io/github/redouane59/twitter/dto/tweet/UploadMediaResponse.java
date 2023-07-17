@@ -17,5 +17,7 @@ public class UploadMediaResponse {
   private int    size;
   @JsonProperty("media_key")
   private String mediaKey;
+  @JsonProperty("processing_info")
+  private UploadMediaProcessingInfo processingInfo;
 
 }

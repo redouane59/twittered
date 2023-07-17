@@ -51,6 +51,18 @@ public class RequestHelper extends AbstractRequestHelper {
     return makeRequest(request, true, classType);
   }
 
+  public <T> Optional<T> uploadChunkedMedia(String url, Map<String, String> parameters, byte[] media, int off, int len, Class<T> classType) {
+    OAuthRequest request = new OAuthRequest(Verb.POST, url);
+    if (parameters != null) {
+      for (Map.Entry<String, String> param : parameters.entrySet()) {
+        request.addQuerystringParameter(param.getKey(), param.getValue());
+      }
+    }
+    request.initMultipartPayload();
+    request.addBodyPartPayloadInMultipartPayload(new FileByteArrayBodyPartPayload("application/octet-stream", media, off, len, "media"));
+    return makeRequest(request, true, classType);
+  }
+
   public <T> Optional<T> putRequest(String url, String body, Class<T> classType) {
     return makeRequest(Verb.PUT, url, null, body, true, classType);
   }
