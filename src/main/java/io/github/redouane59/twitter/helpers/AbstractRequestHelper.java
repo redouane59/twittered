@@ -131,7 +131,9 @@ public abstract class AbstractRequestHelper {
       } else if (response.getCode() < 200 || response.getCode() > 299) {
         logApiError(request.getVerb().name(), request.getUrl(), stringResponse, response.getCode());
       }
-      result = convert(stringResponse, classType);
+      if (!Void.class.equals(classType)) {
+        result = convert(stringResponse, classType);
+      }
     } catch (IOException ex) {
       LOGGER.error("Error occupied on executing request", ex);
     }

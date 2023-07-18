@@ -39,21 +39,9 @@ import io.github.redouane59.twitter.dto.space.SpaceState;
 import io.github.redouane59.twitter.dto.stream.StreamRules;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamMeta;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
-import io.github.redouane59.twitter.dto.tweet.HiddenResponse;
+import io.github.redouane59.twitter.dto.tweet.*;
 import io.github.redouane59.twitter.dto.tweet.HiddenResponse.HiddenData;
-import io.github.redouane59.twitter.dto.tweet.LikeResponse;
-import io.github.redouane59.twitter.dto.tweet.MediaCategory;
-import io.github.redouane59.twitter.dto.tweet.RetweetResponse;
-import io.github.redouane59.twitter.dto.tweet.Tweet;
-import io.github.redouane59.twitter.dto.tweet.TweetCountsList;
-import io.github.redouane59.twitter.dto.tweet.TweetList;
 import io.github.redouane59.twitter.dto.tweet.TweetList.TweetMeta;
-import io.github.redouane59.twitter.dto.tweet.TweetParameters;
-import io.github.redouane59.twitter.dto.tweet.TweetSearchResponseV1;
-import io.github.redouane59.twitter.dto.tweet.TweetV1;
-import io.github.redouane59.twitter.dto.tweet.TweetV1Deserializer;
-import io.github.redouane59.twitter.dto.tweet.TweetV2;
-import io.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import io.github.redouane59.twitter.dto.user.FollowBody;
 import io.github.redouane59.twitter.dto.user.User;
 import io.github.redouane59.twitter.dto.user.UserActionResponse;
@@ -70,6 +58,8 @@ import io.github.redouane59.twitter.helpers.URLHelper;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -1397,6 +1387,75 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
   public UploadMediaResponse uploadMedia(File imageFile, MediaCategory mediaCategory) {
     String url = urlHelper.getUploadMediaUrl(mediaCategory);
     return requestHelperV1.uploadMedia(url, imageFile, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public Optional<UploadMediaResponse> uploadChunkedMedia(String mediaName, long size, InputStream data, MediaCategory mediaCategory) {
+    try {
+      String type = URLConnection.guessContentTypeFromName(mediaName);
+      String url = urlHelper.getChunkedUploadMediaUrl();
+      Map<String, String> parameters = new HashMap<>();
+      parameters.put("command", "INIT");
+      parameters.put("total_bytes", Long.toString(size));
+      parameters.put("media_type", type);
+      parameters.put("medai_category", mediaCategory.label);
+      UploadMediaResponse initRsp = requestHelperV1.postRequest(url, parameters, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
+
+      parameters.clear();
+      parameters.put("command", "APPEND");
+      parameters.put("media_id", initRsp.getMediaId());
+
+      byte[] buf = new byte[(int) Math.min(size, 5 * 1024 * 1024L)]; // 5MB max chunk size
+      int segmentIndex = 0;
+      int count;
+      try {
+        while ((count = data.read(buf)) > 0) {
+          parameters.put("segment_index", Integer.toString(segmentIndex++));
+          requestHelperV1.uploadChunkedMedia(url, parameters, buf, 0, count, Void.class);
+        }
+      } catch (IOException ex) {
+        LOGGER.error("Error occupied on reading media", ex);
+        return Optional.empty();
+      }
+
+      parameters.clear();
+      parameters.put("command", "FINALIZE");
+      parameters.put("media_id", initRsp.getMediaId());
+
+      UploadMediaResponse rsp = requestHelperV1.postRequest(url, parameters, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
+      UploadMediaProcessingInfo processing;
+      while ((processing = rsp.getProcessingInfo()) != null && processing.getState().equals("pending")) {
+        try {
+          Thread.sleep(processing.getCheckAfterSecs() * 1000L);
+        } catch (InterruptedException ex) {
+          LOGGER.error("Error occupied on waiting media processing", ex);
+        }
+
+        parameters.clear();
+        parameters.put("command", "STATUS");
+        parameters.put("media_id", initRsp.getMediaId());
+
+        rsp = requestHelperV1.getRequestWithParameters(url, parameters, UploadMediaResponse.class).orElseThrow(NoSuchElementException::new);
+      }
+
+      return Optional.of(rsp);
+    } finally {
+      try {
+        data.close();
+      } catch (IOException ex) {
+        LOGGER.error("Error occupied on closing media stream", ex);
+      }
+    }
+  }
+
+  @Override
+  public Optional<UploadMediaResponse> uploadChunkedMedia(File imageFile, MediaCategory mediaCategory) {
+    try {
+      return uploadChunkedMedia(imageFile.getName(), imageFile.length(), Files.newInputStream(imageFile.toPath()), mediaCategory);
+    } catch (IOException ex) {
+      LOGGER.error("Error occupied on reading media", ex);
+      return Optional.empty();
+    }
   }
 
   @Override

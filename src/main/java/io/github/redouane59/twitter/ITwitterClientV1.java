@@ -12,8 +12,10 @@ import io.github.redouane59.twitter.dto.tweet.MediaCategory;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import java.io.File;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface ITwitterClientV1 {
 
@@ -112,6 +114,16 @@ public interface ITwitterClientV1 {
    * Upload a media calling https://upload.twitter.com/1.1/media/upload.json
    */
   UploadMediaResponse uploadMedia(File media, MediaCategory mediaCategory);
+
+  /**
+   * Upload a media calling https://upload.twitter.com/1.1/media/upload in chunked mode.
+   */
+  Optional<UploadMediaResponse> uploadChunkedMedia(String mediaName, long size, InputStream data, MediaCategory mediaCategory);
+
+  /**
+   * Upload a media calling https://upload.twitter.com/1.1/media/upload in chunked mode.
+   */
+  Optional<UploadMediaResponse> uploadChunkedMedia(File media, MediaCategory mediaCategory);
 
   /**
    * Creates a collection of tweets. See https://api.twitter.com/1.1/collections/create.json
