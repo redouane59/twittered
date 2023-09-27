@@ -80,6 +80,7 @@
       <groupId>org.codehaus.sonar</groupId>
       <type>maven-plugin</type>
       <version>1.13</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <artifactId>jackson-databind</artifactId>
