@@ -67,6 +67,177 @@ public interface Tweet {
   int getQuoteCount();
 
   /**
+   * Get the number of times the Tweet has been viewed. This is a private metric, and requires the
+   * use of OAuth 1.0a or OAuth 2.0 User Context authentication.
+   * 
+   * API v2 only!
+   *
+   * @return the number of times the Tweet has been viewed or null if no nonPublicMetrics exists.
+   */
+  Integer getImpressionCount();
+
+  /**
+   * Get the number of times a user clicks on a URL link or URL preview card in a Tweet. This is a
+   * private metric, and requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication.
+   * 
+   * API v2 only!
+   *
+   * @return the number of times a user clicks on a URL link or URL preview card in a Tweet or null
+   *         if no nonPublicMetrics exists.
+   */
+  Integer getUrlLinkClicks();
+
+  /**
+   * Get the number of times a user clicks the following portions of a Tweet - display name, user
+   * name, profile picture. This is a private metric, and requires the use of OAuth 1.0a or OAuth
+   * 2.0 User Context authentication.
+   * 
+   * API v2 only!
+   *
+   * @return the number of times a user clicks the following portions of a Tweet - display name,
+   *         user name, profile picture or null if no nonPublicMetrics exists.
+   */
+  Integer getUserProfileClicks();
+
+  /**
+   * Get the number of times the Tweet has been viewed organically. This is a private metric, and
+   * requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication.
+   * 
+   * API v2 only!
+   * 
+   * @return the number of times the Tweet has been viewed organically or null if no organicMetrics
+   *         exists.
+   */
+  Integer getOrganicImpressionCount();
+
+  /**
+   * Get the number of likes the Tweet has received organically. This is a private metric, and
+   * requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication.
+   * 
+   * API v2 only!
+   * 
+   * @return the number of likes the Tweet has received organically or null if no organicMetrics
+   *         exists.
+   */
+  Integer getOrganicLikeCount();
+
+  /**
+   * Get the number of replies the Tweet has received organically. This is a private metric, and
+   * requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication.
+   *
+   * API v2 only!
+   * 
+   * @return the number of replies the Tweet has received organically or null if no organicMetrics
+   *         exists.
+   */
+  Integer getOrganicReplyCount();
+
+  /**
+   * Get the number of times the Tweet has been Retweeted organically. This is a private metric, and
+   * requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication.
+   * 
+   * API v2 only!
+   * 
+   * @return the number of times the Tweet has been Retweeted organically. This is a private metric,
+   *         and requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication or null if
+   *         no organicMetrics exists.
+   */
+  Integer getOrganicRetweetCount();
+
+  /**
+   * Get the number of times a user clicks on a URL link or URL preview card in a Tweet organically.
+   * This is a private metric, and requires the use of OAuth 1.0a or OAuth 2.0 User Context
+   * authentication.
+   * 
+   * API v2 only!
+   * 
+   * @return the number of times a user clicks on a URL link or URL preview card in a Tweet
+   *         organically or null if no organicMetrics exists.
+   */
+  Integer getOrganicUrlLinkClicks();
+
+  /**
+   * Get the number of times a user clicks the following portions of a Tweet organically - display
+   * name, user name, profile picture. This is a private metric, and requires the use of OAuth 1.0a
+   * or OAuth 2.0 User Context authentication.
+   * 
+   * API v2 only!
+   * 
+   * @return the number of times a user clicks the following portions of a Tweet organically -
+   *         display name, user name, profile picture or null if no organicMetrics exists.
+   */
+  Integer getOrganicUserProfileClicks();
+
+  /**
+   * Number of times the Tweet has been viewed when that Tweet is being promoted. This is a private
+   * metric, and requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication.
+   * 
+   * API v2 only!
+   * 
+   * @return the number of times the Tweet has been viewed when that Tweet is being promoted or null
+   *         if no promotedMetrics exists.
+   */
+  Integer getPromotedImpressionCount();
+
+  /**
+   * Number of Likes of this Tweet when that Tweet is being promoted. This is a private metric, and
+   * requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication.
+   * 
+   * API v2 only!
+   * 
+   * @return the number of Likes of this Tweet when that Tweet is being promoted or null if no
+   *         promotedMetrics exists.
+   */
+  Integer getPromotedLikeCount();
+
+  /**
+   * Number of Replies to this Tweet when that Tweet is being promoted. This is a private metric,
+   * and requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication.
+   * 
+   * API v2 only!
+   * 
+   * @return number of Replies to this Tweet when that Tweet is being promoted or null if no
+   *         promotedMetrics exists.
+   */
+  Integer getPromotedReplyCount();
+
+  /**
+   * Number of times this Tweet has been Retweeted when that Tweet is being promoted. This is a
+   * private metric, and requires the use of OAuth 1.0a or OAuth 2.0 User Context authentication.
+   * 
+   * API v2 only!
+   * 
+   * @return the number of times this Tweet has been Retweeted when that Tweet is being promoted or
+   *         null if no promotedMetrics exists.
+   */
+  Integer getPromotedRetweetCount();
+
+  /**
+   * Number of times a user clicks on a URL link or URL preview card in a Tweet when it is being
+   * promoted. This is a private metric, and requires the use of OAuth 1.0a or OAuth 2.0 User
+   * Context authentication.
+   * 
+   * API v2 only!
+   * 
+   * @return the number of times a user clicks on a URL link or URL preview card in a Tweet when it
+   *         is being promoted or null if no promotedMetrics exists.
+   */
+  Integer getPromotedUrlLinkClicks();
+
+  /**
+   * Number of times a user clicks the following portions of a Tweet when it is being promoted -
+   * display name, user name, profile picture. This is a private metric, and requires the use of
+   * OAuth 1.0a or OAuth 2.0 User Context authentication.
+   * 
+   * API v2 only!
+   * 
+   * @return the number of times a user clicks the following portions of a Tweet when it is being
+   *         promoted - display name, user name, profile picture or null if no promotedMetrics
+   *         exists.
+   */
+  Integer getPromotedUserProfileClicks();
+
+  /**
    * Get the creation date of the tweet
    *
    * @return the tweet creation date

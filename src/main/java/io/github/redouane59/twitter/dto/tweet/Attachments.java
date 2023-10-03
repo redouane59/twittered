@@ -18,5 +18,7 @@ public class Attachments {
 
   @JsonProperty("media_keys")
   private String[] mediaKeys;
+  @JsonProperty("poll_ids")
+  private String[] pollIds;
 
 }

@@ -1,6 +1,7 @@
 package io.github.redouane59.twitter.dto.tweet;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.redouane59.twitter.dto.stream.StreamRules.StreamRule;
@@ -148,6 +149,110 @@ public class TweetV1 implements Tweet {
     return user.getId();
   }
 
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public Integer getImpressionCount() {
+    throw new RuntimeException("Mectric Impression is not vailable in Twitter API v1.");
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public Integer getUrlLinkClicks() {
+    throw new RuntimeException("Mectric UrlLinkClicks is not vailable in Twitter API v1.");
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public Integer getUserProfileClicks() {
+    throw new RuntimeException("Mectric UserProfileClicks is not vailable in Twitter API v1.");
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public Integer getOrganicImpressionCount() {
+    throw new RuntimeException("Mectric OrganicImpressionCount is not vailable in Twitter API v1.");
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public Integer getOrganicLikeCount() {
+    throw new RuntimeException("Mectric OrganicLikeCount is not vailable in Twitter API v1.");
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public Integer getOrganicReplyCount() {
+    throw new RuntimeException("Mectric OrganicReplyCount is not vailable in Twitter API v1.");
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public Integer getOrganicRetweetCount() {
+    throw new RuntimeException("Mectric OrganicRetweetCount is not vailable in Twitter API v1.");
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public Integer getOrganicUrlLinkClicks() {
+    throw new RuntimeException("Mectric OrganicUrlLinkClicks is not vailable in Twitter API v1.");
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public Integer getOrganicUserProfileClicks() {
+    throw new RuntimeException("Mectric OrganicUserProfileClicks is not vailable in Twitter API v1.");
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public Integer getPromotedImpressionCount() {
+    throw new RuntimeException("Mectric PromotedImpressionCount is not vailable in Twitter API v1.");
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public Integer getPromotedLikeCount() {
+    throw new RuntimeException("Mectric PromotedLikeCount is not vailable in Twitter API v1.");
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public Integer getPromotedReplyCount() {
+    throw new RuntimeException("Mectric PromotedReplyCount is not vailable in Twitter API v1.");
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public Integer getPromotedRetweetCount() {
+    throw new RuntimeException("Mectric PromotedRetweetCount is not vailable in Twitter API v1.");
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public Integer getPromotedUrlLinkClicks() {
+    throw new RuntimeException("Mectric PromotedUrlLinkClicks is not vailable in Twitter API v1.");
+  }
+
+  /* Not available in API v1! */
+  @Override
+  @JsonIgnore
+  public Integer getPromotedUserProfileClicks() {
+    throw new RuntimeException("Mectric PromotedUserProfileClicks is not vailable in Twitter API v1.");
+  }
 
   @Getter
   @Setter

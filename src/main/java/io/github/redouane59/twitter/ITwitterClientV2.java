@@ -32,6 +32,15 @@ import java.util.function.Consumer;
 
 public interface ITwitterClientV2 {
 
+  public static enum REQUEST_TWEET_FIELDS_SCOPE {
+      /** Retrieve public fields of tweets only (any token)*/
+      PUBLIC, 
+      /** Retrieve also non-public fields of tweets (needs user token) */
+      NON_PUBLIC, 
+      /** Retrieve non-public and promoted fields of tweets (needs user token, tweet must be promoted or request fails) */
+      NON_PUBLIC_PROMOTED 
+  }
+
   /**
    * Retreive a user from his screen name calling https://api.twitter.com/2/users/
    *
@@ -101,19 +110,39 @@ public interface ITwitterClientV2 {
 
   /**
    * Get a tweet from its id calling https://api.twitter.com/2/tweets
+   * with public fields only
    *
    * @param tweetId id of the tweet
    * @return a tweet object
    */
   Tweet getTweet(String tweetId);
+  
+  /**
+   * Get a tweet from its id calling https://api.twitter.com/2/tweets
+   * with given fields scope
+   *
+   * @param tweetId id of the tweet
+   * @return a tweet object
+   */
+  Tweet getTweet(String tweetId, REQUEST_TWEET_FIELDS_SCOPE requestTweetFieldsScope);
 
   /**
    * Get a tweet list from their id calling https://api.twitter.com/2/tweets
+   * with public fields only
    *
    * @param tweetIds the ids of the tweets
    * @return a tweet object list
    */
   TweetList getTweets(List<String> tweetIds);
+
+  /**
+   * Get a tweet list from their id calling https://api.twitter.com/2/tweets
+   * with given fields scope
+   *
+   * @param tweetIds the ids of the tweets
+   * @return a tweet object list
+   */
+  TweetList getTweets(List<String> tweetIds, REQUEST_TWEET_FIELDS_SCOPE requestTweetFieldsScope);
 
   /**
    * Hide/Unide a reply using https://api.twitter.com/labs/2/tweets/:id/hidden
@@ -303,6 +332,25 @@ public interface ITwitterClientV2 {
    * @return a TweetList object containing a list of tweets and the next token if recursiveCall is set to false
    */
   TweetList getUserTimeline(String userId, AdditionalParameters additionalParameters);
+
+  /**
+   * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets (time & tweet id arguments can be null)
+   *
+   * @param userId identifier of the Twitter account (user ID) for whom to return results.
+   * @param requestTweetFieldsScope 
+   * @return a TweetList object containing a list of tweets and the next token if recursiveCall is set to false
+   */
+  public TweetList getUserTimeline(final String userId, REQUEST_TWEET_FIELDS_SCOPE requestTweetFieldsScope);
+  
+  /**
+   * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets (time & tweet id arguments can be null)
+   *
+   * @param userId identifier of the Twitter account (user ID) for whom to return results.
+   * @param additionalParameters accepted parameters recursiveCall, startTime, endTime, sinceId, untilId, maxResults
+   * @param requestTweetFieldsScope
+   * @return a TweetList object containing a list of tweets and the next token if recursiveCall is set to false
+   */
+  public TweetList getUserTimeline(String userId, AdditionalParameters additionalParameters, REQUEST_TWEET_FIELDS_SCOPE requestTweetFieldsScope);
 
   /**
    * Get the most recent mentions received posted by the user calling https://api.twitter.com/2/users/:id/mentions

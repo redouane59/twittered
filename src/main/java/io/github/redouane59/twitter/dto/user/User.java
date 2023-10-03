@@ -71,6 +71,20 @@ public interface User {
   int getTweetCount();
 
   /**
+   * Get the number of lists that include this user.
+   *
+   * @return number of lists that include this user.
+   */
+  public int getListedCount();
+
+  /** 
+   * Returns whether the users public metrics is included in the response.
+   * 
+   * @return whether users public metrics exists
+   */
+  public boolean hasPublicMetrics();
+
+  /**
    * Get the language of the user
    *
    * @return the user language
