@@ -141,7 +141,7 @@
       <artifactId>logback-classic</artifactId>
       <groupId>ch.qos.logback</groupId>
       <scope>test</scope>
-      <version>1.2.11</version>
+      <version>1.2.13</version>
     </dependency>
   </dependencies>
   <description>Java Client for the Twitter API</description>
