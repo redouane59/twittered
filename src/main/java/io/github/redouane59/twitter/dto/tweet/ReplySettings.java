@@ -10,6 +10,8 @@ public enum ReplySettings {
   MENTIONED_USERS("mentionedUsers"),
   @JsonProperty("following")
   FOLLOWING("following"),
+  @JsonProperty("verified")
+  VERIFIED("verified"),
   @JsonProperty("other")
   OTHER("other");
 
