@@ -11,7 +11,9 @@ public enum ReplySettings {
   @JsonProperty("following")
   FOLLOWING("following"),
   @JsonProperty("other")
-  OTHER("other");
+  OTHER("other"),
+  @JsonProperty("verified")
+  VERIFIED("verified");
 
   public final String label;
 
