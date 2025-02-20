@@ -104,15 +104,33 @@ public class TweetV1 implements Tweet {
   }
 
   @Override
+  public AdditionalProperties getAdditionalProperties() {
+    LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
+    return new AdditionalProperties();
+  }
+
+  @Override
   public Attachments getAttachments() {
     LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
-    return new Attachments();
+    return null;
+  }
+
+  @Override
+  public Reposts getReposts() {
+    LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
+    return new Reposts();
   }
 
   @Override
   public String getSource() {
     LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
     return null;
+  }
+
+  @Override
+  public List<String> getEditHistoryTweetIds() {
+    LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
+    return Collections.emptyList();
   }
 
   @Override

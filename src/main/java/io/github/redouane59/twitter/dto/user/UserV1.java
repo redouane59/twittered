@@ -3,6 +3,7 @@ package io.github.redouane59.twitter.dto.user;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.github.redouane59.twitter.dto.tweet.AdditionalProperties;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
 import java.time.LocalDateTime;
@@ -28,10 +29,14 @@ import lombok.extern.slf4j.Slf4j;
 @Jacksonized
 public class UserV1 implements User {
 
+  private static final String     NOT_IMPLEMENTED_EXCEPTION = "not implemented";
+
   private String      id;
   @JsonProperty("screen_name")
   @JsonAlias("screen_name")
   private String      name;
+  @JsonAlias({"username", "first_name"})
+  private String      userName;
   @JsonAlias("name")
   private String      displayedName;
   private List<Tweet> mostRecentTweet;
@@ -83,12 +88,24 @@ public class UserV1 implements User {
   }
 
   @Override
-  public boolean isVerified() {
+  public String getVerified() {
+    LOGGER.debug("UnsupportedOperation");
+    return "false";
+  }
+
+  @Override
+  public boolean isGroup() {
     LOGGER.debug("UnsupportedOperation");
     return false;
   }
 
   public LocalDateTime getLastUpdate() {
     return ConverterHelper.getDateFromTwitterString(lastUpdate);
+  }
+
+  @Override
+  public AdditionalProperties getAdditionalProperties() {
+    LOGGER.error(NOT_IMPLEMENTED_EXCEPTION);
+    return new AdditionalProperties();
   }
 }

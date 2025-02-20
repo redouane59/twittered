@@ -1,10 +1,12 @@
 package io.github.redouane59.twitter.dto.user;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.github.redouane59.twitter.dto.tweet.AdditionalProperties;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import io.github.redouane59.twitter.dto.tweet.TweetV2.TweetData;
 import io.github.redouane59.twitter.helpers.ConverterHelper;
@@ -40,6 +42,11 @@ public class UserV2 implements User {
   @Override
   public String getName() {
     return data == null ? null : data.getName();
+  }
+
+  @Override
+  public String getUserName() {
+    return data == null ? null : data.getUserName();
   }
 
   @Override
@@ -98,8 +105,13 @@ public class UserV2 implements User {
   }
 
   @Override
-  public boolean isVerified() {
-    return data != null && data.verified;
+  public String getVerified() {
+    return data.getVerified();
+  }
+
+  @Override
+  public boolean isGroup() {
+    return data.isGroup();
   }
 
   @Override
@@ -127,6 +139,14 @@ public class UserV2 implements User {
   }
 
   @Override
+  public AdditionalProperties getAdditionalProperties() {
+    if (data == null) {
+      return null;
+    }
+    return data.getAdditionalProperties();
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (o == null || (getClass() != o.getClass() && !User.class.isAssignableFrom(o.getClass()))) {
       return false;
@@ -151,26 +171,31 @@ public class UserV2 implements User {
     private String            id;
     @JsonProperty("created_at")
     private String            createdAt;
-    @JsonProperty("username")
     private String            name;
-    @JsonProperty("name")
+    @JsonAlias({"username", "first_name"})
+    private String            userName;
+    @JsonAlias({"displayedName", "screen_name"})
     private String            displayedName;
     private String            location;
     private JsonNode          entities;
     private String            url;
-    private boolean           verified;
-    @JsonProperty("profile_image_url")
+    private String            verified;
+    @JsonAlias({"profile_image_url", "photo_big"})
     private String            profileImageUrl;
     @JsonProperty("public_metrics")
     @JsonInclude(Include.NON_NULL)
     private UserPublicMetrics publicMetrics;
     @JsonProperty("pinned_tweet_id")
     private String            pinnedTweetId;
+    @JsonAlias({"description", "about"})
     private String            description;
     private String            lang;
     @JsonProperty("protected")
     private boolean           protectedAccount;
     private boolean           following;
+    private AdditionalProperties          additionalProperties;
+    @JsonProperty("isGroup")
+    private boolean           group;
 
     @Override
     public LocalDateTime getDateOfCreation() {

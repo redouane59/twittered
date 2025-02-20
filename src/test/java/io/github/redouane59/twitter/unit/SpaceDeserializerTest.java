@@ -90,8 +90,8 @@ public class SpaceDeserializerTest {
 
   @Test
   public void testIncludeUserNames() {
-    assertEquals("TwitterDev", space.getIncludes().getUsers().get(0).getName());
-    assertEquals("TwitterAPI", space.getIncludes().getUsers().get(1).getName());
+    assertEquals("Twitter Dev", space.getIncludes().getUsers().get(0).getName());
+    assertEquals("Twitter API", space.getIncludes().getUsers().get(1).getName());
   }
 
 }

@@ -968,12 +968,38 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
     parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
     String url = urlHelper.getSearchRecentTweetsUrl();
     if (!additionalParameters.isRecursiveCall()) {
-      return getRequestHelper().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
+      return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
     }
     if (additionalParameters.getMaxResults() <= 0) {
       parameters.put(MAX_RESULTS, String.valueOf(100));
     }
-    return getTweetsRecursively(url, parameters, getRequestHelper());
+    return getTweetsRecursively(url, parameters, getRequestHelperV2());
+  }
+
+  @Override
+  public TweetList searchTweetsNonRecursively(String query) {
+    return searchTweetsNonRecursively(query, AdditionalParameters.builder().maxResults(100).build(), false);
+  }
+
+  @Override
+  public TweetList searchTweetsNonRecursively(String query, AdditionalParameters additionalParameters, boolean historicalSearch) {
+    Map<String, String> parameters = additionalParameters.getMapFromParameters();
+    parameters.put(QUERY, query);
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(EXPANSION, ALL_EXPANSIONS);
+    parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
+    String url = urlHelper.getSearchRecentTweetsUrl();
+    if (historicalSearch) {
+      url = urlHelper.getSearchAllTweetsUrl();
+    }
+    if (!additionalParameters.isRecursiveCall()) {
+      return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
+    }
+    if (additionalParameters.getMaxResults() <= 0) {
+      parameters.put(MAX_RESULTS, String.valueOf(100));
+    }
+    return getTweetsOnce(url, parameters, getRequestHelperV2());
   }
 
   @Override
@@ -1002,6 +1028,31 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       parameters.put(MAX_RESULTS, String.valueOf(100));
     }
     return getTweetsRecursively(url, parameters, getRequestHelperV2());
+  }
+
+  /**
+   * Call an endpoint related to tweets recursively until next_token is null to provide a full result
+   */
+  private TweetList getTweetsOnce(String url, Map<String, String> parameters, AbstractRequestHelper requestHelper) {
+    String    next;
+    TweetList result   = TweetList.builder().data(new ArrayList<>()).meta(new TweetMeta()).build();
+    String    newestId = null;
+    Optional<TweetList> tweetList = requestHelper.getRequestWithParameters(url, parameters, TweetList.class);
+    if (!tweetList.isPresent() || tweetList.get().getData() == null) {
+      result.getMeta().setNextToken(null);
+      return result;
+    }
+    result.getData().addAll(tweetList.get().getData());
+    newestId = tweetList.get().getMeta().getNewestId();
+    TweetMeta meta = TweetMeta.builder()
+                              .resultCount(result.getData().size())
+                              .oldestId(tweetList.get().getMeta().getOldestId())
+                              .newestId(newestId)
+                              .nextToken(tweetList.get().getMeta().getNextToken())
+                              .build();
+    result.setMeta(meta);
+    result.setIncludes(tweetList.get().getIncludes());
+    return result;
   }
 
   /**
@@ -1280,6 +1331,30 @@ public class TwitterClient implements ITwitterClientV1, ITwitterClientV2, ITwitt
       parameters.put(MAX_RESULTS, String.valueOf(100));
     }
     return getTweetsRecursively(url, parameters, getRequestHelperV2());
+  }
+
+  @Override
+  public TweetList getUserTimelineNonRecursively(final String userId) {
+    return getUserTimelineNonRecursively(userId, AdditionalParameters.builder().maxResults(100).build());
+  }
+
+  @Override
+  public TweetList getUserTimelineNonRecursively(String userId, AdditionalParameters additionalParameters) {
+    Map<String, String> parameters = additionalParameters.getMapFromParameters();
+    parameters.put(TWEET_FIELDS, ALL_TWEET_FIELDS);
+    parameters.put(USER_FIELDS, ALL_USER_FIELDS);
+    parameters.put(PLACE_FIELDS, ALL_PLACE_FIELDS);
+    parameters.put(POLL_FIELDS, ALL_POLL_FIELDS);
+    parameters.put(MEDIA_FIELD, ALL_MEDIA_FIELDS);
+    parameters.put(EXPANSION, ALL_EXPANSIONS);
+    String url = urlHelper.getUserTimelineUrl(userId);
+    if (!additionalParameters.isRecursiveCall()) {
+      return getRequestHelperV2().getRequestWithParameters(url, parameters, TweetList.class).orElseThrow(NoSuchElementException::new);
+    }
+    if (additionalParameters.getMaxResults() <= 0) {
+      parameters.put(MAX_RESULTS, String.valueOf(100));
+    }
+    return getTweetsOnce(url, parameters, getRequestHelperV2());
   }
 
   @Override

@@ -1,6 +1,7 @@
 package io.github.redouane59.twitter.dto.user;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.github.redouane59.twitter.dto.tweet.AdditionalProperties;
 import io.github.redouane59.twitter.dto.tweet.Tweet;
 import java.time.LocalDateTime;
 
@@ -19,6 +20,14 @@ public interface User {
    * @return the user name
    */
   String getName();
+
+  /**
+   * Get the name of the user they’ve defined it on their profile. Not necessarily a person’s name. Typically capped at 50 characters, but subject to
+   * change.
+   *
+   * @return the user name
+   */
+  String getUserName();
 
   /**
    * Get the name of the user they’ve defined it on their profile. Not necessarily a person’s name. Typically capped at 50 characters, but subject to
@@ -122,6 +131,17 @@ public interface User {
    *
    * @return true if the user account is certified
    */
-  boolean isVerified();
+  String getVerified();
 
+  /**
+   * Get if the user is following the owner account. Warning: this is not not support by all endpoints.
+   *
+   * @return true if the user is following the owner account, else false
+   */
+  boolean isGroup();
+
+  /**
+   * Get the additional properties of the tweet
+   */
+  AdditionalProperties getAdditionalProperties();
 }

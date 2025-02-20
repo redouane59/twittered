@@ -164,5 +164,18 @@ public interface Tweet {
    */
   List<StreamRules.StreamRule> getMatchingRules();
 
+  /**
+   * Get the additional properties of the tweet
+   */
+  AdditionalProperties getAdditionalProperties();
 
+  /**
+   * Get the reposts of the tweet
+   */
+  Reposts getReposts();
+
+  /**
+   * Get the edit history of the tweet
+   */
+  List<String> getEditHistoryTweetIds();
 }

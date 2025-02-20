@@ -8,13 +8,13 @@ This project is a JAVA library which allows you to consume the Twitter API.
 
 ### Configuration
 
-![Maven Central](https://img.shields.io/maven-central/v/io.github.redouane59.twitter/twittered)
+![Maven Central](https://img.shields.io/maven-central/v/io.github.hemisphire.twitter/twittered)
 
 In your pom.xml, add the following dependency and replace `VERSION` with the version you wish:
 
 ```xml
 <dependency>
-  <groupId>io.github.redouane59.twitter</groupId>
+  <groupId>io.github.hemisphire.twitter</groupId>
   <artifactId>twittered</artifactId>
   <version>VERSION</version>
 </dependency>
@@ -30,7 +30,7 @@ repositories {
 Then add the following line to your `dependencies` block:
 
 ```kotlin
-implementation("io.github.redouane59.twitter:twittered:VERSION")
+implementation("io.github.hemisphire.twitter:twittered:VERSION")
 ```
 
 To be able to see library logs, also add sl4j references :

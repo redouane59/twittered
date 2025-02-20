@@ -29,12 +29,12 @@ public class UserDeserializerV2Test {
 
   @Test
   public void testGetUserScreenNameV2() {
-    assertEquals("RedouaneBali", userV2.getName());
+    assertEquals("RedouaneBali", userV2.getUserName());
   }
 
   @Test
   public void testGetUserDisplayedName() {
-    assertEquals("Red'1", userV2.getDisplayedName());
+    assertEquals("Red'1", userV2.getName());
   }
 
   @Test
@@ -70,8 +70,8 @@ public class UserDeserializerV2Test {
   }
 
   @Test
-  public void testIsVerified() {
-    assertTrue(userV2.isVerified());
+  public void testGetVerified() {
+    assertEquals("true", userV2.getVerified());
   }
 
   @Test

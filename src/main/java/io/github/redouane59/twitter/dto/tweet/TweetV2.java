@@ -119,11 +119,19 @@ public class TweetV2 implements Tweet {
   }
 
   @Override
-  public Attachments getAttachments() {
+  public AdditionalProperties getAdditionalProperties() {
     if (data == null) {
       return null;
     }
-    return data.getAttachments();
+    return data.getAdditionalProperties();
+  }
+
+  @Override
+  public Reposts getReposts() {
+    if (data == null) {
+      return null;
+    }
+    return data.getReposts();
   }
 
   @Override
@@ -132,6 +140,14 @@ public class TweetV2 implements Tweet {
       return null;
     }
     return data.getSource();
+  }
+
+  @Override
+  public List<String> getEditHistoryTweetIds() {
+    if (data == null) {
+      return null;
+    }
+    return data.getEditHistoryTweetIds();
   }
 
   @Override
@@ -242,6 +258,14 @@ public class TweetV2 implements Tweet {
     return data.getReferencedTweets().get(0).getType();
   }
 
+  @Override
+  public Attachments getAttachments() {
+    if (data == null) {
+      return null;
+    }
+    return data.attachments;
+  }
+
   @Getter
   @Setter
   @Builder
@@ -251,14 +275,20 @@ public class TweetV2 implements Tweet {
   public static class TweetData implements Tweet {
 
     private String                   id;
-    @JsonProperty("created_at")
+    @JsonAlias({"created_at", "date"})
     private String                   createdAt;
-    @JsonAlias({"text", "full_text"})
-    private String                   text;
-    @JsonProperty("author_id")
+    @JsonAlias({"author_id", "owner_id"})
     private String                   authorId;
     @JsonProperty("in_reply_to_user_id")
     private String                   inReplyToUserId;
+    @JsonProperty("from_id")
+    private String                   fromId;
+    @JsonProperty("author")
+    private UserData                 user;
+    @JsonAlias({"text", "full_text"})
+    private String                   text;
+    private Attachments              attachments;
+    private Reposts                  reposts;
     @JsonProperty("referenced_tweets")
     private List<ReferencedTweetDTO> referencedTweets;
     private EntitiesV2               entities;
@@ -275,10 +305,12 @@ public class TweetV2 implements Tweet {
     @JsonProperty("reply_settings")
     private ReplySettings            replySettings;
     private Geo                      geo;
-    private Attachments              attachments;
     private String                   source;
-    @JsonIgnore
-    private UserData                 user;
+    private AdditionalProperties     additionalProperties;
+    @JsonProperty("edit_history_tweet_ids")
+    private List<String>             editHistoryTweetIds;
+
+
 
     @Override
     @JsonIgnore
@@ -339,19 +371,19 @@ public class TweetV2 implements Tweet {
 
     @Override
     public List<MediaEntityV2> getMedia() {
-      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION);
+      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION + " getMedia");
       return Collections.emptyList();
     }
 
     @Override
     public List<Place> getPlaces() {
-      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION);
+      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION + " getPlaces");
       return Collections.emptyList();
     }
 
     @Override
     public List<StreamRule> getMatchingRules() {
-      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION);
+      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION + " getMatchingRules");
       return Collections.emptyList();
     }
 
@@ -365,6 +397,10 @@ public class TweetV2 implements Tweet {
       return ConverterHelper.getDateFromTwitterStringV2(createdAt);
     }
 
+    @Override
+    public Attachments getAttachments() {
+      return attachments;
+    }
   }
 
   @Getter
@@ -507,13 +543,13 @@ public class TweetV2 implements Tweet {
 
     @Override
     public int getStart() {
-      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION);
+      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION + " getStart");
       return -1;
     }
 
     @Override
     public int getEnd() {
-      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION);
+      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION + " getEnd");
       return -1;
     }
 
@@ -534,7 +570,7 @@ public class TweetV2 implements Tweet {
 
     @Override
     public long getId() {
-      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION);
+      LOGGER.info(NOT_IMPLEMENTED_EXCEPTION + " getId");
       return -1;
     }
   }

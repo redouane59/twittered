@@ -59,8 +59,8 @@ public class TweetListDeserializerTest {
   @Test
   public void testIncludes0() {
     User user = tweetList.getIncludes().getUsers().get(0);
-    assertEquals("Redouane", user.getDisplayedName());
-    assertEquals("RedouaneBali", user.getName());
+    assertEquals("Redouane", user.getName());
+    assertEquals("RedouaneBali", user.getUserName());
     assertEquals("Algiers, Algeria", user.getLocation());
     assertEquals(2018, user.getFollowersCount());
     assertEquals(1251, user.getFollowingCount());
@@ -86,8 +86,8 @@ public class TweetListDeserializerTest {
   @Test
   public void testUserIncludeInTweetObject() {
     User user = tweetList.getData().get(0).getUser();
-    assertEquals("Redouane", user.getDisplayedName());
-    assertEquals("RedouaneBali", user.getName());
+    assertEquals("RedouaneBali", user.getUserName());
+    assertEquals("Redouane", user.getName());
     assertEquals("Algiers, Algeria", user.getLocation());
     assertEquals(2018, user.getFollowersCount());
     assertEquals(1251, user.getFollowingCount());

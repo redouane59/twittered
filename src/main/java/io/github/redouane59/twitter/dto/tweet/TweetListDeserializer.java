@@ -30,6 +30,7 @@ public class TweetListDeserializer extends StdDeserializer<TweetList> {
       result.setMeta(JsonHelper.fromJson(node.get("meta"), TweetMeta.class));
     }
     if (node.has("data")) {
+      System.out.println(node.asText());
       List<TweetData> list =
           JsonHelper.fromJson(node.get("data"), JsonHelper.OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, TweetData.class));
       if (node.has("includes")) {

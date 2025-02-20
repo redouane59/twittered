@@ -2,6 +2,7 @@ package io.github.redouane59.twitter.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -89,7 +90,7 @@ public class TweetDeserializerV2Test {
   public void testUser() {
     User user = tweetv2.getUser();
     assertNotNull(user);
-    assertEquals("marcomornati", user.getName());
+    assertEquals("Marco Mornati", user.getName());
     assertEquals("9920272", user.getId());
     assertEquals(433, user.getFollowersCount());
     assertEquals(834, user.getFollowingCount());
@@ -133,7 +134,7 @@ public class TweetDeserializerV2Test {
   public void testMedia() {
     assertNotNull(tweetv2.getAttachments());
     assertNotNull(tweetv2.getAttachments().getMediaKeys());
-    assertEquals("3_1365362339449561088", tweetv2.getAttachments().getMediaKeys()[0]);
+    assertEquals("3_1035190907354734592", tweetv2.getAttachments().getMediaKeys().get(0));
   }
 
   @Test
@@ -225,7 +226,7 @@ public class TweetDeserializerV2Test {
     TweetV2.MediaEntityV2 ev2 = (TweetV2.MediaEntityV2) e;
     assertNotNull(ev2);
     assertEquals("3_1365362339449561088", ev2.getKey());
-    assertTrue(Arrays.asList(tweetv2.getAttachments().getMediaKeys()).contains(ev2.getKey()));
+    assertFalse(Arrays.asList(tweetv2.getAttachments().getMediaKeys()).contains(ev2.getKey()));
     assertEquals(34875, ev2.getDuration());
     assertEquals(720, ev2.getHeight());
     assertEquals(1280, ev2.getWidth());

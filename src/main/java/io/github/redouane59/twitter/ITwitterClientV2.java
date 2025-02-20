@@ -142,6 +142,23 @@ public interface ITwitterClientV2 {
   TweetList searchTweets(String query, AdditionalParameters additionalParameters);
 
   /**
+   * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
+   *
+   * @param query the search query
+   * @return a TweetList object containing a list of tweets
+   */
+  TweetList searchTweetsNonRecursively(String query);
+
+  /**
+   * Search tweets from last 7 days calling https://api.twitter.com/2/tweets/search
+   *
+   * @param query the search query
+   * @param additionalParameters accepted parameters are recursiveCall, startTime, endTime, sinceId, untilId, maxResults
+   * @return a TweetList object containing a list of tweets and the next token if recursiveCall is set to false
+   */
+  TweetList searchTweetsNonRecursively(String query, AdditionalParameters additionalParameters, boolean historicalSearch);
+
+  /**
    * Search archived tweets calling https://api.twitter.com/2/tweets/search/all
    *
    * @param query the search query
@@ -303,6 +320,23 @@ public interface ITwitterClientV2 {
    * @return a TweetList object containing a list of tweets and the next token if recursiveCall is set to false
    */
   TweetList getUserTimeline(String userId, AdditionalParameters additionalParameters);
+
+  /**
+   * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets
+   *
+   * @param userId Unique identifier of the Twitter account (user ID) for whom to return results.
+   * @return a TweetList object containing a list of tweets
+   */
+  TweetList getUserTimelineNonRecursively(String userId);
+
+  /**
+   * Get the most recent Tweets posted by the user calling https://api.twitter.com/2/users/:id/tweets (time & tweet id arguments can be null)
+   *
+   * @param userId identifier of the Twitter account (user ID) for whom to return results.
+   * @param additionalParameters accepted parameters recursiveCall, startTime, endTime, sinceId, untilId, maxResults
+   * @return a TweetList object containing a list of tweets and the next token if recursiveCall is set to false
+   */
+  TweetList getUserTimelineNonRecursively(String userId, AdditionalParameters additionalParameters);
 
   /**
    * Get the most recent mentions received posted by the user calling https://api.twitter.com/2/users/:id/mentions
